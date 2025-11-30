@@ -44,10 +44,6 @@ jobs:
             - name: Build Angular Application
               run: npm run-script build
 
-            - name: Listar Build
-              working-directory: ${{ vars.DIRECTORIO_CDK }}
-              run: ls -l ${{ vars.BUILD_DIR }}
-
             - name: Instalar AWS CDK
               run: npm install -g aws-cdk
 
