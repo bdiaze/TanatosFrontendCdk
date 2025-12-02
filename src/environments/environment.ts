@@ -4,6 +4,7 @@ export const environment = {
         clientId: '',
         baseUrl: '',
         redirectUrl: '',
+        logoutUrl: '',
     },
     tanatosService: {
         apiUrl: '',
