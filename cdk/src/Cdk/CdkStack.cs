@@ -51,7 +51,14 @@ namespace Cdk
                     Compress = true,
                     AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
                     ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                }
+                },
+                ErrorResponses = [
+                    new ErrorResponse {
+                        HttpStatus = 403,
+                        ResponseHttpStatus = 200,
+                        ResponsePagePath = $"/{rootObject}",
+                    },
+                ]
             });
 
             // Se despliegan piezas del frontend en el bucket...
