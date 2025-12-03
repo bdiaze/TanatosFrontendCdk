@@ -1,18 +1,8 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthStore } from '@services/auth-store';
-import {
-    catchError,
-    filter,
-    firstValueFrom,
-    from,
-    Subject,
-    switchMap,
-    take,
-    tap,
-    throwError,
-} from 'rxjs';
-import { AuthDao } from '../daos/auth-dao';
+import { catchError, filter, Subject, switchMap, take, tap, throwError } from 'rxjs';
+import { AuthDao } from '@daos/auth-dao';
 import { environment } from '@environment';
 import { Router } from '@angular/router';
 

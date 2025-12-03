@@ -11,7 +11,10 @@
             "@services/*": ["app/services/*"],
             "@components/*": ["app/components/*"],
             "@models/*": ["app/models/*"],
-            "@daos/*": ["app/daos/*"]
+            "@daos/*": ["app/daos/*"],
+            "@helpers/*": ["app/helpers/*"],
+            "@features/*": ["app/features/*"],
+            "@interceptors/*": ["app/interceptors/*"]
         }
     },
     "include": ["src/**/*.ts"],
