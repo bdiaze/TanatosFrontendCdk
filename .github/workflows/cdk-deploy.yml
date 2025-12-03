@@ -39,13 +39,13 @@ jobs:
               run: echo "${{ vars.ENVIRONMENT_TS }}" > "${{ vars.ENVIRONMENT_TS_FILE }}"
 
             - name: Install Dependencies
-              run: npm install
+              run: pnpm install
 
             - name: Build Angular Application
-              run: npm run-script build
+              run: pnpm run-script build
 
             - name: Instalar AWS CDK
-              run: npm install -g aws-cdk
+              run: pnpm install -g aws-cdk
 
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4
