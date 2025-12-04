@@ -1,81 +1,98 @@
 @if(sesionIniciada()){
-<div class="absolute left-0 z-100 justify-self-center flex justify-between items-start">
-    <div
-        class="bg-gray-100 border-b border-r border-t border-gray-400/30 rounded-r h-full shadow-lg overflow-hidden transition-all duration-300 ease-in-out"
-        [class.max-w-9]="!mostrarMenu()"
-        [class.max-w-xs]="mostrarMenu()"
-        [class.pl-3]="mostrarMenu()"
-        [class.pr-5]="mostrarMenu()"
-        [class.py-2]="mostrarMenu()"
-        (click)="mostrarOcultar()"
-    >
-        <div
-            class="absolute transition-opacity duration-300 ease-in-out w-full h-full pt-3 pr-1 text-black/70"
-            style="writing-mode: vertical-rl"
-            [class.opacity-0]="mostrarMenu()"
-            [class.opacity-100]="!mostrarMenu()"
-            [class.delay-200]="!mostrarMenu()"
-            [class.z-1]="!mostrarMenu()"
-            [class.-z-1]="mostrarMenu()"
-            [class.hover:cursor-pointer]="!mostrarMenu()"
-        >
-            Menú
-        </div>
-        <div
-            class="min-h-30 min-w-30 pt-2 pb-3 transition-opacity duration-300 ease-in-out whitespace-nowrap"
-            [class.opacity-0]="!mostrarMenu()"
-            [class.opacity-100]="mostrarMenu()"
-            [class.delay-200]="mostrarMenu()"
-        >
-            <div class="flex">
-                <h1 class="flex-1 text-center mb-2 text-black/70">Menú</h1>
-            </div>
-            <ul>
-                @if (accesoAdmin()) {
-                <li>
-                    <p class="text-black/70 text-xs pb-1">· Administración</p>
-                    <ul class="pl-3">
-                        <li>
-                            <p class="text-black/70 text-xs pb-1">· Mantenedores</p>
-                            <ul class="pl-3">
-                                <li>
-                                    <a
-                                        class="hover:underline hover:text-brand transition hover:cursor-pointer text-sm"
-                                        href="/administracion/mantenedores/tipo-receptor-notificacion"
-                                        (click)="mostrarOcultar()"
-                                        >· Tipo Receptor Notificación</a
-                                    >
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
+<div hlmSidebarWrapper>
+    <hlm-sidebar>
+        <div hlmSidebarHeader>
+            <ul hlmSidebarMenu>
+                <li hlmSidebarMenuItem>
+                    <a hlmSidebarMenuButton href="/">
+                        <span>Tánatos</span>
+                    </a>
                 </li>
-                }
             </ul>
         </div>
-    </div>
-    <div class="relative">
-        <button
-            class="absolute -left-8 top-3 text-gray-500 hover:cursor-pointer hover:scale-105 active:scale-95 m-1 transition-opacity duration-300 ease-in-out"
-            (click)="mostrarOcultar()"
-            [class.opacity-0]="!mostrarMenu()"
-            [class.opacity-100]="mostrarMenu()"
-        >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-5"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M15.75 19.5 8.25 12l7.5-7.5"
-                />
-            </svg>
-        </button>
-    </div>
+        <div hlmSidebarContent>
+            @for (item of opcionesMenu(); track item.id) { @if (item.tipo === 'item') {
+            <ul hlmSidebarMenu>
+                <li hlmSidebarMenuItem>
+                    <a hlmSidebarMenuButton [href]="item.url">
+                        @if (item.icon) {
+                        <ng-icon hlm [name]="item.icon" />
+                        }
+                        <span>{{ item.titulo }}</span>
+                    </a>
+                </li>
+            </ul>
+            } @if (item.tipo === 'group') {
+            <div hlmSidebarSeparator></div>
+            <div hlmSidebarGroup>
+                <div hlmSidebarGroupLabel>
+                    @if (item.icon) {
+                    <ng-icon hlm [name]="item.icon" />
+                    }
+                    <span>{{ item.titulo }}</span>
+                </div>
+                <div hlmSidebarGroupContent>
+                    <ul hlmSidebarMenu>
+                        @for (groupItem of item.items; track groupItem.id) { @if (groupItem.tipo ===
+                        'item' && groupItem.url) {
+                        <li hlmSidebarMenuItem>
+                            <a hlmSidebarMenuButton [href]="groupItem.url">
+                                @if (groupItem.icon) {
+                                <ng-icon hlm [name]="groupItem.icon" />
+                                }
+                                <span>{{ groupItem.titulo }}</span>
+                            </a>
+                        </li>
+                        } @if (groupItem.tipo === 'item' && groupItem.items &&
+                        groupItem.items.length > 0) {
+                        <hlm-collapsible class="group/collapsible">
+                            <li hlmSidebarMenuItem>
+                                <button
+                                    hlmCollapsibleTrigger
+                                    hlmSidebarMenuButton
+                                    class="flex w-full items-center"
+                                >
+                                    @if (groupItem.icon) {
+                                    <ng-icon hlm [name]="groupItem.icon" />
+                                    }
+                                    <span>{{ groupItem.titulo }}</span>
+                                    <ng-icon
+                                        name="lucideChevronRight"
+                                        class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
+                                        hlm
+                                    />
+                                </button>
+                                <hlm-collapsible-content>
+                                    <ul hlmSidebarMenuSub>
+                                        @for (subItem of groupItem.items; track subItem.id) {
+                                        <li hlmSidebarMenuSubItem>
+                                            <a
+                                                hlmSidebarMenuSubButton
+                                                [href]="subItem.url"
+                                                class="w-full"
+                                            >
+                                                @if (subItem.icon) {
+                                                <ng-icon hlm [name]="subItem.icon" />
+                                                }
+                                                <span>{{ subItem.titulo }}</span>
+                                            </a>
+                                        </li>
+                                        }
+                                    </ul>
+                                </hlm-collapsible-content>
+                            </li>
+                        </hlm-collapsible>
+                        } }
+                    </ul>
+                </div>
+            </div>
+            } }
+        </div>
+    </hlm-sidebar>
+    <main hlmSidebarInset>
+        <header class="flex h-12 items-center justify-between px-4">
+            <button hlmSidebarTrigger><span class="sr-only"></span></button>
+        </header>
+    </main>
 </div>
 }
