@@ -4,10 +4,11 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { catchError, combineLatest, of } from 'rxjs';
 import { ModalEliminacion } from '@components/modal-eliminacion/modal-eliminacion';
 import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
 
 @Component({
     selector: 'app-mantenedor-tipo-receptor-notificacion',
-    imports: [ModalEliminacion, ModalEdicion],
+    imports: [ModalEliminacion, ModalEdicion, HlmButtonImports],
     templateUrl: './mantenedor-tipo-receptor-notificacion.html',
     styleUrl: './mantenedor-tipo-receptor-notificacion.scss',
 })

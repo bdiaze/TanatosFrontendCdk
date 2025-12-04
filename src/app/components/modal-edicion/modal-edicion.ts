@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
 
 @Component({
     selector: 'app-modal-edicion',
-    imports: [ReactiveFormsModule],
+    imports: [ReactiveFormsModule, HlmButtonImports],
     templateUrl: './modal-edicion.html',
     styleUrl: './modal-edicion.scss',
 })

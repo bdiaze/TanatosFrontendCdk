@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
 
 @Component({
     selector: 'app-modal-eliminacion',
     standalone: true,
-    imports: [],
+    imports: [HlmButtonImports],
     templateUrl: './modal-eliminacion.html',
     styleUrl: './modal-eliminacion.scss',
 })
