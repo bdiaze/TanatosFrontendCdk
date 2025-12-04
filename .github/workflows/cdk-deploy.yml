@@ -35,6 +35,9 @@ jobs:
               with:
                   node-version: ${{ vars.VERSION_NODEJS }}
 
+            - name: Install PNPM
+              run: npm install pnpm
+
             - name: Update environment.ts file
               run: echo "${{ vars.ENVIRONMENT_TS }}" > "${{ vars.ENVIRONMENT_TS_FILE }}"
 
