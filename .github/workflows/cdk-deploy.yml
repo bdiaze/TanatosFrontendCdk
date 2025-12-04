@@ -48,7 +48,7 @@ jobs:
               run: pnpm run-script build
 
             - name: Instalar AWS CDK
-              run: pnpm install -g aws-cdk
+              run: npm install -g aws-cdk
 
             - name: Configure AWS Credentials
               uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4
