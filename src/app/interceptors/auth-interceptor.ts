@@ -19,6 +19,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     // Se añade Authorization con access token...
     const authDao = inject(AuthDao);
     const authStore = inject(AuthStore);
+    const router = inject(Router);
+
     const token = authStore.accessToken();
     if (token) {
         req = req.clone({
@@ -63,7 +65,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                             document.cookie = `csrf_token=; max-age=0; path=/`;
                             refreshTokenSubject.error(refreshErr);
 
-                            const router = inject(Router);
                             router.navigate(['/login']);
 
                             return throwError(() => refreshErr);

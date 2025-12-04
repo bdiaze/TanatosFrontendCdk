@@ -11,7 +11,7 @@ export const routes: Routes = [
     { path: 'callback', component: Callback },
     { path: 'logout', component: Logout },
     {
-        path: 'mantenedor-tipo-receptor-notificacion',
+        path: 'administracion/mantenedores/tipo-receptor-notificacion',
         component: MantenedorTipoReceptorNotificacion,
     },
 ];
