@@ -1,8 +1,8 @@
 import { AuthStore } from '@/app/services/auth-store';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
 import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
-import { lucideChevronRight, lucideHouse, lucideSearch, lucideSettings } from '@ng-icons/lucide';
+import { lucideChevronRight, lucideHouse, lucideSettings } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 
@@ -20,26 +20,6 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
     ],
 })
 export class Sidebar {
-    protected readonly _opcionesMenu = [
-        {
-            id: 1,
-            tipo: 'group',
-            titulo: 'Tánatos',
-            icon: null,
-            url: null,
-            items: [
-                {
-                    id: 11,
-                    tipo: 'item',
-                    titulo: 'Inicio',
-                    icon: 'lucideHouse',
-                    url: '/',
-                    items: [],
-                },
-            ],
-        },
-    ];
-
     authStore = inject(AuthStore);
 
     sesionIniciada = this.authStore.sesionIniciada;
