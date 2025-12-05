@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { EntAuthObtenerAccessToken } from '@models/ent-auth-obtener-access-token';
+import { EntAuthObtenerAccessToken } from '@/app/entities/others/ent-auth-obtener-access-token';
 import { environment } from '@environment';
-import { SalAuthObtenerAccessToken } from '@models/sal-auth-obtener-access-token';
+import { SalAuthObtenerAccessToken } from '@/app/entities/others/sal-auth-obtener-access-token';
 import { Observable } from 'rxjs';
 import { getCookie } from '../helpers/cookie-helper';
 

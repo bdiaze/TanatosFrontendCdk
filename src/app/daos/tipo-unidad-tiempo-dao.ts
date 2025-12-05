@@ -1,13 +1,13 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TipoReceptorNotificacion } from '../entities/models/tipo-receptor-notificacion';
+import { environment } from '@/environments/environment';
 import { Observable } from 'rxjs';
-import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
-import { environment } from '@environment';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TipoReceptorNotificacionDao {
+export class TipoUnidadTiempoDao {
     constructor(private http: HttpClient) {}
 
     obtenerVigentes(): Observable<TipoReceptorNotificacion[]> {

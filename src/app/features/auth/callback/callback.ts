@@ -2,7 +2,7 @@ import { environment } from '@environment';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthStore } from '@services/auth-store';
-import { EntAuthObtenerAccessToken } from '@/app/models/ent-auth-obtener-access-token';
+import { EntAuthObtenerAccessToken } from '@/app/entities/others/ent-auth-obtener-access-token';
 import { AuthDao } from '@/app/daos/auth-dao';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmH4 } from '@spartan-ng/helm/typography';

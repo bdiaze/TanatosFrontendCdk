@@ -1,6 +1,6 @@
 @if(sesionIniciada()){
 <div hlmSidebarWrapper>
-    <hlm-sidebar>
+    <hlm-sidebar class="shadow-md">
         <div hlmSidebarHeader>
             <ul hlmSidebarMenu>
                 <li hlmSidebarMenuItem>
@@ -90,8 +90,10 @@
         </div>
     </hlm-sidebar>
     <main hlmSidebarInset class="bg-transparent">
-        <header class="flex h-12 items-center justify-between px-4">
-            <button hlmSidebarTrigger class="bg-sidebar"><span class="sr-only"></span></button>
+        <header class="flex h-14 items-center justify-between px-4">
+            <button hlmSidebarTrigger class="bg-sidebar scale-125 shadow-md">
+                <span class="sr-only"></span>
+            </button>
         </header>
     </main>
 </div>

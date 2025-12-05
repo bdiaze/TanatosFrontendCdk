@@ -1,6 +1,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import { computed, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { AuthClaims } from '@models/auth-claims';
+import { AuthClaims } from '@/app/entities/others/auth-claims';
 import { jwtDecode } from 'jwt-decode';
 import { AuthDao } from '@daos/auth-dao';
 import { getCookie } from '@helpers/cookie-helper';

@@ -1,5 +1,5 @@
 import { TipoReceptorNotificacionDao } from '@/app/daos/tipo-receptor-notificacion-dao';
-import { TipoReceptorNotificacion } from '@/app/models/tipo-receptor-notificacion';
+import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { catchError, combineLatest, of } from 'rxjs';
 import { ModalEliminacion } from '@components/modal-eliminacion/modal-eliminacion';
@@ -99,24 +99,26 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
         const obsVigentes = this.tipoReceptorNotificacionDao.obtenerPorVigencia(true).pipe(
             catchError((err) => {
                 console.error('Error al obtener tipos de receptores vigentes', err);
-                this.error.set('Error al obtener tipos de receptores vigentes');
+                this.error.set(err.error ?? 'Error al obtener tipos de receptores vigentes');
                 return of([]);
             })
         );
         const obsNoVigente = this.tipoReceptorNotificacionDao.obtenerPorVigencia(false).pipe(
             catchError((err) => {
                 console.error('Error al obtener tipos de receptores no vigentes', err);
-                this.error.set('Error al obtener tipos de receptores no vigentes');
+                this.error.set(err.error ?? 'Error al obtener tipos de receptores no vigentes');
                 return of([]);
             })
         );
 
         combineLatest([obsVigentes, obsNoVigente]).subscribe({
             next: ([resA, resB]) => {
-                this.tiposReceptoresNotificacion.set([...resA, ...resB]);
+                const sorted = [...resA, ...resB].sort((a, b) => a.id - b.id);
+                this.tiposReceptoresNotificacion.set(sorted);
                 this.cargando.set(false);
             },
-            error: () => {
+            error: (err) => {
+                console.error('Error inesperado', err);
                 this.error.set('Error inesperado');
                 this.cargando.set(false);
             },
@@ -142,7 +144,9 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al eliminar el tipo de receptor de notificación', err);
-                this.error.set('Error al eliminar el tipo de receptor de notificación');
+                this.error.set(
+                    err.error ?? 'Error al eliminar el tipo de receptor de notificación'
+                );
             },
         });
         this.showModalEliminar.set(false);
@@ -167,7 +171,7 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al editar el tipo de receptor de notificación', err);
-                this.error.set('Error al editar el tipo de receptor de notificación');
+                this.error.set(err.error ?? 'Error al editar el tipo de receptor de notificación');
             },
         });
         this.showModalEditar.set(false);
@@ -192,7 +196,7 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al crear el tipo de receptor de notificación', err);
-                this.error.set('Error al crear el tipo de receptor de notificación');
+                this.error.set(err.error ?? 'Error al crear el tipo de receptor de notificación');
             },
         });
         this.showModalCrear.set(false);
