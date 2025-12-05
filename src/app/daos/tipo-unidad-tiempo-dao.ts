@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TipoReceptorNotificacion } from '../entities/models/tipo-receptor-notificacion';
 import { environment } from '@/environments/environment';
 import { Observable } from 'rxjs';
+import { TipoUnidadTiempo } from '../entities/models/tipo-unidad-tiempo';
 
 @Injectable({
     providedIn: 'root',
@@ -10,35 +10,35 @@ import { Observable } from 'rxjs';
 export class TipoUnidadTiempoDao {
     constructor(private http: HttpClient) {}
 
-    obtenerVigentes(): Observable<TipoReceptorNotificacion[]> {
-        return this.http.get<TipoReceptorNotificacion[]>(
-            environment.tanatosService.apiUrl + '/TipoReceptorNotificacion/Vigentes'
+    obtenerVigentes(): Observable<TipoUnidadTiempo[]> {
+        return this.http.get<TipoUnidadTiempo[]>(
+            environment.tanatosService.apiUrl + '/TipoUnidadTiempo/Vigentes'
         );
     }
 
-    obtenerPorVigencia(vigencia: boolean): Observable<TipoReceptorNotificacion[]> {
-        return this.http.get<TipoReceptorNotificacion[]>(
-            environment.tanatosService.apiUrl + `/TipoReceptorNotificacion/PorVigencia/${vigencia}`
+    obtenerPorVigencia(vigencia: boolean): Observable<TipoUnidadTiempo[]> {
+        return this.http.get<TipoUnidadTiempo[]>(
+            environment.tanatosService.apiUrl + `/TipoUnidadTiempo/PorVigencia/${vigencia}`
         );
     }
 
-    crear(entrada: TipoReceptorNotificacion): Observable<TipoReceptorNotificacion> {
-        return this.http.post<TipoReceptorNotificacion>(
-            environment.tanatosService.apiUrl + '/TipoReceptorNotificacion/',
+    crear(entrada: TipoUnidadTiempo): Observable<TipoUnidadTiempo> {
+        return this.http.post<TipoUnidadTiempo>(
+            environment.tanatosService.apiUrl + '/TipoUnidadTiempo/',
             entrada
         );
     }
 
-    actualizar(entrada: TipoReceptorNotificacion): Observable<TipoReceptorNotificacion> {
-        return this.http.put<TipoReceptorNotificacion>(
-            environment.tanatosService.apiUrl + '/TipoReceptorNotificacion/',
+    actualizar(entrada: TipoUnidadTiempo): Observable<TipoUnidadTiempo> {
+        return this.http.put<TipoUnidadTiempo>(
+            environment.tanatosService.apiUrl + '/TipoUnidadTiempo/',
             entrada
         );
     }
 
     eliminar(id: number): Observable<void> {
         return this.http.delete<void>(
-            environment.tanatosService.apiUrl + `/TipoReceptorNotificacion/${id}`
+            environment.tanatosService.apiUrl + `/TipoUnidadTiempo/${id}`
         );
     }
 }
