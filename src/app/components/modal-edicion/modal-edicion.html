@@ -72,6 +72,7 @@
                                 campo.nombre ?? campo.llave
                             }}</label>
                             <hlm-switch
+                                class="scale-[120%]"
                                 [checked]="form.controls[campo.llave].value"
                                 (checkedChange)="form.controls[campo.llave].setValue($event)"
                             />

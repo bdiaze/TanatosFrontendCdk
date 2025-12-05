@@ -3,11 +3,6 @@
         <table hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
-                    <td hlmTd colspan="4">
-                        <button hlmBtn (click)="openModalCrear()">Crear Nuevo</button>
-                    </td>
-                </tr>
-                <tr hlmTr>
                     <th colspan="4">
                         <h4 hlmH4 class="py-3">Administrar Tipo de Receptores de Notificación</h4>
                     </th>
@@ -94,6 +89,7 @@
                 } }
             </tbody>
         </table>
+        <button hlmBtn (click)="openModalCrear()" class="m-4">Crear Nuevo</button>
     </div>
     @if (error()) {
     <div hlmAlert variant="destructive" class="mt-6">
