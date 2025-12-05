@@ -11,19 +11,11 @@
             <ul class="flex flex-wrap gap-4 md:gap-6 justify-center items-center">
                 @if (!sesionIniciada()) {
                 <li>
-                    <a
-                        class="hover:underline hover:text-brand transition me-4 md:me-6"
-                        href="/login"
-                        >Iniciar Sesión</a
-                    >
+                    <app-login></app-login>
                 </li>
                 } @else {
                 <li>
-                    <a
-                        class="hover:underline hover:text-brand transition me-4 md:me-6"
-                        href="/logout"
-                        >Cerrar Sesión</a
-                    >
+                    <app-logout></app-logout>
                 </li>
                 }
             </ul>

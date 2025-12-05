@@ -1,29 +1,32 @@
 import { environment } from '@environment';
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthStore } from '@services/auth-store';
 import { EntAuthObtenerAccessToken } from '@/app/models/ent-auth-obtener-access-token';
 import { AuthDao } from '@/app/daos/auth-dao';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { HlmH4 } from '@spartan-ng/helm/typography';
+import { HlmProgressImports } from '@spartan-ng/helm/progress';
 
 @Component({
     selector: 'app-callback',
-    imports: [],
+    imports: [HlmSpinnerImports, HlmH4, HlmProgressImports],
     templateUrl: './callback.html',
     styleUrl: './callback.scss',
 })
 export class Callback implements OnInit {
-    constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
-
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private authStore = inject(AuthStore);
     private authDao = inject(AuthDao);
 
-    ngOnInit(): void {
-        if (!isPlatformBrowser(this.platformId)) {
-            return;
-        }
+    progreso = signal<number>(0);
+    desc_progreso = signal<string>('Obteniendo código de autorización...');
+
+    interval!: number;
+
+    ngOnInit() {
+        this.iniciarProgresoFalso();
 
         this.route.queryParams.subscribe((params) => {
             const code = params['code'];
@@ -57,6 +60,8 @@ export class Callback implements OnInit {
 
             this.authDao.obtenerAccessToken(parametros).subscribe({
                 next: (tokens) => {
+                    clearInterval(this.interval);
+
                     this.authStore.setAccessToken(tokens.accessToken);
 
                     // Se setea cookie con CSRF Token...
@@ -68,12 +73,38 @@ export class Callback implements OnInit {
                     sessionStorage.removeItem('pkce_state');
                     sessionStorage.removeItem('pkce_code_verifier');
 
+                    this.progreso.set(100);
+                    this.desc_progreso.set('Sesión iniciada exitosamente...');
+
                     this.router.navigateByUrl('/');
                 },
                 error: (err) => {
-                    console.log('Ocurrió un error al obtener tokens', err);
+                    clearInterval(this.interval);
+                    this.progreso.set(100);
+                    this.desc_progreso.set(
+                        'Ocurrió un error al iniciar sesión, intente nuevamente...'
+                    );
+                    console.error('Ocurrió un error al obtener tokens', err);
                 },
             });
         });
+    }
+
+    async iniciarProgresoFalso() {
+        let i = 0;
+        this.interval = setInterval(() => {
+            if (i >= 90) {
+                clearInterval(this.interval);
+                return;
+            }
+
+            this.progreso.update((oldValue) => (oldValue < 90 ? oldValue + 10 : oldValue));
+            i += 10;
+            if (i == 30) {
+                this.desc_progreso.set('Validando estado contra XSRF...');
+            } else if (i == 60) {
+                this.desc_progreso.set('Generando tokens de autenticación...');
+            }
+        }, 100);
     }
 }

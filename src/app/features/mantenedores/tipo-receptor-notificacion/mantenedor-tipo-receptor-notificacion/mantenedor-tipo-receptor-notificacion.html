@@ -1,78 +1,108 @@
-<main class="max-w-2xl mx-auto flex flex-col items-center justify-center px-4 py-12 gap-4">
-    <h2 class="text-xl font-normal text-center">Administrar Tipo de Receptores de Notificación</h2>
-    <table class="w-full table-auto border-collapse rounded">
-        <thead>
-            <tr>
-                <th class="border w-8 md:w-10">ID</th>
-                <th class="border">Nombre</th>
-                <th class="border w-20 md:w-25">Vigencia</th>
-                <th class="border w-30 md:w-60">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (cargando()) {
-            <tr>
-                <td colspan="4" class="border text-center p-3">
-                    <div class="flex justify-center-safe">
-                        <div>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="size-6 transform animate-spin"
-                            >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                                />
-                            </svg>
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div hlmTableContainer>
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <td hlmTd colspan="4">
+                        <button hlmBtn (click)="openModalCrear()">Crear Nuevo</button>
+                    </td>
+                </tr>
+                <tr hlmTr>
+                    <th colspan="4">
+                        <h4 hlmH4 class="py-3">Administrar Tipo de Receptores de Notificación</h4>
+                    </th>
+                </tr>
+                <tr hlmTr>
+                    <th hlmTh class="text-center w-12">ID</th>
+                    <th hlmTh>Nombre</th>
+                    <th hlmTh class="text-center w-24">Vigencia</th>
+                    <th hlmTh class="w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargando()) {
+                <tr hlmTr>
+                    <td hlmTd colspan="4">
+                        <div class="flex justify-center-safe">
+                            <div class="mr-4">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke-width="1.5"
+                                    stroke="currentColor"
+                                    class="size-6 transform animate-spin"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+                                    />
+                                </svg>
+                            </div>
+                            Cargando...
                         </div>
-                        <p class="ml-3">Cargando...</p>
-                    </div>
-                </td>
-            </tr>
-            } @else { @if (error()) {
-            <tr>
-                <td colspan="4" class="border text-center p-3">{{ error() }}</td>
-            </tr>
-            } @else { @for (tipoReceptor of tiposReceptoresNotificacion(); track tipoReceptor.id) {
-            <tr>
-                <td class="border text-center">{{ tipoReceptor.id }}</td>
-                <td class="border text-center">{{ tipoReceptor.nombre }}</td>
-                <td class="border text-center">
-                    {{ tipoReceptor.vigencia ? 'Vigente' : 'No vigente' }}
-                </td>
-                <td class="border">
-                    <div
-                        class="flex flex-col md:flex-row items-center justify-center-safe gap-1 md:gap-3"
-                    >
-                        <button hlmBtn variant="secondary" (click)="openModalEditar(tipoReceptor)">
-                            Editar
-                        </button>
-                        <button
-                            hlmBtn
-                            variant="destructive"
-                            (click)="openModalEliminar(tipoReceptor)"
+                    </td>
+                </tr>
+                } @else { @for (tipoReceptor of tiposReceptoresNotificacion(); track
+                tipoReceptor.id) {
+                <tr hlmTr>
+                    <td hlmTd class="text-center">{{ tipoReceptor.id }}</td>
+                    <td hlmTd>{{ tipoReceptor.nombre }}</td>
+                    <td hlmTd class="text-center">
+                        @if (tipoReceptor.vigencia) {
+                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                        } @else {
+                        <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                        }
+                    </td>
+                    <td hlmTd>
+                        <div
+                            class="flex flex-col md:flex-row items-center justify-center-safe gap-1 md:gap-3"
                         >
-                            Eliminar
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            } @empty {
-            <tr>
-                <td colspan="4" class="border text-center p-3">
-                    No existen tipos de receptores de notificación registrados
-                </td>
-            </tr>
-            } } }
-        </tbody>
-    </table>
-    <button hlmBtn (click)="openModalCrear()">Crear Nuevo</button>
-</main>
+                            <button hlmBtn variant="outline" [hlmDropdownMenuTrigger]="menu">
+                                <ng-icon hlm size="sm" name="lucideEllipsis" />
+                            </button>
+                            <ng-template #menu>
+                                <hlm-dropdown-menu>
+                                    <hlm-dropdown-menu-group>
+                                        <button
+                                            hlmDropdownMenuItem
+                                            (click)="openModalEditar(tipoReceptor)"
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            hlmDropdownMenuItem
+                                            variant="destructive"
+                                            (click)="openModalEliminar(tipoReceptor)"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </hlm-dropdown-menu-group>
+                                </hlm-dropdown-menu>
+                            </ng-template>
+                        </div>
+                    </td>
+                </tr>
+                } @empty {
+                <tr hlmTr>
+                    <td hlmTd colspan="4" class="text-center">
+                        No existen tipos de receptores de notificación registrados
+                    </td>
+                </tr>
+                } }
+            </tbody>
+        </table>
+    </div>
+    @if (error()) {
+    <div hlmAlert variant="destructive" class="mt-6">
+        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+        <p hlmAlertDescription>{{ error() }}</p>
+    </div>
+    }
+</section>
 
 @if (showModalEliminar()) {
 <app-modal-eliminacion

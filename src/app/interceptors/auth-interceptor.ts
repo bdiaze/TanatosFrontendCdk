@@ -65,7 +65,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                             document.cookie = `csrf_token=; max-age=0; path=/`;
                             refreshTokenSubject.error(refreshErr);
 
-                            router.navigate(['/login']);
+                            router.navigate(['']);
 
                             return throwError(() => refreshErr);
                         })

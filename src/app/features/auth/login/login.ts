@@ -1,20 +1,19 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, signal } from '@angular/core';
 import { environment } from '@environment';
-import { isPlatformBrowser } from '@angular/common';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 
 @Component({
     selector: 'app-login',
-    imports: [],
+    imports: [HlmButtonImports, HlmSpinnerImports],
     templateUrl: './login.html',
     styleUrl: './login.scss',
 })
-export class Login implements OnInit {
-    constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+export class Login {
+    deshabilitarBoton = signal<boolean>(false);
 
-    async ngOnInit() {
-        if (!isPlatformBrowser(this.platformId)) {
-            return;
-        }
+    async iniciarSesion() {
+        this.deshabilitarBoton.set(true);
 
         const state = this.generateRandomString(32);
         const codeVerifier = this.generateRandomString(64);

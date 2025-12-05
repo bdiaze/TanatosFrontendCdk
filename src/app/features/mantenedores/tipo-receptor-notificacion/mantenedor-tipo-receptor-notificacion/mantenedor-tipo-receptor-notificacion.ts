@@ -5,12 +5,37 @@ import { catchError, combineLatest, of } from 'rxjs';
 import { ModalEliminacion } from '@components/modal-eliminacion/modal-eliminacion';
 import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { HlmTableImports } from '@spartan-ng/helm/table';
+import { HlmH4 } from '@spartan-ng/helm/typography';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+    lucideTriangleAlert,
+    lucideEllipsis,
+    lucideBadgeCheck,
+    lucideBadgeX,
+} from '@ng-icons/lucide';
+import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 
 @Component({
     selector: 'app-mantenedor-tipo-receptor-notificacion',
-    imports: [ModalEliminacion, ModalEdicion, HlmButtonImports],
+    imports: [
+        ModalEliminacion,
+        ModalEdicion,
+        HlmButtonImports,
+        HlmTableImports,
+        HlmH4,
+        HlmAlertImports,
+        NgIcon,
+        HlmIcon,
+        HlmDropdownMenuImports,
+    ],
     templateUrl: './mantenedor-tipo-receptor-notificacion.html',
     styleUrl: './mantenedor-tipo-receptor-notificacion.scss',
+    providers: [
+        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
+    ],
 })
 export class MantenedorTipoReceptorNotificacion implements OnInit {
     private tipoReceptorNotificacionDao: TipoReceptorNotificacionDao = inject(
@@ -117,6 +142,7 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al eliminar el tipo de receptor de notificación', err);
+                this.error.set('Error al eliminar el tipo de receptor de notificación');
             },
         });
         this.showModalEliminar.set(false);
@@ -141,6 +167,7 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al editar el tipo de receptor de notificación', err);
+                this.error.set('Error al editar el tipo de receptor de notificación');
             },
         });
         this.showModalEditar.set(false);
@@ -165,6 +192,7 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al crear el tipo de receptor de notificación', err);
+                this.error.set('Error al crear el tipo de receptor de notificación');
             },
         });
         this.showModalCrear.set(false);

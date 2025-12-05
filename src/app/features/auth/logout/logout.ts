@@ -1,33 +1,39 @@
 import { AuthDao } from '@daos/auth-dao';
 import { AuthStore } from '@services/auth-store';
-import { isPlatformBrowser } from '@angular/common';
-import { Component, inject, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@environment';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 
 @Component({
     selector: 'app-logout',
-    imports: [],
+    imports: [HlmButtonImports, HlmSpinnerImports],
     templateUrl: './logout.html',
     styleUrl: './logout.scss',
 })
-export class Logout implements OnInit {
-    constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
-
+export class Logout {
     private router = inject(Router);
     private authDao = inject(AuthDao);
     private authStore = inject(AuthStore);
 
     sesionIniciada = this.authStore.sesionIniciada;
+    deshabilitarBoton = signal<boolean>(false);
 
-    ngOnInit(): void {
-        if (!isPlatformBrowser(this.platformId)) {
-            return;
-        }
-
+    cerrarSesion() {
         if (this.sesionIniciada()) {
-            this.authDao.limpiarAuthCookies().subscribe({
-                next: () => {
+            this.deshabilitarBoton.set(true);
+            this.authDao
+                .limpiarAuthCookies()
+                .subscribe({
+                    next: () => {
+                        console.log('Se limpió exitosamente las cookies de autenticación.');
+                    },
+                    error: (err) => {
+                        console.error('Ocurrió un error al limpiar cookies de autenticación.', err);
+                    },
+                })
+                .add(() => {
                     this.authStore.setAccessToken(null);
                     document.cookie = `csrf_token=; max-age=0; path=/`;
 
@@ -39,13 +45,7 @@ export class Logout implements OnInit {
                         });
 
                     window.location.href = url;
-                },
-                error: (err) => {
-                    console.log('Ocurrió un error al limpiar cookies auth', err);
-                },
-            });
-        } else {
-            this.router.navigateByUrl('/');
+                });
         }
     }
 }

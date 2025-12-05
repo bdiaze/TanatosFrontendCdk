@@ -7,9 +7,8 @@ import { Inicio } from './components/inicio/inicio';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
-    { path: 'login', component: Login },
     { path: 'callback', component: Callback },
-    { path: 'logout', component: Logout },
+    { path: 'logout', redirectTo: '', pathMatch: 'full' },
     {
         path: 'administracion/mantenedores/tipo-receptor-notificacion',
         component: MantenedorTipoReceptorNotificacion,
