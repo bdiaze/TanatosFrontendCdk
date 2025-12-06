@@ -6,5 +6,8 @@ import { Hero } from '@/app/components/hero/hero';
     imports: [Hero],
     templateUrl: './inicio.html',
     styleUrl: './inicio.scss',
+    host: {
+        class: 'inline-block h-full w-full',
+    },
 })
 export class Inicio {}
