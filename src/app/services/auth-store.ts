@@ -1,5 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
-import { computed, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { AuthClaims } from '@/app/entities/others/auth-claims';
 import { jwtDecode } from 'jwt-decode';
 import { AuthDao } from '@daos/auth-dao';
@@ -9,17 +8,14 @@ import { getCookie } from '@helpers/cookie-helper';
     providedIn: 'root',
 })
 export class AuthStore {
-    private platformId = inject(PLATFORM_ID);
     private authDao = inject(AuthDao);
 
     private _accessToken = signal<string | null>(null);
 
     constructor() {
-        if (isPlatformBrowser(this.platformId)) {
-            const token = sessionStorage.getItem('access_token');
-            if (token) {
-                this._accessToken.set(token);
-            }
+        const token = sessionStorage.getItem('access_token');
+        if (token) {
+            this._accessToken.set(token);
         }
     }
 
@@ -30,12 +26,10 @@ export class AuthStore {
     setAccessToken(token: string | null) {
         this._accessToken.set(token);
 
-        if (isPlatformBrowser(this.platformId)) {
-            if (token) {
-                sessionStorage.setItem('access_token', token);
-            } else {
-                sessionStorage.removeItem('access_token');
-            }
+        if (token) {
+            sessionStorage.setItem('access_token', token);
+        } else {
+            sessionStorage.removeItem('access_token');
         }
     }
 
@@ -59,19 +53,33 @@ export class AuthStore {
         return true;
     });
 
+    backgroundRefreshRunning = signal<boolean>(false);
+
     backgroundRefresh() {
-        if (!this._accessToken()) {
+        if (!this.backgroundRefreshRunning() && !this._accessToken()) {
             const csrfToken = getCookie('csrf_token');
             if (csrfToken) {
-                this.authDao.refreshAccessToken().subscribe({
-                    next: (newToken) => {
-                        this.setAccessToken(newToken.accessToken);
-                    },
-                    error: (err) => {
-                        console.warn('No se logra hacer refresh inicial del access token...', err);
-                    },
-                });
+                this.backgroundRefreshRunning.set(true);
+
+                this.authDao
+                    .refreshAccessToken()
+                    .subscribe({
+                        next: (newToken) => {
+                            this.setAccessToken(newToken.accessToken);
+                        },
+                        error: (err) => {
+                            console.warn(
+                                'No se logra hacer refresh inicial del access token...',
+                                err
+                            );
+                        },
+                    })
+                    .add(() => {
+                        this.backgroundRefreshRunning.set(false);
+                    });
             }
         }
     }
+
+    callbackRunning = signal<boolean>(false);
 }

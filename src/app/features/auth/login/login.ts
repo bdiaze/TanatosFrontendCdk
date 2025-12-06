@@ -1,4 +1,5 @@
-import { Component, Inject, signal } from '@angular/core';
+import { AuthStore } from '@/app/services/auth-store';
+import { Component, computed, inject, Inject, signal } from '@angular/core';
 import { environment } from '@environment';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
@@ -10,10 +11,18 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
     styleUrl: './login.scss',
 })
 export class Login {
-    deshabilitarBoton = signal<boolean>(false);
+    private authStore = inject(AuthStore);
+
+    backgroundRefreshRunning = this.authStore.backgroundRefreshRunning;
+    callbackRunning = this.authStore.callbackRunning;
+    iniciandoSesion = signal<boolean>(false);
+
+    deshabilitarBoton = computed<boolean>(() => {
+        return this.iniciandoSesion() || this.backgroundRefreshRunning() || this.callbackRunning();
+    });
 
     async iniciarSesion() {
-        this.deshabilitarBoton.set(true);
+        this.iniciandoSesion.set(true);
 
         const state = this.generateRandomString(32);
         const codeVerifier = this.generateRandomString(64);

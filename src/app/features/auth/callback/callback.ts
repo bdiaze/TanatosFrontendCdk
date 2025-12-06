@@ -13,6 +13,9 @@ import { HlmProgressImports } from '@spartan-ng/helm/progress';
     imports: [HlmSpinnerImports, HlmH4, HlmProgressImports],
     templateUrl: './callback.html',
     styleUrl: './callback.scss',
+    host: {
+        class: 'inline-block h-full w-full',
+    },
 })
 export class Callback implements OnInit {
     private route = inject(ActivatedRoute);
@@ -26,6 +29,8 @@ export class Callback implements OnInit {
     interval!: number;
 
     ngOnInit() {
+        this.authStore.callbackRunning.set(true);
+
         this.iniciarProgresoFalso();
 
         this.route.queryParams.subscribe((params) => {
@@ -58,35 +63,40 @@ export class Callback implements OnInit {
                 redirectUri: environment.cognitoService.redirectUrl,
             };
 
-            this.authDao.obtenerAccessToken(parametros).subscribe({
-                next: (tokens) => {
-                    clearInterval(this.interval);
+            this.authDao
+                .obtenerAccessToken(parametros)
+                .subscribe({
+                    next: (tokens) => {
+                        clearInterval(this.interval);
 
-                    this.authStore.setAccessToken(tokens.accessToken);
+                        this.authStore.setAccessToken(tokens.accessToken);
 
-                    // Se setea cookie con CSRF Token...
-                    const expires: Date = new Date(tokens.csrfTokenExpiration);
-                    document.cookie = `csrf_token=${
-                        tokens.csrfToken
-                    }; expires=${expires.toUTCString()}; path=/`;
+                        // Se setea cookie con CSRF Token...
+                        const expires: Date = new Date(tokens.csrfTokenExpiration);
+                        document.cookie = `csrf_token=${
+                            tokens.csrfToken
+                        }; expires=${expires.toUTCString()}; path=/`;
 
-                    sessionStorage.removeItem('pkce_state');
-                    sessionStorage.removeItem('pkce_code_verifier');
+                        sessionStorage.removeItem('pkce_state');
+                        sessionStorage.removeItem('pkce_code_verifier');
 
-                    this.progreso.set(100);
-                    this.desc_progreso.set('Sesión iniciada exitosamente...');
+                        this.progreso.set(100);
+                        this.desc_progreso.set('Sesión iniciada exitosamente...');
 
-                    this.router.navigateByUrl('/');
-                },
-                error: (err) => {
-                    clearInterval(this.interval);
-                    this.progreso.set(100);
-                    this.desc_progreso.set(
-                        'Ocurrió un error al iniciar sesión, intente nuevamente...'
-                    );
-                    console.error('Ocurrió un error al obtener tokens', err);
-                },
-            });
+                        this.router.navigateByUrl('/');
+                    },
+                    error: (err) => {
+                        clearInterval(this.interval);
+                        this.progreso.set(100);
+                        this.desc_progreso.set(
+                            'Ocurrió un error al iniciar sesión, intente nuevamente...'
+                        );
+                        console.error('Ocurrió un error al obtener tokens', err);
+                    },
+                })
+                .add(() => {
+                    this.authStore.callbackRunning.set(false);
+                });
         });
     }
 
