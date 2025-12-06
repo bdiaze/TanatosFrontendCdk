@@ -57,6 +57,13 @@ namespace Cdk
                         HttpStatus = 403,
                         ResponseHttpStatus = 200,
                         ResponsePagePath = $"/{rootObject}",
+                        Ttl = Duration.Days(1),
+                    },
+                    new ErrorResponse {
+                        HttpStatus = 404,
+                        ResponseHttpStatus = 200,
+                        ResponsePagePath = $"/{rootObject}",
+                        Ttl = Duration.Days(1),
                     },
                 ]
             });
