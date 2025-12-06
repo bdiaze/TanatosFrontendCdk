@@ -9,6 +9,15 @@ import { Sidebar } from './components/sidebar/sidebar';
     templateUrl: './app.html',
     styleUrl: './app.scss',
 })
-export class App {
+export class App implements OnInit {
     protected readonly title = signal('tanatos-frontend');
+
+    ngOnInit() {
+        const url = new URL(window.location.href);
+
+        if (url.pathname === '/callback') {
+            const newUrl = `/#/callback${url.search}`;
+            window.location.replace(newUrl);
+        }
+    }
 }

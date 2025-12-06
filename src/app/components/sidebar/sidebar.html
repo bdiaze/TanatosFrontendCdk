@@ -4,7 +4,7 @@
         <div hlmSidebarHeader>
             <ul hlmSidebarMenu>
                 <li hlmSidebarMenuItem>
-                    <a hlmSidebarMenuButton href="/">
+                    <a hlmSidebarMenuButton routerLink="/">
                         <span>Tánatos</span>
                     </a>
                 </li>
@@ -14,7 +14,7 @@
             @for (item of opcionesMenu(); track item.id) { @if (item.tipo === 'item') {
             <ul hlmSidebarMenu>
                 <li hlmSidebarMenuItem>
-                    <a hlmSidebarMenuButton [href]="item.url">
+                    <a hlmSidebarMenuButton [routerLink]="item.url">
                         @if (item.icon) {
                         <ng-icon hlm [name]="item.icon" />
                         }
@@ -36,7 +36,7 @@
                         @for (groupItem of item.items; track groupItem.id) { @if (groupItem.tipo ===
                         'item' && groupItem.url) {
                         <li hlmSidebarMenuItem>
-                            <a hlmSidebarMenuButton [href]="groupItem.url">
+                            <a hlmSidebarMenuButton [routerLink]="groupItem.url">
                                 @if (groupItem.icon) {
                                 <ng-icon hlm [name]="groupItem.icon" />
                                 }
@@ -68,7 +68,7 @@
                                         <li hlmSidebarMenuSubItem>
                                             <a
                                                 hlmSidebarMenuSubButton
-                                                [href]="subItem.url"
+                                                [routerLink]="subItem.url"
                                                 class="w-full"
                                             >
                                                 @if (subItem.icon) {
@@ -91,7 +91,7 @@
     </hlm-sidebar>
     <main hlmSidebarInset class="bg-transparent">
         <header class="flex h-14 items-center justify-between px-4">
-            <button hlmSidebarTrigger class="bg-sidebar scale-125 shadow-md">
+            <button hlmSidebarTrigger class="bg-sidebar scale-125 shadow-md hover:cursor-pointer">
                 <span class="sr-only"></span>
             </button>
         </header>

@@ -6,6 +6,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { authInterceptor } from './interceptors/auth-interceptor';
 
 import '@/app/helpers/locales';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -13,5 +14,6 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes),
         provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
         { provide: LOCALE_ID, useValue: 'es-CL' },
+        { provide: LocationStrategy, useClass: HashLocationStrategy },
     ],
 };

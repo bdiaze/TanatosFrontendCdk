@@ -5,10 +5,11 @@ import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
 import { lucideChevronRight, lucideHouse, lucideSettings } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-sidebar',
-    imports: [HlmSidebarImports, HlmCollapsibleImports, NgIcon, HlmIcon],
+    imports: [HlmSidebarImports, HlmCollapsibleImports, NgIcon, HlmIcon, RouterLink],
     templateUrl: './sidebar.html',
     styleUrl: './sidebar.scss',
     providers: [
