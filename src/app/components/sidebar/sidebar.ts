@@ -1,6 +1,6 @@
 import { AuthStore } from '@/app/services/auth-store';
 import { Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
-import { HlmSidebarImports } from '@spartan-ng/helm/sidebar';
+import { HlmSidebarImports, HlmSidebarService } from '@spartan-ng/helm/sidebar';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
 import { lucideChevronRight, lucideHouse, lucideSettings } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -22,6 +22,7 @@ import { RouterLink } from '@angular/router';
 })
 export class Sidebar {
     authStore = inject(AuthStore);
+    sidebarService = inject(HlmSidebarService);
 
     sesionIniciada = this.authStore.sesionIniciada;
     accesoAdmin = computed<boolean>(() => {
@@ -85,6 +86,10 @@ export class Sidebar {
 
         return opciones;
     });
+
+    ocultarSidebar() {
+        this.sidebarService.toggleSidebar();
+    }
 }
 
 export interface OpcionMenu {

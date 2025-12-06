@@ -4,7 +4,7 @@
         <div hlmSidebarHeader>
             <ul hlmSidebarMenu>
                 <li hlmSidebarMenuItem>
-                    <a hlmSidebarMenuButton routerLink="/">
+                    <a hlmSidebarMenuButton routerLink="/" (click)="ocultarSidebar()">
                         <span>Tánatos</span>
                     </a>
                 </li>
@@ -14,7 +14,7 @@
             @for (item of opcionesMenu(); track item.id) { @if (item.tipo === 'item') {
             <ul hlmSidebarMenu>
                 <li hlmSidebarMenuItem>
-                    <a hlmSidebarMenuButton [routerLink]="item.url">
+                    <a hlmSidebarMenuButton [routerLink]="item.url" (click)="ocultarSidebar()">
                         @if (item.icon) {
                         <ng-icon hlm [name]="item.icon" />
                         }
@@ -36,7 +36,11 @@
                         @for (groupItem of item.items; track groupItem.id) { @if (groupItem.tipo ===
                         'item' && groupItem.url) {
                         <li hlmSidebarMenuItem>
-                            <a hlmSidebarMenuButton [routerLink]="groupItem.url">
+                            <a
+                                hlmSidebarMenuButton
+                                [routerLink]="groupItem.url"
+                                (click)="ocultarSidebar()"
+                            >
                                 @if (groupItem.icon) {
                                 <ng-icon hlm [name]="groupItem.icon" />
                                 }
@@ -70,6 +74,7 @@
                                                 hlmSidebarMenuSubButton
                                                 [routerLink]="subItem.url"
                                                 class="w-full"
+                                                (click)="ocultarSidebar()"
                                             >
                                                 @if (subItem.icon) {
                                                 <ng-icon hlm [name]="subItem.icon" />
