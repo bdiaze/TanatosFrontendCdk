@@ -5,6 +5,9 @@ import { Logout } from './features/auth/logout/logout';
 import { MantenedorTipoReceptorNotificacion } from './features/mantenedores/mantenedor-tipo-receptor-notificacion/mantenedor-tipo-receptor-notificacion';
 import { Inicio } from './components/inicio/inicio';
 import { MantenedorTipoUnidadTiempo } from './features/mantenedores/mantenedor-tipo-unidad-tiempo/mantenedor-tipo-unidad-tiempo';
+import { MantenedorTipoPeriodicidad } from './features/mantenedores/mantenedor-tipo-periodicidad/mantenedor-tipo-periodicidad';
+import { MantenedorTipoFiscalizador } from './features/mantenedores/mantenedor-tipo-fiscalizador/mantenedor-tipo-fiscalizador';
+import { MantenedorCategoriaNorma } from './features/mantenedores/mantenedor-categoria-norma/mantenedor-categoria-norma';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -17,5 +20,17 @@ export const routes: Routes = [
     {
         path: 'administracion/mantenedores/tipo-unidad-tiempo',
         component: MantenedorTipoUnidadTiempo,
+    },
+    {
+        path: 'administracion/mantenedores/tipo-periodicidad',
+        component: MantenedorTipoPeriodicidad,
+    },
+    {
+        path: 'administracion/mantenedores/tipo-fiscalizador',
+        component: MantenedorTipoFiscalizador,
+    },
+    {
+        path: 'administracion/mantenedores/categoria-norma',
+        component: MantenedorCategoriaNorma,
     },
 ];

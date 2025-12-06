@@ -1,8 +1,7 @@
 import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
-import { TipoUnidadTiempoDao } from '@/app/daos/tipo-unidad-tiempo-dao';
-import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
-import { DecimalPipe } from '@angular/common';
+import { TipoFiscalizadorDao } from '@/app/daos/tipo-fiscalizador-dao';
+import { TipoFiscalizador } from '@/app/entities/models/tipo-fiscalizador';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -20,7 +19,7 @@ import { HlmH4 } from '@spartan-ng/helm/typography';
 import { catchError, combineLatest, of } from 'rxjs';
 
 @Component({
-    selector: 'app-mantenedor-tipo-unidad-tiempo',
+    selector: 'app-mantenedor-tipo-fiscalizador',
     imports: [
         ModalEliminacion,
         ModalEdicion,
@@ -31,18 +30,17 @@ import { catchError, combineLatest, of } from 'rxjs';
         NgIcon,
         HlmIcon,
         HlmDropdownMenuImports,
-        DecimalPipe,
     ],
-    templateUrl: './mantenedor-tipo-unidad-tiempo.html',
-    styleUrl: './mantenedor-tipo-unidad-tiempo.scss',
+    templateUrl: './mantenedor-tipo-fiscalizador.html',
+    styleUrl: './mantenedor-tipo-fiscalizador.scss',
     providers: [
         provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
     ],
 })
-export class MantenedorTipoUnidadTiempo implements OnInit {
-    private dao: TipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
+export class MantenedorTipoFiscalizador implements OnInit {
+    private dao: TipoFiscalizadorDao = inject(TipoFiscalizadorDao);
 
-    listado = signal([] as TipoUnidadTiempo[]);
+    listado = signal([] as TipoFiscalizador[]);
     cargando = signal(true);
     error = signal('');
 
@@ -60,10 +58,10 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             deshabilitado: false,
         },
         {
-            llave: 'cantSegundos',
-            nombre: 'Cant. Segundos',
-            tipo: 'number',
-            requerido: true,
+            llave: 'nombreCorto',
+            nombre: 'Nombre Corto',
+            tipo: 'string',
+            requerido: false,
             deshabilitado: false,
         },
         {
@@ -85,10 +83,10 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             deshabilitado: false,
         },
         {
-            llave: 'cantSegundos',
-            nombre: 'Cant. Segundos',
-            tipo: 'number',
-            requerido: true,
+            llave: 'nombreCorto',
+            nombre: 'Nombre Corto',
+            tipo: 'string',
+            requerido: false,
             deshabilitado: false,
         },
         {
@@ -100,7 +98,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         },
     ]);
 
-    itemSeleccionado = signal<TipoUnidadTiempo | null>(null);
+    itemSeleccionado = signal<TipoFiscalizador | null>(null);
 
     ngOnInit(): void {
         this.obtenerTodos();
@@ -112,17 +110,15 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
 
         const obsVigentes = this.dao.obtenerPorVigencia(true).pipe(
             catchError((err) => {
-                console.error('Error al obtener tipos de unidad de tiempo vigentes', err);
-                this.error.set(err.error ?? 'Error al obtener tipos de unidad de tiempo vigentes');
+                console.error('Error al obtener tipos de fiscalizadores vigentes', err);
+                this.error.set(err.error ?? 'Error al obtener tipos de fiscalizadores vigentes');
                 return of([]);
             })
         );
         const obsNoVigente = this.dao.obtenerPorVigencia(false).pipe(
             catchError((err) => {
-                console.error('Error al obtener tipos de unidad de tiempo no vigentes', err);
-                this.error.set(
-                    err.error ?? 'Error al obtener tipos de unidad de tiempo no vigentes'
-                );
+                console.error('Error al obtener tipos de fiscalizadores no vigentes', err);
+                this.error.set(err.error ?? 'Error al obtener tipos de fiscalizadores no vigentes');
                 return of([]);
             })
         );
@@ -141,7 +137,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         });
     }
 
-    openModalEliminar(item: TipoUnidadTiempo) {
+    openModalEliminar(item: TipoFiscalizador) {
         this.itemSeleccionado.set(item);
         this.showModalEliminar.set(true);
     }
@@ -151,7 +147,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         this.itemSeleccionado.set(null);
     }
 
-    eliminar(item: TipoUnidadTiempo) {
+    eliminar(item: TipoFiscalizador) {
         this.cargando.set(true);
         this.dao.eliminar(item.id).subscribe({
             next: () => {
@@ -159,14 +155,14 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             },
             error: (err) => {
                 this.cargando.set(false);
-                console.error('Error al eliminar el tipo unidad de tiempo', err);
-                this.error.set(err.error ?? 'Error al eliminar el tipo unidad de tiempo');
+                console.error('Error al eliminar el tipo fiscalizador', err);
+                this.error.set(err.error ?? 'Error al eliminar el tipo fiscalizador');
             },
         });
         this.showModalEliminar.set(false);
     }
 
-    openModalEditar(item: TipoUnidadTiempo) {
+    openModalEditar(item: TipoFiscalizador) {
         this.itemSeleccionado.set(item);
         this.showModalEditar.set(true);
     }
@@ -176,7 +172,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         this.itemSeleccionado.set(null);
     }
 
-    editar(item: TipoUnidadTiempo) {
+    editar(item: TipoFiscalizador) {
         this.cargando.set(true);
         this.dao.actualizar(item).subscribe({
             next: () => {
@@ -184,8 +180,8 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             },
             error: (err) => {
                 this.cargando.set(false);
-                console.error('Error al editar el tipo unidad de tiempo', err);
-                this.error.set(err.error ?? 'Error al editar el tipo unidad de tiempo');
+                console.error('Error al editar el tipo fiscalizador', err);
+                this.error.set(err.error ?? 'Error al editar el tipo fiscalizador');
             },
         });
         this.showModalEditar.set(false);
@@ -201,7 +197,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         this.itemSeleccionado.set(null);
     }
 
-    crear(item: TipoUnidadTiempo) {
+    crear(item: TipoFiscalizador) {
         this.cargando.set(true);
         this.dao.crear(item).subscribe({
             next: () => {
@@ -209,8 +205,8 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             },
             error: (err) => {
                 this.cargando.set(false);
-                console.error('Error al crear el tipo unidad de tiempo', err);
-                this.error.set(err.error ?? 'Error al crear el tipo unidad de tiempo');
+                console.error('Error al crear el tipo fiscalizador', err);
+                this.error.set(err.error ?? 'Error al crear el tipo fiscalizador');
             },
         });
         this.showModalCrear.set(false);

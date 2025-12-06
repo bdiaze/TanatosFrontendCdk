@@ -4,13 +4,13 @@
             <thead hlmTHead>
                 <tr hlmTr>
                     <th colspan="5">
-                        <h4 hlmH4 class="py-3">Administrar Unidades de Tiempo</h4>
+                        <h4 hlmH4 class="py-3">Administrar Fiscalizadores</h4>
                     </th>
                 </tr>
                 <tr hlmTr>
                     <th hlmTh class="text-center w-12">ID</th>
                     <th hlmTh>Nombre</th>
-                    <th hlmTh class="w-24">Cant. Segundos</th>
+                    <th hlmTh class="w-20">Nombre Corto</th>
                     <th hlmTh class="text-center w-24">Vigencia</th>
                     <th hlmTh class="w-16"></th>
                 </tr>
@@ -43,8 +43,8 @@
                 } @else { @for (item of listado(); track item.id) {
                 <tr hlmTr>
                     <td hlmTd class="text-center">{{ item.id }}</td>
-                    <td hlmTd>{{ item.nombre }}</td>
-                    <td hlmTd>{{ item.cantSegundos | number : '1.0-0' }}</td>
+                    <td hlmTd class="whitespace-normal">{{ item.nombre }}</td>
+                    <td hlmTd>{{ item.nombreCorto }}</td>
                     <td hlmTd class="text-center">
                         @if (item.vigencia) {
                         <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
@@ -79,7 +79,7 @@
                 } @empty {
                 <tr hlmTr>
                     <td hlmTd colspan="5" class="text-center">
-                        No existen tipos de unidades de tiempo registrados
+                        No existen tipos de fiscalizadores registrados
                     </td>
                 </tr>
                 } }
@@ -99,8 +99,8 @@
 @if (showModalEliminar()) {
 <app-modal-eliminacion
     [item]="itemSeleccionado()"
-    titulo="Eliminar una unidad de tiempo:"
-    [descripcion]="`¿Seguro que deseas eliminar la unidad de tiempo (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
+    titulo="Eliminar un fiscalizador:"
+    [descripcion]="`¿Seguro que deseas eliminar el fiscalizador (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
     (cerrar)="closeModalEliminar()"
     (eliminar)="eliminar($event)"
 >
@@ -109,7 +109,7 @@
 <app-modal-edicion
     [campos]="camposEdicion()"
     [item]="itemSeleccionado()"
-    titulo="Editar una unidad de tiempo:"
+    titulo="Editar un fiscalizador:"
     (cerrar)="closeModalEditar()"
     (editar)="editar($event)"
 >
@@ -118,7 +118,7 @@
 <app-modal-edicion
     [campos]="camposCreacion()"
     [item]="itemSeleccionado()"
-    titulo="Crear una unidad de tiempo:"
+    titulo="Crear un fiscalizador:"
     (cerrar)="closeModalCrear()"
     (editar)="crear($event)"
 >

@@ -1,8 +1,7 @@
 import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
-import { TipoUnidadTiempoDao } from '@/app/daos/tipo-unidad-tiempo-dao';
-import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
-import { DecimalPipe } from '@angular/common';
+import { CategoriaNormaDao } from '@/app/daos/categoria-norma-dao';
+import { CategoriaNorma } from '@/app/entities/models/categoria-norma';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -20,7 +19,7 @@ import { HlmH4 } from '@spartan-ng/helm/typography';
 import { catchError, combineLatest, of } from 'rxjs';
 
 @Component({
-    selector: 'app-mantenedor-tipo-unidad-tiempo',
+    selector: 'app-mantenedor-categoria-norma',
     imports: [
         ModalEliminacion,
         ModalEdicion,
@@ -31,18 +30,17 @@ import { catchError, combineLatest, of } from 'rxjs';
         NgIcon,
         HlmIcon,
         HlmDropdownMenuImports,
-        DecimalPipe,
     ],
-    templateUrl: './mantenedor-tipo-unidad-tiempo.html',
-    styleUrl: './mantenedor-tipo-unidad-tiempo.scss',
+    templateUrl: './mantenedor-categoria-norma.html',
+    styleUrl: './mantenedor-categoria-norma.scss',
     providers: [
         provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
     ],
 })
-export class MantenedorTipoUnidadTiempo implements OnInit {
-    private dao: TipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
+export class MantenedorCategoriaNorma implements OnInit {
+    private dao: CategoriaNormaDao = inject(CategoriaNormaDao);
 
-    listado = signal([] as TipoUnidadTiempo[]);
+    listado = signal([] as CategoriaNorma[]);
     cargando = signal(true);
     error = signal('');
 
@@ -60,10 +58,17 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             deshabilitado: false,
         },
         {
-            llave: 'cantSegundos',
-            nombre: 'Cant. Segundos',
-            tipo: 'number',
-            requerido: true,
+            llave: 'nombreCorto',
+            nombre: 'Nombre Corto',
+            tipo: 'string',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'descripcion',
+            nombre: 'Descripción',
+            tipo: 'string',
+            requerido: false,
             deshabilitado: false,
         },
         {
@@ -85,10 +90,17 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             deshabilitado: false,
         },
         {
-            llave: 'cantSegundos',
-            nombre: 'Cant. Segundos',
-            tipo: 'number',
-            requerido: true,
+            llave: 'nombreCorto',
+            nombre: 'Nombre Corto',
+            tipo: 'string',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'descripcion',
+            nombre: 'Descripción',
+            tipo: 'string',
+            requerido: false,
             deshabilitado: false,
         },
         {
@@ -100,7 +112,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         },
     ]);
 
-    itemSeleccionado = signal<TipoUnidadTiempo | null>(null);
+    itemSeleccionado = signal<CategoriaNorma | null>(null);
 
     ngOnInit(): void {
         this.obtenerTodos();
@@ -112,17 +124,15 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
 
         const obsVigentes = this.dao.obtenerPorVigencia(true).pipe(
             catchError((err) => {
-                console.error('Error al obtener tipos de unidad de tiempo vigentes', err);
-                this.error.set(err.error ?? 'Error al obtener tipos de unidad de tiempo vigentes');
+                console.error('Error al obtener categorías normas vigentes', err);
+                this.error.set(err.error ?? 'Error al obtener categorías normas vigentes');
                 return of([]);
             })
         );
         const obsNoVigente = this.dao.obtenerPorVigencia(false).pipe(
             catchError((err) => {
-                console.error('Error al obtener tipos de unidad de tiempo no vigentes', err);
-                this.error.set(
-                    err.error ?? 'Error al obtener tipos de unidad de tiempo no vigentes'
-                );
+                console.error('Error al obtener categorías normas no vigentes', err);
+                this.error.set(err.error ?? 'Error al obtener categorías normas no vigentes');
                 return of([]);
             })
         );
@@ -141,7 +151,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         });
     }
 
-    openModalEliminar(item: TipoUnidadTiempo) {
+    openModalEliminar(item: CategoriaNorma) {
         this.itemSeleccionado.set(item);
         this.showModalEliminar.set(true);
     }
@@ -151,7 +161,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         this.itemSeleccionado.set(null);
     }
 
-    eliminar(item: TipoUnidadTiempo) {
+    eliminar(item: CategoriaNorma) {
         this.cargando.set(true);
         this.dao.eliminar(item.id).subscribe({
             next: () => {
@@ -159,14 +169,14 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             },
             error: (err) => {
                 this.cargando.set(false);
-                console.error('Error al eliminar el tipo unidad de tiempo', err);
-                this.error.set(err.error ?? 'Error al eliminar el tipo unidad de tiempo');
+                console.error('Error al eliminar la categoría de norma', err);
+                this.error.set(err.error ?? 'Error al eliminar la categoría de norma');
             },
         });
         this.showModalEliminar.set(false);
     }
 
-    openModalEditar(item: TipoUnidadTiempo) {
+    openModalEditar(item: CategoriaNorma) {
         this.itemSeleccionado.set(item);
         this.showModalEditar.set(true);
     }
@@ -176,7 +186,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         this.itemSeleccionado.set(null);
     }
 
-    editar(item: TipoUnidadTiempo) {
+    editar(item: CategoriaNorma) {
         this.cargando.set(true);
         this.dao.actualizar(item).subscribe({
             next: () => {
@@ -184,8 +194,8 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             },
             error: (err) => {
                 this.cargando.set(false);
-                console.error('Error al editar el tipo unidad de tiempo', err);
-                this.error.set(err.error ?? 'Error al editar el tipo unidad de tiempo');
+                console.error('Error al editar la categoría de norma', err);
+                this.error.set(err.error ?? 'Error al editar la categoría de norma');
             },
         });
         this.showModalEditar.set(false);
@@ -201,7 +211,7 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         this.itemSeleccionado.set(null);
     }
 
-    crear(item: TipoUnidadTiempo) {
+    crear(item: CategoriaNorma) {
         this.cargando.set(true);
         this.dao.crear(item).subscribe({
             next: () => {
@@ -209,8 +219,8 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             },
             error: (err) => {
                 this.cargando.set(false);
-                console.error('Error al crear el tipo unidad de tiempo', err);
-                this.error.set(err.error ?? 'Error al crear el tipo unidad de tiempo');
+                console.error('Error al crear la categoría de norma', err);
+                this.error.set(err.error ?? 'Error al crear la categoría de norma');
             },
         });
         this.showModalCrear.set(false);
