@@ -17,6 +17,11 @@ export class App implements OnInit {
 
         if (url.pathname === '/callback') {
             const newUrl = `/#/callback${url.search}`;
+            console.log(`Redirigiendo a ${newUrl}`);
+            window.location.replace(newUrl);
+        } else if (url.pathname === '/logout') {
+            const newUrl = `/#/logout${url.search}`;
+            console.log(`Redirigiendo a ${newUrl}`);
             window.location.replace(newUrl);
         }
     }
