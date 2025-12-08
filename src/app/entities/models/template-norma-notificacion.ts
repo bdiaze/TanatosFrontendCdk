@@ -1,5 +1,6 @@
 export interface TemplateNormaNotificacion {
-    idTemplateNorma: number;
+    idTemplate: number;
+    idNorma: number;
     idTipoUnidadTiempoAntelacion: number;
     cantAntelacion: number;
 }

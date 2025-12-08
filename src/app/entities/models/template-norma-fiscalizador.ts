@@ -1,4 +1,5 @@
 export interface TemplateNormaFiscalizador {
-    idTemplateNorma: number;
+    idTemplate: number;
+    idNorma: number;
     idTipoFiscalizador: number;
 }
