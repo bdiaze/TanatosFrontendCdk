@@ -40,7 +40,7 @@
                                 [class.text-destructive]="invalid(campo.llave)"
                             >
                                 <label
-                                    [for]="campo.nombre"
+                                    [for]="campo.llave"
                                     hlmLabel
                                     class="opacity-80 font-semibold whitespace-nowrap"
                                     >{{ campo.nombre ?? campo.llave }}</label
@@ -52,7 +52,7 @@
                                     hlmInputGroupInput
                                     type="text"
                                     class="transition-all duration-500 ease-out"
-                                    [id]="campo.nombre"
+                                    [id]="campo.llave"
                                     [formControl]="form.controls[campo.llave]"
                                 />
                                 } @if (campo.tipo === 'number') {
@@ -60,7 +60,7 @@
                                     hlmInputGroupInput
                                     type="number"
                                     class="transition-all duration-500 ease-out"
-                                    [id]="campo.nombre"
+                                    [id]="campo.llave"
                                     [formControl]="form.controls[campo.llave]"
                                 />
                                 }
@@ -68,7 +68,7 @@
                         </div>
                         } @if (campo.tipo === 'boolean') {
                         <div class="flex justify-end-safe items-center gap-4">
-                            <label [for]="campo.nombre" hlmLabel class="opacity-80 font-semibold">{{
+                            <label [for]="campo.llave" hlmLabel class="opacity-80 font-semibold">{{
                                 campo.nombre ?? campo.llave
                             }}</label>
                             <hlm-switch
