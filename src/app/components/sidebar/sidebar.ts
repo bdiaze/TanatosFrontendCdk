@@ -51,20 +51,20 @@ export class Sidebar {
                             {
                                 id: 211,
                                 tipo: 'subitem',
-                                titulo: 'Tipo Receptor Notificación',
-                                url: '/administracion/mantenedores/tipo-receptor-notificacion',
+                                titulo: 'Template',
+                                url: '/administracion/mantenedores/template',
                             },
                             {
                                 id: 212,
                                 tipo: 'subitem',
-                                titulo: 'Tipo Unidad Tiempo',
-                                url: '/administracion/mantenedores/tipo-unidad-tiempo',
+                                titulo: 'Categoria Norma',
+                                url: '/administracion/mantenedores/categoria-norma',
                             },
                             {
                                 id: 213,
                                 tipo: 'subitem',
-                                titulo: 'Tipo Periodicidad',
-                                url: '/administracion/mantenedores/tipo-periodicidad',
+                                titulo: 'Tipo Receptor Notificación',
+                                url: '/administracion/mantenedores/tipo-receptor-notificacion',
                             },
                             {
                                 id: 214,
@@ -75,8 +75,14 @@ export class Sidebar {
                             {
                                 id: 215,
                                 tipo: 'subitem',
-                                titulo: 'Categoria Norma',
-                                url: '/administracion/mantenedores/categoria-norma',
+                                titulo: 'Tipo Periodicidad',
+                                url: '/administracion/mantenedores/tipo-periodicidad',
+                            },
+                            {
+                                id: 216,
+                                tipo: 'subitem',
+                                titulo: 'Tipo Unidad Tiempo',
+                                url: '/administracion/mantenedores/tipo-unidad-tiempo',
                             },
                         ],
                     },

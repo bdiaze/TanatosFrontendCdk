@@ -1,0 +1,609 @@
+<div
+    class="fixed left-0 top-0 bg-black/70 w-screen h-screen flex justify-center items-center z-50"
+    (click)="cerrar.emit()"
+>
+    <div
+        hlmCard
+        (click)="$event.stopPropagation()"
+        class="min-w-xs md:min-w-2xl overflow-y-auto max-h-[95%]"
+    >
+        <div hlmCardHeader>
+            <div class="flex items-center gap-4">
+                <div class="text-green-700">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-7"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                        />
+                    </svg>
+                </div>
+                <h3 hlmCardTitle>{{ titulo() }}</h3>
+            </div>
+
+            <hlm-separator />
+        </div>
+        <div hlmCardContent>
+            <fieldset hlmFieldSet>
+                <div hlmFieldGroup class="gap-3">
+                    <div class="flex flex-col md:flex-row items-start gap-3">
+                        <div hlmField class="flex justify-center items-center gap-1 md:w-[30%]">
+                            <div hlmButtonGroup>
+                                <div
+                                    hlmButtonGroupText
+                                    class="transition-all duration-500 ease-out"
+                                    [class.border-destructive]="invalid('id')"
+                                    [class.text-destructive]="invalid('id')"
+                                >
+                                    <label
+                                        for="id"
+                                        hlmLabel
+                                        class="opacity-80 font-semibold whitespace-nowrap"
+                                        >ID</label
+                                    >
+                                </div>
+                                <div hlmInputGroup>
+                                    <input
+                                        hlmInputGroupInput
+                                        type="text"
+                                        class="transition-all duration-500 ease-out"
+                                        id="id"
+                                        [formControl]="form.controls['id']"
+                                    />
+                                </div>
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out text-xs"
+                                [class.opacity-100]="invalid('id')"
+                                [class.opacity-0]="!invalid('id')"
+                                [class.max-h-10]="invalid('id')"
+                                [class.max-h-0]="!invalid('id')"
+                                >Debes ingresar el "ID"</hlm-field-error
+                            >
+                        </div>
+                        <div hlmField class="flex justify-center items-center gap-1">
+                            <div hlmButtonGroup>
+                                <div
+                                    hlmButtonGroupText
+                                    class="transition-all duration-500 ease-out"
+                                    [class.border-destructive]="invalid('nombre')"
+                                    [class.text-destructive]="invalid('nombre')"
+                                >
+                                    <label
+                                        for="nombre"
+                                        hlmLabel
+                                        class="opacity-80 font-semibold whitespace-nowrap"
+                                        >Nombre</label
+                                    >
+                                </div>
+                                <div hlmInputGroup>
+                                    <input
+                                        hlmInputGroupInput
+                                        type="text"
+                                        class="transition-all duration-500 ease-out"
+                                        id="nombre"
+                                        [formControl]="form.controls['nombre']"
+                                    />
+                                </div>
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out text-xs"
+                                [class.opacity-100]="invalid('nombre')"
+                                [class.opacity-0]="!invalid('nombre')"
+                                [class.max-h-10]="invalid('nombre')"
+                                [class.max-h-0]="!invalid('nombre')"
+                                >Debes ingresar el "Nombre"</hlm-field-error
+                            >
+                        </div>
+                    </div>
+                    <div hlmField class="flex justify-center items-center gap-1">
+                        <label
+                            for="descripcion"
+                            hlmLabel
+                            class="opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                            >Descripción</label
+                        >
+                        <textarea
+                            hlmTextarea
+                            type="text"
+                            class="transition-all duration-500 ease-out"
+                            id="descripcion"
+                            [formControl]="form.controls['descripcion']"
+                        ></textarea>
+                        <hlm-field-error
+                            class="transition-all duration-500 ease-out text-xs"
+                            [class.opacity-100]="invalid('descripcion')"
+                            [class.opacity-0]="!invalid('descripcion')"
+                            [class.max-h-10]="invalid('descripcion')"
+                            [class.max-h-0]="!invalid('descripcion')"
+                            >Debes ingresar la "Descripción"</hlm-field-error
+                        >
+                    </div>
+                    <div class="flex flex-col md:flex-row gap-6">
+                        <div hlmField class="flex justify-center items-center gap-1 px-2">
+                            <div class="flex justify-start items-center gap-2 w-full">
+                                <label
+                                    for="idTemplatePadre"
+                                    hlmLabel
+                                    class="opacity-80 font-semibold"
+                                    >Padre</label
+                                >
+                                <brn-select
+                                    id="idTemplatePadre"
+                                    class="inline-block w-full"
+                                    [formControl]="form.controls['idTemplatePadre']"
+                                    [disabled]="cargandoTemplatesExistentes()"
+                                >
+                                    <hlm-select-trigger class="w-full">
+                                        <div class="flex justify-center items-center gap-2">
+                                            @if (cargandoTemplatesExistentes()) {
+                                            <hlm-spinner class="text-base md:text-lg" />
+                                            }
+                                            <hlm-select-value />
+                                        </div>
+                                    </hlm-select-trigger>
+                                    <hlm-select-content>
+                                        @if (cargandoTemplatesExistentes()) {
+                                        <hlm-option [value]="item?.idTemplatePadre">
+                                            Cargando...</hlm-option
+                                        >
+                                        } @else {
+                                        <hlm-option [value]="null">Sin padre</hlm-option>
+                                        @for (templatePadre of templatesExistentes(); track
+                                        templatePadre.id) {
+                                        <hlm-option [value]="templatePadre.id">{{
+                                            `${templatePadre.id} - ${templatePadre.nombre}`
+                                        }}</hlm-option>
+                                        }}
+                                    </hlm-select-content>
+                                </brn-select>
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out text-xs"
+                                [class.opacity-100]="invalid('idTemplatePadre')"
+                                [class.opacity-0]="!invalid('idTemplatePadre')"
+                                [class.max-h-10]="invalid('idTemplatePadre')"
+                                [class.max-h-0]="!invalid('idTemplatePadre')"
+                                >Debes ingresar el "Padre"</hlm-field-error
+                            >
+                        </div>
+                        <div hlmField class="flex justify-center items-center gap-1 w-fit">
+                            <div class="flex justify-end-safe items-center gap-4">
+                                <label for="vigencia" hlmLabel class="opacity-80 font-semibold"
+                                    >Vigencia</label
+                                >
+                                <hlm-switch
+                                    class="scale-[120%]"
+                                    [checked]="form.controls['vigencia'].value"
+                                    (checkedChange)="form.controls['vigencia'].setValue($event)"
+                                />
+                                @if(form.controls['vigencia'].value) {
+                                <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                                } @else {
+                                <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                                }
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out -z-10 text-xs"
+                                [class.opacity-100]="invalid('vigencia')"
+                                [class.opacity-0]="!invalid('vigencia')"
+                                [class.max-h-10]="invalid('vigencia')"
+                                [class.max-h-0]="!invalid('vigencia')"
+                                >Debes ingresar la "Vigencia"</hlm-field-error
+                            >
+                        </div>
+                    </div>
+                    <hlm-separator />
+                    @if (cargandoDetalleTemplate()) {
+                    <div class="flex justify-center items-center-safe gap-3">
+                        <hlm-spinner class="text-base md:text-lg" />
+                        <h4 hlmH4 class="font-normal text-md my-6">Cargando detalle...</h4>
+                    </div>
+                    } @else {
+                    <div class="flex flex-col justify-center items-center gap-1">
+                        <div class="w-full flex items-start gap-1">
+                            <div class="flex-1 flex justify-center">
+                                <label hlmLabel class="opacity-80 font-semibold text-lg py-1"
+                                    >Listado de Normas</label
+                                >
+                            </div>
+                            <div class="relative w-0">
+                                <button
+                                    hlmBtn
+                                    variant="outline"
+                                    (click)="crearNorma()"
+                                    class="absolute top-0 right-0"
+                                    size="sm"
+                                >
+                                    Nueva Norma
+                                </button>
+                            </div>
+                        </div>
+                        <div class="w-full block">
+                            <hlm-accordion>
+                                @for (norma of form.controls['templateNormas'].controls; track
+                                $index) {
+                                <hlm-accordion-item
+                                    [isOpened]="
+                                        $index ===
+                                        form.controls['templateNormas'].controls.length - 1
+                                    "
+                                >
+                                    <h3 class="contents">
+                                        <button hlmAccordionTrigger class="pt-2 pb-1">
+                                            <p class="mx-auto">
+                                                {{
+                                                    norma.controls['nombre'].value !== ''
+                                                        ? norma.controls['nombre'].value
+                                                        : 'Nueva Norma'
+                                                }}
+                                            </p>
+                                            <ng-icon name="lucideChevronDown" hlm hlmAccIcon />
+                                        </button>
+                                    </h3>
+                                    <hlm-accordion-content class="pt-2 px-2">
+                                        <div class="flex flex-col pb-4">
+                                            <div
+                                                class="flex flex-col items-start md:flex-row gap-3 mb-2"
+                                            >
+                                                <div
+                                                    hlmField
+                                                    class="flex justify-center items-center gap-1 md:w-[30%]"
+                                                >
+                                                    <div hlmButtonGroup>
+                                                        <div
+                                                            hlmButtonGroupText
+                                                            class="transition-all duration-500 ease-out"
+                                                            [class.border-destructive]="
+                                                                invalid('idNorma', norma)
+                                                            "
+                                                            [class.text-destructive]="
+                                                                invalid('idNorma', norma)
+                                                            "
+                                                        >
+                                                            <label
+                                                                for="id"
+                                                                hlmLabel
+                                                                class="opacity-80 font-semibold whitespace-nowrap"
+                                                                >ID</label
+                                                            >
+                                                        </div>
+                                                        <div hlmInputGroup>
+                                                            <input
+                                                                hlmInputGroupInput
+                                                                type="text"
+                                                                class="transition-all duration-500 ease-out"
+                                                                id="id"
+                                                                [formControl]="
+                                                                    norma.controls['idNorma']
+                                                                "
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <hlm-field-error
+                                                        class="transition-all duration-500 ease-out text-xs"
+                                                        [class.opacity-100]="
+                                                            invalid('idNorma', norma)
+                                                        "
+                                                        [class.opacity-0]="
+                                                            !invalid('idNorma', norma)
+                                                        "
+                                                        [class.max-h-10]="invalid('idNorma', norma)"
+                                                        [class.max-h-0]="!invalid('idNorma', norma)"
+                                                        >Debes ingresar el "ID"</hlm-field-error
+                                                    >
+                                                </div>
+                                                <div
+                                                    hlmField
+                                                    class="flex justify-center items-center gap-1"
+                                                >
+                                                    <div hlmButtonGroup>
+                                                        <div
+                                                            hlmButtonGroupText
+                                                            class="transition-all duration-500 ease-out"
+                                                            [class.border-destructive]="
+                                                                invalid('nombre', norma)
+                                                            "
+                                                            [class.text-destructive]="
+                                                                invalid('nombre', norma)
+                                                            "
+                                                        >
+                                                            <label
+                                                                for="nombre"
+                                                                hlmLabel
+                                                                class="opacity-80 font-semibold whitespace-nowrap"
+                                                                >Nombre</label
+                                                            >
+                                                        </div>
+                                                        <div hlmInputGroup>
+                                                            <input
+                                                                hlmInputGroupInput
+                                                                type="text"
+                                                                class="transition-all duration-500 ease-out"
+                                                                id="nombre"
+                                                                [formControl]="
+                                                                    norma.controls['nombre']
+                                                                "
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <hlm-field-error
+                                                        class="transition-all duration-500 ease-out text-xs"
+                                                        [class.opacity-100]="
+                                                            invalid('nombre', norma)
+                                                        "
+                                                        [class.opacity-0]="
+                                                            !invalid('nombre', norma)
+                                                        "
+                                                        [class.max-h-10]="invalid('nombre', norma)"
+                                                        [class.max-h-0]="!invalid('nombre', norma)"
+                                                        >Debes ingresar el "Nombre"</hlm-field-error
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div
+                                                hlmField
+                                                class="flex justify-center items-center gap-1"
+                                            >
+                                                <label
+                                                    for="descripcion"
+                                                    hlmLabel
+                                                    class="opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                                                    >Descripción</label
+                                                >
+                                                <textarea
+                                                    hlmTextarea
+                                                    type="text"
+                                                    class="transition-all duration-500 ease-out"
+                                                    id="descripcion"
+                                                    [formControl]="norma.controls['descripcion']"
+                                                ></textarea>
+                                                <hlm-field-error
+                                                    class="transition-all duration-500 ease-out text-xs"
+                                                    [class.opacity-100]="
+                                                        invalid('descripcion', norma)
+                                                    "
+                                                    [class.opacity-0]="
+                                                        !invalid('descripcion', norma)
+                                                    "
+                                                    [class.max-h-10]="invalid('descripcion', norma)"
+                                                    [class.max-h-0]="!invalid('descripcion', norma)"
+                                                    >Debes ingresar la
+                                                    "Descripción"</hlm-field-error
+                                                >
+                                            </div>
+                                            <div class="mt-2">
+                                                <div
+                                                    hlmField
+                                                    class="flex justify-center items-center gap-1"
+                                                >
+                                                    <div hlmButtonGroup>
+                                                        <div
+                                                            hlmButtonGroupText
+                                                            class="transition-all duration-500 ease-out"
+                                                            [class.border-destructive]="
+                                                                invalid('multa', norma)
+                                                            "
+                                                            [class.text-destructive]="
+                                                                invalid('multa', norma)
+                                                            "
+                                                        >
+                                                            <label
+                                                                for="multa"
+                                                                hlmLabel
+                                                                class="opacity-80 font-semibold whitespace-nowrap"
+                                                                >Multa</label
+                                                            >
+                                                        </div>
+                                                        <div hlmInputGroup>
+                                                            <input
+                                                                hlmInputGroupInput
+                                                                type="text"
+                                                                class="transition-all duration-500 ease-out"
+                                                                id="multa"
+                                                                [formControl]="
+                                                                    norma.controls['multa']
+                                                                "
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <hlm-field-error
+                                                        class="transition-all duration-500 ease-out text-xs"
+                                                        [class.opacity-100]="
+                                                            invalid('multa', norma)
+                                                        "
+                                                        [class.opacity-0]="!invalid('multa', norma)"
+                                                        [class.max-h-10]="invalid('multa', norma)"
+                                                        [class.max-h-0]="!invalid('multa', norma)"
+                                                        >Debes ingresar el "Multa"</hlm-field-error
+                                                    >
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="flex flex-col md:flex-row gap-2 mt-2 w-full"
+                                            >
+                                                <div
+                                                    hlmField
+                                                    class="flex justify-center items-center gap-1 md:w-[50%]"
+                                                >
+                                                    <div
+                                                        class="flex flex-col md:flex-row justify-start md:items-center gap-2"
+                                                    >
+                                                        <label
+                                                            for="categoria"
+                                                            hlmLabel
+                                                            class="opacity-80 font-semibold pl-2"
+                                                            >Categoría</label
+                                                        >
+                                                        <brn-select
+                                                            id="categoria"
+                                                            class="inline-block z-10"
+                                                            [formControl]="
+                                                                norma.controls['idCategoriaNorma']
+                                                            "
+                                                            [disabled]="
+                                                                cargandoCategoriasExistentes()
+                                                            "
+                                                        >
+                                                            <hlm-select-trigger class="w-full">
+                                                                <div
+                                                                    class="flex justify-center items-center gap-2"
+                                                                >
+                                                                    @if
+                                                                    (cargandoCategoriasExistentes())
+                                                                    {
+                                                                    <hlm-spinner
+                                                                        class="text-base md:text-lg"
+                                                                    />
+                                                                    }
+                                                                    <hlm-select-value
+                                                                        class="truncate w-48 md:w-40"
+                                                                    />
+                                                                </div>
+                                                            </hlm-select-trigger>
+                                                            <hlm-select-content>
+                                                                @if (cargandoCategoriasExistentes())
+                                                                {
+                                                                <hlm-option
+                                                                    [value]="
+                                                                        norma.controls[
+                                                                            'idCategoriaNorma'
+                                                                        ].value
+                                                                    "
+                                                                >
+                                                                    Cargando...</hlm-option
+                                                                >
+                                                                } @else { @for (categoria of
+                                                                categoriasExistentes(); track
+                                                                categoria.id) {
+                                                                <hlm-option
+                                                                    [value]="categoria.id"
+                                                                    >{{ `${categoria.nombre}` }}</hlm-option
+                                                                >
+                                                                }}
+                                                            </hlm-select-content>
+                                                        </brn-select>
+                                                    </div>
+                                                    <hlm-field-error
+                                                        class="transition-all duration-500 ease-out text-xs"
+                                                        [class.opacity-100]="
+                                                            invalid('idCategoriaNorma', norma)
+                                                        "
+                                                        [class.opacity-0]="
+                                                            !invalid('idCategoriaNorma', norma)
+                                                        "
+                                                        [class.max-h-10]="
+                                                            invalid('idCategoriaNorma', norma)
+                                                        "
+                                                        [class.max-h-0]="
+                                                            !invalid('idCategoriaNorma', norma)
+                                                        "
+                                                        >Debes ingresar la
+                                                        "Categoría"</hlm-field-error
+                                                    >
+                                                </div>
+                                                <div
+                                                    hlmField
+                                                    class="flex justify-center items-center gap-1 md:w-[50%]"
+                                                >
+                                                    <div
+                                                        class="flex flex-col md:flex-row justify-start md:items-center gap-2"
+                                                    >
+                                                        <label
+                                                            for="idTipoPeriodicidad"
+                                                            hlmLabel
+                                                            class="opacity-80 font-semibold pl-2"
+                                                            >Periodicidad</label
+                                                        >
+                                                        <brn-select
+                                                            id="idTipoPeriodicidad"
+                                                            class="inline-block w-full z-10"
+                                                            [formControl]="
+                                                                norma.controls['idTipoPeriodicidad']
+                                                            "
+                                                            [disabled]="
+                                                                cargandoPeriodicidadExistentes()
+                                                            "
+                                                        >
+                                                            <hlm-select-trigger class="w-full">
+                                                                <div
+                                                                    class="flex justify-center items-center gap-2"
+                                                                >
+                                                                    @if
+                                                                    (cargandoPeriodicidadExistentes())
+                                                                    {
+                                                                    <hlm-spinner
+                                                                        class="text-base md:text-lg"
+                                                                    />
+                                                                    }
+                                                                    <hlm-select-value
+                                                                        class="truncate"
+                                                                    />
+                                                                </div>
+                                                            </hlm-select-trigger>
+                                                            <hlm-select-content>
+                                                                @if
+                                                                (cargandoPeriodicidadExistentes()) {
+                                                                <hlm-option
+                                                                    [value]="
+                                                                        norma.controls[
+                                                                            'idTipoPeriodicidad'
+                                                                        ].value
+                                                                    "
+                                                                >
+                                                                    Cargando...</hlm-option
+                                                                >
+                                                                } @else { @for (periodicidad of
+                                                                periodicidadesExistentes(); track
+                                                                periodicidad.id) {
+                                                                <hlm-option
+                                                                    [value]="periodicidad.id"
+                                                                    >{{ `${periodicidad.nombre}` }}</hlm-option
+                                                                >
+                                                                }}
+                                                            </hlm-select-content>
+                                                        </brn-select>
+                                                    </div>
+                                                    <hlm-field-error
+                                                        class="transition-all duration-500 ease-out text-xs"
+                                                        [class.opacity-100]="
+                                                            invalid('idTipoPeriodicidad', norma)
+                                                        "
+                                                        [class.opacity-0]="
+                                                            !invalid('idTipoPeriodicidad', norma)
+                                                        "
+                                                        [class.max-h-10]="
+                                                            invalid('idTipoPeriodicidad', norma)
+                                                        "
+                                                        [class.max-h-0]="
+                                                            !invalid('idTipoPeriodicidad', norma)
+                                                        "
+                                                        >Debes ingresar la
+                                                        "Periodicidad"</hlm-field-error
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </hlm-accordion-content>
+                                </hlm-accordion-item>
+                                }
+                            </hlm-accordion>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </fieldset>
+        </div>
+        <div hlmCardFooter class="flex items-center justify-end gap-6">
+            <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
+            <button hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid">Guardar</button>
+        </div>
+    </div>
+</div>
