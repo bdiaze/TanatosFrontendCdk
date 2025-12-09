@@ -109,30 +109,15 @@ export class MantenedorTipoPeriodicidad implements OnInit {
         this.cargando.set(true);
         this.listado.set([]);
 
-        const obsVigentes = this.dao.obtenerPorVigencia(true).pipe(
-            catchError((err) => {
-                console.error('Error al obtener tipos de periodicidad vigentes', err);
-                this.error.set(err.error ?? 'Error al obtener tipos de periodicidad vigentes');
-                return of([]);
-            })
-        );
-        const obsNoVigente = this.dao.obtenerPorVigencia(false).pipe(
-            catchError((err) => {
-                console.error('Error al obtener tipos de periodicidad no vigentes', err);
-                this.error.set(err.error ?? 'Error al obtener tipos de periodicidad no vigentes');
-                return of([]);
-            })
-        );
-
-        combineLatest([obsVigentes, obsNoVigente]).subscribe({
-            next: ([resA, resB]) => {
-                const sorted = [...resA, ...resB].sort((a, b) => a.id - b.id);
+        this.dao.obtenerPorVigencia(null).subscribe({
+            next: (res) => {
+                const sorted = res.sort((a, b) => a.id - b.id);
                 this.listado.set(sorted);
                 this.cargando.set(false);
             },
             error: (err) => {
-                console.error('Error inesperado', err);
-                this.error.set('Error inesperado');
+                console.error('Error al obtener tipos de periodicidad', err);
+                this.error.set(err.error ?? 'Error al obtener tipos de periodicidad');
                 this.cargando.set(false);
             },
         });
