@@ -48,7 +48,7 @@
                     <td hlmTd class="whitespace-normal">{{ item.descripcion }}</td>
                     <td hlmTd>
                         @if (item.idTemplatePadre) {
-                        <span hlmBadge class="whitespace-normal" variant="secondary">
+                        <span hlmBadge class="whitespace-normal text-center" variant="secondary">
                             {{
                                 item.idTemplatePadre
                                     ? obtenerPadre(item.idTemplatePadre!)?.nombre

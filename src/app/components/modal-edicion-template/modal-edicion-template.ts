@@ -9,9 +9,16 @@ import {
     Output,
     signal,
 } from '@angular/core';
-import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+    AbstractControl,
+    FormArray,
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    Validators,
+} from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideBadgeX, lucideChevronDown } from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideChevronDown, lucideTrash2 } from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -30,14 +37,22 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { TemplateNormaFiscalizador } from '@/app/entities/models/template-norma-fiscalizador';
 import { TemplateNormaNotificacion } from '@/app/entities/models/template-norma-notificacion';
 import { TemplateNorma } from '@/app/entities/models/template-norma';
-import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { HlmAccordionImports } from '@spartan-ng/helm/accordion';
 import { HlmIconImports } from '@spartan-ng/helm/icon';
 import { CategoriaNorma } from '@/app/entities/models/categoria-norma';
 import { CategoriaNormaDao } from '@/app/daos/categoria-norma-dao';
-import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
 import { TipoPeriodicidadDao } from '@/app/daos/tipo-periodicidad-dao';
 import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
+import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { TipoFiscalizador } from '@/app/entities/models/tipo-fiscalizador';
+import { TipoFiscalizadorDao } from '@/app/daos/tipo-fiscalizador-dao';
+import { HlmBadgeImports } from '@spartan-ng/helm/badge';
+import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
+import { TipoUnidadTiempoDao } from '@/app/daos/tipo-unidad-tiempo-dao';
+import { BrnPopoverImports } from '@spartan-ng/brain/popover';
+import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 
 @Component({
     selector: 'app-modal-edicion-template',
@@ -58,16 +73,19 @@ import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
         BrnSelectImports,
         HlmSelectImports,
         HlmSpinnerImports,
-        HlmH3,
         HlmH4,
-        HlmP,
         HlmAccordionImports,
         HlmIconImports,
-        HlmScrollAreaImports,
+        HlmDropdownMenuImports,
+        HlmAlertImports,
+        HlmP,
+        HlmBadgeImports,
+        BrnPopoverImports,
+        HlmPopoverImports,
     ],
     templateUrl: './modal-edicion-template.html',
     styleUrl: './modal-edicion-template.scss',
-    providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideChevronDown })],
+    providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideChevronDown, lucideTrash2 })],
 })
 export class ModalEdicionTemplate implements OnInit {
     @Input() item: Template | null | undefined;
@@ -78,6 +96,8 @@ export class ModalEdicionTemplate implements OnInit {
     templateDao = inject(TemplateDao);
     categoriaNormaDao = inject(CategoriaNormaDao);
     tipoPeriodicidadDao = inject(TipoPeriodicidadDao);
+    tipoFiscalizadorDao = inject(TipoFiscalizadorDao);
+    tipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
 
     form: FormGroup<{
         id: FormControl<number | null>;
@@ -104,6 +124,7 @@ export class ModalEdicionTemplate implements OnInit {
                         cantAntelacion: FormControl<number | null>;
                     }>
                 >;
+                isOpened: FormControl<boolean>;
             }>
         >;
     }> = new FormGroup({
@@ -149,6 +170,7 @@ export class ModalEdicionTemplate implements OnInit {
                         cantAntelacion: FormControl<number | null>;
                     }>
                 >;
+                isOpened: FormControl<boolean>;
             }>
         >([]),
     });
@@ -173,21 +195,32 @@ export class ModalEdicionTemplate implements OnInit {
     cargandoPeriodicidadExistentes = signal<boolean>(true);
     periodicidadesExistentes = signal<TipoPeriodicidad[]>([]);
 
+    cargandoFiscalizadoresExistentes = signal<boolean>(true);
+    fiscalizadoresExistentes = signal<TipoFiscalizador[]>([]);
+
+    cargandoUnidadesTiempoExistentes = signal<boolean>(true);
+    unidadesTiempoExistentes = signal<TipoUnidadTiempo[]>([]);
+
+    procesando = signal<boolean>(false);
+
     ngOnInit(): void {
         this.cargandoTemplatesExistentes.set(true);
         this.templateDao
-            .obtenerPorVigencia(true)
+            .obtenerPorVigencia(null)
             .subscribe({
                 next: (vigentes) => {
                     if (this.item) {
                         vigentes = vigentes.filter((t) => t.id !== this.item?.id);
                         vigentes = this.eliminarHijosComoPosiblesPadres(vigentes, this.item?.id);
+                        vigentes = vigentes.sort((a, b) =>
+                            a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                        );
                     }
                     this.templatesExistentes.set(vigentes);
                 },
                 error: (err) => {
-                    console.error('Error al obtener templates vigentes', err);
-                    this.error.set(err.error ?? 'Error al obtener templates vigentes');
+                    console.error('Error al obtener templates', err);
+                    this.error.set(err.error ?? 'Error al obtener templates');
                 },
             })
             .add(() => {
@@ -196,14 +229,17 @@ export class ModalEdicionTemplate implements OnInit {
 
         this.cargandoCategoriasExistentes.set(true);
         this.categoriaNormaDao
-            .obtenerPorVigencia(true)
+            .obtenerPorVigencia(null)
             .subscribe({
                 next: (vigentes) => {
+                    vigentes = vigentes.sort((a, b) =>
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                    );
                     this.categoriasExistentes.set(vigentes);
                 },
                 error: (err) => {
-                    console.error('Error al obtener categorías vigentes', err);
-                    this.error.set(err.error ?? 'Error al obtener categorías vigentes');
+                    console.error('Error al obtener categorías', err);
+                    this.error.set(err.error ?? 'Error al obtener categorías');
                 },
             })
             .add(() => {
@@ -212,18 +248,55 @@ export class ModalEdicionTemplate implements OnInit {
 
         this.cargandoPeriodicidadExistentes.set(true);
         this.tipoPeriodicidadDao
-            .obtenerPorVigencia(true)
+            .obtenerPorVigencia(null)
             .subscribe({
                 next: (vigentes) => {
+                    vigentes = vigentes.sort((a, b) => a.id - b.id);
                     this.periodicidadesExistentes.set(vigentes);
                 },
                 error: (err) => {
-                    console.error('Error al obtener periodicidades vigentes', err);
-                    this.error.set(err.error ?? 'Error al obtener periodicidades vigentes');
+                    console.error('Error al obtener periodicidades', err);
+                    this.error.set(err.error ?? 'Error al obtener periodicidades');
                 },
             })
             .add(() => {
                 this.cargandoPeriodicidadExistentes.set(false);
+            });
+
+        this.cargandoFiscalizadoresExistentes.set(true);
+        this.tipoFiscalizadorDao
+            .obtenerPorVigencia(null)
+            .subscribe({
+                next: (vigentes) => {
+                    vigentes = vigentes.sort((a, b) =>
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                    );
+                    this.fiscalizadoresExistentes.set(vigentes);
+                },
+                error: (err) => {
+                    console.error('Error al obtener fiscalizadores', err);
+                    this.error.set(err.error ?? 'Error al obtener fiscalizadores');
+                },
+            })
+            .add(() => {
+                this.cargandoFiscalizadoresExistentes.set(false);
+            });
+
+        this.cargandoUnidadesTiempoExistentes.set(true);
+        this.tipoUnidadTiempoDao
+            .obtenerPorVigencia(null)
+            .subscribe({
+                next: (res) => {
+                    res = res.sort((a, b) => a.id - b.id);
+                    this.unidadesTiempoExistentes.set(res);
+                },
+                error: (err) => {
+                    console.error('Error al obtener unidades de tiempo', err);
+                    this.error.set(err.error ?? 'Error al obtener unidades de tiempo');
+                },
+            })
+            .add(() => {
+                this.cargandoUnidadesTiempoExistentes.set(false);
             });
 
         if (this.item) {
@@ -232,6 +305,12 @@ export class ModalEdicionTemplate implements OnInit {
                 .obtener(this.item.id)
                 .subscribe({
                     next: (detalleTemplate) => {
+                        if (detalleTemplate?.templateNormas) {
+                            detalleTemplate.templateNormas = detalleTemplate?.templateNormas?.sort(
+                                (a, b) => a.idNorma - b.idNorma
+                            );
+                        }
+
                         detalleTemplate?.templateNormas?.forEach((norma) => {
                             (this.form.get('templateNormas') as FormArray).push(
                                 this.buildNormaFormGroup(norma)
@@ -272,6 +351,56 @@ export class ModalEdicionTemplate implements OnInit {
         return casosSinDichoPadre;
     }
 
+    seleccionarFiscalizador(normaControl: FormGroup, idFiscalizador: number) {
+        const idx = (
+            normaControl.controls['templateNormaFiscalizadores'] as FormArray
+        ).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador
+        );
+
+        if (idx !== -1) {
+            (normaControl.controls['templateNormaFiscalizadores'] as FormArray).removeAt(idx);
+        } else {
+            (normaControl.controls['templateNormaFiscalizadores'] as FormArray).push(
+                new FormGroup({
+                    idTipoFiscalizador: new FormControl(idFiscalizador, {
+                        nonNullable: true,
+                    }),
+                })
+            );
+        }
+    }
+
+    estadoFiscalizador(normaControl: FormGroup, idFiscalizador: number): boolean {
+        return (normaControl.controls['templateNormaFiscalizadores'] as FormArray).controls.some(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.get('idTipoFiscalizador')?.value === idFiscalizador
+        );
+    }
+
+    nombreFiscalizador(idFiscalizador: number): string {
+        const fiscalizador = this.fiscalizadoresExistentes().find(
+            (fiscalizador: TipoFiscalizador) => fiscalizador.id === idFiscalizador
+        );
+        return fiscalizador?.nombreCorto && fiscalizador.nombreCorto.trim() !== ''
+            ? fiscalizador.nombreCorto
+            : fiscalizador?.nombre!;
+    }
+
+    nombreUnidadTiempo(idUnidadTiempo: number): string {
+        const unidadTiempo = this.unidadesTiempoExistentes().find(
+            (unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo
+        );
+        return unidadTiempo?.nombre!;
+    }
+
+    toggleOpenedNorma(norma: FormGroup) {
+        norma.controls['isOpened'].setValue(!norma.controls['isOpened'].value);
+    }
+
     crearNorma() {
         (this.form.get('templateNormas') as FormArray).push(
             new FormGroup({
@@ -292,10 +421,15 @@ export class ModalEdicionTemplate implements OnInit {
                     nonNullable: true,
                     validators: [Validators.required],
                 }),
-                templateNormaFiscalizadores: new FormControl(this.buildFiscalizadores([])),
-                templateNormaNotificaciones: new FormControl(this.buildNotificaciones([])),
+                templateNormaFiscalizadores: this.buildFiscalizadores([]),
+                templateNormaNotificaciones: this.buildNotificaciones([]),
+                isOpened: new FormControl(true, { nonNullable: true }),
             })
         );
+    }
+
+    quitarNorma(index: number) {
+        this.form.controls['templateNormas'].removeAt(index);
     }
 
     private buildNormaFormGroup(norma: TemplateNorma) {
@@ -315,12 +449,13 @@ export class ModalEdicionTemplate implements OnInit {
                 nonNullable: true,
                 validators: [Validators.required],
             }),
-            templateNormaFiscalizadores: new FormControl(
-                this.buildFiscalizadores(norma.templateNormaFiscalizadores ?? [])
+            templateNormaFiscalizadores: this.buildFiscalizadores(
+                norma.templateNormaFiscalizadores ?? []
             ),
-            templateNormaNotificaciones: new FormControl(
-                this.buildNotificaciones(norma.templateNormaNotificaciones ?? [])
+            templateNormaNotificaciones: this.buildNotificaciones(
+                norma.templateNormaNotificaciones ?? []
             ),
+            isOpened: new FormControl(false, { nonNullable: true }),
         });
     }
 
@@ -366,7 +501,7 @@ export class ModalEdicionTemplate implements OnInit {
         };
 
         this.form.controls['templateNormas'].controls.forEach((normaControl) => {
-            template.templateNormas?.push({
+            const norma = {
                 idTemplate: template.id,
                 idNorma: normaControl.controls['idNorma'].value!,
                 nombre: normaControl.controls['nombre'].value,
@@ -374,10 +509,77 @@ export class ModalEdicionTemplate implements OnInit {
                 idTipoPeriodicidad: normaControl.controls['idTipoPeriodicidad'].value,
                 multa: normaControl.controls['multa'].value,
                 idCategoriaNorma: normaControl.controls['idCategoriaNorma'].value!,
-            } as TemplateNorma);
+                templateNormaFiscalizadores: [],
+                templateNormaNotificaciones: [],
+            } as TemplateNorma;
+
+            normaControl.controls['templateNormaFiscalizadores'].controls.forEach(
+                (fiscalizadorControl) => {
+                    norma.templateNormaFiscalizadores?.push({
+                        idTemplate: norma.idTemplate,
+                        idNorma: norma.idNorma,
+                        idTipoFiscalizador:
+                            fiscalizadorControl.controls['idTipoFiscalizador'].value!,
+                    });
+                }
+            );
+
+            normaControl.controls['templateNormaNotificaciones'].controls.forEach(
+                (notificacionControl) => {
+                    norma.templateNormaNotificaciones?.push({
+                        idTemplate: norma.idTemplate,
+                        idNorma: norma.idNorma,
+                        idTipoUnidadTiempoAntelacion:
+                            notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
+                        cantAntelacion: notificacionControl.controls['cantAntelacion'].value!,
+                    });
+                }
+            );
+
+            template.templateNormas?.push(norma);
         });
 
-        this.confirmar.emit(template);
+        if (this.item) {
+            this.editar(template);
+        } else {
+            this.crear(template);
+        }
+    }
+
+    editar(item: Template) {
+        this.procesando.set(true);
+        this.templateDao
+            .actualizar(item)
+            .subscribe({
+                next: () => {
+                    this.confirmar.emit(item);
+                },
+                error: (err) => {
+                    console.error('Error al editar el template', err);
+                    this.error.set(err.error ?? 'Error al editar el template');
+                },
+            })
+            .add(() => {
+                this.procesando.set(false);
+            });
+    }
+
+    crear(item: Template) {
+        this.procesando.set(true);
+        this.templateDao
+            .crear(item)
+            .subscribe({
+                next: () => {
+                    this.confirmar.emit(item);
+                },
+                error: (err) => {
+                    console.error('Error al crear el template', err);
+                    this.error.set(err.error ?? 'Error al crear el template');
+                },
+            })
+            .add(() => {
+                this.procesando.set(false);
+            });
     }
 
     invalid(llave: string, formGroup: FormGroup | null = null) {

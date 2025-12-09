@@ -60,30 +60,15 @@ export class MantenedorTemplate implements OnInit {
         this.cargando.set(true);
         this.listado.set([]);
 
-        const obsVigentes = this.dao.obtenerPorVigencia(true).pipe(
-            catchError((err) => {
-                console.error('Error al obtener templates vigentes', err);
-                this.error.set(err.error ?? 'Error al obtener templates vigentes');
-                return of([]);
-            })
-        );
-        const obsNoVigente = this.dao.obtenerPorVigencia(false).pipe(
-            catchError((err) => {
-                console.error('Error al obtener templates no vigentes', err);
-                this.error.set(err.error ?? 'Error al obtener templates no vigentes');
-                return of([]);
-            })
-        );
-
-        combineLatest([obsVigentes, obsNoVigente]).subscribe({
-            next: ([resA, resB]) => {
-                const sorted = [...resA, ...resB].sort((a, b) => a.id! - b.id!);
+        this.dao.obtenerPorVigencia(null).subscribe({
+            next: (res) => {
+                const sorted = res.sort((a, b) => a.id - b.id);
                 this.listado.set(sorted);
                 this.cargando.set(false);
             },
             error: (err) => {
-                console.error('Error inesperado', err);
-                this.error.set('Error inesperado');
+                console.error('Error al obtener templates', err);
+                this.error.set(err.error ?? 'Error al obtener templates');
                 this.cargando.set(false);
             },
         });
@@ -129,17 +114,7 @@ export class MantenedorTemplate implements OnInit {
     }
 
     editar(item: Template) {
-        this.cargando.set(true);
-        this.dao.actualizar(item).subscribe({
-            next: () => {
-                this.obtenerTodos();
-            },
-            error: (err) => {
-                this.cargando.set(false);
-                console.error('Error al editar el template', err);
-                this.error.set(err.error ?? 'Error al editar el template');
-            },
-        });
+        this.obtenerTodos();
         this.showModalEditar.set(false);
     }
 
@@ -154,17 +129,7 @@ export class MantenedorTemplate implements OnInit {
     }
 
     crear(item: Template) {
-        this.cargando.set(true);
-        this.dao.crear(item).subscribe({
-            next: () => {
-                this.obtenerTodos();
-            },
-            error: (err) => {
-                this.cargando.set(false);
-                console.error('Error al crear el template', err);
-                this.error.set(err.error ?? 'Error al crear el template');
-            },
-        });
+        this.obtenerTodos();
         this.showModalCrear.set(false);
     }
 }

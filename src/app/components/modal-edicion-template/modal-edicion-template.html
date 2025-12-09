@@ -5,7 +5,7 @@
     <div
         hlmCard
         (click)="$event.stopPropagation()"
-        class="min-w-xs md:min-w-2xl overflow-y-auto max-h-[95%]"
+        class="min-w-xs md:min-w-2xl max-h-[95%] gap-4 overflow-y-auto"
     >
         <div hlmCardHeader>
             <div class="flex items-center gap-4">
@@ -159,7 +159,7 @@
                                         @for (templatePadre of templatesExistentes(); track
                                         templatePadre.id) {
                                         <hlm-option [value]="templatePadre.id">{{
-                                            `${templatePadre.id} - ${templatePadre.nombre}`
+                                            `${templatePadre.nombre}`
                                         }}</hlm-option>
                                         }}
                                     </hlm-select-content>
@@ -208,18 +208,24 @@
                     </div>
                     } @else {
                     <div class="flex flex-col justify-center items-center gap-1">
-                        <div class="w-full flex items-start gap-1">
-                            <div class="flex-1 flex justify-center">
+                        <div
+                            class="w-full flex flex-col md:flex-row items-start justify-end-safe md:justify-center gap-1"
+                        >
+                            <div
+                                class="w-full flex-1 flex justify-center items-center order-2 md:order-1"
+                            >
                                 <label hlmLabel class="opacity-80 font-semibold text-lg py-1"
                                     >Listado de Normas</label
                                 >
                             </div>
-                            <div class="relative w-0">
+                            <div
+                                class="w-full flex justify-end-safe items-center md:relative md:w-0 order-1 md:order-2"
+                            >
                                 <button
                                     hlmBtn
                                     variant="outline"
                                     (click)="crearNorma()"
-                                    class="absolute top-0 right-0"
+                                    class="md:absolute md:top-0 md:right-0"
                                     size="sm"
                                 >
                                     Nueva Norma
@@ -227,35 +233,43 @@
                             </div>
                         </div>
                         <div class="w-full block">
-                            <hlm-accordion>
+                            <div>
                                 @for (norma of form.controls['templateNormas'].controls; track
-                                $index) {
-                                <hlm-accordion-item
-                                    [isOpened]="
-                                        $index ===
-                                        form.controls['templateNormas'].controls.length - 1
-                                    "
-                                >
-                                    <h3 class="contents">
-                                        <button hlmAccordionTrigger class="pt-2 pb-1">
-                                            <p class="mx-auto">
+                                $index) { @if ($index === 0) {
+                                <hr class="mx-2" />
+                                }
+                                <div class="px-4">
+                                    <h3>
+                                        <button
+                                            class="py-2 px-2 hover:cursor-pointer w-full flex items-center z-10"
+                                            (click)="toggleOpenedNorma(norma)"
+                                        >
+                                            <p hlmP class="mx-auto opacity-65">
                                                 {{
                                                     norma.controls['nombre'].value !== ''
-                                                        ? norma.controls['nombre'].value
+                                                        ? (norma.controls['idNorma'].value ? `${norma.controls['idNorma'].value} · ` : '') + norma.controls['nombre'].value
                                                         : 'Nueva Norma'
                                                 }}
                                             </p>
-                                            <ng-icon name="lucideChevronDown" hlm hlmAccIcon />
+                                            <ng-icon
+                                                name="lucideChevronDown"
+                                                hlm
+                                                hlmAccIcon
+                                                [class.rotate-180]="
+                                                    norma.controls['isOpened'].value
+                                                "
+                                            />
                                         </button>
                                     </h3>
-                                    <hlm-accordion-content class="pt-2 px-2">
-                                        <div class="flex flex-col pb-4">
+                                    @if (norma.controls['isOpened'].value) {
+                                    <div class="fade-in pb-4">
+                                        <div class="flex flex-col">
                                             <div
-                                                class="flex flex-col items-start md:flex-row gap-3 mb-2"
+                                                class="flex flex-wrap md:flex-nowrap justify-between items-start gap-3 mb-2"
                                             >
                                                 <div
                                                     hlmField
-                                                    class="flex justify-center items-center gap-1 md:w-[30%]"
+                                                    class="flex justify-center items-center gap-1 w-[80%] md:w-[30%] order-1"
                                                 >
                                                     <div hlmButtonGroup>
                                                         <div
@@ -302,7 +316,7 @@
                                                 </div>
                                                 <div
                                                     hlmField
-                                                    class="flex justify-center items-center gap-1"
+                                                    class="flex justify-center items-center gap-1 order-3 md:order-2"
                                                 >
                                                     <div hlmButtonGroup>
                                                         <div
@@ -347,6 +361,38 @@
                                                         >Debes ingresar el "Nombre"</hlm-field-error
                                                     >
                                                 </div>
+                                                <button
+                                                    hlmBtn
+                                                    size="icon"
+                                                    variant="destructive"
+                                                    class="size-9 hover:scale-105 active:scale-95 order-2 md:order-3"
+                                                    [hlmDropdownMenuTrigger]="menu"
+                                                >
+                                                    <ng-icon hlm size="sm" name="lucideTrash2" />
+                                                </button>
+                                                <ng-template #menu>
+                                                    <hlm-dropdown-menu>
+                                                        <hlm-dropdown-menu-label
+                                                            class="font-normal text-center"
+                                                            >¿Estás seguro?</hlm-dropdown-menu-label
+                                                        >
+                                                        <hlm-dropdown-menu-group>
+                                                            <button
+                                                                hlmDropdownMenuItem
+                                                                variant="destructive"
+                                                                class="hover:cursor-pointer"
+                                                                (click)="quitarNorma($index)"
+                                                            >
+                                                                ¡Sí, eliminalo!
+                                                                <ng-icon
+                                                                    hlm
+                                                                    size="sm"
+                                                                    name="lucideTrash2"
+                                                                />
+                                                            </button>
+                                                        </hlm-dropdown-menu-group>
+                                                    </hlm-dropdown-menu>
+                                                </ng-template>
                                             </div>
                                             <div
                                                 hlmField
@@ -427,7 +473,7 @@
                                                 </div>
                                             </div>
                                             <div
-                                                class="flex flex-col md:flex-row gap-2 mt-2 w-full"
+                                                class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full"
                                             >
                                                 <div
                                                     hlmField
@@ -491,8 +537,9 @@
                                                             </hlm-select-content>
                                                         </brn-select>
                                                     </div>
-                                                    <hlm-field-error
-                                                        class="transition-all duration-500 ease-out text-xs"
+                                                    <p
+                                                        hlmP
+                                                        class="transition-all duration-500 ease-out text-xs mt-0 px-3 text-destructive -z-10"
                                                         [class.opacity-100]="
                                                             invalid('idCategoriaNorma', norma)
                                                         "
@@ -505,9 +552,9 @@
                                                         [class.max-h-0]="
                                                             !invalid('idCategoriaNorma', norma)
                                                         "
-                                                        >Debes ingresar la
-                                                        "Categoría"</hlm-field-error
                                                     >
+                                                        Debes ingresar la "Categoría"
+                                                    </p>
                                                 </div>
                                                 <div
                                                     hlmField
@@ -571,8 +618,9 @@
                                                             </hlm-select-content>
                                                         </brn-select>
                                                     </div>
-                                                    <hlm-field-error
-                                                        class="transition-all duration-500 ease-out text-xs"
+                                                    <p
+                                                        hlmP
+                                                        class="transition-all duration-500 ease-out text-xs mt-0 px-3 text-destructive -z-10"
                                                         [class.opacity-100]="
                                                             invalid('idTipoPeriodicidad', norma)
                                                         "
@@ -585,25 +633,155 @@
                                                         [class.max-h-0]="
                                                             !invalid('idTipoPeriodicidad', norma)
                                                         "
-                                                        >Debes ingresar la
-                                                        "Periodicidad"</hlm-field-error
                                                     >
+                                                        Debes ingresar la "Periodicidad"
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div
+                                                class="flex flex-col md:flex-row justify-stretch items-start mt-2 gap-2"
+                                            >
+                                                <div
+                                                    class="flex flex-col items-center w-full md:w-[50%]"
+                                                >
+                                                    <button
+                                                        hlmBtn
+                                                        variant="outline"
+                                                        class="w-full"
+                                                        [disabled]="
+                                                            cargandoFiscalizadoresExistentes()
+                                                        "
+                                                        [hlmDropdownMenuTrigger]="
+                                                            menuFiscalizadores
+                                                        "
+                                                    >
+                                                        @if (cargandoFiscalizadoresExistentes()) {
+                                                        <hlm-spinner />
+                                                        } Seleccionar Fiscalizadores
+                                                    </button>
+
+                                                    <ng-template #menuFiscalizadores>
+                                                        <hlm-dropdown-menu>
+                                                            <hlm-dropdown-menu-group>
+                                                                @for (fiscalizador of
+                                                                fiscalizadoresExistentes(); track
+                                                                fiscalizador.id) {
+                                                                <button
+                                                                    hlmDropdownMenuCheckbox
+                                                                    [checked]="
+                                                                        estadoFiscalizador(
+                                                                            norma,
+                                                                            fiscalizador.id
+                                                                        )
+                                                                    "
+                                                                    (triggered)="
+                                                                        seleccionarFiscalizador(
+                                                                            norma,
+                                                                            fiscalizador.id
+                                                                        )
+                                                                    "
+                                                                >
+                                                                    <hlm-dropdown-menu-checkbox-indicator />
+                                                                    <span>{{
+                                                                        fiscalizador.nombreCorto &&
+                                                                        fiscalizador.nombreCorto.trim() !==
+                                                                            ''
+                                                                            ? fiscalizador.nombreCorto
+                                                                            : fiscalizador.nombre
+                                                                    }}</span>
+                                                                </button>
+                                                                }
+                                                            </hlm-dropdown-menu-group>
+                                                        </hlm-dropdown-menu>
+                                                    </ng-template>
+                                                    <div
+                                                        class="flex flex-wrap justify-center items-center gap-1 mt-2"
+                                                    >
+                                                        @for(fiscalizador of
+                                                        norma.controls['templateNormaFiscalizadores'].controls;
+                                                        track $index) {
+                                                        <span hlmBadge variant="default">{{
+                                                            nombreFiscalizador(
+                                                                fiscalizador.controls[
+                                                                    'idTipoFiscalizador'
+                                                                ].value!
+                                                            )
+                                                        }}</span>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="flex flex-col items-center w-full md:w-[50%]"
+                                                >
+                                                    <!--
+                                                    <hlm-popover>
+                                                        <button
+                                                            hlmBtn
+                                                            hlmPopoverTrigger
+                                                            variant="outline"
+                                                            class="w-full"
+                                                            [disabled]="
+                                                                cargandoUnidadesTiempoExistentes()
+                                                            "
+                                                        >
+                                                            @if (cargandoUnidadesTiempoExistentes())
+                                                            {
+                                                            <hlm-spinner />
+                                                            } Seleccionar Notificaciones
+                                                        </button>
+                                                        <div hlmPopoverContent>Holaaa</div>
+                                                    </hlm-popover>
+                                                    -->
+
+                                                    <div
+                                                        class="flex flex-wrap justify-center items-center gap-1 mt-2"
+                                                    >
+                                                        @for(notificacion of
+                                                        norma.controls['templateNormaNotificaciones'].controls;
+                                                        track $index) {
+                                                        <span hlmBadge variant="outline">{{
+                                                            notificacion.controls['cantAntelacion']
+                                                                .value! +
+                                                                ' ' +
+                                                                nombreUnidadTiempo(
+                                                                    notificacion.controls[
+                                                                        'idTipoUnidadTiempoAntelacion'
+                                                                    ].value!
+                                                                )
+                                                        }}</span>
+                                                        }
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </hlm-accordion-content>
-                                </hlm-accordion-item>
+                                    </div>
+                                    }
+                                </div>
+                                <hr class="mx-2" />
                                 }
-                            </hlm-accordion>
+                            </div>
                         </div>
                     </div>
                     }
                 </div>
             </fieldset>
         </div>
-        <div hlmCardFooter class="flex items-center justify-end gap-6">
-            <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
-            <button hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid">Guardar</button>
+        <div hlmCardFooter class="flex flex-col items-center gap-4">
+            @if (error()) {
+            <div hlmAlert variant="destructive">
+                <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                <p hlmAlertDescription>{{ error() }}</p>
+            </div>
+            }
+            <div class="w-full flex items-center justify-end gap-6">
+                <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
+                <button hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()">
+                    @if (procesando()) {
+                    <hlm-spinner />
+                    } Guardar
+                </button>
+            </div>
         </div>
     </div>
 </div>
