@@ -16,7 +16,7 @@ export class TipoReceptorNotificacionDao {
         );
     }
 
-    obtenerPorVigencia(vigencia: boolean): Observable<TipoReceptorNotificacion[]> {
+    obtenerPorVigencia(vigencia: boolean | null): Observable<TipoReceptorNotificacion[]> {
         return this.http.get<TipoReceptorNotificacion[]>(
             environment.tanatosService.apiUrl + `/TipoReceptorNotificacion/PorVigencia/${vigencia}`
         );

@@ -16,7 +16,7 @@ export class TipoPeriodicidadDao {
         );
     }
 
-    obtenerPorVigencia(vigencia: boolean): Observable<TipoPeriodicidad[]> {
+    obtenerPorVigencia(vigencia: boolean | null): Observable<TipoPeriodicidad[]> {
         return this.http.get<TipoPeriodicidad[]>(
             environment.tanatosService.apiUrl + `/TipoPeriodicidad/PorVigencia/${vigencia}`
         );

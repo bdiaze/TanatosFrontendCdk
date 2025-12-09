@@ -16,7 +16,7 @@ export class CategoriaNormaDao {
         );
     }
 
-    obtenerPorVigencia(vigencia: boolean): Observable<CategoriaNorma[]> {
+    obtenerPorVigencia(vigencia: boolean | null): Observable<CategoriaNorma[]> {
         return this.http.get<CategoriaNorma[]>(
             environment.tanatosService.apiUrl + `/CategoriaNorma/PorVigencia/${vigencia}`
         );

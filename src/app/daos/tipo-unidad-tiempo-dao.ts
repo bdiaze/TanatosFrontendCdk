@@ -16,7 +16,7 @@ export class TipoUnidadTiempoDao {
         );
     }
 
-    obtenerPorVigencia(vigencia: boolean): Observable<TipoUnidadTiempo[]> {
+    obtenerPorVigencia(vigencia: boolean | null): Observable<TipoUnidadTiempo[]> {
         return this.http.get<TipoUnidadTiempo[]>(
             environment.tanatosService.apiUrl + `/TipoUnidadTiempo/PorVigencia/${vigencia}`
         );

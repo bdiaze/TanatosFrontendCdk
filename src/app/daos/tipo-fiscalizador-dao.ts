@@ -16,7 +16,7 @@ export class TipoFiscalizadorDao {
         );
     }
 
-    obtenerPorVigencia(vigencia: boolean): Observable<TipoFiscalizador[]> {
+    obtenerPorVigencia(vigencia: boolean | null): Observable<TipoFiscalizador[]> {
         return this.http.get<TipoFiscalizador[]>(
             environment.tanatosService.apiUrl + `/TipoFiscalizador/PorVigencia/${vigencia}`
         );
