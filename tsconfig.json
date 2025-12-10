@@ -129,6 +129,9 @@
       ],
       "@spartan-ng/helm/popover": [
         "./libs/ui/popover/src/index.ts"
+      ],
+      "@spartan-ng/helm/radio-group": [
+        "./libs/ui/radio-group/src/index.ts"
       ]
     }
   },
