@@ -10,6 +10,7 @@
                 <tr hlmTr>
                     <th hlmTh class="text-center w-12">ID</th>
                     <th hlmTh>Nombre</th>
+                    <th hlmTh>Regex</th>
                     <th hlmTh class="text-center w-24">Vigencia</th>
                     <th hlmTh class="w-16"></th>
                 </tr>
@@ -44,6 +45,7 @@
                 <tr hlmTr>
                     <td hlmTd class="text-center">{{ tipoReceptor.id }}</td>
                     <td hlmTd>{{ tipoReceptor.nombre }}</td>
+                    <td hlmTd class="break-all">{{ tipoReceptor.regexValidacion }}</td>
                     <td hlmTd class="text-center">
                         @if (tipoReceptor.vigencia) {
                         <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />

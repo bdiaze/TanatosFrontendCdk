@@ -60,6 +60,13 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             deshabilitado: false,
         },
         {
+            llave: 'regexValidacion',
+            nombre: 'Regex',
+            tipo: 'string',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
             llave: 'vigencia',
             nombre: 'Vigencia',
             tipo: 'boolean',
@@ -75,6 +82,13 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             nombre: 'Nombre',
             tipo: 'string',
             requerido: true,
+            deshabilitado: false,
+        },
+        {
+            llave: 'regexValidacion',
+            nombre: 'Regex',
+            tipo: 'string',
+            requerido: false,
             deshabilitado: false,
         },
         {
