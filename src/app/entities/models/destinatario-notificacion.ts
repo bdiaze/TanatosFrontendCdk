@@ -4,9 +4,8 @@ export interface DestinatarioNotificacion {
     idTipoReceptor: number;
     destino: string;
     codigoValidacion: string;
-    intentosValidacion: number;
     validado: boolean;
     fechaCreacion: string;
-    fechaEliminacion: string;
+    fechaEliminacion: string | null;
     vigencia: boolean;
 }
