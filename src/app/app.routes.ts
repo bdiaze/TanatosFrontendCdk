@@ -9,6 +9,7 @@ import { MantenedorTipoPeriodicidad } from './features/mantenedores/mantenedor-t
 import { MantenedorTipoFiscalizador } from './features/mantenedores/mantenedor-tipo-fiscalizador/mantenedor-tipo-fiscalizador';
 import { MantenedorCategoriaNorma } from './features/mantenedores/mantenedor-categoria-norma/mantenedor-categoria-norma';
 import { MantenedorTemplate } from './features/mantenedores/mantenedor-template/mantenedor-template';
+import { MantenedorDestinatarioNotificacion } from './features/mantenedores/mantenedor-destinatario-notificacion/mantenedor-destinatario-notificacion';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -37,5 +38,9 @@ export const routes: Routes = [
     {
         path: 'administracion/mantenedores/template',
         component: MantenedorTemplate,
+    },
+    {
+        path: 'mantenedores/destinatario',
+        component: MantenedorDestinatarioNotificacion,
     },
 ];

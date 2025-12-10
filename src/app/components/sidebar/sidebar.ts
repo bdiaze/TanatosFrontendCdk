@@ -2,7 +2,7 @@ import { AuthStore } from '@/app/services/auth-store';
 import { Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
 import { HlmSidebarImports, HlmSidebarService } from '@spartan-ng/helm/sidebar';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
-import { lucideChevronRight, lucideHouse, lucideSettings } from '@ng-icons/lucide';
+import { lucideChevronRight, lucideHouse, lucideSend, lucideSettings } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { RouterLink } from '@angular/router';
@@ -17,6 +17,7 @@ import { RouterLink } from '@angular/router';
             lucideHouse,
             lucideSettings,
             lucideChevronRight,
+            lucideSend,
         }),
     ],
 })
@@ -34,7 +35,23 @@ export class Sidebar {
     });
 
     opcionesMenu = computed<OpcionMenu[]>(() => {
-        const opciones: OpcionMenu[] = [];
+        const opciones: OpcionMenu[] = [
+            {
+                id: 1,
+                tipo: 'item',
+                titulo: 'Configuración',
+                icon: 'lucideSettings',
+                items: [
+                    {
+                        id: 11,
+                        tipo: 'subitem',
+                        icon: 'lucideSend',
+                        titulo: 'Tus Destinatarios',
+                        url: '/mantenedores/destinatario',
+                    },
+                ],
+            },
+        ];
 
         if (this.accesoAdmin()) {
             opciones.push({

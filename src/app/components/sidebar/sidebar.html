@@ -10,8 +10,8 @@
                 </li>
             </ul>
         </div>
-        <div hlmSidebarContent>
-            @for (item of opcionesMenu(); track item.id) { @if (item.tipo === 'item') {
+        <div hlmSidebarContent class="overflow-x-hidden">
+            @for (item of opcionesMenu(); track item.id) { @if (item.tipo === 'item' && item.url) {
             <ul hlmSidebarMenu>
                 <li hlmSidebarMenuItem>
                     <a hlmSidebarMenuButton [routerLink]="item.url" (click)="ocultarSidebar()">
@@ -22,6 +22,45 @@
                     </a>
                 </li>
             </ul>
+            } @if (item.tipo === 'item' && item.items && item.items.length > 0) {
+            <hlm-collapsible class="group/collapsible">
+                <li hlmSidebarMenuItem>
+                    <button
+                        hlmCollapsibleTrigger
+                        hlmSidebarMenuButton
+                        class="flex w-full items-center"
+                    >
+                        @if (item.icon) {
+                        <ng-icon hlm [name]="item.icon" />
+                        }
+                        <span>{{ item.titulo }}</span>
+                        <ng-icon
+                            name="lucideChevronRight"
+                            class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
+                            hlm
+                        />
+                    </button>
+                    <hlm-collapsible-content>
+                        <ul hlmSidebarMenuSub>
+                            @for (subItem of item.items; track subItem.id) {
+                            <li hlmSidebarMenuSubItem>
+                                <a
+                                    hlmSidebarMenuSubButton
+                                    [routerLink]="subItem.url"
+                                    class="w-full"
+                                    (click)="ocultarSidebar()"
+                                >
+                                    @if (subItem.icon) {
+                                    <ng-icon hlm [name]="subItem.icon" />
+                                    }
+                                    <span>{{ subItem.titulo }}</span>
+                                </a>
+                            </li>
+                            }
+                        </ul>
+                    </hlm-collapsible-content>
+                </li>
+            </hlm-collapsible>
             } @if (item.tipo === 'group') {
             <div hlmSidebarSeparator></div>
             <div hlmSidebarGroup>
@@ -95,7 +134,7 @@
         </div>
     </hlm-sidebar>
     <main hlmSidebarInset class="bg-transparent">
-        <header class="flex h-14 items-center justify-between px-4">
+        <header class="flex items-center justify-between px-4 pt-4">
             <button hlmSidebarTrigger class="bg-sidebar scale-125 shadow-md hover:cursor-pointer">
                 <span class="sr-only"></span>
             </button>

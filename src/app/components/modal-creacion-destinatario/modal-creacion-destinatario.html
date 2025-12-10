@@ -1,0 +1,111 @@
+<div
+    class="fixed left-0 top-0 bg-black/70 w-screen h-screen flex justify-center items-center z-50"
+    (click)="cerrar.emit()"
+>
+    <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
+        <div hlmCard (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md gap-3">
+            <div hlmCardHeader>
+                <div class="flex items-center gap-4">
+                    <ng-icon hlm name="lucideSend" class="text-green-700" />
+                    <h3 hlmCardTitle>Nuevo Destinatario:</h3>
+                </div>
+
+                <hlm-separator />
+            </div>
+            <div hlmCardContent>
+                <fieldset hlmFieldSet>
+                    <div hlmFieldGroup class="gap-3">
+                        <div hlmField class="gap-1">
+                            @if (cargandoTipoReceptores()) {
+                            <div class="flex justify-center-safe items-center gap-2">
+                                <hlm-spinner />
+                                <p hlmP>Cargando tipos...</p>
+                            </div>
+                            } @else {
+                            <hlm-radio-group
+                                formControlName="idTipoReceptor"
+                                class="grid gap-4"
+                                [class]="`grid-cols-${tiposReceptoresVigentes().length}`"
+                            >
+                                @for (tipoReceptor of tiposReceptoresVigentes(); track
+                                tipoReceptor.id) {
+                                <label
+                                    hlmLabel
+                                    class="text-center relative space-x-0 border-border flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-primary [&:has([data-checked=true])]:border-2 text-border [&:has([data-checked=true])]:text-primary"
+                                >
+                                    <hlm-radio [value]="tipoReceptor.id">
+                                        <ng-icon hlm [name]="obtenerIconName(tipoReceptor.id)" />
+                                    </hlm-radio>
+                                    {{ tipoReceptor.nombre }}
+                                </label>
+                                }
+                            </hlm-radio-group>
+                            }
+                        </div>
+                        <div hlmField class="gap-1">
+                            <div hlmButtonGroup>
+                                <div
+                                    hlmButtonGroupText
+                                    class="transition-all duration-500 ease-out"
+                                    [class.border-destructive]="invalid('destino')"
+                                    [class.text-destructive]="invalid('destino')"
+                                >
+                                    <label
+                                        for="destino"
+                                        hlmLabel
+                                        class="opacity-80 font-semibold whitespace-nowrap"
+                                        >Destinatario</label
+                                    >
+                                </div>
+                                <div hlmInputGroup>
+                                    <input
+                                        [formatoTelefono]="
+                                            form.controls['idTipoReceptor'].value === 2
+                                        "
+                                        [formatoCorreo]="
+                                            form.controls['idTipoReceptor'].value === 1
+                                        "
+                                        hlmInputGroupInput
+                                        class="transition-all duration-500 ease-out"
+                                        id="destino"
+                                        [placeholder]="
+                                            obtenerDestinoPlaceholder(
+                                                form.controls['idTipoReceptor'].value
+                                            )
+                                        "
+                                        formControlName="destino"
+                                    />
+                                </div>
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out"
+                                [class.opacity-100]="invalid('destino')"
+                                [class.opacity-0]="!invalid('destino')"
+                                [class.max-h-10]="invalid('destino')"
+                                [class.max-h-0]="!invalid('destino')"
+                                >Debes ingresar el destinatario</hlm-field-error
+                            >
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div hlmCardFooter class="flex flex-col items-center gap-4">
+                @if (error()) {
+                <div hlmAlert variant="destructive">
+                    <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                    <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                    <p hlmAlertDescription>{{ error() }}</p>
+                </div>
+                }
+                <div class="w-full flex items-center justify-end gap-6">
+                    <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
+                    <button hlmBtn type="submit" [disabled]="form.invalid || procesando()">
+                        @if (procesando()) {
+                        <hlm-spinner />
+                        } Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
