@@ -44,6 +44,16 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                     refreshTokenSubject = new Subject<string>();
 
                     return authDao.refreshAccessToken().pipe(
+                        catchError((refreshErr) => {
+                            isRefreshing = false;
+                            authStore.setAccessToken(null);
+                            document.cookie = `csrf_token=; max-age=0; path=/`;
+                            refreshTokenSubject.error(refreshErr);
+
+                            router.navigate(['']);
+
+                            return throwError(() => refreshErr);
+                        }),
                         tap((newToken) => {
                             authStore.setAccessToken(newToken.accessToken);
                             refreshTokenSubject.next(newToken.accessToken);
@@ -58,17 +68,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                                     },
                                 })
                             )
-                        ),
-                        catchError((refreshErr) => {
-                            isRefreshing = false;
-                            authStore.setAccessToken(null);
-                            document.cookie = `csrf_token=; max-age=0; path=/`;
-                            refreshTokenSubject.error(refreshErr);
-
-                            router.navigate(['']);
-
-                            return throwError(() => refreshErr);
-                        })
+                        )
                     );
                 } else {
                     return refreshTokenSubject.pipe(
