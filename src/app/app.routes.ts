@@ -10,6 +10,7 @@ import { MantenedorTipoFiscalizador } from './features/mantenedores/mantenedor-t
 import { MantenedorCategoriaNorma } from './features/mantenedores/mantenedor-categoria-norma/mantenedor-categoria-norma';
 import { MantenedorTemplate } from './features/mantenedores/mantenedor-template/mantenedor-template';
 import { MantenedorDestinatarioNotificacion } from './features/mantenedores/mantenedor-destinatario-notificacion/mantenedor-destinatario-notificacion';
+import { ValidarDestinatario } from './features/validadores/validar-destinatario/validar-destinatario';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -42,5 +43,9 @@ export const routes: Routes = [
     {
         path: 'mantenedores/destinatario',
         component: MantenedorDestinatarioNotificacion,
+    },
+    {
+        path: 'validar-destinatario',
+        component: ValidarDestinatario,
     },
 ];

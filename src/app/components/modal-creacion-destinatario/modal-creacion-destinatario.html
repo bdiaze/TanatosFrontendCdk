@@ -25,7 +25,7 @@
                             <hlm-radio-group
                                 formControlName="idTipoReceptor"
                                 class="grid gap-4"
-                                [class]="`grid-cols-${tiposReceptoresVigentes().length}`"
+                                [class.grid-cols-2]="tiposReceptoresVigentes().length >= 2"
                             >
                                 @for (tipoReceptor of tiposReceptoresVigentes(); track
                                 tipoReceptor.id) {
