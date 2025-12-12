@@ -6,31 +6,50 @@
             <img
                 class="w-24 drop-shadow drop-shadow-black/30 select-none"
                 src="/logo.svg"
-                alt="Logo Tánatos"
+                alt="Logo Todo en Orden"
             />
         </a>
         <nav>
-            <ul
-                class="flex flex-wrap text-sm md:text-base gap-1 md:gap-6 justify-center items-center"
-            >
+            <ul class="flex flex-wrap gap-1 md:gap-6 justify-center items-center">
                 <li>
-                    <a hlmBtn variant="link" routerLink="/privacidad">Privacidad</a>
+                    <a
+                        hlmBtn
+                        class="py-0 text-xs md:text-base"
+                        variant="link"
+                        routerLink="/privacidad"
+                        >Privacidad</a
+                    >
                 </li>
                 <li>
-                    <a hlmBtn variant="link" routerLink="/aviso-legal">Aviso Legal</a>
+                    <a
+                        hlmBtn
+                        class="py-0 text-xs md:text-base"
+                        variant="link"
+                        routerLink="/aviso-legal"
+                        >Aviso Legal</a
+                    >
                 </li>
                 <li>
-                    <a hlmBtn variant="link" routerLink="/politica-cookies">Política de Cookies</a>
+                    <a
+                        hlmBtn
+                        class="py-0 text-xs md:text-base"
+                        variant="link"
+                        routerLink="/politica-cookies"
+                        >Política de Cookies</a
+                    >
                 </li>
             </ul>
         </nav>
     </div>
-    <div class="text-center">
-        <small class="opacity-80"
-            >© 2025 Ankatu SpA ·
-            <a hlmBtn variant="link" href="mailto:contacto@bdiaze.cl" class="font-normal"
-                >contacto@bdiaze.cl</a
-            >
-        </small>
+    <div class="text-center flex justify-center-safe items-center gap-4">
+        <small class="opacity-80 text-xs md:text-sm">© 2025 Ankatu SpA </small>
+        <small class="opacity-80 text-xs md:text-sm">·</small>
+        <a
+            hlmBtn
+            variant="link"
+            href="mailto:contacto@ankatu.cl"
+            class="font-normal pl-0 opacity-80 text-xs md:text-sm"
+            >contacto@ankatu.cl</a
+        >
     </div>
 </footer>
