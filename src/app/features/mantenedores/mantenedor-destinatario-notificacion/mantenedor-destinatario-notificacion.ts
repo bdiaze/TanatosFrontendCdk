@@ -12,7 +12,9 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import {
     lucideBadgeCheck,
     lucideBadgeX,
+    lucideClockAlert,
     lucideEllipsis,
+    lucideHourglass,
     lucideSend,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
@@ -53,6 +55,7 @@ import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
             lucideBadgeCheck,
             lucideBadgeX,
             lucideSend,
+            lucideClockAlert,
         }),
     ],
 })
