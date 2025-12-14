@@ -327,6 +327,26 @@ export class ModalEdicionTemplate implements OnInit {
                             detalleTemplate.templateNormas = detalleTemplate?.templateNormas?.sort(
                                 (a, b) => a.idNorma - b.idNorma
                             );
+
+                            detalleTemplate?.templateNormas?.forEach((norma) => {
+                                if (norma.templateNormaFiscalizadores) {
+                                    norma.templateNormaFiscalizadores =
+                                        norma.templateNormaFiscalizadores?.sort(
+                                            (a, b) => a.idTipoFiscalizador - b.idTipoFiscalizador
+                                        );
+                                }
+
+                                if (norma.templateNormaNotificaciones) {
+                                    norma.templateNormaNotificaciones =
+                                        norma.templateNormaNotificaciones?.sort((a, b) =>
+                                            a.idTipoUnidadTiempoAntelacion !==
+                                            b.idTipoUnidadTiempoAntelacion
+                                                ? b.idTipoUnidadTiempoAntelacion -
+                                                  a.idTipoUnidadTiempoAntelacion
+                                                : b.cantAntelacion - a.cantAntelacion
+                                        );
+                                }
+                            });
                         }
 
                         detalleTemplate?.templateNormas?.forEach((norma) => {
