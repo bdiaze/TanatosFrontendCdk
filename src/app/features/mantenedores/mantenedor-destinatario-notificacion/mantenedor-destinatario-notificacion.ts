@@ -6,7 +6,7 @@ import { DestinatarioNotificacion } from '@/app/entities/models/destinatario-not
 import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
 import { EntDestinatarioNotificacionCrear } from '@/app/entities/others/ent-destinatario-notificacion-crear';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, effect } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import {
@@ -23,11 +23,12 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH4 } from '@spartan-ng/helm/typography';
+import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { ModalCreacionDestinatario } from '@/app/components/modal-creacion-destinatario/modal-creacion-destinatario';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
+import { NegocioStore } from '@/app/services/negocio-store';
 
 @Component({
     selector: 'app-mantenedor-destinatario-notificacion',
@@ -45,6 +46,7 @@ import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
         BrnTooltipImports,
         HlmTooltipImports,
         FormatearTelefonoPipe,
+        HlmP,
     ],
     templateUrl: './mantenedor-destinatario-notificacion.html',
     styleUrl: './mantenedor-destinatario-notificacion.scss',
@@ -60,8 +62,9 @@ import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
     ],
 })
 export class MantenedorDestinatarioNotificacion implements OnInit {
-    private dao: DestinatarioNotificacionDao = inject(DestinatarioNotificacionDao);
-    private tipoReceptorDao = inject(TipoReceptorNotificacionDao);
+    dao: DestinatarioNotificacionDao = inject(DestinatarioNotificacionDao);
+    tipoReceptorDao = inject(TipoReceptorNotificacionDao);
+    negocioStore = inject(NegocioStore);
 
     listado = signal([] as SalDestinatarioNotificacion[]);
     cargando = signal(true);
@@ -72,8 +75,19 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
 
     itemSeleccionado = signal<SalDestinatarioNotificacion | null>(null);
 
+    constructor() {
+        effect(() => {
+            if (this.negocioStore.negocioSeleccionado()) {
+                this.obtenerTodos();
+            }
+        });
+    }
+
     ngOnInit(): void {
-        this.obtenerTodos();
+        this.cargando.set(true);
+        if (this.negocioStore.negocioSeleccionado()) {
+            this.obtenerTodos();
+        }
     }
 
     obtenerTodos() {
@@ -81,7 +95,7 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
         this.listado.set([]);
 
         this.dao
-            .obtenerVigentes()
+            .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) =>
@@ -90,8 +104,8 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
                     this.listado.set(sorted);
                 },
                 error: (err) => {
-                    console.error('Error al obtener tipos de fiscalizadores', err);
-                    this.error.set(err.error ?? 'Error al obtener tipos de fiscalizadores');
+                    console.error('Error al obtener los destinatarios', err);
+                    this.error.set(err.error ?? 'Error al obtener los destinatarios');
                 },
             })
             .add(() => {

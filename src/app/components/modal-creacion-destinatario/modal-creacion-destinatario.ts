@@ -23,6 +23,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmP } from '@spartan-ng/helm/typography';
 import { FormatoTelefono } from '@/app/directives/formato-telefono';
 import { FormatoCorreo } from '@/app/directives/formato-correo';
+import { NegocioStore } from '@/app/services/negocio-store';
 
 @Component({
     selector: 'app-modal-creacion-destinatario',
@@ -55,6 +56,7 @@ export class ModalCreacionDestinatario implements OnInit {
 
     tipoReceptorDao = inject(TipoReceptorNotificacionDao);
     destinatarioDao = inject(DestinatarioNotificacionDao);
+    negocioStore = inject(NegocioStore);
 
     form: FormGroup<{
         destino: FormControl<string | null>;
@@ -116,6 +118,7 @@ export class ModalCreacionDestinatario implements OnInit {
 
     clickConfirmar() {
         const item: EntDestinatarioNotificacionCrear = {
+            idNegocio: this.negocioStore.negocioSeleccionado()?.id!,
             destino: this.form.controls['destino'].value!.replaceAll(' ', ''),
             idTipoReceptor: this.form.controls['idTipoReceptor'].value!,
         };

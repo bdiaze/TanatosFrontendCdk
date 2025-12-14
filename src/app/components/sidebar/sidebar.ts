@@ -1,15 +1,36 @@
 import { AuthStore } from '@/app/services/auth-store';
-import { Component, computed, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { HlmSidebarImports, HlmSidebarService } from '@spartan-ng/helm/sidebar';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
-import { lucideChevronRight, lucideHouse, lucideSend, lucideSettings } from '@ng-icons/lucide';
+import {
+    lucideStore,
+    lucideChevronRight,
+    lucideChevronsUpDown,
+    lucideHouse,
+    lucideSend,
+    lucideSettings,
+} from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { RouterLink } from '@angular/router';
+import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
+import { NegocioStore } from '@/app/services/negocio-store';
+import { NegocioDao } from '@/app/daos/negocio-dao';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { SalNegocio } from '@/app/entities/others/sal-negocio';
+import { setCookie } from '@/app/helpers/cookie-helper';
 
 @Component({
     selector: 'app-sidebar',
-    imports: [HlmSidebarImports, HlmCollapsibleImports, NgIcon, HlmIcon, RouterLink],
+    imports: [
+        HlmSidebarImports,
+        HlmCollapsibleImports,
+        NgIcon,
+        HlmIcon,
+        RouterLink,
+        HlmDropdownMenuImports,
+        HlmSpinnerImports,
+    ],
     templateUrl: './sidebar.html',
     styleUrl: './sidebar.scss',
     providers: [
@@ -18,12 +39,16 @@ import { RouterLink } from '@angular/router';
             lucideSettings,
             lucideChevronRight,
             lucideSend,
+            lucideStore,
+            lucideChevronsUpDown,
         }),
     ],
 })
-export class Sidebar {
+export class Sidebar implements OnInit {
     authStore = inject(AuthStore);
     sidebarService = inject(HlmSidebarService);
+    negocioStore = inject(NegocioStore);
+    negocioDao = inject(NegocioDao);
 
     sesionIniciada = this.authStore.sesionIniciada;
     accesoAdmin = computed<boolean>(() => {
@@ -34,69 +59,88 @@ export class Sidebar {
         return false;
     });
 
+    negocioSeleccionado = this.negocioStore.negocioSeleccionado;
+    negociosUsuario = this.negocioStore.negociosUsuario;
+
     opcionesMenu = computed<OpcionMenu[]>(() => {
-        const opciones: OpcionMenu[] = [
-            {
-                id: 1,
-                tipo: 'item',
-                titulo: 'Configuración',
-                icon: 'lucideSettings',
+        const opciones: OpcionMenu[] = [];
+
+        if (this.negocioSeleccionado()) {
+            opciones.push({
+                id: crypto.randomUUID(),
+                tipo: 'group',
+                titulo: this.negocioSeleccionado()?.nombre!,
                 items: [
                     {
-                        id: 11,
-                        tipo: 'subitem',
+                        id: crypto.randomUUID(),
+                        tipo: 'item',
                         icon: 'lucideSend',
                         titulo: 'Tus Destinatarios',
                         url: '/mantenedores/destinatario',
                     },
                 ],
-            },
-        ];
+            });
+        }
+
+        opciones.push({
+            id: crypto.randomUUID(),
+            tipo: 'group',
+            titulo: 'General',
+            items: [
+                {
+                    id: crypto.randomUUID(),
+                    tipo: 'item',
+                    titulo: 'Tus Negocios',
+                    icon: 'lucideStore',
+                    url: '/mantenedores/negocio',
+                },
+            ],
+        });
 
         if (this.accesoAdmin()) {
             opciones.push({
-                id: 2,
+                id: crypto.randomUUID(),
                 tipo: 'group',
                 titulo: 'Administración',
                 items: [
                     {
-                        id: 21,
+                        id: crypto.randomUUID(),
                         tipo: 'item',
                         titulo: 'Mantenedores',
                         icon: 'lucideSettings',
                         items: [
                             {
-                                id: 211,
+                                id: crypto.randomUUID(),
                                 tipo: 'subitem',
                                 titulo: 'Template',
                                 url: '/administracion/mantenedores/template',
                             },
                             {
-                                id: 212,
+                                id: crypto.randomUUID(),
                                 tipo: 'subitem',
                                 titulo: 'Categoria Norma',
                                 url: '/administracion/mantenedores/categoria-norma',
                             },
                             {
-                                id: 213,
+                                id: crypto.randomUUID(),
                                 tipo: 'subitem',
                                 titulo: 'Tipo Receptor Notificación',
                                 url: '/administracion/mantenedores/tipo-receptor-notificacion',
                             },
                             {
-                                id: 214,
+                                id: crypto.randomUUID(),
                                 tipo: 'subitem',
                                 titulo: 'Tipo Fiscalizador',
                                 url: '/administracion/mantenedores/tipo-fiscalizador',
                             },
                             {
-                                id: 215,
+                                id: crypto.randomUUID(),
                                 tipo: 'subitem',
                                 titulo: 'Tipo Periodicidad',
                                 url: '/administracion/mantenedores/tipo-periodicidad',
                             },
                             {
-                                id: 216,
+                                id: crypto.randomUUID(),
                                 tipo: 'subitem',
                                 titulo: 'Tipo Unidad Tiempo',
                                 url: '/administracion/mantenedores/tipo-unidad-tiempo',
@@ -110,13 +154,29 @@ export class Sidebar {
         return opciones;
     });
 
+    cargandoNegocios = signal<boolean>(true);
+
+    ngOnInit(): void {
+        this.negocioDao
+            .obtenerVigentes()
+            .subscribe({})
+            .add(() => {
+                this.cargandoNegocios.set(false);
+            });
+    }
+
     ocultarSidebar() {
         this.sidebarService.toggleSidebar();
+    }
+
+    cambiarNegocio(negocio: SalNegocio) {
+        this.negocioSeleccionado.set(negocio);
+        setCookie('NegocioSeleccionado', `${negocio.id}`);
     }
 }
 
 export interface OpcionMenu {
-    id: number;
+    id: string;
     tipo: string;
     titulo: string;
     icon?: string;

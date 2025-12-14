@@ -4,9 +4,63 @@
         <div hlmSidebarHeader>
             <ul hlmSidebarMenu>
                 <li hlmSidebarMenuItem>
-                    <a hlmSidebarMenuButton routerLink="/" (click)="ocultarSidebar()">
-                        <span>Todo en Orden</span>
-                    </a>
+                    <button
+                        hlmSidebarMenuButton
+                        [hlmDropdownMenuTrigger]="menuNegocios"
+                        class="h-16"
+                        [disabled]="cargandoNegocios()"
+                    >
+                        <div class="flex justify-center items-center w-full gap-3">
+                            <div
+                                class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+                            >
+                                <ng-icon name="lucideStore" class="text-base" />
+                            </div>
+                            <div class="grid flex-1 text-left text-sm leading-tight">
+                                <span class="truncate font-medium">TODO EN ORDEN</span>
+                                <span class="truncate text-xs flex items-center gap-1">
+                                    @if (cargandoNegocios()) {
+                                    <hlm-spinner class="text-xs" />
+                                    Cargando negocios... } @else {
+                                    {{
+                                        cargandoNegocios()
+                                            ? 'Cargando negocios...'
+                                            : negocioSeleccionado()?.nombre ??
+                                              'Seleccionar negocio...'
+                                    }}
+                                    }
+                                </span>
+                            </div>
+                            <div class="size-4">
+                                <ng-icon
+                                    hlm
+                                    name="lucideChevronsUpDown"
+                                    class="ml-auto"
+                                    size="sm"
+                                />
+                            </div>
+                        </div>
+                    </button>
+                    <ng-template #menuNegocios>
+                        <hlm-dropdown-menu class="w-60">
+                            @for(negocio of negociosUsuario(); track negocio.id) {
+                            <button
+                                hlmDropdownMenuCheckbox
+                                [checked]="negocioSeleccionado()?.id === negocio.id"
+                                (triggered)="cambiarNegocio(negocio)"
+                            >
+                                <hlm-dropdown-menu-checkbox-indicator />
+                                <span>{{ negocio.nombre }}</span>
+                                <hlm-dropdown-menu-shortcut>
+                                    <ng-icon
+                                        name="lucideStore"
+                                        class="text-sm translate-y-0.5 mr-1"
+                                    />
+                                </hlm-dropdown-menu-shortcut>
+                            </button>
+                            }
+                        </hlm-dropdown-menu>
+                    </ng-template>
                 </li>
             </ul>
         </div>
@@ -63,7 +117,7 @@
             </hlm-collapsible>
             } @if (item.tipo === 'group') {
             <div hlmSidebarSeparator></div>
-            <div hlmSidebarGroup>
+            <div hlmSidebarGroup class="pt-0">
                 <div hlmSidebarGroupLabel>
                     @if (item.icon) {
                     <ng-icon hlm [name]="item.icon" />

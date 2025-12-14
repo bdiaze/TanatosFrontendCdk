@@ -4,9 +4,12 @@
             <thead hlmTHead>
                 <tr hlmTr>
                     <th colspan="5">
-                        <div class="flex justify-center-safe items-center gap-3 p-1">
+                        <p hlmP class="font-semibold opacity-65">
+                            {{ negocioStore.negocioSeleccionado()?.nombre }}
+                        </p>
+                        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
                             <ng-icon hlm name="lucideSend" />
-                            <h4 hlmH4 class="py-3">Tus Destinatarios</h4>
+                            <h4 hlmH4>Tus Destinatarios</h4>
                         </div>
                     </th>
                 </tr>
