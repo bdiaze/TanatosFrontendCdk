@@ -29,7 +29,7 @@
         <div hlmCardContent>
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
-                    @for (campo of campos; track campo.llave) {
+                    @for (campo of campos; track campo.llave) { @if (campo.tipo !== 'oculto') {
                     <div hlmField class="gap-1">
                         @if (campo.tipo === 'string' || campo.tipo === 'number') {
                         <div hlmButtonGroup>
@@ -92,7 +92,7 @@
                             >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
                         >
                     </div>
-                    }
+                    } }
                 </div>
             </fieldset>
         </div>

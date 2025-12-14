@@ -81,7 +81,7 @@ export class ModalEdicion implements OnInit {
 export interface CampoDinamico {
     llave: string;
     nombre?: string;
-    tipo: 'string' | 'number' | 'boolean';
+    tipo: 'string' | 'number' | 'boolean' | 'oculto';
     requerido: boolean;
     deshabilitado: boolean;
 }
