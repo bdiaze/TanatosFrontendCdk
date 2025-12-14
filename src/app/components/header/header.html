@@ -9,7 +9,7 @@
         </a>
         <nav>
             <ul class="flex flex-wrap gap-4 md:gap-6 justify-center items-center">
-                @if (!sesionIniciada()) {
+                @if (!sesionIniciada() && !logoutRunning()) {
                 <li>
                     <app-login></app-login>
                 </li>

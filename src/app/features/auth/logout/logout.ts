@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { environment } from '@environment';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { clearCookie } from '@/app/helpers/cookie-helper';
+import { NegocioStore } from '@/app/services/negocio-store';
 
 @Component({
     selector: 'app-logout',
@@ -15,10 +17,11 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 export class Logout {
     private authDao = inject(AuthDao);
     private authStore = inject(AuthStore);
+    private negocioStore = inject(NegocioStore);
 
     backgroundRefreshRunning = this.authStore.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;
-    cerrandoSesion = signal<boolean>(false);
+    cerrandoSesion = this.authStore.logoutRunning;
 
     deshabilitarBoton = computed<boolean>(() => {
         return this.cerrandoSesion() || this.backgroundRefreshRunning() || this.callbackRunning();
@@ -38,7 +41,11 @@ export class Logout {
             })
             .add(() => {
                 this.authStore.setAccessToken(null);
-                document.cookie = `csrf_token=; max-age=0; path=/`;
+                clearCookie('csrf_token');
+
+                this.negocioStore.negociosUsuario.set([]);
+                this.negocioStore.negocioSeleccionado.set(null);
+                clearCookie('NegocioSeleccionado');
 
                 const url =
                     `${environment.cognitoService.baseUrl}/logout?` +

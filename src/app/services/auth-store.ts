@@ -82,4 +82,6 @@ export class AuthStore {
     }
 
     callbackRunning = signal<boolean>(false);
+
+    logoutRunning = signal<boolean>(false);
 }

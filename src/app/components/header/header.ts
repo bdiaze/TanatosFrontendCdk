@@ -15,6 +15,7 @@ export class Header implements OnInit {
     private authStore = inject(AuthStore);
 
     sesionIniciada = this.authStore.sesionIniciada;
+    logoutRunning = this.authStore.logoutRunning;
 
     ngOnInit() {
         this.authStore.backgroundRefresh();

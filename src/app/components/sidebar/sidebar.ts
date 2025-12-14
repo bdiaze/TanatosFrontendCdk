@@ -1,5 +1,14 @@
 import { AuthStore } from '@/app/services/auth-store';
-import { Component, computed, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import {
+    Component,
+    computed,
+    effect,
+    ElementRef,
+    inject,
+    OnInit,
+    signal,
+    ViewChild,
+} from '@angular/core';
 import { HlmSidebarImports, HlmSidebarService } from '@spartan-ng/helm/sidebar';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
 import {
@@ -156,13 +165,18 @@ export class Sidebar implements OnInit {
 
     cargandoNegocios = signal<boolean>(true);
 
+    constructor() {
+        effect(() => {
+            if (this.sesionIniciada()) {
+                this.obtenerNegocios();
+            }
+        });
+    }
+
     ngOnInit(): void {
-        this.negocioDao
-            .obtenerVigentes()
-            .subscribe({})
-            .add(() => {
-                this.cargandoNegocios.set(false);
-            });
+        if (this.sesionIniciada()) {
+            this.obtenerNegocios();
+        }
     }
 
     ocultarSidebar() {
@@ -172,6 +186,16 @@ export class Sidebar implements OnInit {
     cambiarNegocio(negocio: SalNegocio) {
         this.negocioSeleccionado.set(negocio);
         setCookie('NegocioSeleccionado', `${negocio.id}`);
+    }
+
+    obtenerNegocios() {
+        this.cargandoNegocios.set(true);
+        this.negocioDao
+            .obtenerVigentes()
+            .subscribe({})
+            .add(() => {
+                this.cargandoNegocios.set(false);
+            });
     }
 }
 

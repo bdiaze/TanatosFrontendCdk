@@ -29,6 +29,7 @@ import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { NegocioStore } from '@/app/services/negocio-store';
+import { AuthStore } from '@/app/services/auth-store';
 
 @Component({
     selector: 'app-mantenedor-destinatario-notificacion',
@@ -64,6 +65,7 @@ import { NegocioStore } from '@/app/services/negocio-store';
 export class MantenedorDestinatarioNotificacion implements OnInit {
     dao: DestinatarioNotificacionDao = inject(DestinatarioNotificacionDao);
     tipoReceptorDao = inject(TipoReceptorNotificacionDao);
+    authStote = inject(AuthStore);
     negocioStore = inject(NegocioStore);
 
     listado = signal([] as SalDestinatarioNotificacion[]);
@@ -77,7 +79,7 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
 
     constructor() {
         effect(() => {
-            if (this.negocioStore.negocioSeleccionado()) {
+            if (this.authStote.sesionIniciada() && this.negocioStore.negocioSeleccionado()) {
                 this.obtenerTodos();
             }
         });
