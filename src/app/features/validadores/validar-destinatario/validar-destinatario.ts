@@ -9,16 +9,14 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import { HlmH2, HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH2, HlmH4 } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-validar-destinatario',
     imports: [
         HlmButtonImports,
         HlmH2,
-        HlmH3,
         HlmH4,
-        HlmP,
         HlmAlertImports,
         NgIcon,
         HlmIcon,

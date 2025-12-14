@@ -14,11 +14,19 @@ import {
     FormArray,
     FormControl,
     FormGroup,
+    FormsModule,
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideBadgeX, lucideChevronDown, lucideTrash2 } from '@ng-icons/lucide';
+import {
+    lucideBadgeCheck,
+    lucideBadgeX,
+    lucideChevronDown,
+    lucidePlus,
+    lucideTrash2,
+    lucideX,
+} from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -82,10 +90,20 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
         HlmBadgeImports,
         BrnPopoverImports,
         HlmPopoverImports,
+        FormsModule,
     ],
     templateUrl: './modal-edicion-template.html',
     styleUrl: './modal-edicion-template.scss',
-    providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideChevronDown, lucideTrash2 })],
+    providers: [
+        provideIcons({
+            lucideBadgeCheck,
+            lucideBadgeX,
+            lucideChevronDown,
+            lucideTrash2,
+            lucidePlus,
+            lucideX,
+        }),
+    ],
 })
 export class ModalEdicionTemplate implements OnInit {
     @Input() item: Template | null | undefined;
@@ -351,7 +369,35 @@ export class ModalEdicionTemplate implements OnInit {
         return casosSinDichoPadre;
     }
 
-    seleccionarFiscalizador(normaControl: FormGroup, idFiscalizador: number) {
+    formFiscalizador = '';
+
+    agregarFiscalizador(normaControl: FormGroup) {
+        const idFiscalizador = this.formFiscalizador;
+
+        this.formFiscalizador = '';
+
+        const idx = (
+            normaControl.controls['templateNormaFiscalizadores'] as FormArray
+        ).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador
+        );
+
+        if (idx !== -1) {
+            return;
+        }
+
+        (normaControl.controls['templateNormaFiscalizadores'] as FormArray).push(
+            new FormGroup({
+                idTipoFiscalizador: new FormControl(idFiscalizador, {
+                    nonNullable: true,
+                }),
+            })
+        );
+    }
+
+    quitarFiscalizador(normaControl: FormGroup, idFiscalizador: number) {
         const idx = (
             normaControl.controls['templateNormaFiscalizadores'] as FormArray
         ).controls.findIndex(
@@ -362,23 +408,7 @@ export class ModalEdicionTemplate implements OnInit {
 
         if (idx !== -1) {
             (normaControl.controls['templateNormaFiscalizadores'] as FormArray).removeAt(idx);
-        } else {
-            (normaControl.controls['templateNormaFiscalizadores'] as FormArray).push(
-                new FormGroup({
-                    idTipoFiscalizador: new FormControl(idFiscalizador, {
-                        nonNullable: true,
-                    }),
-                })
-            );
         }
-    }
-
-    estadoFiscalizador(normaControl: FormGroup, idFiscalizador: number): boolean {
-        return (normaControl.controls['templateNormaFiscalizadores'] as FormArray).controls.some(
-            (ctrl: AbstractControl) =>
-                ctrl instanceof FormGroup &&
-                ctrl.get('idTipoFiscalizador')?.value === idFiscalizador
-        );
     }
 
     nombreFiscalizador(idFiscalizador: number): string {
@@ -390,11 +420,77 @@ export class ModalEdicionTemplate implements OnInit {
             : fiscalizador?.nombre!;
     }
 
-    nombreUnidadTiempo(idUnidadTiempo: number): string {
+    formNotifCantTiempo = '';
+    formNotifUnidadTiempo = '';
+
+    agregarNotificacionPrevia(normaControl: FormGroup) {
+        const cantTiempo = this.formNotifCantTiempo;
+        const idUnidadTiempo = this.formNotifUnidadTiempo;
+
+        this.formNotifCantTiempo = '';
+        this.formNotifUnidadTiempo = '';
+
+        const idx = (
+            normaControl.controls['templateNormaNotificaciones'] as FormArray
+        ).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['cantAntelacion']?.value === cantTiempo &&
+                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value === idUnidadTiempo
+        );
+
+        if (idx !== -1) {
+            return;
+        }
+
+        (normaControl.controls['templateNormaNotificaciones'] as FormArray).push(
+            new FormGroup({
+                idTipoUnidadTiempoAntelacion: new FormControl(idUnidadTiempo, {
+                    nonNullable: true,
+                }),
+                cantAntelacion: new FormControl(cantTiempo, {
+                    nonNullable: true,
+                }),
+            })
+        );
+    }
+
+    quitarNotificacionPrevia(
+        normaControl: FormGroup,
+        cantAntelacion: number,
+        idTipoUnidadTiempoAntelacion: number
+    ) {
+        const idx = (
+            normaControl.controls['templateNormaNotificaciones'] as FormArray
+        ).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['cantAntelacion']?.value === cantAntelacion &&
+                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value ===
+                    idTipoUnidadTiempoAntelacion
+        );
+
+        if (idx !== -1) {
+            (normaControl.controls['templateNormaNotificaciones'] as FormArray).removeAt(idx);
+        }
+    }
+
+    nombreUnidadTiempo(idUnidadTiempo: number, cantUnidadTiempo: number | null = null): string {
         const unidadTiempo = this.unidadesTiempoExistentes().find(
             (unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo
         );
-        return unidadTiempo?.nombre!;
+
+        let cantidad = '';
+        if (cantUnidadTiempo) {
+            cantidad = `${cantUnidadTiempo}`;
+        }
+
+        let plural = '';
+        if (cantUnidadTiempo && cantUnidadTiempo > 1) {
+            plural = 's';
+        }
+
+        return `${cantidad} ${unidadTiempo?.nombre!}${plural}`;
     }
 
     toggleOpenedNorma(norma: FormGroup) {
