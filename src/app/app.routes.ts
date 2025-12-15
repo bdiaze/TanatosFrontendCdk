@@ -12,6 +12,7 @@ import { MantenedorTemplate } from './features/mantenedores/mantenedor-template/
 import { MantenedorDestinatarioNotificacion } from './features/mantenedores/mantenedor-destinatario-notificacion/mantenedor-destinatario-notificacion';
 import { ValidarDestinatario } from './features/validadores/validar-destinatario/validar-destinatario';
 import { MantenedorNegocio } from './features/mantenedores/mantenedor-negocio/mantenedor-negocio';
+import { MantenedorNormaSuscrita } from './features/mantenedores/mantenedor-norma-suscrita/mantenedor-norma-suscrita';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -48,6 +49,10 @@ export const routes: Routes = [
     {
         path: 'mantenedores/negocio',
         component: MantenedorNegocio,
+    },
+    {
+        path: 'mantenedores/norma-suscrita',
+        component: MantenedorNormaSuscrita,
     },
     {
         path: 'validar-destinatario',

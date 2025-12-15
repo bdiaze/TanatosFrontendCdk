@@ -18,6 +18,7 @@ import {
     lucideHouse,
     lucideSend,
     lucideSettings,
+    lucideCalendarCog,
 } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -50,6 +51,7 @@ import { setCookie } from '@/app/helpers/cookie-helper';
             lucideSend,
             lucideStore,
             lucideChevronsUpDown,
+            lucideCalendarCog,
         }),
     ],
 })
@@ -80,6 +82,13 @@ export class Sidebar implements OnInit {
                 tipo: 'group',
                 titulo: this.negocioSeleccionado()?.nombre!,
                 items: [
+                    {
+                        id: crypto.randomUUID(),
+                        tipo: 'item',
+                        icon: 'lucideCalendarCog',
+                        titulo: 'Tus Tareas',
+                        url: '/mantenedores/norma-suscrita',
+                    },
                     {
                         id: crypto.randomUUID(),
                         tipo: 'item',

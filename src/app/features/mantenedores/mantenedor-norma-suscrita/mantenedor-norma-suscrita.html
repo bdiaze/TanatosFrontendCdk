@@ -1,0 +1,105 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div hlmTableContainer>
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th colspan="5">
+                        <p hlmP class="font-semibold opacity-65">
+                            {{ negocioStore.negocioSeleccionado()?.nombre }}
+                        </p>
+                        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
+                            <ng-icon hlm name="lucideCalendarCog" />
+                            <h4 hlmH4>Tus Tareas</h4>
+                        </div>
+                    </th>
+                </tr>
+                <tr hlmTr>
+                    <th hlmTh>Nombre</th>
+                    <th hlmTh>Descripción</th>
+                    <th hlmTh>Periodicidad</th>
+                    <th hlmTh class="text-center w-24">Activo</th>
+                    <th hlmTh class="w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargando()) {
+                <tr hlmTr>
+                    <td hlmTd colspan="5">
+                        <div class="flex justify-center-safe">
+                            <hlm-spinner />
+                            Cargando...
+                        </div>
+                    </td>
+                </tr>
+                } @else { @for (item of listado(); track item.id) {
+                <tr hlmTr>
+                    <td hlmTd class="whitespace-normal">
+                        {{ item.nombre }}
+                    </td>
+                    <td hlmTd class="whitespace-normal">
+                        {{ item.descripcion }}
+                    </td>
+                    <td hlmTd class="whitespace-normal">
+                        {{ item.nombreTipoPeriodicidad }}
+                    </td>
+                    <td hlmTd class="text-center">
+                        @if (item.activado) {
+                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                        } @else {
+                        <ng-icon
+                            hlmTooltipTrigger
+                            hlm
+                            name="lucideBadgeX"
+                            class="text-destructive"
+                        />
+                        }
+                    </td>
+                    <td hlmTd>
+                        <div class="flex items-center justify-center-safe">
+                            <button hlmBtn variant="outline" [hlmDropdownMenuTrigger]="menu">
+                                <ng-icon hlm size="sm" name="lucideEllipsis" />
+                            </button>
+                            <ng-template #menu>
+                                <hlm-dropdown-menu>
+                                    <hlm-dropdown-menu-group>
+                                        <button
+                                            hlmDropdownMenuItem
+                                            variant="destructive"
+                                            (click)="openModalEliminar(item)"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </hlm-dropdown-menu-group>
+                                </hlm-dropdown-menu>
+                            </ng-template>
+                        </div>
+                    </td>
+                </tr>
+                } @empty {
+                <tr hlmTr>
+                    <td hlmTd colspan="5" class="text-center">No tienes tareas registradas</td>
+                </tr>
+                } }
+            </tbody>
+        </table>
+        <button hlmBtn (click)="openModalCrear()" class="m-4">Nuevo Tarea</button>
+    </div>
+    @if (error()) {
+    <div hlmAlert variant="destructive" class="mt-6">
+        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+        <p hlmAlertDescription>{{ error() }}</p>
+    </div>
+    }
+</section>
+
+@if (showModalEliminar()) {
+<app-modal-eliminacion
+    [item]="itemSeleccionado()"
+    titulo="Quitar una tarea:"
+    [descripcion]="`¿Seguro que deseas quitar la tarea ${itemSeleccionado()?.nombre}?`"
+    (cerrar)="closeModalEliminar()"
+    (eliminar)="eliminar($event)"
+>
+</app-modal-eliminacion>
+} @if (showModalCrear()) { }

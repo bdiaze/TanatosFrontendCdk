@@ -1,38 +1,27 @@
-import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
-import { DestinatarioNotificacionDao } from '@/app/daos/destinatario-notificacion-dao';
-import { TipoReceptorNotificacionDao } from '@/app/daos/tipo-receptor-notificacion-dao';
-import { DestinatarioNotificacion } from '@/app/entities/models/destinatario-notificacion';
-import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
-import { EntDestinatarioNotificacionCrear } from '@/app/entities/others/ent-destinatario-notificacion-crear';
-import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, computed, inject, OnInit, signal, effect } from '@angular/core';
+import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
+import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
+import { AuthStore } from '@/app/services/auth-store';
+import { NegocioStore } from '@/app/services/negocio-store';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import {
     lucideBadgeCheck,
     lucideBadgeX,
-    lucideClockAlert,
+    lucideCalendarCog,
     lucideEllipsis,
-    lucideHourglass,
-    lucideSend,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
-import { ModalCreacionDestinatario } from '@/app/components/modal-creacion-destinatario/modal-creacion-destinatario';
-import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
-import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
-import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
-import { NegocioStore } from '@/app/services/negocio-store';
-import { AuthStore } from '@/app/services/auth-store';
 
 @Component({
-    selector: 'app-mantenedor-destinatario-notificacion',
+    selector: 'app-mantenedor-norma-suscrita',
     imports: [
         ModalEliminacion,
         HlmButtonImports,
@@ -43,42 +32,38 @@ import { AuthStore } from '@/app/services/auth-store';
         HlmIcon,
         HlmDropdownMenuImports,
         HlmSpinnerImports,
-        ModalCreacionDestinatario,
-        BrnTooltipImports,
-        HlmTooltipImports,
-        FormatearTelefonoPipe,
         HlmP,
     ],
-    templateUrl: './mantenedor-destinatario-notificacion.html',
-    styleUrl: './mantenedor-destinatario-notificacion.scss',
+    templateUrl: './mantenedor-norma-suscrita.html',
+    styleUrl: './mantenedor-norma-suscrita.scss',
     providers: [
         provideIcons({
             lucideTriangleAlert,
             lucideEllipsis,
             lucideBadgeCheck,
             lucideBadgeX,
-            lucideSend,
-            lucideClockAlert,
+            lucideCalendarCog,
         }),
     ],
 })
-export class MantenedorDestinatarioNotificacion implements OnInit {
-    dao: DestinatarioNotificacionDao = inject(DestinatarioNotificacionDao);
-    authStote = inject(AuthStore);
+export class MantenedorNormaSuscrita implements OnInit {
+    normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
+    authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
 
-    listado = signal([] as SalDestinatarioNotificacion[]);
+    listado = signal([] as SalNormaSuscrita[]);
     cargando = signal(true);
     error = signal('');
 
     showModalEliminar = signal(false);
+    showModalEditar = signal(false);
     showModalCrear = signal(false);
 
-    itemSeleccionado = signal<SalDestinatarioNotificacion | null>(null);
+    itemSeleccionado = signal<SalNormaSuscrita | null>(null);
 
     constructor() {
         effect(() => {
-            if (this.authStote.sesionIniciada() && this.negocioStore.negocioSeleccionado()) {
+            if (this.authStore.sesionIniciada() && this.negocioStore.negocioSeleccionado()) {
                 this.obtenerTodos();
             }
         });
@@ -95,18 +80,22 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
         this.cargando.set(true);
         this.listado.set([]);
 
-        this.dao
+        this.normaSuscritaDao
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) =>
-                        a.destino.toLocaleLowerCase().localeCompare(b.destino.toLocaleLowerCase())
+                        a.nombre && b.nombre
+                            ? a.nombre
+                                  .toLocaleLowerCase()
+                                  .localeCompare(b.nombre.toLocaleLowerCase())
+                            : a.id - b.id
                     );
                     this.listado.set(sorted);
                 },
                 error: (err) => {
-                    console.error('Error al obtener los destinatarios', err);
-                    this.error.set(err.error ?? 'Error al obtener los destinatarios');
+                    console.error('Error al obtener las normas vigentes', err);
+                    this.error.set(err.error ?? 'Error al obtener las normas vigentes');
                 },
             })
             .add(() => {
@@ -114,7 +103,7 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
             });
     }
 
-    openModalEliminar(item: SalDestinatarioNotificacion) {
+    openModalEliminar(item: SalNormaSuscrita) {
         this.itemSeleccionado.set(item);
         this.showModalEliminar.set(true);
     }
@@ -124,16 +113,16 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
         this.itemSeleccionado.set(null);
     }
 
-    eliminar(item: SalDestinatarioNotificacion) {
+    eliminar(item: SalNormaSuscrita) {
         this.cargando.set(true);
-        this.dao.eliminar(item.id).subscribe({
+        this.normaSuscritaDao.eliminar(item.id).subscribe({
             next: () => {
                 this.obtenerTodos();
             },
             error: (err) => {
                 this.cargando.set(false);
-                console.error('Error al eliminar el destinatario', err);
-                this.error.set(err.error ?? 'Error al eliminar el destinatario');
+                console.error('Error al eliminar la norma', err);
+                this.error.set(err.error ?? 'Error al eliminar la norma');
             },
         });
         this.showModalEliminar.set(false);
@@ -149,8 +138,19 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
         this.itemSeleccionado.set(null);
     }
 
-    confirmar(item: SalDestinatarioNotificacion) {
+    openModalEditar(item: SalNormaSuscrita) {
+        this.itemSeleccionado.set(item);
+        this.showModalEditar.set(true);
+    }
+
+    closeModalEditar() {
+        this.showModalEditar.set(false);
+        this.itemSeleccionado.set(null);
+    }
+
+    confirmar(item: SalNormaSuscrita) {
         this.obtenerTodos();
         this.showModalCrear.set(false);
+        this.showModalEditar.set(false);
     }
 }
