@@ -29,6 +29,7 @@ import { NegocioDao } from '@/app/daos/negocio-dao';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { setCookie } from '@/app/helpers/cookie-helper';
+import { ClickOutside } from '@/app/directives/click-outside';
 
 @Component({
     selector: 'app-sidebar',
@@ -40,6 +41,7 @@ import { setCookie } from '@/app/helpers/cookie-helper';
         RouterLink,
         HlmDropdownMenuImports,
         HlmSpinnerImports,
+        ClickOutside,
     ],
     templateUrl: './sidebar.html',
     styleUrl: './sidebar.scss',
@@ -189,7 +191,7 @@ export class Sidebar implements OnInit {
     }
 
     ocultarSidebar() {
-        this.sidebarService.toggleSidebar();
+        this.sidebarService.closeSidebar();
     }
 
     cambiarNegocio(negocio: SalNegocio) {

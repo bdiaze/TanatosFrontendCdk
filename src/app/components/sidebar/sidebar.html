@@ -1,8 +1,33 @@
 @if(sesionIniciada()){
 <div hlmSidebarWrapper>
-    <hlm-sidebar class="shadow-md">
+    <hlm-sidebar class="shadow-md z-50" clickOutside (onClickOutside)="ocultarSidebar()">
         <div hlmSidebarHeader>
             <ul hlmSidebarMenu>
+                @if (negociosUsuario().length <= 1) {
+                <li hlmSidebarMenuItem>
+                    <div class="h-16 p-2 flex justify-center items-center w-full gap-3">
+                        <div
+                            class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+                        >
+                            <ng-icon name="lucideStore" class="text-base" />
+                        </div>
+                        <div class="grid flex-1 text-left text-sm leading-tight">
+                            <span class="truncate font-medium">TODO EN ORDEN</span>
+                            <span class="truncate text-xs flex items-center gap-1">
+                                @if (cargandoNegocios()) {
+                                <hlm-spinner class="text-xs" />
+                                Cargando negocios... } @else {
+                                {{
+                                    cargandoNegocios()
+                                        ? 'Cargando negocios...'
+                                        : negocioSeleccionado()?.nombre ?? 'Seleccionar negocio...'
+                                }}
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </li>
+                } @else {
                 <li hlmSidebarMenuItem>
                     <button
                         hlmSidebarMenuButton
@@ -62,6 +87,7 @@
                         </hlm-dropdown-menu>
                     </ng-template>
                 </li>
+                }
             </ul>
         </div>
         <div hlmSidebarContent class="overflow-x-hidden">
@@ -187,7 +213,7 @@
             } }
         </div>
     </hlm-sidebar>
-    <main hlmSidebarInset class="bg-transparent">
+    <main hlmSidebarInset class="bg-transparent z-50">
         <header class="flex items-center justify-between px-4 pt-4">
             <button hlmSidebarTrigger class="bg-sidebar scale-125 shadow-md hover:cursor-pointer">
                 <span class="sr-only"></span>
