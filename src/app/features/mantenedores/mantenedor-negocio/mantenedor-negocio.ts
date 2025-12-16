@@ -16,6 +16,7 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4 } from '@spartan-ng/helm/typography';
 
@@ -31,6 +32,7 @@ import { HlmH4 } from '@spartan-ng/helm/typography';
         NgIcon,
         HlmIcon,
         HlmDropdownMenuImports,
+        HlmSpinnerImports,
     ],
     templateUrl: './mantenedor-negocio.html',
     styleUrl: './mantenedor-negocio.scss',
