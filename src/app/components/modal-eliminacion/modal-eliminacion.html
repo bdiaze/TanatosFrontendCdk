@@ -2,37 +2,45 @@
     class="fixed left-0 top-0 p-4 bg-black/70 w-screen h-screen flex justify-center items-center z-50"
     (click)="cerrar.emit()"
 >
-    <div hlmCard (click)="$event.stopPropagation()">
+    <div hlmCard (click)="$event.stopPropagation()" class="px-3">
         <div hlmCardHeader>
-            <div class="flex items-center gap-4">
-                <div class="text-red-700">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-7"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z"
-                        />
-                    </svg>
-                </div>
+            <div class="flex items-center gap-3 my-2">
+                <ng-icon hlm name="lucideCircleAlert" class="text-destructive" />
                 <h3 hlmCardTitle>{{ titulo }}</h3>
             </div>
             <hlm-separator />
         </div>
         <div hlmCardContent>
-            <p hlmP class="text-center text-balance">
+            <p hlmP class="text-center text-balance mx-1">
                 {{ descripcion }}
             </p>
+            @if (textoVerificacion) {
+            <div class="mt-4">
+                <p class="text-sm mx-1">
+                    {{
+                        descripcionTextVerificacion ?? `Para confirmar, escribe a continuación "${textoVerificacion}":`
+                    }}
+                </p>
+                <input
+                    hlmInput
+                    [placeholder]="textoVerificacion"
+                    class="mt-2"
+                    [value]="textoVerificacionIngresado()"
+                    (input)="textoVerificacionIngresado.set($any($event.target).value)"
+                />
+            </div>
+            }
         </div>
         <div hlmCardFooter class="flex items-center justify-end gap-6">
             <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
-            <button hlmBtn variant="destructive" (click)="confirmarEliminacion()">Eliminar</button>
+            <button
+                hlmBtn
+                variant="destructive"
+                (click)="confirmarEliminacion()"
+                [disabled]="textoVerificacion && textoVerificacion !== textoVerificacionIngresado()"
+            >
+                Eliminar
+            </button>
         </div>
     </div>
 </div>

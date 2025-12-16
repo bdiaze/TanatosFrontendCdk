@@ -104,6 +104,8 @@
     [item]="itemSeleccionado()"
     titulo="Quitar una tarea:"
     [descripcion]="`¿Seguro que deseas quitar la tarea ${itemSeleccionado()?.nombre}?`"
+    descripcionTextVerificacion="Para confirmar, escribe a continuación el nombre de la tarea:"
+    [textoVerificacion]="itemSeleccionado()?.nombre!"
     (cerrar)="closeModalEliminar()"
     (eliminar)="eliminar($event)"
 >

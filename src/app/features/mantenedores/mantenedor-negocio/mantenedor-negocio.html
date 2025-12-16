@@ -79,6 +79,8 @@
     [item]="itemSeleccionado()"
     titulo="Eliminar un negocio:"
     [descripcion]="`¿Seguro que deseas eliminar el negocio ${itemSeleccionado()?.nombre}?`"
+    descripcionTextVerificacion="Para confirmar, escribe a continuación el nombre del negocio:"
+    [textoVerificacion]="itemSeleccionado()?.nombre"
     (cerrar)="closeModalEliminar()"
     (eliminar)="eliminar($event)"
 >
