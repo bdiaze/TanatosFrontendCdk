@@ -2,9 +2,9 @@
     class="max-w-screen md:max-w-2xl mx-auto px-4 py-4 flex flex-col justify-center items-center gap-4"
 >
     @if (cargandoNormaSuscrita()) {
-    <div class="flex justify-center-safe items-center gap-2 my-4">
-        <hlm-spinner />
-        Cargando información del template...
+    <div class="flex justify-center-safe items-center gap-3 my-4">
+        <hlm-spinner class="text-2xl" />
+        <p hlmH4>Cargando información de la tarea...</p>
     </div>
     } @else {
     <div class="w-full">
