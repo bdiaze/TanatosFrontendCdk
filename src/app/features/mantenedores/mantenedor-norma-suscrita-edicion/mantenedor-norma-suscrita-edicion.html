@@ -1,0 +1,226 @@
+<div
+    class="max-w-screen md:max-w-2xl mx-auto px-4 py-4 flex flex-col justify-center items-center gap-4"
+>
+    @if (cargandoNormaSuscrita()) {
+    <div class="flex justify-center-safe items-center gap-2 my-4">
+        <hlm-spinner />
+        Cargando información del template...
+    </div>
+    } @else {
+    <div class="w-full">
+        <div class="flex items-center gap-4">
+            <ng-icon hlm name="lucideSquarePen" />
+            <p hlmH4>{{ titulo() }}</p>
+        </div>
+        <hlm-separator />
+    </div>
+    <div class="w-full">
+        <fieldset hlmFieldSet>
+            <div hlmFieldGroup class="gap-3">
+                <div hlmField class="flex justify-center items-center gap-1">
+                    <div hlmButtonGroup>
+                        <div
+                            hlmButtonGroupText
+                            class="transition-all duration-500 ease-out"
+                            [class.border-destructive]="invalid('nombre')"
+                            [class.text-destructive]="invalid('nombre')"
+                        >
+                            <label
+                                for="nombre"
+                                hlmLabel
+                                class="opacity-80 font-semibold whitespace-nowrap"
+                                >Nombre</label
+                            >
+                        </div>
+                        <div hlmInputGroup>
+                            <input
+                                hlmInputGroupInput
+                                type="text"
+                                class="transition-all duration-500 ease-out"
+                                id="nombre"
+                                [formControl]="form.controls['nombre']"
+                            />
+                        </div>
+                    </div>
+                    <hlm-field-error
+                        class="transition-all duration-500 ease-out text-xs"
+                        [class.opacity-100]="invalid('nombre')"
+                        [class.opacity-0]="!invalid('nombre')"
+                        [class.max-h-10]="invalid('nombre')"
+                        [class.max-h-0]="!invalid('nombre')"
+                        >Debes ingresar el "Nombre"</hlm-field-error
+                    >
+                </div>
+                <div hlmField class="flex justify-center items-center gap-1">
+                    <label
+                        for="descripcion"
+                        hlmLabel
+                        class="opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                        >Descripción</label
+                    >
+                    <textarea
+                        hlmTextarea
+                        type="text"
+                        class="transition-all duration-500 ease-out"
+                        id="descripcion"
+                        [formControl]="form.controls['descripcion']"
+                    ></textarea>
+                    <hlm-field-error
+                        class="transition-all duration-500 ease-out text-xs"
+                        [class.opacity-100]="invalid('descripcion')"
+                        [class.opacity-0]="!invalid('descripcion')"
+                        [class.max-h-10]="invalid('descripcion')"
+                        [class.max-h-0]="!invalid('descripcion')"
+                        >Debes ingresar la "Descripción"</hlm-field-error
+                    >
+                </div>
+                <div hlmField class="flex justify-center items-center gap-1">
+                    <div hlmButtonGroup>
+                        <div
+                            hlmButtonGroupText
+                            class="transition-all duration-500 ease-out"
+                            [class.border-destructive]="invalid('multa')"
+                            [class.text-destructive]="invalid('multa')"
+                        >
+                            <label
+                                for="multa"
+                                hlmLabel
+                                class="opacity-80 font-semibold whitespace-nowrap"
+                                >Multa</label
+                            >
+                        </div>
+                        <div hlmInputGroup>
+                            <input
+                                hlmInputGroupInput
+                                type="text"
+                                class="transition-all duration-500 ease-out"
+                                id="multa"
+                                [formControl]="form.controls['multa']"
+                            />
+                        </div>
+                    </div>
+                    <hlm-field-error
+                        class="transition-all duration-500 ease-out text-xs"
+                        [class.opacity-100]="invalid('multa')"
+                        [class.opacity-0]="!invalid('multa')"
+                        [class.max-h-10]="invalid('multa')"
+                        [class.max-h-0]="!invalid('multa')"
+                        >Debes ingresar el "Multa"</hlm-field-error
+                    >
+                </div>
+                <div class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
+                    <div hlmField class="flex justify-center items-center gap-1 md:w-[50%]">
+                        <div class="flex flex-col justify-start md:items-center gap-2">
+                            <label for="categoria" hlmLabel class="opacity-80 pl-2 w-full"
+                                >Categoría</label
+                            >
+                            <brn-select
+                                id="categoria"
+                                class="inline-block z-10 w-full"
+                                [formControl]="form.controls['idCategoriaNorma']"
+                                placeholder="Selecciona una categoría..."
+                            >
+                                <hlm-select-trigger class="w-full">
+                                    <div class="flex justify-center items-center gap-2">
+                                        @if (cargandoCategoriasVigentes()) {
+                                        <hlm-spinner class="text-base md:text-lg" />
+                                        }
+                                        <hlm-select-value class="truncate w-[11.3rem] md:w-56" />
+                                    </div>
+                                </hlm-select-trigger>
+                                <hlm-select-content>
+                                    @if (cargandoCategoriasVigentes()) {
+                                    <hlm-option [value]="form.controls['idCategoriaNorma'].value">
+                                        Cargando...</hlm-option
+                                    >
+                                    } @else { @for (categoria of categoriasVigentes(); track
+                                    categoria.id) {
+                                    <hlm-option
+                                        [value]="categoria.id"
+                                        >{{ `${categoria.nombre}` }}</hlm-option
+                                    >
+                                    }}
+                                </hlm-select-content>
+                            </brn-select>
+                        </div>
+                        <p
+                            hlmP
+                            class="transition-all duration-500 ease-out text-xs mt-0 px-3 text-destructive -z-10"
+                            [class.opacity-100]="invalid('idCategoriaNorma')"
+                            [class.opacity-0]="!invalid('idCategoriaNorma')"
+                            [class.max-h-10]="invalid('idCategoriaNorma')"
+                            [class.max-h-0]="!invalid('idCategoriaNorma')"
+                        >
+                            Debes ingresar la "Categoría"
+                        </p>
+                    </div>
+                    <div hlmField class="flex justify-center items-center gap-1 md:w-[50%]">
+                        <div class="flex flex-col justify-start md:items-center gap-2">
+                            <label for="idTipoPeriodicidad" hlmLabel class="opacity-80 w-full pl-2"
+                                >Periodicidad</label
+                            >
+                            <brn-select
+                                id="idTipoPeriodicidad"
+                                class="inline-block w-full z-10"
+                                [formControl]="form.controls['idTipoPeriodicidad']"
+                                placeholder="Selecciona la periodicidad..."
+                            >
+                                <hlm-select-trigger class="w-full">
+                                    <div class="flex justify-center items-center gap-2">
+                                        @if (cargandoPeriodicidadVigentes()) {
+                                        <hlm-spinner class="text-base md:text-lg" />
+                                        }
+                                        <hlm-select-value class="truncate w-[11.3rem] md:w-56" />
+                                    </div>
+                                </hlm-select-trigger>
+                                <hlm-select-content>
+                                    @if (cargandoPeriodicidadVigentes()) {
+                                    <hlm-option [value]="form.controls['idTipoPeriodicidad'].value">
+                                        Cargando...</hlm-option
+                                    >
+                                    } @else { @for (periodicidad of periodicidadesVigentes(); track
+                                    periodicidad.id) {
+                                    <hlm-option
+                                        [value]="periodicidad.id"
+                                        >{{ `${periodicidad.nombre}` }}</hlm-option
+                                    >
+                                    }}
+                                </hlm-select-content>
+                            </brn-select>
+                        </div>
+                        <p
+                            hlmP
+                            class="transition-all duration-500 ease-out text-xs mt-0 px-3 text-destructive -z-10"
+                            [class.opacity-100]="invalid('idTipoPeriodicidad')"
+                            [class.opacity-0]="!invalid('idTipoPeriodicidad')"
+                            [class.max-h-10]="invalid('idTipoPeriodicidad')"
+                            [class.max-h-0]="!invalid('idTipoPeriodicidad')"
+                        >
+                            Debes ingresar la "Periodicidad"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    }
+    <div class="w-full flex flex-col items-center gap-4">
+        @if (error()) {
+        <div hlmAlert variant="destructive">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
+        }
+        <div class="w-full flex items-center justify-end gap-6">
+            <a hlmBtn variant="secondary" [routerLink]="['/mantenedores/norma-suscrita']"
+                >Cancelar</a
+            >
+            <button hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()">
+                @if (procesando()) {
+                <hlm-spinner />
+                } Guardar
+            </button>
+        </div>
+    </div>
+</div>

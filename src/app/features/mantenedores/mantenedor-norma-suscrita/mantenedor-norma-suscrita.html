@@ -64,6 +64,12 @@
                                     <hlm-dropdown-menu-group>
                                         <button
                                             hlmDropdownMenuItem
+                                            [routerLink]="['/mantenedores/norma-suscrita', item.id]"
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            hlmDropdownMenuItem
                                             variant="destructive"
                                             (click)="openModalEliminar(item)"
                                         >
@@ -82,7 +88,7 @@
                 } }
             </tbody>
         </table>
-        <button hlmBtn (click)="openModalCrear()" class="m-4">Nuevo Tarea</button>
+        <a hlmBtn [routerLink]="['/mantenedores/norma-suscrita/nuevo']" class="m-4">Nuevo Tarea</a>
     </div>
     @if (error()) {
     <div hlmAlert variant="destructive" class="mt-6">

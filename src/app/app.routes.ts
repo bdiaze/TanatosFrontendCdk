@@ -13,6 +13,8 @@ import { MantenedorDestinatarioNotificacion } from './features/mantenedores/mant
 import { ValidarDestinatario } from './features/validadores/validar-destinatario/validar-destinatario';
 import { MantenedorNegocio } from './features/mantenedores/mantenedor-negocio/mantenedor-negocio';
 import { MantenedorNormaSuscrita } from './features/mantenedores/mantenedor-norma-suscrita/mantenedor-norma-suscrita';
+import { MantenedorTemplateEdicion } from './features/mantenedores/mantenedor-template-edicion/mantenedor-template-edicion';
+import { MantenedorNormaSuscritaEdicion } from './features/mantenedores/mantenedor-norma-suscrita-edicion/mantenedor-norma-suscrita-edicion';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -43,6 +45,14 @@ export const routes: Routes = [
         component: MantenedorTemplate,
     },
     {
+        path: 'administracion/mantenedores/template/:idTemplate',
+        component: MantenedorTemplateEdicion,
+    },
+    {
+        path: 'administracion/mantenedores/template/nuevo',
+        component: MantenedorTemplateEdicion,
+    },
+    {
         path: 'mantenedores/destinatario',
         component: MantenedorDestinatarioNotificacion,
     },
@@ -53,6 +63,14 @@ export const routes: Routes = [
     {
         path: 'mantenedores/norma-suscrita',
         component: MantenedorNormaSuscrita,
+    },
+    {
+        path: 'mantenedores/norma-suscrita/:idNormaSuscrita',
+        component: MantenedorNormaSuscritaEdicion,
+    },
+    {
+        path: 'mantenedores/norma-suscrita/nuevo',
+        component: MantenedorNormaSuscritaEdicion,
     },
     {
         path: 'validar-destinatario',

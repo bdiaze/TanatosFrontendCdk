@@ -4,6 +4,7 @@ import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -33,6 +34,7 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         HlmDropdownMenuImports,
         HlmSpinnerImports,
         HlmP,
+        RouterLink,
     ],
     templateUrl: './mantenedor-norma-suscrita.html',
     styleUrl: './mantenedor-norma-suscrita.scss',
