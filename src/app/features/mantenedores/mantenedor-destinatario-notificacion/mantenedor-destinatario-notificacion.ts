@@ -48,6 +48,7 @@ import { AuthStore } from '@/app/services/auth-store';
         HlmTooltipImports,
         FormatearTelefonoPipe,
         HlmP,
+        HlmSpinnerImports,
     ],
     templateUrl: './mantenedor-destinatario-notificacion.html',
     styleUrl: './mantenedor-destinatario-notificacion.scss',

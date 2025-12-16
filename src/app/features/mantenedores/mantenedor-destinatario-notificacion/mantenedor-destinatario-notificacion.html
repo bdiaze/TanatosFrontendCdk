@@ -3,7 +3,7 @@
         <table hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
-                    <th colspan="5">
+                    <th colspan="4">
                         <p hlmP class="font-semibold opacity-65">
                             {{ negocioStore.negocioSeleccionado()?.nombre }}
                         </p>
@@ -14,70 +14,71 @@
                     </th>
                 </tr>
                 <tr hlmTr>
-                    <th hlmTh>Destinatario</th>
-                    <th hlmTh>Tipo</th>
-                    <th hlmTh class="text-center w-24">Válido</th>
-                    <th hlmTh class="w-16"></th>
+                    <th hlmTh class="text-xs md:text-sm">Destinatario</th>
+                    <th hlmTh class="text-center text-xs md:text-sm px-0">Tipo</th>
+                    <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">Válido</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
             </thead>
             <tbody hlmTBody>
                 @if (cargando()) {
                 <tr hlmTr>
                     <td hlmTd colspan="4">
-                        <div class="flex justify-center-safe">
-                            <div class="mr-4">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    class="size-6 transform animate-spin"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                                    />
-                                </svg>
-                            </div>
+                        <div class="flex justify-center-safe items-center gap-2">
+                            <hlm-spinner />
                             Cargando...
                         </div>
                     </td>
                 </tr>
                 } @else { @for (item of listado(); track item.id) {
                 <tr hlmTr>
-                    <td hlmTd class="whitespace-normal">
-                        {{
-                            item.idTipoReceptor === 2
-                                ? (item.destino | formatearTelefono)
-                                : item.destino
-                        }}
+                    <td hlmTd class="text-xs md:text-sm">
+                        <hlm-tooltip>
+                            <p hlmTooltipTrigger class="w-42 md:w-auto truncate">
+                                {{
+                                    item.idTipoReceptor === 2
+                                        ? (item.destino | formatearTelefono)
+                                        : item.destino
+                                }}
+                            </p>
+                            <span *brnTooltipContent>{{
+                                item.idTipoReceptor === 2
+                                    ? (item.destino | formatearTelefono)
+                                    : item.destino
+                            }}</span>
+                        </hlm-tooltip>
                     </td>
-                    <td hlmTd class="whitespace-normal">
+                    <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">
                         {{ item.nombreTipoReceptor }}
                     </td>
-                    <td hlmTd class="text-center">
-                        @if (item.validado) {
-                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                        } @else {
-                        <hlm-tooltip>
-                            <ng-icon
-                                hlmTooltipTrigger
-                                hlm
-                                name="lucideClockAlert"
-                                class="opacity-65"
-                            />
-                            <span *brnTooltipContent
-                                >Pendiente confirmación del destinatario...</span
-                            >
-                        </hlm-tooltip>
-                        }
+                    <td hlmTd class="text-center px-0">
+                        <div class="flex justify-center items-center">
+                            @if (item.validado) {
+                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                            } @else {
+                            <hlm-tooltip>
+                                <ng-icon
+                                    hlmTooltipTrigger
+                                    hlm
+                                    name="lucideClockAlert"
+                                    class="opacity-65"
+                                />
+                                <span *brnTooltipContent
+                                    >Pendiente confirmación del destinatario...</span
+                                >
+                            </hlm-tooltip>
+                            }
+                        </div>
                     </td>
-                    <td hlmTd>
+                    <td hlmTd class="px-0">
                         <div class="flex items-center justify-center-safe">
-                            <button hlmBtn variant="outline" [hlmDropdownMenuTrigger]="menu">
-                                <ng-icon hlm size="sm" name="lucideEllipsis" />
+                            <button
+                                hlmBtn
+                                variant="outline"
+                                size="sm"
+                                [hlmDropdownMenuTrigger]="menu"
+                            >
+                                <ng-icon hlm size="xs" name="lucideEllipsis" />
                             </button>
                             <ng-template #menu>
                                 <hlm-dropdown-menu>
