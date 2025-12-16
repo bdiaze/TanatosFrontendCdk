@@ -1,14 +1,17 @@
+import { CategoriaNormaDao } from '@/app/daos/categoria-norma-dao';
+import { TemplateDao } from '@/app/daos/template-dao';
+import { TipoFiscalizadorDao } from '@/app/daos/tipo-fiscalizador-dao';
+import { TipoPeriodicidadDao } from '@/app/daos/tipo-periodicidad-dao';
+import { TipoUnidadTiempoDao } from '@/app/daos/tipo-unidad-tiempo-dao';
+import { CategoriaNorma } from '@/app/entities/models/categoria-norma';
 import { Template } from '@/app/entities/models/template';
-import {
-    Component,
-    computed,
-    EventEmitter,
-    inject,
-    Input,
-    OnInit,
-    Output,
-    signal,
-} from '@angular/core';
+import { TemplateNorma } from '@/app/entities/models/template-norma';
+import { TemplateNormaFiscalizador } from '@/app/entities/models/template-norma-fiscalizador';
+import { TemplateNormaNotificacion } from '@/app/entities/models/template-norma-notificacion';
+import { TipoFiscalizador } from '@/app/entities/models/tipo-fiscalizador';
+import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
+import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import {
     AbstractControl,
     FormArray,
@@ -18,6 +21,7 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -27,43 +31,30 @@ import {
     lucideTrash2,
     lucideX,
 } from '@ng-icons/lucide';
+import { BrnPopoverImports } from '@spartan-ng/brain/popover';
+import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { HlmAccordionImports } from '@spartan-ng/helm/accordion';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
 import { HlmCardImports } from '@spartan-ng/helm/card';
+import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmFieldImports } from '@spartan-ng/helm/field';
-import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmIcon, HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
+import { HlmPopoverImports } from '@spartan-ng/helm/popover';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
-import { BrnSelectImports } from '@spartan-ng/brain/select';
-import { HlmSelectImports } from '@spartan-ng/helm/select';
-import { TemplateDao } from '@/app/daos/template-dao';
-import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import { TemplateNormaFiscalizador } from '@/app/entities/models/template-norma-fiscalizador';
-import { TemplateNormaNotificacion } from '@/app/entities/models/template-norma-notificacion';
-import { TemplateNorma } from '@/app/entities/models/template-norma';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
-import { HlmAccordionImports } from '@spartan-ng/helm/accordion';
-import { HlmIconImports } from '@spartan-ng/helm/icon';
-import { CategoriaNorma } from '@/app/entities/models/categoria-norma';
-import { CategoriaNormaDao } from '@/app/daos/categoria-norma-dao';
-import { TipoPeriodicidadDao } from '@/app/daos/tipo-periodicidad-dao';
-import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
-import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
-import { HlmAlertImports } from '@spartan-ng/helm/alert';
-import { TipoFiscalizador } from '@/app/entities/models/tipo-fiscalizador';
-import { TipoFiscalizadorDao } from '@/app/daos/tipo-fiscalizador-dao';
-import { HlmBadgeImports } from '@spartan-ng/helm/badge';
-import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
-import { TipoUnidadTiempoDao } from '@/app/daos/tipo-unidad-tiempo-dao';
-import { BrnPopoverImports } from '@spartan-ng/brain/popover';
-import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 
 @Component({
-    selector: 'app-modal-edicion-template',
+    selector: 'app-mantenedor-template-edicion',
     imports: [
         ReactiveFormsModule,
         HlmButtonImports,
@@ -91,9 +82,11 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
         BrnPopoverImports,
         HlmPopoverImports,
         FormsModule,
+        RouterLink,
+        HlmSpinnerImports,
     ],
-    templateUrl: './modal-edicion-template.html',
-    styleUrl: './modal-edicion-template.scss',
+    templateUrl: './mantenedor-template-edicion.html',
+    styleUrl: './mantenedor-template-edicion.scss',
     providers: [
         provideIcons({
             lucideBadgeCheck,
@@ -105,11 +98,10 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
         }),
     ],
 })
-export class ModalEdicionTemplate implements OnInit {
-    @Input() item: Template | null | undefined;
-
-    @Output() cerrar = new EventEmitter<void>();
-    @Output() confirmar = new EventEmitter<Template>();
+export class MantenedorTemplateEdicion {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    idTemplate = signal<number | null>(null);
 
     templateDao = inject(TemplateDao);
     categoriaNormaDao = inject(CategoriaNormaDao);
@@ -193,9 +185,11 @@ export class ModalEdicionTemplate implements OnInit {
         >([]),
     });
 
+    item = signal<Template | null>(null);
+
     titulo = computed<string>(() => {
-        if (this.item) {
-            return `Actualizar el template "${this.item.nombre}":`;
+        if (this.idTemplate()) {
+            return `Actualizar el template "${this.item()?.nombre}":`;
         }
         return `Crear un template nuevo:`;
     });
@@ -221,29 +215,135 @@ export class ModalEdicionTemplate implements OnInit {
 
     procesando = signal<boolean>(false);
 
+    constructor() {
+        effect(() => {
+            if (this.cargandoTemplatesExistentes()) {
+                this.form.controls['idTemplatePadre'].disable();
+            } else {
+                this.form.controls['idTemplatePadre'].enable();
+            }
+        });
+
+        effect(() => {
+            if (this.idTemplate()) {
+                this.cargandoDetalleTemplate.set(true);
+                this.templateDao
+                    .obtener(this.idTemplate()!)
+                    .subscribe({
+                        next: (detalleTemplate) => {
+                            if (detalleTemplate?.templateNormas) {
+                                detalleTemplate.templateNormas =
+                                    detalleTemplate?.templateNormas?.sort(
+                                        (a, b) => a.idNorma - b.idNorma
+                                    );
+
+                                detalleTemplate?.templateNormas?.forEach((norma) => {
+                                    if (norma.templateNormaFiscalizadores) {
+                                        norma.templateNormaFiscalizadores =
+                                            norma.templateNormaFiscalizadores?.sort(
+                                                (a, b) =>
+                                                    a.idTipoFiscalizador - b.idTipoFiscalizador
+                                            );
+                                    }
+
+                                    if (norma.templateNormaNotificaciones) {
+                                        norma.templateNormaNotificaciones =
+                                            norma.templateNormaNotificaciones?.sort((a, b) =>
+                                                a.idTipoUnidadTiempoAntelacion !==
+                                                b.idTipoUnidadTiempoAntelacion
+                                                    ? b.idTipoUnidadTiempoAntelacion -
+                                                      a.idTipoUnidadTiempoAntelacion
+                                                    : b.cantAntelacion - a.cantAntelacion
+                                            );
+                                    }
+                                });
+                            }
+
+                            this.item.set(detalleTemplate);
+                        },
+                        error: (err) => {
+                            console.error('Error al obtener los detalles del template', err);
+                            this.error.set(
+                                err.error ?? 'Error al obtener los detalles del template'
+                            );
+                        },
+                    })
+                    .add(() => {
+                        this.cargandoDetalleTemplate.set(false);
+                    });
+
+                this.form.controls['id'].disable();
+            }
+        });
+
+        effect(() => {
+            this.cargandoTemplatesExistentes.set(true);
+            this.templateDao
+                .obtenerPorVigencia(null)
+                .subscribe({
+                    next: (vigentes) => {
+                        if (this.item()) {
+                            vigentes = vigentes.filter((t) => t.id !== this.item()!.id);
+                            vigentes = this.eliminarHijosComoPosiblesPadres(
+                                vigentes,
+                                this.item()!.id
+                            );
+                            vigentes = vigentes.sort((a, b) =>
+                                a.nombre
+                                    .toLocaleLowerCase()
+                                    .localeCompare(b.nombre.toLocaleLowerCase())
+                            );
+                        }
+                        this.templatesExistentes.set(vigentes);
+                    },
+                    error: (err) => {
+                        console.error('Error al obtener templates', err);
+                        this.error.set(err.error ?? 'Error al obtener templates');
+                    },
+                })
+                .add(() => {
+                    this.cargandoTemplatesExistentes.set(false);
+                });
+
+            if (this.item()) {
+                this.form.patchValue({
+                    id: this.item()!.id,
+                    idTemplatePadre: this.item()!.idTemplatePadre,
+                    nombre: this.item()!.nombre,
+                    descripcion: this.item()!.descripcion,
+                    vigencia: this.item()!.vigencia,
+                });
+
+                (this.form.get('templateNormas') as FormArray).clear();
+                this.item()!.templateNormas?.forEach((norma) => {
+                    (this.form.get('templateNormas') as FormArray).push(
+                        this.buildNormaFormGroup(norma)
+                    );
+                });
+            } else {
+                this.form.patchValue({
+                    id: null,
+                    idTemplatePadre: null,
+                    nombre: '',
+                    descripcion: '',
+                    vigencia: false,
+                });
+            }
+        });
+    }
+
     ngOnInit(): void {
-        this.cargandoTemplatesExistentes.set(true);
-        this.templateDao
-            .obtenerPorVigencia(null)
-            .subscribe({
-                next: (vigentes) => {
-                    if (this.item) {
-                        vigentes = vigentes.filter((t) => t.id !== this.item?.id);
-                        vigentes = this.eliminarHijosComoPosiblesPadres(vigentes, this.item?.id);
-                        vigentes = vigentes.sort((a, b) =>
-                            a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
-                        );
-                    }
-                    this.templatesExistentes.set(vigentes);
-                },
-                error: (err) => {
-                    console.error('Error al obtener templates', err);
-                    this.error.set(err.error ?? 'Error al obtener templates');
-                },
-            })
-            .add(() => {
-                this.cargandoTemplatesExistentes.set(false);
-            });
+        this.route.paramMap.subscribe((params) => {
+            this.error.set('');
+            this.item.set(null);
+
+            const param = params.get('idTemplate');
+            if (param) {
+                this.idTemplate.set(Number(param));
+            } else {
+                this.idTemplate.set(null);
+            }
+        });
 
         this.cargandoCategoriasExistentes.set(true);
         this.categoriaNormaDao
@@ -316,63 +416,6 @@ export class ModalEdicionTemplate implements OnInit {
             .add(() => {
                 this.cargandoUnidadesTiempoExistentes.set(false);
             });
-
-        if (this.item) {
-            this.cargandoDetalleTemplate.set(true);
-            this.templateDao
-                .obtener(this.item.id)
-                .subscribe({
-                    next: (detalleTemplate) => {
-                        if (detalleTemplate?.templateNormas) {
-                            detalleTemplate.templateNormas = detalleTemplate?.templateNormas?.sort(
-                                (a, b) => a.idNorma - b.idNorma
-                            );
-
-                            detalleTemplate?.templateNormas?.forEach((norma) => {
-                                if (norma.templateNormaFiscalizadores) {
-                                    norma.templateNormaFiscalizadores =
-                                        norma.templateNormaFiscalizadores?.sort(
-                                            (a, b) => a.idTipoFiscalizador - b.idTipoFiscalizador
-                                        );
-                                }
-
-                                if (norma.templateNormaNotificaciones) {
-                                    norma.templateNormaNotificaciones =
-                                        norma.templateNormaNotificaciones?.sort((a, b) =>
-                                            a.idTipoUnidadTiempoAntelacion !==
-                                            b.idTipoUnidadTiempoAntelacion
-                                                ? b.idTipoUnidadTiempoAntelacion -
-                                                  a.idTipoUnidadTiempoAntelacion
-                                                : b.cantAntelacion - a.cantAntelacion
-                                        );
-                                }
-                            });
-                        }
-
-                        detalleTemplate?.templateNormas?.forEach((norma) => {
-                            (this.form.get('templateNormas') as FormArray).push(
-                                this.buildNormaFormGroup(norma)
-                            );
-                        });
-                    },
-                    error: (err) => {
-                        console.error('Error al obtener los detalles del template', err);
-                        this.error.set(err.error ?? 'Error al obtener los detalles del template');
-                    },
-                })
-                .add(() => {
-                    this.cargandoDetalleTemplate.set(false);
-                });
-
-            this.form.patchValue({
-                id: this.item.id,
-                idTemplatePadre: this.item.idTemplatePadre,
-                nombre: this.item.nombre,
-                descripcion: this.item.descripcion,
-                vigencia: this.item.vigencia,
-            });
-            this.form.controls['id'].disable();
-        }
     }
 
     private eliminarHijosComoPosiblesPadres(
@@ -655,7 +698,7 @@ export class ModalEdicionTemplate implements OnInit {
             template.templateNormas?.push(norma);
         });
 
-        if (this.item) {
+        if (this.idTemplate()) {
             this.editar(template);
         } else {
             this.crear(template);
@@ -668,7 +711,7 @@ export class ModalEdicionTemplate implements OnInit {
             .actualizar(item)
             .subscribe({
                 next: () => {
-                    this.confirmar.emit(item);
+                    this.router.navigate(['/administracion/mantenedores/template']);
                 },
                 error: (err) => {
                     console.error('Error al editar el template', err);
@@ -686,7 +729,7 @@ export class ModalEdicionTemplate implements OnInit {
             .crear(item)
             .subscribe({
                 next: () => {
-                    this.confirmar.emit(item);
+                    this.router.navigate(['/administracion/mantenedores/template']);
                 },
                 error: (err) => {
                     console.error('Error al crear el template', err);

@@ -15,9 +15,8 @@ import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4 } from '@spartan-ng/helm/typography';
-import { catchError, combineLatest, of } from 'rxjs';
-import { ModalEdicionTemplate } from '@/app/components/modal-edicion-template/modal-edicion-template';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-mantenedor-template',
@@ -30,8 +29,8 @@ import { HlmBadgeImports } from '@spartan-ng/helm/badge';
         NgIcon,
         HlmIcon,
         HlmDropdownMenuImports,
-        ModalEdicionTemplate,
         HlmBadgeImports,
+        RouterLink,
     ],
     templateUrl: './mantenedor-template.html',
     styleUrl: './mantenedor-template.scss',
@@ -47,8 +46,6 @@ export class MantenedorTemplate implements OnInit {
     error = signal('');
 
     showModalEliminar = signal(false);
-    showModalEditar = signal(false);
-    showModalCrear = signal(false);
 
     itemSeleccionado = signal<Template | null>(null);
 
@@ -101,35 +98,5 @@ export class MantenedorTemplate implements OnInit {
             },
         });
         this.showModalEliminar.set(false);
-    }
-
-    openModalEditar(item: Template) {
-        this.itemSeleccionado.set(item);
-        this.showModalEditar.set(true);
-    }
-
-    closeModalEditar() {
-        this.showModalEditar.set(false);
-        this.itemSeleccionado.set(null);
-    }
-
-    editar(item: Template) {
-        this.obtenerTodos();
-        this.showModalEditar.set(false);
-    }
-
-    openModalCrear() {
-        this.itemSeleccionado.set(null);
-        this.showModalCrear.set(true);
-    }
-
-    closeModalCrear() {
-        this.showModalCrear.set(false);
-        this.itemSeleccionado.set(null);
-    }
-
-    crear(item: Template) {
-        this.obtenerTodos();
-        this.showModalCrear.set(false);
     }
 }

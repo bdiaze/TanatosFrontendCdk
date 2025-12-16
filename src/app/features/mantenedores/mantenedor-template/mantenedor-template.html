@@ -72,7 +72,13 @@
                             <ng-template #menu>
                                 <hlm-dropdown-menu>
                                     <hlm-dropdown-menu-group>
-                                        <button hlmDropdownMenuItem (click)="openModalEditar(item)">
+                                        <button
+                                            hlmDropdownMenuItem
+                                            [routerLink]="[
+                                                '/administracion/mantenedores/template',
+                                                item.id
+                                            ]"
+                                        >
                                             Editar
                                         </button>
                                         <button
@@ -95,7 +101,9 @@
                 } }
             </tbody>
         </table>
-        <button hlmBtn (click)="openModalCrear()" class="m-4">Crear Nuevo</button>
+        <a hlmBtn [routerLink]="['/administracion/mantenedores/template/nuevo']" class="m-4"
+            >Crear Nuevo</a
+        >
     </div>
     @if (error()) {
     <div hlmAlert variant="destructive" class="mt-6">
@@ -114,15 +122,4 @@
     (cerrar)="closeModalEliminar()"
     (eliminar)="eliminar($event)"
 ></app-modal-eliminacion>
-} @if (showModalEditar()) {
-<app-modal-edicion-template
-    [item]="itemSeleccionado()"
-    (cerrar)="closeModalEditar()"
-    (confirmar)="editar($event)"
-></app-modal-edicion-template>
-} @if (showModalCrear()) {
-<app-modal-edicion-template
-    (cerrar)="closeModalCrear()"
-    (confirmar)="crear($event)"
-></app-modal-edicion-template>
 }
