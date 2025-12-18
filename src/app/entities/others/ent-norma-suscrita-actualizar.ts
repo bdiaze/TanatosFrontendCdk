@@ -7,4 +7,15 @@ export interface EntNormaSuscritaActualizar {
     multa: string | null;
     idCategoriaNorma: number;
     activado: boolean;
+    fiscalizadores: EntFiscalizadorNormaSuscritaActualizar[] | null;
+    notificaciones: EntNotificacionNormaSuscritaActualizar[] | null;
+}
+
+export interface EntFiscalizadorNormaSuscritaActualizar {
+    idTipoFiscalizador: number;
+}
+
+export interface EntNotificacionNormaSuscritaActualizar {
+    idTipoUnidadTiempoAntelacion: number;
+    cantAntelacion: number;
 }

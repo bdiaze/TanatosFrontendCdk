@@ -18,6 +18,12 @@ export class NormaSuscritaDao {
         );
     }
 
+    obtenerPorId(idNormaSuscrita: number): Observable<SalNormaSuscrita> {
+        return this.http.get<SalNormaSuscrita>(
+            environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerPorId/${idNormaSuscrita}`
+        );
+    }
+
     crear(entrada: EntNormaSuscritaCrear): Observable<SalNormaSuscrita> {
         return this.http.post<SalNormaSuscrita>(
             environment.tanatosService.apiUrl + '/NormaSuscrita/',

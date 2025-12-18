@@ -200,6 +200,215 @@
                         </p>
                     </div>
                 </div>
+
+                <div class="flex flex-col md:flex-row items-start mt-2 mb-2 gap-3 md:gap-2">
+                    <div
+                        class="flex flex-col justify-center-safe items-center w-full md:w-[50%] gap-2"
+                    >
+                        <label hlmLabel for="formNotifCantTiempo" class="opacity-80 w-full pl-2"
+                            >Fiscalizadores</label
+                        >
+
+                        <div class="flex justify-start items-center gap-2 w-full">
+                            <brn-select
+                                id="formFiscalizador"
+                                class="inline-block z-10"
+                                [disabled]="cargandoFiscalizadoresVigentes()"
+                                [(ngModel)]="formFiscalizador"
+                                placeholder="Nuevo fiscalizador"
+                            >
+                                <hlm-select-trigger class="w-75 md:w-68">
+                                    <div class="flex justify-center items-center gap-2">
+                                        @if (cargandoFiscalizadoresVigentes()) {
+                                        <hlm-spinner class="text-base md:text-lg" />
+                                        }
+                                        <hlm-select-value
+                                            class="truncate w-[15.1rem] md:w-[13.4rem]"
+                                        />
+                                    </div>
+                                </hlm-select-trigger>
+                                <hlm-select-content>
+                                    @if (cargandoFiscalizadoresVigentes()) {
+                                    <hlm-option> Cargando...</hlm-option>
+                                    } @else { @for (fiscalizador of fiscalizadoresVigentes(); track
+                                    fiscalizador.id) {
+                                    <hlm-option
+                                        [value]="fiscalizador.id"
+                                        >{{ `${fiscalizador.nombre}` }}</hlm-option
+                                    >
+                                    }}
+                                </hlm-select-content>
+                            </brn-select>
+
+                            <button
+                                hlmBtn
+                                size="icon"
+                                variant="default"
+                                class="size-9"
+                                (click)="agregarFiscalizador()"
+                                [disabled]="!formFiscalizador"
+                            >
+                                <ng-icon hlm size="sm" name="lucidePlus" />
+                            </button>
+                        </div>
+
+                        <div class="flex flex-wrap justify-center items-center gap-1">
+                            @for(fiscalizador of form.controls['fiscalizadores'].controls; track
+                            $index) {
+                            <span hlmBadge variant="default" class="pr-1 flex items-center"
+                                >{{
+                                    nombreFiscalizador(
+                                        fiscalizador.controls['idTipoFiscalizador'].value!
+                                    )
+                                }}
+                                <button
+                                    hlmBtn
+                                    size="icon"
+                                    variant="link"
+                                    class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                    [hlmDropdownMenuTrigger]="menuFiscalizador"
+                                >
+                                    <ng-icon hlm name="lucideX" />
+                                </button>
+                                <ng-template #menuFiscalizador>
+                                    <hlm-dropdown-menu class="w-[8.3rem]">
+                                        <hlm-dropdown-menu-label
+                                            class="font-normal text-center opacity-80"
+                                            >¿Estás seguro?</hlm-dropdown-menu-label
+                                        >
+                                        <hlm-dropdown-menu-group>
+                                            <button
+                                                hlmDropdownMenuItem
+                                                variant="destructive"
+                                                class="hover:cursor-pointer"
+                                                (click)="
+                                                    quitarFiscalizador(
+                                                        fiscalizador.controls['idTipoFiscalizador']
+                                                            .value!
+                                                    )
+                                                "
+                                            >
+                                                ¡Sí, eliminalo!
+                                                <ng-icon hlm size="sm" name="lucideTrash2" />
+                                            </button>
+                                        </hlm-dropdown-menu-group>
+                                    </hlm-dropdown-menu>
+                                </ng-template>
+                            </span>
+                            }
+                        </div>
+                    </div>
+                    <div
+                        class="flex flex-col justify-center-safe items-center w-full md:w-[50%] gap-2"
+                    >
+                        <label hlmLabel for="formNotifCantTiempo" class="opacity-80 w-full pl-2"
+                            >Notificaciones Previas</label
+                        >
+                        <div class="flex justify-center items-center gap-2 pl-0">
+                            <input
+                                hlmInput
+                                id="formNotifCantTiempo"
+                                type="number"
+                                [(ngModel)]="formNotifCantTiempo"
+                                placeholder="Cantidad"
+                            />
+
+                            <brn-select
+                                id="formNotifUnidadTiempo"
+                                class="inline-block z-10"
+                                [disabled]="cargandoUnidadesTiempoVigentes()"
+                                [(ngModel)]="formNotifUnidadTiempo"
+                                placeholder="Unidad"
+                            >
+                                <hlm-select-trigger>
+                                    <div class="flex justify-center items-center gap-2">
+                                        @if (cargandoUnidadesTiempoVigentes()) {
+                                        <hlm-spinner class="text-base md:text-lg" />
+                                        }
+                                        <hlm-select-value class="truncate w-12" />
+                                    </div>
+                                </hlm-select-trigger>
+                                <hlm-select-content>
+                                    @if (cargandoUnidadesTiempoVigentes()) {
+                                    <hlm-option> Cargando...</hlm-option>
+                                    } @else { @for (unidadTiempo of unidadesTiempoVigentes(); track
+                                    unidadTiempo.id) {
+                                    <hlm-option
+                                        [value]="unidadTiempo.id"
+                                        >{{ `${unidadTiempo.nombre}` }}</hlm-option
+                                    >
+                                    }}
+                                </hlm-select-content>
+                            </brn-select>
+
+                            <button
+                                hlmBtn
+                                size="icon"
+                                variant="default"
+                                class="size-9"
+                                (click)="agregarNotificacionPrevia()"
+                                [disabled]="
+                                    !formNotifCantTiempo ||
+                                    !formNotifUnidadTiempo ||
+                                    +formNotifCantTiempo <= 0
+                                "
+                            >
+                                <ng-icon hlm size="sm" name="lucidePlus" />
+                            </button>
+                        </div>
+
+                        <div class="flex flex-wrap justify-center items-center gap-1">
+                            @for(notificacion of form.controls['notificaciones'].controls; track
+                            $index) {
+                            <span hlmBadge variant="default" class="pr-1 flex items-center"
+                                >{{
+                                    nombreUnidadTiempo(
+                                        notificacion.controls['idTipoUnidadTiempoAntelacion']
+                                            .value!,
+                                        notificacion.controls['cantAntelacion'].value
+                                    )
+                                }}
+                                <button
+                                    hlmBtn
+                                    size="icon"
+                                    variant="link"
+                                    class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                    [hlmDropdownMenuTrigger]="menuNotificacion"
+                                >
+                                    <ng-icon hlm name="lucideX" />
+                                </button>
+                                <ng-template #menuNotificacion>
+                                    <hlm-dropdown-menu class="w-[8.3rem]">
+                                        <hlm-dropdown-menu-label
+                                            class="font-normal text-center opacity-80"
+                                            >¿Estás seguro?</hlm-dropdown-menu-label
+                                        >
+                                        <hlm-dropdown-menu-group>
+                                            <button
+                                                hlmDropdownMenuItem
+                                                variant="destructive"
+                                                class="hover:cursor-pointer"
+                                                (click)="
+                                                    quitarNotificacionPrevia(
+                                                        notificacion.controls['cantAntelacion']
+                                                            .value!,
+                                                        notificacion.controls[
+                                                            'idTipoUnidadTiempoAntelacion'
+                                                        ].value!
+                                                    )
+                                                "
+                                            >
+                                                ¡Sí, eliminalo!
+                                                <ng-icon hlm size="sm" name="lucideTrash2" />
+                                            </button>
+                                        </hlm-dropdown-menu-group>
+                                    </hlm-dropdown-menu>
+                                </ng-template>
+                            </span>
+                            }
+                        </div>
+                    </div>
+                </div>
             </div>
         </fieldset>
     </div>

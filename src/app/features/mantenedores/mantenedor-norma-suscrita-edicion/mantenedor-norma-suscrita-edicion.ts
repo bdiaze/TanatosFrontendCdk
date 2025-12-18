@@ -13,6 +13,8 @@ import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import {
+    AbstractControl,
+    FormArray,
     FormControl,
     FormGroup,
     FormsModule,
@@ -34,6 +36,7 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
+import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmFieldImports } from '@spartan-ng/helm/field';
 import { HlmIcon, HlmIconImports } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
@@ -71,6 +74,7 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         HlmBadgeImports,
         FormsModule,
         RouterLink,
+        HlmDropdownMenuImports,
     ],
     templateUrl: './mantenedor-norma-suscrita-edicion.html',
     styleUrl: './mantenedor-norma-suscrita-edicion.scss',
@@ -103,6 +107,17 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         idTipoPeriodicidad: FormControl<number | null>;
         multa: FormControl<string | null>;
         idCategoriaNorma: FormControl<number | null>;
+        fiscalizadores: FormArray<
+            FormGroup<{
+                idTipoFiscalizador: FormControl<number | null>;
+            }>
+        >;
+        notificaciones: FormArray<
+            FormGroup<{
+                idTipoUnidadTiempoAntelacion: FormControl<number | null>;
+                cantAntelacion: FormControl<number | null>;
+            }>
+        >;
     }> = new FormGroup({
         nombre: new FormControl<string | null>({ value: null, disabled: false }, [
             Validators.required,
@@ -117,6 +132,17 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         idCategoriaNorma: new FormControl<number | null>({ value: null, disabled: false }, [
             Validators.required,
         ]),
+        fiscalizadores: new FormArray<
+            FormGroup<{
+                idTipoFiscalizador: FormControl<number | null>;
+            }>
+        >([]),
+        notificaciones: new FormArray<
+            FormGroup<{
+                idTipoUnidadTiempoAntelacion: FormControl<number | null>;
+                cantAntelacion: FormControl<number | null>;
+            }>
+        >([]),
     });
 
     item = signal<SalNormaSuscrita | null>(null);
@@ -164,22 +190,13 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         });
 
         effect(() => {
-            if (this.idNormaSuscrita() && this.negocioStore.negocioSeleccionado()) {
+            if (this.idNormaSuscrita()) {
                 this.cargandoNormaSuscrita.set(true);
                 this.normaSuscritaDao
-                    .obtenerVigentes(this.negocioStore.negocioSeleccionado()!.id)
+                    .obtenerPorId(this.idNormaSuscrita()!)
                     .subscribe({
-                        next: (vigentes) => {
-                            if (vigentes) {
-                                const existente = vigentes.find(
-                                    (n) => n.id === this.idNormaSuscrita()
-                                );
-                                if (existente) {
-                                    this.item.set(existente);
-                                } else {
-                                    this.error.set('La tarea no pertenece a tu negocio');
-                                }
-                            }
+                        next: (normaSuscrita) => {
+                            this.item.set(normaSuscrita);
                         },
                         error: (err) => {
                             console.error('Error al obtener la información de la tarea', err);
@@ -203,6 +220,37 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     multa: this.item()?.multa,
                     idCategoriaNorma: this.item()?.idCategoriaNorma,
                 });
+
+                (this.form.get('fiscalizadores') as FormArray).clear();
+                this.item()!.fiscalizadores?.forEach((fiscalizador) => {
+                    (this.form.get('fiscalizadores') as FormArray).push(
+                        new FormGroup({
+                            idTipoFiscalizador: new FormControl(fiscalizador.idTipoFiscalizador, {
+                                nonNullable: true,
+                                validators: [Validators.required],
+                            }),
+                        })
+                    );
+                });
+
+                (this.form.get('notificaciones') as FormArray).clear();
+                this.item()!.notificaciones?.forEach((notificacion) => {
+                    (this.form.get('notificaciones') as FormArray).push(
+                        new FormGroup({
+                            idTipoUnidadTiempoAntelacion: new FormControl(
+                                notificacion.idTipoUnidadTiempoAntelacion,
+                                {
+                                    nonNullable: true,
+                                    validators: [Validators.required],
+                                }
+                            ),
+                            cantAntelacion: new FormControl(notificacion.cantAntelacion, {
+                                nonNullable: true,
+                                validators: [Validators.required],
+                            }),
+                        })
+                    );
+                });
             } else {
                 this.form.patchValue({
                     nombre: null,
@@ -211,6 +259,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     multa: null,
                     idCategoriaNorma: null,
                 });
+
+                (this.form.get('fiscalizadores') as FormArray).clear();
+                (this.form.get('notificaciones') as FormArray).clear();
             }
         });
     }
@@ -301,6 +352,118 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             });
     }
 
+    formFiscalizador = '';
+
+    agregarFiscalizador() {
+        const idFiscalizador = this.formFiscalizador;
+
+        this.formFiscalizador = '';
+
+        const idx = (this.form.controls['fiscalizadores'] as FormArray).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador
+        );
+
+        if (idx !== -1) {
+            return;
+        }
+
+        (this.form.controls['fiscalizadores'] as FormArray).push(
+            new FormGroup({
+                idTipoFiscalizador: new FormControl(idFiscalizador, {
+                    nonNullable: true,
+                }),
+            })
+        );
+    }
+
+    quitarFiscalizador(idFiscalizador: number) {
+        const idx = (this.form.controls['fiscalizadores'] as FormArray).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador
+        );
+
+        if (idx !== -1) {
+            (this.form.controls['fiscalizadores'] as FormArray).removeAt(idx);
+        }
+    }
+
+    nombreFiscalizador(idFiscalizador: number): string {
+        const fiscalizador = this.fiscalizadoresVigentes().find(
+            (fiscalizador: TipoFiscalizador) => fiscalizador.id === idFiscalizador
+        );
+        return fiscalizador?.nombreCorto && fiscalizador.nombreCorto.trim() !== ''
+            ? fiscalizador.nombreCorto
+            : fiscalizador?.nombre!;
+    }
+
+    formNotifCantTiempo = '';
+    formNotifUnidadTiempo = '';
+
+    agregarNotificacionPrevia() {
+        const cantTiempo = this.formNotifCantTiempo;
+        const idUnidadTiempo = this.formNotifUnidadTiempo;
+
+        this.formNotifCantTiempo = '';
+        this.formNotifUnidadTiempo = '';
+
+        const idx = (this.form.controls['notificaciones'] as FormArray).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['cantAntelacion']?.value === cantTiempo &&
+                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value === idUnidadTiempo
+        );
+
+        if (idx !== -1) {
+            return;
+        }
+
+        (this.form.controls['notificaciones'] as FormArray).push(
+            new FormGroup({
+                idTipoUnidadTiempoAntelacion: new FormControl(idUnidadTiempo, {
+                    nonNullable: true,
+                }),
+                cantAntelacion: new FormControl(cantTiempo, {
+                    nonNullable: true,
+                }),
+            })
+        );
+    }
+
+    quitarNotificacionPrevia(cantAntelacion: number, idTipoUnidadTiempoAntelacion: number) {
+        const idx = (this.form.controls['notificaciones'] as FormArray).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['cantAntelacion']?.value === cantAntelacion &&
+                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value ===
+                    idTipoUnidadTiempoAntelacion
+        );
+
+        if (idx !== -1) {
+            (this.form.controls['notificaciones'] as FormArray).removeAt(idx);
+        }
+    }
+
+    nombreUnidadTiempo(idUnidadTiempo: number, cantUnidadTiempo: number | null = null): string {
+        const unidadTiempo = this.unidadesTiempoVigentes().find(
+            (unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo
+        );
+
+        let cantidad = '';
+        if (cantUnidadTiempo) {
+            cantidad = `${cantUnidadTiempo}`;
+        }
+
+        let plural = '';
+        if (cantUnidadTiempo && cantUnidadTiempo > 1) {
+            plural = 's';
+        }
+
+        return `${cantidad} ${unidadTiempo?.nombre!}${plural}`;
+    }
+
     clickConfirmar() {
         if (this.item()) {
             const normaSuscrita: EntNormaSuscritaActualizar = {
@@ -312,7 +475,23 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 multa: this.form.controls['multa'].value,
                 idCategoriaNorma: this.form.controls['idCategoriaNorma'].value!,
                 activado: true,
+                fiscalizadores: [],
+                notificaciones: [],
             };
+
+            this.form.controls['fiscalizadores'].controls.forEach((fiscalizadorControl) => {
+                normaSuscrita.fiscalizadores?.push({
+                    idTipoFiscalizador: fiscalizadorControl.controls['idTipoFiscalizador'].value!,
+                });
+            });
+
+            this.form.controls['notificaciones'].controls.forEach((notificacionControl) => {
+                normaSuscrita.notificaciones?.push({
+                    idTipoUnidadTiempoAntelacion:
+                        notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
+                    cantAntelacion: notificacionControl.controls['cantAntelacion'].value!,
+                });
+            });
 
             this.procesando.set(true);
             this.normaSuscritaDao
@@ -337,7 +516,23 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 idTipoPeriodicidad: this.form.controls['idTipoPeriodicidad'].value!,
                 multa: this.form.controls['multa'].value,
                 idCategoriaNorma: this.form.controls['idCategoriaNorma'].value!,
+                fiscalizadores: [],
+                notificaciones: [],
             };
+
+            this.form.controls['fiscalizadores'].controls.forEach((fiscalizadorControl) => {
+                normaSuscrita.fiscalizadores?.push({
+                    idTipoFiscalizador: fiscalizadorControl.controls['idTipoFiscalizador'].value!,
+                });
+            });
+
+            this.form.controls['notificaciones'].controls.forEach((notificacionControl) => {
+                normaSuscrita.notificaciones?.push({
+                    idTipoUnidadTiempoAntelacion:
+                        notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
+                    cantAntelacion: notificacionControl.controls['cantAntelacion'].value!,
+                });
+            });
 
             this.procesando.set(true);
             this.normaSuscritaDao

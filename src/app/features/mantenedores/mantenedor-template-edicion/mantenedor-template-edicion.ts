@@ -324,6 +324,8 @@ export class MantenedorTemplateEdicion {
                     descripcion: '',
                     vigencia: false,
                 });
+
+                (this.form.get('templateNormas') as FormArray).clear();
             }
         });
     }
