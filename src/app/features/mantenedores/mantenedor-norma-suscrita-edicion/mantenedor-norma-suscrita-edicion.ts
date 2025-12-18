@@ -10,6 +10,7 @@ import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { EntNormaSuscritaActualizar } from '@/app/entities/others/ent-norma-suscrita-actualizar';
 import { EntNormaSuscritaCrear } from '@/app/entities/others/ent-norma-suscrita-crear';
 import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
+import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import {
@@ -201,7 +202,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                         error: (err) => {
                             console.error('Error al obtener la información de la tarea', err);
                             this.error.set(
-                                err.error ?? 'Error al obtener la información de la tarea'
+                                getErrorMessage(err) ??
+                                    'Error al obtener la información de la tarea'
                             );
                         },
                     })
@@ -291,7 +293,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener categorías vigentes', err);
-                    this.error.set(err.error ?? 'Error al obtener categorías vigentes');
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener categorías vigentes');
                 },
             })
             .add(() => {
@@ -308,7 +310,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener periodicidades vigentes', err);
-                    this.error.set(err.error ?? 'Error al obtener periodicidades vigentes');
+                    this.error.set(
+                        getErrorMessage(err) ?? 'Error al obtener periodicidades vigentes'
+                    );
                 },
             })
             .add(() => {
@@ -327,7 +331,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener fiscalizadores vigentes', err);
-                    this.error.set(err.error ?? 'Error al obtener fiscalizadores vigentes');
+                    this.error.set(
+                        getErrorMessage(err) ?? 'Error al obtener fiscalizadores vigentes'
+                    );
                 },
             })
             .add(() => {
@@ -344,7 +350,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener unidades de tiempo vigentes', err);
-                    this.error.set(err.error ?? 'Error al obtener unidades de tiempo vigentes');
+                    this.error.set(
+                        getErrorMessage(err) ?? 'Error al obtener unidades de tiempo vigentes'
+                    );
                 },
             })
             .add(() => {
@@ -502,7 +510,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     },
                     error: (err) => {
                         console.error('Error al editar la norma suscrita', err);
-                        this.error.set(err.error ?? 'Error al editar la norma suscrita');
+                        this.error.set(getErrorMessage(err) ?? 'Error al editar la norma suscrita');
                     },
                 })
                 .add(() => {
@@ -543,7 +551,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     },
                     error: (err) => {
                         console.error('Error al crear la norma suscrita', err);
-                        this.error.set(err.error ?? 'Error al crear la norma suscrita');
+                        this.error.set(getErrorMessage(err) ?? 'Error al crear la norma suscrita');
                     },
                 })
                 .add(() => {

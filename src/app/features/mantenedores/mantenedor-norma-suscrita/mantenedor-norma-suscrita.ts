@@ -1,6 +1,7 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
 import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
+import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, effect, inject, OnInit, signal } from '@angular/core';
@@ -97,7 +98,7 @@ export class MantenedorNormaSuscrita implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener las normas vigentes', err);
-                    this.error.set(err.error ?? 'Error al obtener las normas vigentes');
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener las normas vigentes');
                 },
             })
             .add(() => {
@@ -124,7 +125,7 @@ export class MantenedorNormaSuscrita implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al eliminar la norma', err);
-                this.error.set(err.error ?? 'Error al eliminar la norma');
+                this.error.set(getErrorMessage(err) ?? 'Error al eliminar la norma');
             },
         });
         this.showModalEliminar.set(false);

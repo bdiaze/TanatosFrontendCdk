@@ -24,6 +24,7 @@ import { HlmP } from '@spartan-ng/helm/typography';
 import { FormatoTelefono } from '@/app/directives/formato-telefono';
 import { FormatoCorreo } from '@/app/directives/formato-correo';
 import { NegocioStore } from '@/app/services/negocio-store';
+import { getErrorMessage } from '@/app/helpers/error-message';
 
 @Component({
     selector: 'app-modal-creacion-destinatario',
@@ -108,7 +109,7 @@ export class ModalCreacionDestinatario implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener tipos de receptores', err);
-                    this.error.set(err.error ?? 'Error al obtener tipos de receptores');
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener tipos de receptores');
                 },
             })
             .add(() => {
@@ -132,7 +133,7 @@ export class ModalCreacionDestinatario implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al registrar el destinatario', err);
-                    this.error.set(err.error ?? 'Error al registrar el destinatario');
+                    this.error.set(getErrorMessage(err) ?? 'Error al registrar el destinatario');
                 },
             })
             .add(() => {
@@ -158,7 +159,7 @@ export class ModalCreacionDestinatario implements OnInit {
             case 2:
                 return '+56 9 8877 6655';
             default:
-                return 'lucideSend';
+                return '';
         }
     }
 

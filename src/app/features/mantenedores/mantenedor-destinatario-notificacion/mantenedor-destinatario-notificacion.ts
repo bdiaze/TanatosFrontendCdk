@@ -1,12 +1,7 @@
-import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { DestinatarioNotificacionDao } from '@/app/daos/destinatario-notificacion-dao';
-import { TipoReceptorNotificacionDao } from '@/app/daos/tipo-receptor-notificacion-dao';
-import { DestinatarioNotificacion } from '@/app/entities/models/destinatario-notificacion';
-import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
-import { EntDestinatarioNotificacionCrear } from '@/app/entities/others/ent-destinatario-notificacion-crear';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, computed, inject, OnInit, signal, effect } from '@angular/core';
+import { Component, inject, OnInit, signal, effect } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import {
@@ -14,7 +9,6 @@ import {
     lucideBadgeX,
     lucideClockAlert,
     lucideEllipsis,
-    lucideHourglass,
     lucideSend,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
@@ -30,6 +24,7 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { AuthStore } from '@/app/services/auth-store';
+import { getErrorMessage } from '@/app/helpers/error-message';
 
 @Component({
     selector: 'app-mantenedor-destinatario-notificacion',
@@ -107,7 +102,7 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener los destinatarios', err);
-                    this.error.set(err.error ?? 'Error al obtener los destinatarios');
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener los destinatarios');
                 },
             })
             .add(() => {
@@ -134,7 +129,7 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al eliminar el destinatario', err);
-                this.error.set(err.error ?? 'Error al eliminar el destinatario');
+                this.error.set(getErrorMessage(err) ?? 'Error al eliminar el destinatario');
             },
         });
         this.showModalEliminar.set(false);

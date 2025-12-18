@@ -4,6 +4,7 @@ import { NegocioDao } from '@/app/daos/negocio-dao';
 import { EntNegocioActualizar } from '@/app/entities/others/ent-negocio-actualizar';
 import { EntNegocioCrear } from '@/app/entities/others/ent-negocio-crear';
 import { SalNegocio } from '@/app/entities/others/sal-negocio';
+import { getErrorMessage } from '@/app/helpers/error-message';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -112,7 +113,7 @@ export class MantenedorNegocio implements OnInit {
             },
             error: (err) => {
                 console.error('Error al obtener los negocios', err);
-                this.error.set(err.error ?? 'Error al obtener los negocios');
+                this.error.set(getErrorMessage(err) ?? 'Error al obtener los negocios');
                 this.cargando.set(false);
             },
         });
@@ -137,7 +138,7 @@ export class MantenedorNegocio implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al eliminar el negocio', err);
-                this.error.set(err.error ?? 'Error al eliminar el negocio');
+                this.error.set(getErrorMessage(err) ?? 'Error al eliminar el negocio');
             },
         });
         this.showModalEliminar.set(false);
@@ -162,7 +163,7 @@ export class MantenedorNegocio implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al editar el negocio', err);
-                this.error.set(err.error ?? 'Error al editar el negocio');
+                this.error.set(getErrorMessage(err) ?? 'Error al editar el negocio');
             },
         });
         this.showModalEditar.set(false);
@@ -187,7 +188,7 @@ export class MantenedorNegocio implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al crear el negocio', err);
-                this.error.set(err.error ?? 'Error al crear el negocio');
+                this.error.set(getErrorMessage(err) ?? 'Error al crear el negocio');
             },
         });
         this.showModalCrear.set(false);
