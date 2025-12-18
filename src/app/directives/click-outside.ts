@@ -20,6 +20,8 @@ export class ClickOutside {
 
         if (target.closest('hlm-sheet-content')) return;
 
+        if (target.closest('hlm-dropdown-menu[sidebar-dropdown-menu]')) return;
+
         if (!this.el.nativeElement.contains(target)) {
             this.onClickOutside.emit();
         }
