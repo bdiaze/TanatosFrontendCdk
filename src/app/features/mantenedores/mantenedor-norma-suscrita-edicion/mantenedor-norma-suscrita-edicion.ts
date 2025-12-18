@@ -108,6 +108,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         idTipoPeriodicidad: FormControl<number | null>;
         multa: FormControl<string | null>;
         idCategoriaNorma: FormControl<number | null>;
+        activado: FormControl<boolean | null>;
         fiscalizadores: FormArray<
             FormGroup<{
                 idTipoFiscalizador: FormControl<number | null>;
@@ -133,6 +134,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         idCategoriaNorma: new FormControl<number | null>({ value: null, disabled: false }, [
             Validators.required,
         ]),
+        activado: new FormControl<boolean | null>({ value: null, disabled: false }),
         fiscalizadores: new FormArray<
             FormGroup<{
                 idTipoFiscalizador: FormControl<number | null>;
@@ -221,6 +223,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     idTipoPeriodicidad: this.item()?.idTipoPeriodicidad,
                     multa: this.item()?.multa,
                     idCategoriaNorma: this.item()?.idCategoriaNorma,
+                    activado: this.item()?.activado,
                 });
 
                 (this.form.get('fiscalizadores') as FormArray).clear();
@@ -260,6 +263,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     idTipoPeriodicidad: null,
                     multa: null,
                     idCategoriaNorma: null,
+                    activado: false,
                 });
 
                 (this.form.get('fiscalizadores') as FormArray).clear();
@@ -482,7 +486,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 idTipoPeriodicidad: this.form.controls['idTipoPeriodicidad'].value!,
                 multa: this.form.controls['multa'].value,
                 idCategoriaNorma: this.form.controls['idCategoriaNorma'].value!,
-                activado: true,
+                activado: this.form.controls['activado'].value!,
                 fiscalizadores: [],
                 notificaciones: [],
             };
@@ -524,6 +528,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 idTipoPeriodicidad: this.form.controls['idTipoPeriodicidad'].value!,
                 multa: this.form.controls['multa'].value,
                 idCategoriaNorma: this.form.controls['idCategoriaNorma'].value!,
+                activado: this.form.controls['activado'].value!,
                 fiscalizadores: [],
                 notificaciones: [],
             };

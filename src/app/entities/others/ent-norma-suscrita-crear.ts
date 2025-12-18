@@ -5,6 +5,7 @@ export interface EntNormaSuscritaCrear {
     idTipoPeriodicidad: number;
     multa: string | null;
     idCategoriaNorma: number;
+    activado: boolean;
     fiscalizadores: EntFiscalizadorNormaSuscritaCrear[] | null;
     notificaciones: EntNotificacionNormaSuscritaCrear[] | null;
 }

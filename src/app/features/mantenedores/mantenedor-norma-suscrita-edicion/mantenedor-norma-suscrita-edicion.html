@@ -74,39 +74,68 @@
                         >Debes ingresar la "Descripción"</hlm-field-error
                     >
                 </div>
-                <div hlmField class="flex justify-center items-center gap-1">
-                    <div hlmButtonGroup>
-                        <div
-                            hlmButtonGroupText
-                            class="transition-all duration-500 ease-out"
-                            [class.border-destructive]="invalid('multa')"
-                            [class.text-destructive]="invalid('multa')"
-                        >
-                            <label
-                                for="multa"
-                                hlmLabel
-                                class="opacity-80 font-semibold whitespace-nowrap"
-                                >Multa</label
-                            >
-                        </div>
-                        <div hlmInputGroup>
-                            <input
-                                hlmInputGroupInput
-                                type="text"
+                <div
+                    class="flex flex-col md:flex-row justify-stretch items-start md:items-center gap-3"
+                >
+                    <div hlmField class="flex justify-center items-center gap-1">
+                        <div hlmButtonGroup>
+                            <div
+                                hlmButtonGroupText
                                 class="transition-all duration-500 ease-out"
-                                id="multa"
-                                [formControl]="form.controls['multa']"
-                            />
+                                [class.border-destructive]="invalid('multa')"
+                                [class.text-destructive]="invalid('multa')"
+                            >
+                                <label
+                                    for="multa"
+                                    hlmLabel
+                                    class="opacity-80 font-semibold whitespace-nowrap"
+                                    >Multa</label
+                                >
+                            </div>
+                            <div hlmInputGroup>
+                                <input
+                                    hlmInputGroupInput
+                                    type="text"
+                                    class="transition-all duration-500 ease-out"
+                                    id="multa"
+                                    [formControl]="form.controls['multa']"
+                                />
+                            </div>
                         </div>
+                        <hlm-field-error
+                            class="transition-all duration-500 ease-out text-xs"
+                            [class.opacity-100]="invalid('multa')"
+                            [class.opacity-0]="!invalid('multa')"
+                            [class.max-h-10]="invalid('multa')"
+                            [class.max-h-0]="!invalid('multa')"
+                            >Debes ingresar el "Multa"</hlm-field-error
+                        >
                     </div>
-                    <hlm-field-error
-                        class="transition-all duration-500 ease-out text-xs"
-                        [class.opacity-100]="invalid('multa')"
-                        [class.opacity-0]="!invalid('multa')"
-                        [class.max-h-10]="invalid('multa')"
-                        [class.max-h-0]="!invalid('multa')"
-                        >Debes ingresar el "Multa"</hlm-field-error
-                    >
+                    <div hlmField class="flex justify-start items-center gap-1 w-fit">
+                        <div class="flex justify-start items-center gap-4 ml-3">
+                            <label for="vigencia" hlmLabel class="opacity-80 font-semibold"
+                                >¿Activada?</label
+                            >
+                            <hlm-switch
+                                class="scale-[120%]"
+                                [checked]="form.controls['activado'].value!"
+                                (checkedChange)="form.controls['activado'].setValue($event)"
+                            />
+                            @if(form.controls['activado'].value!) {
+                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                            } @else {
+                            <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                            }
+                        </div>
+                        <hlm-field-error
+                            class="transition-all duration-500 ease-out -z-10 text-xs"
+                            [class.opacity-100]="invalid('vigencia')"
+                            [class.opacity-0]="!invalid('vigencia')"
+                            [class.max-h-10]="invalid('vigencia')"
+                            [class.max-h-0]="!invalid('vigencia')"
+                            >Debes indicar la marca de "Activo"</hlm-field-error
+                        >
+                    </div>
                 </div>
                 <div class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
                     <div hlmField class="flex justify-center items-center gap-1 md:w-[50%]">

@@ -17,7 +17,7 @@
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-xs md:text-sm">Descripción</th>
                     <th hlmTh class="text-xs md:text-sm">Periodicidad</th>
-                    <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">Activo</th>
+                    <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">¿Activa?</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
             </thead>
@@ -25,8 +25,8 @@
                 @if (cargando()) {
                 <tr hlmTr>
                     <td hlmTd colspan="5">
-                        <div class="flex justify-center-safe">
-                            <hlm-spinner />
+                        <div class="flex justify-center-safe items-center">
+                            <hlm-spinner class="mr-1" />
                             Cargando...
                         </div>
                     </td>
