@@ -33,16 +33,16 @@
                 </tr>
                 } @else { @for (item of listado(); track item.id) {
                 <tr hlmTr>
-                    <td hlmTd class="whitespace-normal">
+                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
                         {{ item.nombre }}
                     </td>
-                    <td hlmTd class="whitespace-normal">
+                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
                         {{ item.descripcion }}
                     </td>
-                    <td hlmTd class="whitespace-normal">
+                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
                         {{ item.nombreTipoPeriodicidad }}
                     </td>
-                    <td hlmTd class="text-center">
+                    <td hlmTd class="text-center px-0">
                         @if (item.activado) {
                         <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
                         } @else {
@@ -54,10 +54,15 @@
                         />
                         }
                     </td>
-                    <td hlmTd>
+                    <td hlmTd class="px-0">
                         <div class="flex items-center justify-center-safe">
-                            <button hlmBtn variant="outline" [hlmDropdownMenuTrigger]="menu">
-                                <ng-icon hlm size="sm" name="lucideEllipsis" />
+                            <button
+                                hlmBtn
+                                variant="outline"
+                                size="sm"
+                                [hlmDropdownMenuTrigger]="menu"
+                            >
+                                <ng-icon hlm size="xs" name="lucideEllipsis" />
                             </button>
                             <ng-template #menu>
                                 <hlm-dropdown-menu>

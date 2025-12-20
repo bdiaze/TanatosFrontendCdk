@@ -1,0 +1,9 @@
+.selectConBoton {
+    width: calc(100% - var(--spacing) * 2 - var(--spacing) * 9);
+}
+
+@media (width >= 48rem) {
+    .widthMitadConGap2 {
+        width: calc(50% - var(--spacing));
+    }
+}

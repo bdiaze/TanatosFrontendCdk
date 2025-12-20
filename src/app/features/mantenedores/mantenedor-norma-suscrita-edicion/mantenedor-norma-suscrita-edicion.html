@@ -113,11 +113,12 @@
                     </div>
                     <div hlmField class="flex justify-start items-center gap-1 w-fit">
                         <div class="flex justify-start items-center gap-4 ml-3">
-                            <label for="vigencia" hlmLabel class="opacity-80 font-semibold"
+                            <label for="activado" hlmLabel class="opacity-80 font-semibold"
                                 >¿Activada?</label
                             >
                             <hlm-switch
                                 class="scale-[120%]"
+                                id="activado"
                                 [checked]="form.controls['activado'].value!"
                                 (checkedChange)="form.controls['activado'].setValue($event)"
                             />
@@ -138,7 +139,10 @@
                     </div>
                 </div>
                 <div class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
-                    <div hlmField class="flex justify-center items-center gap-1 md:w-[50%]">
+                    <div
+                        hlmField
+                        class="flex justify-center items-center gap-1 w-full widthMitadConGap2"
+                    >
                         <div class="flex flex-col justify-start md:items-center gap-2">
                             <label for="categoria" hlmLabel class="opacity-80 pl-2 w-full"
                                 >Categoría</label
@@ -150,11 +154,11 @@
                                 placeholder="Selecciona una categoría..."
                             >
                                 <hlm-select-trigger class="w-full">
-                                    <div class="flex justify-center items-center gap-2">
+                                    <div class="flex justify-start items-center gap-2">
                                         @if (cargandoCategoriasVigentes()) {
                                         <hlm-spinner class="text-base md:text-lg" />
                                         }
-                                        <hlm-select-value class="truncate w-[11.3rem] md:w-56" />
+                                        <hlm-select-value class="truncate" />
                                     </div>
                                 </hlm-select-trigger>
                                 <hlm-select-content>
@@ -183,7 +187,10 @@
                             Debes ingresar la "Categoría"
                         </p>
                     </div>
-                    <div hlmField class="flex justify-center items-center gap-1 md:w-[50%]">
+                    <div
+                        hlmField
+                        class="flex justify-center items-center gap-1 w-full widthMitadConGap2"
+                    >
                         <div class="flex flex-col justify-start md:items-center gap-2">
                             <label for="idTipoPeriodicidad" hlmLabel class="opacity-80 w-full pl-2"
                                 >Periodicidad</label
@@ -195,11 +202,11 @@
                                 placeholder="Selecciona la periodicidad..."
                             >
                                 <hlm-select-trigger class="w-full">
-                                    <div class="flex justify-center items-center gap-2">
+                                    <div class="flex justify-start items-center gap-2">
                                         @if (cargandoPeriodicidadVigentes()) {
                                         <hlm-spinner class="text-base md:text-lg" />
                                         }
-                                        <hlm-select-value class="truncate w-[11.3rem] md:w-56" />
+                                        <hlm-select-value class="truncate" />
                                     </div>
                                 </hlm-select-trigger>
                                 <hlm-select-content>
@@ -232,28 +239,26 @@
 
                 <div class="flex flex-col md:flex-row items-start mt-2 mb-1 gap-3 md:gap-2">
                     <div
-                        class="flex flex-col justify-center-safe items-center w-full md:w-[50%] gap-2"
+                        class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2"
                     >
-                        <label hlmLabel for="formNotifCantTiempo" class="opacity-80 w-full pl-2"
+                        <label hlmLabel for="formFiscalizador" class="opacity-80 w-full pl-2"
                             >Fiscalizadores</label
                         >
 
                         <div class="flex justify-start items-center gap-2 w-full">
                             <brn-select
                                 id="formFiscalizador"
-                                class="inline-block z-10"
+                                class="inline-block z-10 selectConBoton"
                                 [disabled]="cargandoFiscalizadoresVigentes()"
                                 [(ngModel)]="formFiscalizador"
                                 placeholder="Nuevo fiscalizador"
                             >
-                                <hlm-select-trigger class="w-75 md:w-68">
-                                    <div class="flex justify-center items-center gap-2">
+                                <hlm-select-trigger>
+                                    <div class="flex justify-start items-center gap-2">
                                         @if (cargandoFiscalizadoresVigentes()) {
                                         <hlm-spinner class="text-base md:text-lg" />
                                         }
-                                        <hlm-select-value
-                                            class="truncate w-[15.1rem] md:w-[13.4rem]"
-                                        />
+                                        <hlm-select-value class="truncate" />
                                     </div>
                                 </hlm-select-trigger>
                                 <hlm-select-content>
@@ -328,7 +333,7 @@
                         </div>
                     </div>
                     <div
-                        class="flex flex-col justify-center-safe items-center w-full md:w-[50%] gap-2"
+                        class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2"
                     >
                         <label hlmLabel for="formNotifCantTiempo" class="opacity-80 w-full pl-2"
                             >Notificaciones Previas</label
@@ -354,7 +359,7 @@
                                         @if (cargandoUnidadesTiempoVigentes()) {
                                         <hlm-spinner class="text-base md:text-lg" />
                                         }
-                                        <hlm-select-value class="truncate w-12" />
+                                        <hlm-select-value class="truncate w-14" />
                                     </div>
                                 </hlm-select-trigger>
                                 <hlm-select-content>
