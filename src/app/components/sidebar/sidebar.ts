@@ -1,14 +1,5 @@
 import { AuthStore } from '@/app/services/auth-store';
-import {
-    Component,
-    computed,
-    effect,
-    ElementRef,
-    inject,
-    OnInit,
-    signal,
-    ViewChild,
-} from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { HlmSidebarImports, HlmSidebarService } from '@spartan-ng/helm/sidebar';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
 import {
@@ -57,7 +48,7 @@ import { ClickOutside } from '@/app/directives/click-outside';
         }),
     ],
 })
-export class Sidebar implements OnInit {
+export class Sidebar {
     authStore = inject(AuthStore);
     sidebarService = inject(HlmSidebarService);
     negocioStore = inject(NegocioStore);
@@ -182,12 +173,6 @@ export class Sidebar implements OnInit {
                 this.obtenerNegocios();
             }
         });
-    }
-
-    ngOnInit(): void {
-        if (this.sesionIniciada()) {
-            this.obtenerNegocios();
-        }
     }
 
     ocultarSidebar() {
