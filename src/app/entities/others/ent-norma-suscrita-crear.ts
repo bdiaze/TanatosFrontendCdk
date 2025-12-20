@@ -8,6 +8,7 @@ export interface EntNormaSuscritaCrear {
     activado: boolean;
     fiscalizadores: EntFiscalizadorNormaSuscritaCrear[] | null;
     notificaciones: EntNotificacionNormaSuscritaCrear[] | null;
+    proximoVencimiento: string | null;
 }
 
 export interface EntFiscalizadorNormaSuscritaCrear {

@@ -13,6 +13,7 @@ export interface SalNormaSuscrita {
     templateNorma: SalTemplateNorma | null;
     fiscalizadores: SalFiscalizadorNormaSuscrita[] | null;
     notificaciones: SalNotificacionNormaSuscrita[] | null;
+    proximoVencimiento: string | null;
 }
 
 export interface SalTemplateNorma {

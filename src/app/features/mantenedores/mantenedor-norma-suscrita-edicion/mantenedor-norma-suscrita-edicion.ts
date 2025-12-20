@@ -49,6 +49,8 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
+import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita-edicion',
@@ -76,6 +78,9 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         FormsModule,
         RouterLink,
         HlmDropdownMenuImports,
+        HlmDatePickerImports,
+        BrnPopoverImports,
+        HlmPopoverImports,
     ],
     templateUrl: './mantenedor-norma-suscrita-edicion.html',
     styleUrl: './mantenedor-norma-suscrita-edicion.scss',
@@ -86,6 +91,16 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
             lucidePlus,
             lucideX,
             lucideSquarePen,
+        }),
+        provideHlmDatePickerConfig({
+            autoCloseOnSelect: true,
+            formatDate: (date: Date) => {
+                return new Intl.DateTimeFormat('es-CL', {
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                }).format(date);
+            },
         }),
     ],
 })
@@ -120,6 +135,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 cantAntelacion: FormControl<number | null>;
             }>
         >;
+        fechaProximoVencimiento: FormControl<Date | null>;
+        horaProximoVencimiento: FormControl<string | null>;
     }> = new FormGroup({
         nombre: new FormControl<string | null>({ value: null, disabled: false }, [
             Validators.required,
@@ -134,7 +151,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         idCategoriaNorma: new FormControl<number | null>({ value: null, disabled: false }, [
             Validators.required,
         ]),
-        activado: new FormControl<boolean | null>({ value: null, disabled: false }),
+        activado: new FormControl<boolean | null>({ value: null, disabled: false }, [
+            Validators.required,
+        ]),
         fiscalizadores: new FormArray<
             FormGroup<{
                 idTipoFiscalizador: FormControl<number | null>;
@@ -146,6 +165,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 cantAntelacion: FormControl<number | null>;
             }>
         >([]),
+        fechaProximoVencimiento: new FormControl<Date | null>({ value: null, disabled: false }),
+        horaProximoVencimiento: new FormControl<string | null>({ value: null, disabled: false }),
     });
 
     item = signal<SalNormaSuscrita | null>(null);
@@ -174,6 +195,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
     unidadesTiempoVigentes = signal<TipoUnidadTiempo[]>([]);
 
     procesando = signal<boolean>(false);
+
+    minDate = signal<Date>(new Date());
 
     constructor() {
         effect(() => {
@@ -217,6 +240,27 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
         effect(() => {
             if (this.item()) {
+                const fechaVencimiento = this.item()?.proximoVencimiento
+                    ? new Date(this.item()!.proximoVencimiento!)
+                    : null;
+
+                let fechaProximoVencimiento = null;
+                if (fechaVencimiento != null) {
+                    fechaProximoVencimiento = new Date(
+                        fechaVencimiento.getFullYear(),
+                        fechaVencimiento.getMonth(),
+                        fechaVencimiento.getDate()
+                    );
+                }
+                let horaProximoVencimiento = null;
+                if (fechaVencimiento != null) {
+                    horaProximoVencimiento = new Intl.DateTimeFormat('es-CL', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false,
+                    }).format(fechaVencimiento);
+                }
+
                 this.form.patchValue({
                     nombre: this.item()?.nombre,
                     descripcion: this.item()?.descripcion,
@@ -224,6 +268,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     multa: this.item()?.multa,
                     idCategoriaNorma: this.item()?.idCategoriaNorma,
                     activado: this.item()?.activado,
+                    fechaProximoVencimiento: fechaProximoVencimiento ?? undefined,
+                    horaProximoVencimiento: horaProximoVencimiento ?? undefined,
                 });
 
                 (this.form.get('fiscalizadores') as FormArray).clear();
@@ -264,6 +310,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     multa: null,
                     idCategoriaNorma: null,
                     activado: false,
+                    fechaProximoVencimiento: undefined,
+                    horaProximoVencimiento: undefined,
                 });
 
                 (this.form.get('fiscalizadores') as FormArray).clear();
@@ -283,6 +331,21 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             } else {
                 this.idNormaSuscrita.set(null);
             }
+        });
+
+        this.form.controls['activado']!.valueChanges.subscribe((activado: boolean | null) => {
+            const fechaProximoVencimiento = this.form.controls['fechaProximoVencimiento'];
+            const horaProximoVencimiento = this.form.controls['horaProximoVencimiento'];
+
+            if (activado) {
+                fechaProximoVencimiento.addValidators(Validators.required);
+                horaProximoVencimiento.addValidators(Validators.required);
+            } else {
+                fechaProximoVencimiento.removeValidators(Validators.required);
+                horaProximoVencimiento.removeValidators(Validators.required);
+            }
+            fechaProximoVencimiento.updateValueAndValidity();
+            horaProximoVencimiento.updateValueAndValidity();
         });
 
         this.cargandoCategoriasVigentes.set(true);
@@ -478,6 +541,24 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     clickConfirmar() {
         if (this.item()) {
+            let proximoVencimiento = null;
+            if (this.form.controls['activado'].value!) {
+                const fechaProximoVencimiento =
+                    this.form.controls['fechaProximoVencimiento'].value!;
+                const [hora, minuto] = this.form.controls['horaProximoVencimiento']
+                    .value!.split(':')
+                    .map(Number);
+                proximoVencimiento = new Date(
+                    fechaProximoVencimiento.getFullYear(),
+                    fechaProximoVencimiento.getMonth(),
+                    fechaProximoVencimiento.getDate(),
+                    hora,
+                    minuto,
+                    0,
+                    0
+                );
+            }
+
             const normaSuscrita: EntNormaSuscritaActualizar = {
                 id: this.item()!.id,
                 idNegocio: this.negocioStore.negocioSeleccionado()!.id,
@@ -489,6 +570,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 activado: this.form.controls['activado'].value!,
                 fiscalizadores: [],
                 notificaciones: [],
+                proximoVencimiento: proximoVencimiento ? proximoVencimiento.toISOString() : null,
             };
 
             this.form.controls['fiscalizadores'].controls.forEach((fiscalizadorControl) => {
@@ -521,6 +603,24 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     this.procesando.set(false);
                 });
         } else {
+            let proximoVencimiento = null;
+            if (this.form.controls['activado'].value!) {
+                const fechaProximoVencimiento =
+                    this.form.controls['fechaProximoVencimiento'].value!;
+                const [hora, minuto] = this.form.controls['horaProximoVencimiento']
+                    .value!.split(':')
+                    .map(Number);
+                proximoVencimiento = new Date(
+                    fechaProximoVencimiento.getFullYear(),
+                    fechaProximoVencimiento.getMonth(),
+                    fechaProximoVencimiento.getDate(),
+                    hora,
+                    minuto,
+                    0,
+                    0
+                );
+            }
+
             const normaSuscrita: EntNormaSuscritaCrear = {
                 idNegocio: this.negocioStore.negocioSeleccionado()!.id,
                 nombre: this.form.controls['nombre'].value!,
@@ -531,6 +631,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 activado: this.form.controls['activado'].value!,
                 fiscalizadores: [],
                 notificaciones: [],
+                proximoVencimiento: proximoVencimiento ? proximoVencimiento.toISOString() : null,
             };
 
             this.form.controls['fiscalizadores'].controls.forEach((fiscalizadorControl) => {
