@@ -45,7 +45,7 @@
                                 <label
                                     for="id"
                                     hlmLabel
-                                    class="opacity-80 font-semibold whitespace-nowrap"
+                                    class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
                                     >ID</label
                                 >
                             </div>
@@ -53,7 +53,7 @@
                                 <input
                                     hlmInputGroupInput
                                     type="text"
-                                    class="transition-all duration-500 ease-out"
+                                    class="text-xs md:text-sm transition-all duration-500 ease-out"
                                     id="id"
                                     [formControl]="form.controls['id']"
                                 />
@@ -79,7 +79,7 @@
                                 <label
                                     for="nombre"
                                     hlmLabel
-                                    class="opacity-80 font-semibold whitespace-nowrap"
+                                    class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
                                     >Nombre</label
                                 >
                             </div>
@@ -87,7 +87,7 @@
                                 <input
                                     hlmInputGroupInput
                                     type="text"
-                                    class="transition-all duration-500 ease-out"
+                                    class="text-xs md:text-sm transition-all duration-500 ease-out"
                                     id="nombre"
                                     [formControl]="form.controls['nombre']"
                                 />
@@ -107,13 +107,13 @@
                     <label
                         for="descripcion"
                         hlmLabel
-                        class="opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                        class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
                         >Descripción</label
                     >
                     <textarea
                         hlmTextarea
                         type="text"
-                        class="transition-all duration-500 ease-out"
+                        class="text-xs md:text-sm transition-all duration-500 ease-out"
                         id="descripcion"
                         [formControl]="form.controls['descripcion']"
                     ></textarea>
@@ -129,7 +129,10 @@
                 <div class="flex flex-col md:flex-row gap-6">
                     <div hlmField class="flex justify-center items-center gap-1 px-2">
                         <div class="flex justify-start items-center gap-2 w-full">
-                            <label for="idTemplatePadre" hlmLabel class="opacity-80 font-semibold"
+                            <label
+                                for="idTemplatePadre"
+                                hlmLabel
+                                class="text-xs md:text-sm opacity-80 font-semibold"
                                 >Padre</label
                             >
                             <brn-select
@@ -142,21 +145,30 @@
                                         @if (cargandoTemplatesExistentes()) {
                                         <hlm-spinner class="text-base md:text-lg" />
                                         }
-                                        <hlm-select-value />
+                                        <hlm-select-value class="text-xs md:text-sm" />
                                     </div>
                                 </hlm-select-trigger>
                                 <hlm-select-content>
                                     @if (cargandoTemplatesExistentes()) {
-                                    <hlm-option [value]="item()?.idTemplatePadre">
+                                    <hlm-option
+                                        [value]="item()?.idTemplatePadre"
+                                        class="text-xs md:text-sm"
+                                    >
                                         Cargando...</hlm-option
                                     >
                                     } @else {
-                                    <hlm-option [value]="null">Sin padre</hlm-option>
+                                    <hlm-option [value]="null" class="text-xs md:text-sm"
+                                        >Sin padre</hlm-option
+                                    >
                                     @for (templatePadre of templatesExistentes(); track
                                     templatePadre.id) {
-                                    <hlm-option [value]="templatePadre.id">{{
+                                    <hlm-option
+                                        [value]="templatePadre.id"
+                                        class="text-xs md:text-sm"
+                                        >{{
                                             `${templatePadre.nombre}`
-                                    }}</hlm-option>
+                                        }}</hlm-option
+                                    >
                                     }}
                                 </hlm-select-content>
                             </brn-select>
@@ -172,7 +184,10 @@
                     </div>
                     <div hlmField class="flex justify-center items-center gap-1 w-fit">
                         <div class="flex justify-end-safe items-center gap-4">
-                            <label for="vigencia" hlmLabel class="opacity-80 font-semibold"
+                            <label
+                                for="vigencia"
+                                hlmLabel
+                                class="text-xs md:text-sm opacity-80 font-semibold"
                                 >Vigencia</label
                             >
                             <hlm-switch
@@ -210,7 +225,9 @@
                         <div
                             class="w-full flex-1 flex justify-center items-center order-2 md:order-1"
                         >
-                            <label hlmLabel class="opacity-80 font-semibold text-lg py-1"
+                            <label
+                                hlmLabel
+                                class="opacity-80 font-semibold text-base md:text-lg py-1"
                                 >Listado de Normas</label
                             >
                         </div>
@@ -221,7 +238,7 @@
                                 hlmBtn
                                 variant="outline"
                                 (click)="crearNorma()"
-                                class="md:absolute md:top-0 md:right-0"
+                                class="text-xs md:text-sm md:absolute md:top-0 md:right-0"
                                 size="sm"
                             >
                                 Nueva Norma
@@ -240,7 +257,7 @@
                                         class="py-2 px-2 hover:cursor-pointer w-full flex items-center z-10"
                                         (click)="toggleOpenedNorma(norma)"
                                     >
-                                        <p hlmP class="mx-auto opacity-75">
+                                        <p hlmP class="text-sm md:text-base mx-auto opacity-75">
                                             {{
                                                     norma.controls['nombre'].value !== ''
                                                         ? (norma.controls['idNorma'].value ? `${norma.controls['idNorma'].value} · ` : '') + norma.controls['nombre'].value
@@ -279,7 +296,7 @@
                                                         <label
                                                             for="id"
                                                             hlmLabel
-                                                            class="opacity-80 font-semibold whitespace-nowrap"
+                                                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
                                                             >ID</label
                                                         >
                                                     </div>
@@ -287,7 +304,7 @@
                                                         <input
                                                             hlmInputGroupInput
                                                             type="text"
-                                                            class="transition-all duration-500 ease-out"
+                                                            class="text-xs md:text-sm transition-all duration-500 ease-out"
                                                             id="id"
                                                             [formControl]="
                                                                 norma.controls['idNorma']
@@ -322,7 +339,7 @@
                                                         <label
                                                             for="nombre"
                                                             hlmLabel
-                                                            class="opacity-80 font-semibold whitespace-nowrap"
+                                                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
                                                             >Nombre</label
                                                         >
                                                     </div>
@@ -330,7 +347,7 @@
                                                         <input
                                                             hlmInputGroupInput
                                                             type="text"
-                                                            class="transition-all duration-500 ease-out"
+                                                            class="text-xs md:text-sm transition-all duration-500 ease-out"
                                                             id="nombre"
                                                             [formControl]="norma.controls['nombre']"
                                                         />
@@ -385,13 +402,13 @@
                                             <label
                                                 for="descripcion"
                                                 hlmLabel
-                                                class="opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                                                class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
                                                 >Descripción</label
                                             >
                                             <textarea
                                                 hlmTextarea
                                                 type="text"
-                                                class="transition-all duration-500 ease-out"
+                                                class="text-xs md:text-sm transition-all duration-500 ease-out"
                                                 id="descripcion"
                                                 [formControl]="norma.controls['descripcion']"
                                             ></textarea>
@@ -423,7 +440,7 @@
                                                         <label
                                                             for="multa"
                                                             hlmLabel
-                                                            class="opacity-80 font-semibold whitespace-nowrap"
+                                                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
                                                             >Multa</label
                                                         >
                                                     </div>
@@ -431,7 +448,7 @@
                                                         <input
                                                             hlmInputGroupInput
                                                             type="text"
-                                                            class="transition-all duration-500 ease-out"
+                                                            class="text-xs md:text-sm transition-all duration-500 ease-out"
                                                             id="multa"
                                                             [formControl]="norma.controls['multa']"
                                                         />
@@ -452,7 +469,7 @@
                                         >
                                             <div
                                                 hlmField
-                                                class="flex justify-center items-center gap-1 md:w-[50%]"
+                                                class="flex justify-center items-center gap-1 w-full widthMitadConGap2"
                                             >
                                                 <div
                                                     class="flex flex-col justify-start md:items-center gap-2"
@@ -460,7 +477,7 @@
                                                     <label
                                                         for="categoria"
                                                         hlmLabel
-                                                        class="opacity-80 pl-2 w-full"
+                                                        class="text-xs md:text-sm opacity-80 pl-2 w-full"
                                                         >Categoría</label
                                                     >
                                                     <brn-select
@@ -473,7 +490,7 @@
                                                     >
                                                         <hlm-select-trigger class="w-full">
                                                             <div
-                                                                class="flex justify-center items-center gap-2"
+                                                                class="flex justify-start items-center gap-2"
                                                             >
                                                                 @if (cargandoCategoriasExistentes())
                                                                 {
@@ -482,7 +499,7 @@
                                                                 />
                                                                 }
                                                                 <hlm-select-value
-                                                                    class="truncate w-[11.3rem] md:w-56"
+                                                                    class="text-xs md:text-sm truncate"
                                                                 />
                                                             </div>
                                                         </hlm-select-trigger>
@@ -494,6 +511,7 @@
                                                                         'idCategoriaNorma'
                                                                     ].value
                                                                 "
+                                                                class="text-xs md:text-sm"
                                                             >
                                                                 Cargando...</hlm-option
                                                             >
@@ -502,6 +520,7 @@
                                                             categoria.id) {
                                                             <hlm-option
                                                                 [value]="categoria.id"
+                                                                class="text-xs md:text-sm"
                                                                 >{{ `${categoria.nombre}` }}</hlm-option
                                                             >
                                                             }}
@@ -529,7 +548,7 @@
                                             </div>
                                             <div
                                                 hlmField
-                                                class="flex justify-center items-center gap-1 md:w-[50%]"
+                                                class="flex justify-center items-center gap-1 w-full widthMitadConGap2"
                                             >
                                                 <div
                                                     class="flex flex-col justify-start md:items-center gap-2"
@@ -537,7 +556,7 @@
                                                     <label
                                                         for="idTipoPeriodicidad"
                                                         hlmLabel
-                                                        class="opacity-80 w-full pl-2"
+                                                        class="text-xs md:text-sm opacity-80 w-full pl-2"
                                                         >Periodicidad</label
                                                     >
                                                     <brn-select
@@ -552,7 +571,7 @@
                                                     >
                                                         <hlm-select-trigger class="w-full">
                                                             <div
-                                                                class="flex justify-center items-center gap-2"
+                                                                class="flex justify-start items-center gap-2"
                                                             >
                                                                 @if
                                                                 (cargandoPeriodicidadExistentes()) {
@@ -561,7 +580,7 @@
                                                                 />
                                                                 }
                                                                 <hlm-select-value
-                                                                    class="truncate w-[11.3rem] md:w-56"
+                                                                    class="text-xs md:text-sm truncate"
                                                                 />
                                                             </div>
                                                         </hlm-select-trigger>
@@ -573,6 +592,7 @@
                                                                         'idTipoPeriodicidad'
                                                                     ].value
                                                                 "
+                                                                class="text-xs md:text-sm"
                                                             >
                                                                 Cargando...</hlm-option
                                                             >
@@ -581,6 +601,7 @@
                                                             periodicidad.id) {
                                                             <hlm-option
                                                                 [value]="periodicidad.id"
+                                                                class="text-xs md:text-sm"
                                                                 >{{ `${periodicidad.nombre}` }}</hlm-option
                                                             >
                                                             }}
@@ -611,12 +632,12 @@
                                             class="flex flex-col md:flex-row items-start mt-2 gap-3 md:gap-2"
                                         >
                                             <div
-                                                class="flex flex-col justify-center-safe items-center w-full md:w-[50%] gap-2"
+                                                class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2"
                                             >
                                                 <label
                                                     hlmLabel
                                                     for="formNotifCantTiempo"
-                                                    class="opacity-80 w-full pl-2"
+                                                    class="text-xs md:text-sm opacity-80 w-full pl-2"
                                                     >Fiscalizadores</label
                                                 >
 
@@ -625,7 +646,7 @@
                                                 >
                                                     <brn-select
                                                         id="formFiscalizador"
-                                                        class="inline-block z-10"
+                                                        class="inline-block z-10 selectConBoton"
                                                         [disabled]="
                                                             cargandoFiscalizadoresExistentes()
                                                         "
@@ -636,7 +657,7 @@
                                                             class="w-[16.7rem] md:w-[16rem]"
                                                         >
                                                             <div
-                                                                class="flex justify-center items-center gap-2"
+                                                                class="flex justify-start items-center gap-2"
                                                             >
                                                                 @if
                                                                 (cargandoFiscalizadoresExistentes())
@@ -646,19 +667,22 @@
                                                                 />
                                                                 }
                                                                 <hlm-select-value
-                                                                    class="truncate w-52 md:w-[12.4rem]"
+                                                                    class="text-xs md:text-sm truncate"
                                                                 />
                                                             </div>
                                                         </hlm-select-trigger>
                                                         <hlm-select-content>
                                                             @if (cargandoFiscalizadoresExistentes())
                                                             {
-                                                            <hlm-option> Cargando...</hlm-option>
+                                                            <hlm-option class="text-xs md:text-sm">
+                                                                Cargando...</hlm-option
+                                                            >
                                                             } @else { @for (fiscalizador of
                                                             fiscalizadoresExistentes(); track
                                                             fiscalizador.id) {
                                                             <hlm-option
                                                                 [value]="fiscalizador.id"
+                                                                class="text-xs md:text-sm"
                                                                 >{{ `${fiscalizador.nombre}` }}</hlm-option
                                                             >
                                                             }}
@@ -686,7 +710,7 @@
                                                     <span
                                                         hlmBadge
                                                         variant="default"
-                                                        class="pr-1 flex items-center"
+                                                        class="text-[0.7rem] md:text-xs pr-1 flex items-center"
                                                         >{{
                                                             nombreFiscalizador(
                                                                 fiscalizador.controls[
@@ -742,12 +766,12 @@
                                                 </div>
                                             </div>
                                             <div
-                                                class="flex flex-col justify-center-safe items-center w-full md:w-[50%] gap-2"
+                                                class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2"
                                             >
                                                 <label
                                                     hlmLabel
                                                     for="formNotifCantTiempo"
-                                                    class="opacity-80 w-full pl-2"
+                                                    class="text-xs md:text-sm opacity-80 w-full pl-2"
                                                     >Notificaciones Previas</label
                                                 >
                                                 <div
@@ -759,6 +783,7 @@
                                                         type="number"
                                                         [(ngModel)]="formNotifCantTiempo"
                                                         placeholder="Cantidad"
+                                                        class="text-xs md:text-sm"
                                                     />
 
                                                     <brn-select
@@ -782,19 +807,22 @@
                                                                 />
                                                                 }
                                                                 <hlm-select-value
-                                                                    class="truncate w-12"
+                                                                    class="text-xs md:text-sm truncate w-12"
                                                                 />
                                                             </div>
                                                         </hlm-select-trigger>
                                                         <hlm-select-content>
                                                             @if (cargandoUnidadesTiempoExistentes())
                                                             {
-                                                            <hlm-option> Cargando...</hlm-option>
+                                                            <hlm-option class="text-xs md:text-sm">
+                                                                Cargando...</hlm-option
+                                                            >
                                                             } @else { @for (unidadTiempo of
                                                             unidadesTiempoExistentes(); track
                                                             unidadTiempo.id) {
                                                             <hlm-option
                                                                 [value]="unidadTiempo.id"
+                                                                class="text-xs md:text-sm"
                                                                 >{{ `${unidadTiempo.nombre}` }}</hlm-option
                                                             >
                                                             }}
@@ -826,7 +854,7 @@
                                                     <span
                                                         hlmBadge
                                                         variant="default"
-                                                        class="pr-1 flex items-center"
+                                                        class="text-[0.7rem] md:text-xs pr-1 flex items-center"
                                                         >{{
                                                             nombreUnidadTiempo(
                                                                 notificacion.controls[

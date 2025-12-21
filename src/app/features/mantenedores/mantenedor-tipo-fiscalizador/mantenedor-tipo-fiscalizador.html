@@ -8,11 +8,13 @@
                     </th>
                 </tr>
                 <tr hlmTr>
-                    <th hlmTh class="text-center w-12">ID</th>
-                    <th hlmTh>Nombre</th>
-                    <th hlmTh class="w-20">Nombre Corto</th>
-                    <th hlmTh class="text-center w-24">Vigencia</th>
-                    <th hlmTh class="w-16"></th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-xs md:text-sm w-20 whitespace-break-spaces text-center">
+                        Nombre Corto
+                    </th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
             </thead>
             <tbody hlmTBody>
@@ -42,20 +44,27 @@
                 </tr>
                 } @else { @for (item of listado(); track item.id) {
                 <tr hlmTr>
-                    <td hlmTd class="text-center">{{ item.id }}</td>
-                    <td hlmTd class="whitespace-normal">{{ item.nombre }}</td>
-                    <td hlmTd>{{ item.nombreCorto }}</td>
-                    <td hlmTd class="text-center">
-                        @if (item.vigencia) {
-                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                        } @else {
-                        <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
-                        }
+                    <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
+                    <td hlmTd class="text-xs md:text-sm whitespace-normal">{{ item.nombre }}</td>
+                    <td hlmTd class="text-xs md:text-sm text-center">{{ item.nombreCorto }}</td>
+                    <td hlmTd class="text-center px-0">
+                        <div class="flex justify-center items-center">
+                            @if (item.vigencia) {
+                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                            } @else {
+                            <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                            }
+                        </div>
                     </td>
                     <td hlmTd>
                         <div class="flex items-center justify-center-safe">
-                            <button hlmBtn variant="outline" [hlmDropdownMenuTrigger]="menu">
-                                <ng-icon hlm size="sm" name="lucideEllipsis" />
+                            <button
+                                hlmBtn
+                                size="sm"
+                                variant="outline"
+                                [hlmDropdownMenuTrigger]="menu"
+                            >
+                                <ng-icon hlm size="xs" name="lucideEllipsis" />
                             </button>
                             <ng-template #menu>
                                 <hlm-dropdown-menu>

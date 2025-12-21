@@ -42,7 +42,7 @@
                                 <label
                                     [for]="campo.llave"
                                     hlmLabel
-                                    class="opacity-80 font-semibold whitespace-nowrap"
+                                    class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm"
                                     >{{ campo.nombre ?? campo.llave }}</label
                                 >
                             </div>
@@ -51,7 +51,7 @@
                                 <input
                                     hlmInputGroupInput
                                     type="text"
-                                    class="transition-all duration-500 ease-out"
+                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
                                     [id]="campo.llave"
                                     [formControl]="form.controls[campo.llave]"
                                 />
@@ -59,7 +59,7 @@
                                 <input
                                     hlmInputGroupInput
                                     type="number"
-                                    class="transition-all duration-500 ease-out"
+                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
                                     [id]="campo.llave"
                                     [formControl]="form.controls[campo.llave]"
                                 />
@@ -68,9 +68,12 @@
                         </div>
                         } @if (campo.tipo === 'boolean') {
                         <div class="flex justify-end-safe items-center gap-4">
-                            <label [for]="campo.llave" hlmLabel class="opacity-80 font-semibold">{{
-                                campo.nombre ?? campo.llave
-                            }}</label>
+                            <label
+                                [for]="campo.llave"
+                                hlmLabel
+                                class="opacity-80 font-semibold text-xs md:text-sm"
+                                >{{ campo.nombre ?? campo.llave }}</label
+                            >
                             <hlm-switch
                                 [id]="campo.llave"
                                 class="scale-[120%]"

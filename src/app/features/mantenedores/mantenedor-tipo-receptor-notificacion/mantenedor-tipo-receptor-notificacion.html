@@ -8,11 +8,11 @@
                     </th>
                 </tr>
                 <tr hlmTr>
-                    <th hlmTh class="text-center w-12">ID</th>
-                    <th hlmTh>Nombre</th>
-                    <th hlmTh>Regex</th>
-                    <th hlmTh class="text-center w-24">Vigencia</th>
-                    <th hlmTh class="w-16"></th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-xs md:text-sm">Regex</th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
             </thead>
             <tbody hlmTBody>
@@ -43,22 +43,31 @@
                 } @else { @for (tipoReceptor of tiposReceptoresNotificacion(); track
                 tipoReceptor.id) {
                 <tr hlmTr>
-                    <td hlmTd class="text-center">{{ tipoReceptor.id }}</td>
-                    <td hlmTd>{{ tipoReceptor.nombre }}</td>
-                    <td hlmTd class="break-all">{{ tipoReceptor.regexValidacion }}</td>
-                    <td hlmTd class="text-center">
-                        @if (tipoReceptor.vigencia) {
-                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                        } @else {
-                        <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
-                        }
+                    <td hlmTd class="text-xs md:text-sm text-center">{{ tipoReceptor.id }}</td>
+                    <td hlmTd class="text-xs md:text-sm whitespace-break-spaces">
+                        <span>{{ tipoReceptor.nombre }}</span>
+                    </td>
+                    <td hlmTd class="text-xs md:text-sm break-all">
+                        <span>{{ tipoReceptor.regexValidacion }}</span>
+                    </td>
+                    <td hlmTd class="text-center px-0">
+                        <div class="flex justify-center items-center">
+                            @if (tipoReceptor.vigencia) {
+                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                            } @else {
+                            <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                            }
+                        </div>
                     </td>
                     <td hlmTd>
-                        <div
-                            class="flex flex-col md:flex-row items-center justify-center-safe gap-1 md:gap-3"
-                        >
-                            <button hlmBtn variant="outline" [hlmDropdownMenuTrigger]="menu">
-                                <ng-icon hlm size="sm" name="lucideEllipsis" />
+                        <div class="flex items-center justify-center-safe">
+                            <button
+                                hlmBtn
+                                size="sm"
+                                variant="outline"
+                                [hlmDropdownMenuTrigger]="menu"
+                            >
+                                <ng-icon hlm size="xs" name="lucideEllipsis" />
                             </button>
                             <ng-template #menu>
                                 <hlm-dropdown-menu>
