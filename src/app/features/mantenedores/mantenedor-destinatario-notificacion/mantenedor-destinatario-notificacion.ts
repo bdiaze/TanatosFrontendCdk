@@ -1,7 +1,7 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { DestinatarioNotificacionDao } from '@/app/daos/destinatario-notificacion-dao';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, inject, OnInit, signal, effect } from '@angular/core';
+import { Component, inject, signal, effect } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import {
@@ -58,7 +58,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
         }),
     ],
 })
-export class MantenedorDestinatarioNotificacion implements OnInit {
+export class MantenedorDestinatarioNotificacion {
     dao: DestinatarioNotificacionDao = inject(DestinatarioNotificacionDao);
     authStote = inject(AuthStore);
     negocioStore = inject(NegocioStore);
@@ -78,13 +78,6 @@ export class MantenedorDestinatarioNotificacion implements OnInit {
                 this.obtenerTodos();
             }
         });
-    }
-
-    ngOnInit(): void {
-        this.cargando.set(true);
-        if (this.negocioStore.negocioSeleccionado()) {
-            this.obtenerTodos();
-        }
     }
 
     obtenerTodos() {

@@ -4,7 +4,7 @@ import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -49,7 +49,7 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         }),
     ],
 })
-export class MantenedorNormaSuscrita implements OnInit {
+export class MantenedorNormaSuscrita {
     normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
@@ -70,13 +70,6 @@ export class MantenedorNormaSuscrita implements OnInit {
                 this.obtenerTodos();
             }
         });
-    }
-
-    ngOnInit(): void {
-        this.cargando.set(true);
-        if (this.negocioStore.negocioSeleccionado()) {
-            this.obtenerTodos();
-        }
     }
 
     obtenerTodos() {
