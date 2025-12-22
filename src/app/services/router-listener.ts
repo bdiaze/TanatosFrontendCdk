@@ -1,4 +1,4 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, effect, Injectable, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
 
@@ -6,9 +6,11 @@ import { filter } from 'rxjs';
     providedIn: 'root',
 })
 export class RouterListener {
-    variacion = signal<string | null>(null);
+    logo = signal<string | null>(null);
+    fondo = signal<string | null>(null);
+
     urlLogo = computed<string>(() => {
-        switch (this.variacion()) {
+        switch (this.logo()) {
             case '1':
                 return '/images/logo1.svg';
             case '2':
@@ -26,9 +28,37 @@ export class RouterListener {
         router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {
             const parsedUrl = router.parseUrl(router.url);
 
-            const variacion = parsedUrl.queryParams['variacion'];
+            const logo = parsedUrl.queryParams['logo'];
+            const fondo = parsedUrl.queryParams['fondo'];
 
-            this.variacion.set(variacion ?? null);
+            this.logo.set(logo ?? null);
+            this.fondo.set(fondo ?? null);
+        });
+
+        effect(() => {
+            switch (this.fondo()) {
+                case '1':
+                    document.documentElement.style.setProperty(
+                        '--background',
+                        'oklch(48.25% 0.154 254.11)'
+                    );
+                    break;
+                case '2':
+                    document.documentElement.style.setProperty(
+                        '--background',
+                        'oklch(65.35% 0.114 211.61)'
+                    );
+                    break;
+                case '3':
+                    document.documentElement.style.setProperty(
+                        '--background',
+                        'oklch(51.07% 0.158 273.14)'
+                    );
+                    break;
+                default:
+                    document.documentElement.style.setProperty('--background', 'oklch(1 0 0)');
+                    break;
+            }
         });
     }
 }
