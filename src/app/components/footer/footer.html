@@ -1,11 +1,9 @@
 <footer class="px-4 py-2 relative">
-    <div
-        class="w-full max-w-2xl mx-auto p-4 flex gap-4 md:gap-0 flex-row justify-around items-center"
-    >
+    <div class="w-full max-w-2xl mx-auto flex gap-4 md:gap-0 flex-row justify-around items-center">
         <a routerLink="/">
             <img
-                class="w-20 md:w-24 drop-shadow drop-shadow-black/30 select-none"
-                src="/images/logo.svg"
+                class="w-26 md:w-32 drop-shadow drop-shadow-black/30 select-none"
+                [src]="urlLogo()"
                 alt="Logo Todo en Orden"
             />
         </a>

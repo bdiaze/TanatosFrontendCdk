@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { RouterListener } from '@/app/services/router-listener';
+import { Component, inject } from '@angular/core';
 import { HlmH1, HlmH4 } from '@spartan-ng/helm/typography';
 
 @Component({
@@ -7,4 +8,6 @@ import { HlmH1, HlmH4 } from '@spartan-ng/helm/typography';
     templateUrl: './hero.html',
     styleUrl: './hero.scss',
 })
-export class Hero {}
+export class Hero {
+    urlLogo = inject(RouterListener).urlLogo;
+}
