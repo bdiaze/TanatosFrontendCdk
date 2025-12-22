@@ -9,4 +9,5 @@ export const environment = {
     tanatosService: {
         apiUrl: '',
     },
+    urlImages: '',
 };

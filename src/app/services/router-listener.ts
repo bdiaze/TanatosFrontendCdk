@@ -1,3 +1,4 @@
+import { environment } from '@/environments/environment';
 import { computed, effect, Injectable, signal } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
@@ -12,15 +13,15 @@ export class RouterListener {
     urlLogo = computed<string>(() => {
         switch (this.logo()) {
             case '1':
-                return '/images/logo1.svg';
+                return `${environment.urlImages}/images/logo1.svg`;
             case '2':
-                return '/images/logo2.svg';
+                return `${environment.urlImages}/images/logo2.svg`;
             case '3':
-                return '/images/logo3.svg';
+                return `${environment.urlImages}/images/logo3.svg`;
             case '4':
-                return '/images/logo4.svg';
+                return `${environment.urlImages}/images/logo4.svg`;
             default:
-                return '/images/logo.svg';
+                return `${environment.urlImages}/images/logo.svg`;
         }
     });
 
@@ -42,11 +43,23 @@ export class RouterListener {
                         '--background',
                         'oklch(48.25% 0.154 254.11)'
                     );
+                    document.documentElement.style.setProperty('--primary', 'oklch(1 0 0)');
+                    document.documentElement.style.setProperty('--foreground', 'oklch(0.940 0 0)');
+                    document.documentElement.style.setProperty(
+                        '--primary-foreground',
+                        'oklch(43.25% 0.154 254.11)'
+                    );
                     break;
                 case '2':
                     document.documentElement.style.setProperty(
                         '--background',
                         'oklch(65.35% 0.114 211.61)'
+                    );
+                    document.documentElement.style.setProperty('--primary', 'oklch(1 0 0)');
+                    document.documentElement.style.setProperty('--foreground', 'oklch(0.940 0 0)');
+                    document.documentElement.style.setProperty(
+                        '--primary-foreground',
+                        'oklch(60.35% 0.114 211.61)'
                     );
                     break;
                 case '3':
@@ -54,9 +67,21 @@ export class RouterListener {
                         '--background',
                         'oklch(51.07% 0.158 273.14)'
                     );
+                    document.documentElement.style.setProperty('--primary', 'oklch(1 0 0)');
+                    document.documentElement.style.setProperty('--foreground', 'oklch(0.940 0 0)');
+                    document.documentElement.style.setProperty(
+                        '--primary-foreground',
+                        'oklch(46.07% 0.158 273.14)'
+                    );
                     break;
                 default:
                     document.documentElement.style.setProperty('--background', 'oklch(1 0 0)');
+                    document.documentElement.style.setProperty('--primary', 'oklch(0.205 0 0)');
+                    document.documentElement.style.setProperty('--foreground', 'oklch(0.145 0 0)');
+                    document.documentElement.style.setProperty(
+                        '--primary-foreground',
+                        'oklch(0.985 0 0)'
+                    );
                     break;
             }
         });
