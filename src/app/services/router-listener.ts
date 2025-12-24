@@ -21,7 +21,8 @@ export class RouterListener {
             case '4':
                 return `${environment.urlImages}/images/logo4.svg`;
             default:
-                return `${environment.urlImages}/images/logo.svg`;
+                return `${environment.urlImages}/images/logo2.svg`;
+            // return `${environment.urlImages}/images/logo.svg`;
         }
     });
 
@@ -75,12 +76,88 @@ export class RouterListener {
                     );
                     break;
                 default:
+                    /*
                     document.documentElement.style.setProperty('--background', 'oklch(1 0 0)');
                     document.documentElement.style.setProperty('--primary', 'oklch(0.205 0 0)');
                     document.documentElement.style.setProperty('--foreground', 'oklch(0.145 0 0)');
                     document.documentElement.style.setProperty(
                         '--primary-foreground',
                         'oklch(0.985 0 0)'
+                    );
+                    */
+                    document.documentElement.style.setProperty(
+                        '--background',
+                        'oklch(51.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty('--primary', 'oklch(1 0 0)');
+                    document.documentElement.style.setProperty('--foreground', 'oklch(0.940 0 0)');
+                    document.documentElement.style.setProperty(
+                        '--primary-foreground',
+                        'oklch(46.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--muted',
+                        'oklch(43.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--destructive',
+                        'oklch(0.377 0.245 27.325)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--muted-foreground',
+                        'oklch(0.800 0 0)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--sidebar',
+                        'oklch(48.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--sidebar-foreground',
+                        'oklch(0.940 0 0)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--accent',
+                        'oklch(43.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--accent-foreground',
+                        'oklch(0.940 0 0)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--sidebar-border',
+                        'oklch(43.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--border',
+                        'oklch(43.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--input',
+                        'oklch(43.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--popover',
+                        'oklch(51.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--popover-foreground',
+                        'oklch(0.940 0 0)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--sidebar-accent',
+                        'oklch(43.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--sidebar-accent-foreground',
+                        'oklch(0.940 0 0)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--card',
+                        'oklch(51.07% 0.158 273.14)'
+                    );
+                    document.documentElement.style.setProperty(
+                        '--card-foreground',
+                        'oklch(0.940 0 0)'
                     );
                     break;
             }
