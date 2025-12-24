@@ -4,7 +4,7 @@
             <thead hlmTHead>
                 <tr hlmTr>
                     <th colspan="4">
-                        <h4 hlmH4 class="py-3">Administrar Tipo de Receptores de Notificación</h4>
+                        <h4 hlmH4 class="py-3">Administrar Tipo de Destinatario</h4>
                     </th>
                 </tr>
                 <tr hlmTr>
@@ -94,7 +94,7 @@
                 } @empty {
                 <tr hlmTr>
                     <td hlmTd colspan="4" class="text-center">
-                        No existen tipos de receptores de notificación registrados
+                        No existen tipos de destinatarios registrados
                     </td>
                 </tr>
                 } }
@@ -114,8 +114,8 @@
 @if (showModalEliminar()) {
 <app-modal-eliminacion
     [item]="itemSeleccionado()"
-    titulo="Eliminar un tipo de receptor:"
-    [descripcion]="`¿Seguro que deseas eliminar el tipo de receptor de notificación (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
+    titulo="Eliminar un tipo de destinatario:"
+    [descripcion]="`¿Seguro que deseas eliminar el tipo de destinatario (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
     (cerrar)="closeModalEliminar()"
     (eliminar)="eliminar($event)"
 >
@@ -124,7 +124,7 @@
 <app-modal-edicion
     [campos]="camposEdicion()"
     [item]="itemSeleccionado()"
-    titulo="Editar un tipo de receptor:"
+    titulo="Editar un tipo de destinatario:"
     (cerrar)="closeModalEditar()"
     (editar)="editar($event)"
 >
@@ -133,7 +133,7 @@
 <app-modal-edicion
     [campos]="camposCreacion()"
     [item]="itemSeleccionado()"
-    titulo="Crear un tipo de receptor:"
+    titulo="Crear un tipo de destinatario:"
     (cerrar)="closeModalCrear()"
     (editar)="crear($event)"
 >
