@@ -79,7 +79,7 @@ export class Sidebar {
                         id: crypto.randomUUID(),
                         tipo: 'item',
                         icon: 'lucideCalendarCog',
-                        titulo: 'Tus Tareas',
+                        titulo: 'Tus Obligaciones',
                         url: '/mantenedores/norma-suscrita',
                     },
                     {
@@ -123,7 +123,7 @@ export class Sidebar {
                             {
                                 id: crypto.randomUUID(),
                                 tipo: 'subitem',
-                                titulo: 'Template',
+                                titulo: 'Plantillas',
                                 url: '/administracion/mantenedores/template',
                             },
                             {
@@ -135,7 +135,7 @@ export class Sidebar {
                             {
                                 id: crypto.randomUUID(),
                                 tipo: 'subitem',
-                                titulo: 'Tipo Receptor Notificación',
+                                titulo: 'Tipo Destinatario',
                                 url: '/administracion/mantenedores/tipo-receptor-notificacion',
                             },
                             {

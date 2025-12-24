@@ -173,9 +173,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     titulo = computed<string>(() => {
         if (this.item()) {
-            return `Edita tu tarea "${this.item()?.nombre}"`;
+            return `Edita la obligación "${this.item()?.nombre}"`;
         }
-        return `Crea una tarea nueva:`;
+        return `Crea una obligación nueva:`;
     });
 
     error = signal<string>('');
@@ -225,10 +225,10 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                             this.item.set(normaSuscrita);
                         },
                         error: (err) => {
-                            console.error('Error al obtener la información de la tarea', err);
+                            console.error('Error al obtener la información de la obligación', err);
                             this.error.set(
                                 getErrorMessage(err) ??
-                                    'Error al obtener la información de la tarea'
+                                    'Error al obtener la información de la obligación'
                             );
                         },
                     })
