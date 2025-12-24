@@ -1,18 +1,43 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div class="mb-8">
+        <p hlmP class="font-semibold opacity-65 text-sm text-center">
+            {{ negocioStore.negocioSeleccionado()?.nombre }}
+        </p>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
+            <ng-icon hlm name="lucideLayers" />
+            <h4 hlmH4>Plantillas Inscritas</h4>
+        </div>
+        <div class="flex flex-col md:flex-row justify-center-safe items-center gap-2">
+            @if (cargandoInscripciones()) {
+            <div class="w-1/2 flex justify-center-safe items-center text-sm">
+                <hlm-spinner class="mr-1" />
+                Cargando...
+            </div>
+            } @else { @if (!inscripciones() || inscripciones().length == 0) {
+            <div class="w-1/2 flex justify-center-safe items-center text-sm">
+                Ninguna plantilla inscrita
+                <ng-icon hlm name="lucideFrown" size="sm" class="ml-2" />
+            </div>
+            } @else {
+            <div class="w-1/2 flex justify-center-safe items-center">
+                @for (inscripcion of inscripciones(); track inscripcion.idTemplate) {
+
+                <span>{{ inscripcion.nombreTemplate ?? inscripcion.idTemplate }}</span>
+                }
+            </div>
+            } }
+            <div class="w-1/2 flex justify-center-safe items-center"></div>
+        </div>
+    </div>
+    <div>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
+            <ng-icon hlm name="lucideCalendarCog" />
+            <h4 hlmH4>Tus Obligaciones</h4>
+        </div>
+    </div>
     <div hlmTableContainer>
         <table hlmTable>
             <thead hlmTHead>
-                <tr hlmTr>
-                    <th colspan="5">
-                        <p hlmP class="font-semibold opacity-65">
-                            {{ negocioStore.negocioSeleccionado()?.nombre }}
-                        </p>
-                        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
-                            <ng-icon hlm name="lucideCalendarCog" />
-                            <h4 hlmH4>Tus Tareas</h4>
-                        </div>
-                    </th>
-                </tr>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-xs md:text-sm">Descripción</th>
@@ -88,12 +113,16 @@
                 </tr>
                 } @empty {
                 <tr hlmTr>
-                    <td hlmTd colspan="5" class="text-center">No tienes tareas registradas</td>
+                    <td hlmTd colspan="5" class="text-center">
+                        No tienes obligaciones registradas
+                    </td>
                 </tr>
                 } }
             </tbody>
         </table>
-        <a hlmBtn [routerLink]="['/mantenedores/norma-suscrita/nuevo']" class="m-4">Nuevo Tarea</a>
+        <a hlmBtn [routerLink]="['/mantenedores/norma-suscrita/nuevo']" class="m-4"
+            >Nuevo Obligación</a
+        >
     </div>
     @if (error()) {
     <div hlmAlert variant="destructive" class="mt-6">
@@ -107,9 +136,9 @@
 @if (showModalEliminar()) {
 <app-modal-eliminacion
     [item]="itemSeleccionado()"
-    titulo="Quitar una tarea:"
-    [descripcion]="`¿Seguro que deseas quitar la tarea ${itemSeleccionado()?.nombre}?`"
-    descripcionTextVerificacion="Para confirmar, escribe a continuación el nombre de la tarea:"
+    titulo="Quitar una obligación:"
+    [descripcion]="`¿Seguro que deseas quitar la obligación ${itemSeleccionado()?.nombre}?`"
+    descripcionTextVerificacion="Para confirmar, escribe a continuación el nombre de la obligación:"
     [textoVerificacion]="itemSeleccionado()?.nombre!"
     (cerrar)="closeModalEliminar()"
     (eliminar)="eliminar($event)"

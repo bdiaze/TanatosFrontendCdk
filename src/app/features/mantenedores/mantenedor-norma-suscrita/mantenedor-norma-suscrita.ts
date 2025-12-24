@@ -1,5 +1,7 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
+import { InscripcionTemplateDao } from '@/app/daos/inscripcion-template-dao';
 import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
+import { SalInscripcionTemplate } from '@/app/entities/others/sal-inscripcion-template';
 import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
@@ -12,6 +14,8 @@ import {
     lucideBadgeX,
     lucideCalendarCog,
     lucideEllipsis,
+    lucideFrown,
+    lucideLayers,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -46,13 +50,19 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
             lucideBadgeCheck,
             lucideBadgeX,
             lucideCalendarCog,
+            lucideLayers,
+            lucideFrown,
         }),
     ],
 })
 export class MantenedorNormaSuscrita {
     normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
+    inscripcionTemplateDao: InscripcionTemplateDao = inject(InscripcionTemplateDao);
     authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
+
+    inscripciones = signal([] as SalInscripcionTemplate[]);
+    cargandoInscripciones = signal(true);
 
     listado = signal([] as SalNormaSuscrita[]);
     cargando = signal(true);
@@ -67,9 +77,39 @@ export class MantenedorNormaSuscrita {
     constructor() {
         effect(() => {
             if (this.authStore.sesionIniciada() && this.negocioStore.negocioSeleccionado()) {
+                this.obtenerInscripciones();
                 this.obtenerTodos();
             }
         });
+    }
+
+    obtenerInscripciones() {
+        this.cargandoInscripciones.set(true);
+        this.inscripciones.set([]);
+
+        this.inscripcionTemplateDao
+            .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
+            .subscribe({
+                next: (res) => {
+                    const sorted = res.sort((a, b) =>
+                        a.nombreTemplate && b.nombreTemplate
+                            ? a.nombreTemplate
+                                  .toLocaleLowerCase()
+                                  .localeCompare(b.nombreTemplate.toLocaleLowerCase())
+                            : a.idTemplate - b.idTemplate
+                    );
+                    this.inscripciones.set(sorted);
+                },
+                error: (err) => {
+                    console.error('Error al obtener las plantillas inscritas', err);
+                    this.error.set(
+                        getErrorMessage(err) ?? 'Error al obtener las plantillas inscritas'
+                    );
+                },
+            })
+            .add(() => {
+                this.cargandoInscripciones.set(false);
+            });
     }
 
     obtenerTodos() {
@@ -117,8 +157,8 @@ export class MantenedorNormaSuscrita {
             },
             error: (err) => {
                 this.cargando.set(false);
-                console.error('Error al eliminar la norma', err);
-                this.error.set(getErrorMessage(err) ?? 'Error al eliminar la norma');
+                console.error('Error al eliminar la obligación', err);
+                this.error.set(getErrorMessage(err) ?? 'Error al eliminar la obligación');
             },
         });
         this.showModalEliminar.set(false);
