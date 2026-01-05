@@ -1,35 +1,8 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
-    <div class="mb-8">
+    <div>
         <p hlmP class="font-semibold opacity-65 text-sm text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
         </p>
-        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
-            <ng-icon hlm name="lucideLayers" />
-            <h4 hlmH4>Plantillas Inscritas</h4>
-        </div>
-        <div class="flex flex-col md:flex-row justify-center-safe items-center gap-2">
-            @if (cargandoInscripciones()) {
-            <div class="w-1/2 flex justify-center-safe items-center text-sm">
-                <hlm-spinner class="mr-1" />
-                Cargando...
-            </div>
-            } @else { @if (!inscripciones() || inscripciones().length == 0) {
-            <div class="w-1/2 flex justify-center-safe items-center text-sm">
-                Ninguna plantilla inscrita
-                <ng-icon hlm name="lucideFrown" size="sm" class="ml-2" />
-            </div>
-            } @else {
-            <div class="w-1/2 flex justify-center-safe items-center">
-                @for (inscripcion of inscripciones(); track inscripcion.idTemplate) {
-
-                <span>{{ inscripcion.nombreTemplate ?? inscripcion.idTemplate }}</span>
-                }
-            </div>
-            } }
-            <div class="w-1/2 flex justify-center-safe items-center"></div>
-        </div>
-    </div>
-    <div>
         <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
             <ng-icon hlm name="lucideCalendarCog" />
             <h4 hlmH4>Tus Obligaciones</h4>
