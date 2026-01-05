@@ -1,0 +1,128 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <p hlmP class="font-semibold opacity-65 text-sm text-center">
+            {{ negocioStore.negocioSeleccionado()?.nombre }}
+        </p>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
+            <ng-icon hlm name="lucideClipboardPaste" />
+            <h4 hlmH4>Plantillas Inscritas</h4>
+        </div>
+    </div>
+    <div hlmTableContainer>
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">
+                        ¿Inscrita?
+                    </th>
+                    <th hlmTh class="w-10 md:w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargando()) {
+                <tr hlmTr>
+                    <td hlmTd colspan="3">
+                        <div class="flex justify-center-safe items-center">
+                            <hlm-spinner class="mr-1" />
+                            Cargando...
+                        </div>
+                    </td>
+                </tr>
+                } @else { @for (item of listado(); track item.idTemplate) {
+                <tr hlmTr>
+                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                        {{ item.nombreTemplate }}
+                    </td>
+                    <td hlmTd class="text-center px-0">
+                        @if (item.inscrito) {
+                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                        } @else {
+                        <ng-icon
+                            hlmTooltipTrigger
+                            hlm
+                            name="lucideBadgeX"
+                            class="text-destructive"
+                        />
+                        }
+                    </td>
+                    <td hlmTd class="px-0">
+                        <div class="flex items-center justify-center-safe">
+                            <button
+                                hlmBtn
+                                variant="outline"
+                                size="sm"
+                                [hlmDropdownMenuTrigger]="menu"
+                            >
+                                <ng-icon hlm size="xs" name="lucideEllipsis" />
+                            </button>
+                            <ng-template #menu>
+                                <hlm-dropdown-menu>
+                                    <hlm-dropdown-menu-group>
+                                        @if (!item.inscrito) {
+                                        <button
+                                            hlmDropdownMenuItem
+                                            (click)="openModalInscribirse(item)"
+                                        >
+                                            Inscribirse
+                                        </button>
+                                        } @else {
+                                        <button
+                                            hlmDropdownMenuItem
+                                            variant="destructive"
+                                            (click)="openModalDesinscribirse(item)"
+                                        >
+                                            Desinscribirse
+                                        </button>
+                                        }
+                                    </hlm-dropdown-menu-group>
+                                </hlm-dropdown-menu>
+                            </ng-template>
+                        </div>
+                    </td>
+                </tr>
+                } @empty {
+                <tr hlmTr>
+                    <td hlmTd colspan="5" class="text-center">
+                        No te has inscrito a ninguna plantilla
+                    </td>
+                </tr>
+                } }
+            </tbody>
+        </table>
+    </div>
+    @if (error()) {
+    <div hlmAlert variant="destructive" class="mt-6">
+        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+        <p hlmAlertDescription>{{ error() }}</p>
+    </div>
+    }
+</section>
+
+@if (showModalDesinscribirse()) {
+<app-modal-eliminacion
+    [item]="itemSeleccionado()"
+    titulo="Cancelar la inscripción:"
+    [descripcion]="`¿Seguro que deseas cancelar la inscripción a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?`"
+    textoBotonEliminar="Cancelar inscripción"
+    textoBotonCancelar="Cerrar"
+    (cerrar)="closeModalDesinscribirse()"
+    (eliminar)="desinscribirse($event)"
+>
+</app-modal-eliminacion>
+} @if (showModalInscribirse()) {
+<app-modal-edicion
+    [campos]="camposEdicion()"
+    [item]="itemSeleccionado()"
+    titulo="Inscribirte a una plantilla:"
+    [descripcion]="`¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?`"
+    [conFuncionSecundaria]="true"
+    textoBotonGuardar="Inscribirse a Todos"
+    textoBotonSecundario="Inscribirse"
+    (cerrar)="closeModalInscribirse()"
+    (editar)="inscribirse($event)"
+    (funcionSecundaria)="inscribirse($event)"
+>
+</app-modal-edicion>
+}

@@ -10,6 +10,7 @@ import {
     lucideSend,
     lucideSettings,
     lucideCalendarCog,
+    lucideClipboardPaste,
 } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -45,6 +46,7 @@ import { ClickOutside } from '@/app/directives/click-outside';
             lucideStore,
             lucideChevronsUpDown,
             lucideCalendarCog,
+            lucideClipboardPaste,
         }),
     ],
 })
@@ -89,6 +91,21 @@ export class Sidebar {
                         titulo: 'Tus Destinatarios',
                         url: '/mantenedores/destinatario',
                     },
+                    {
+                        id: crypto.randomUUID(),
+                        tipo: 'item',
+                        icon: 'lucideSettings',
+                        titulo: 'Configuración',
+                        items: [
+                            {
+                                id: crypto.randomUUID(),
+                                tipo: 'subitem',
+                                titulo: 'Plantillas Inscritas',
+                                icon: 'lucideClipboardPaste',
+                                url: '/mantenedores/plantillas-inscritas',
+                            },
+                        ],
+                    },
                 ],
             });
         }
@@ -101,9 +118,17 @@ export class Sidebar {
                 {
                     id: crypto.randomUUID(),
                     tipo: 'item',
-                    titulo: 'Tus Negocios',
-                    icon: 'lucideStore',
-                    url: '/mantenedores/negocio',
+                    titulo: 'Configuración',
+                    icon: 'lucideSettings',
+                    items: [
+                        {
+                            id: crypto.randomUUID(),
+                            tipo: 'subitem',
+                            titulo: 'Tus Negocios',
+                            icon: 'lucideStore',
+                            url: '/mantenedores/negocio',
+                        },
+                    ],
                 },
             ],
         });

@@ -15,6 +15,7 @@ import { MantenedorNegocio } from './features/mantenedores/mantenedor-negocio/ma
 import { MantenedorNormaSuscrita } from './features/mantenedores/mantenedor-norma-suscrita/mantenedor-norma-suscrita';
 import { MantenedorTemplateEdicion } from './features/mantenedores/mantenedor-template-edicion/mantenedor-template-edicion';
 import { MantenedorNormaSuscritaEdicion } from './features/mantenedores/mantenedor-norma-suscrita-edicion/mantenedor-norma-suscrita-edicion';
+import { MantenedorPlantillasInscritas } from './features/mantenedores/mantenedor-plantillas-inscritas/mantenedor-plantillas-inscritas';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -71,6 +72,10 @@ export const routes: Routes = [
     {
         path: 'mantenedores/norma-suscrita/nuevo',
         component: MantenedorNormaSuscritaEdicion,
+    },
+    {
+        path: 'mantenedores/plantillas-inscritas',
+        component: MantenedorPlantillasInscritas,
     },
     {
         path: 'validar-destinatario',
