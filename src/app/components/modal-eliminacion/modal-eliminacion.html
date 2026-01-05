@@ -11,9 +11,7 @@
             <hlm-separator />
         </div>
         <div hlmCardContent>
-            <p hlmP class="text-center text-balance mx-1">
-                {{ descripcion }}
-            </p>
+            <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
             @if (textoVerificacion) {
             <div class="mt-4">
                 <p class="text-sm mx-1">
@@ -32,14 +30,16 @@
             }
         </div>
         <div hlmCardFooter class="flex items-center justify-end gap-6">
-            <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
+            <button hlmBtn variant="secondary" (click)="cerrar.emit()">
+                {{ textoBotonCancelar }}
+            </button>
             <button
                 hlmBtn
                 variant="destructive"
                 (click)="confirmarEliminacion()"
                 [disabled]="textoVerificacion && textoVerificacion !== textoVerificacionIngresado()"
             >
-                Eliminar
+                {{ textoBotonEliminar }}
             </button>
         </div>
     </div>

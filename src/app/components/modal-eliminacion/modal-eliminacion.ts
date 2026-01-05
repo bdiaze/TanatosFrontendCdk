@@ -30,6 +30,8 @@ export class ModalEliminacion {
     @Input() descripcion: any;
     @Input() descripcionTextVerificacion?: string;
     @Input() textoVerificacion?: string;
+    @Input() textoBotonEliminar: string = 'Eliminar';
+    @Input() textoBotonCancelar: string = 'Cancelar';
     @Output() cerrar = new EventEmitter<void>();
     @Output() eliminar = new EventEmitter<any>();
 
