@@ -36,9 +36,14 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 export class ModalEdicion implements OnInit {
     @Input() campos: CampoDinamico[] = [];
     @Input() item: any;
-    @Input() titulo: any;
+    @Input() titulo: string = 'Editar';
+    @Input() descripcion?: string;
+    @Input() conFuncionSecundaria: boolean = false;
+    @Input() textoBotonGuardar: string = 'Guardar';
+    @Input() textoBotonSecundario?: string;
     @Output() cerrar = new EventEmitter<void>();
     @Output() editar = new EventEmitter<any>();
+    @Output() funcionSecundaria = new EventEmitter<any>();
 
     form: FormGroup<{ [key: string]: FormControl<any> }> = new FormGroup({});
 

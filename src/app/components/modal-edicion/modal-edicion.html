@@ -27,6 +27,9 @@
             <hlm-separator />
         </div>
         <div hlmCardContent>
+            @if (descripcion) {
+            <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
+            }
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
                     @for (campo of campos; track campo.llave) { @if (campo.tipo !== 'oculto') {
@@ -100,9 +103,26 @@
                 </div>
             </fieldset>
         </div>
-        <div hlmCardFooter class="flex items-center justify-end gap-6">
+        <div
+            hlmCardFooter
+            class="flex items-center justify-end"
+            [class.gap-6]="!conFuncionSecundaria"
+            [class.gap-4]="conFuncionSecundaria"
+        >
             <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
-            <button hlmBtn (click)="confirmar()" [disabled]="form.invalid">Guardar</button>
+            @if(conFuncionSecundaria) {
+            <button
+                hlmBtn
+                variant="secondary"
+                (click)="funcionSecundaria.emit(this.form?.getRawValue())"
+                [disabled]="form.invalid"
+            >
+                {{ textoBotonSecundario }}
+            </button>
+            }
+            <button hlmBtn (click)="confirmar()" [disabled]="form.invalid">
+                {{ textoBotonGuardar }}
+            </button>
         </div>
     </div>
 </div>
