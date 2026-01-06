@@ -72,7 +72,7 @@ export class MantenedorNormaSuscrita {
 
     constructor() {
         effect(() => {
-            if (this.authStore.sesionIniciada() && this.negocioStore.negocioSeleccionado()) {
+            if (this.negocioStore.negocioSeleccionado()) {
                 this.obtenerTodos();
             }
         });
@@ -154,5 +154,22 @@ export class MantenedorNormaSuscrita {
         this.obtenerTodos();
         this.showModalCrear.set(false);
         this.showModalEditar.set(false);
+    }
+
+    truncarDescripcion(texto: string | null | undefined, max: number = 90): string {
+        if (!texto) return '';
+
+        if (texto.length <= max) {
+            return texto;
+        }
+
+        const cortado = texto.slice(0, max);
+        const ultimoEspacio = cortado.lastIndexOf(' ');
+
+        if (ultimoEspacio < max - 12) {
+            return cortado + '...';
+        }
+
+        return cortado.slice(0, ultimoEspacio).trim() + '...';
     }
 }

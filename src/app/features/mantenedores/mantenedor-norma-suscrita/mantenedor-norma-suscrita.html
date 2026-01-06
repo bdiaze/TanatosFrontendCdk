@@ -32,13 +32,18 @@
                 } @else { @for (item of listado(); track item.id) {
                 <tr hlmTr>
                     <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                        {{ item.nombre }}
+                        {{ item.nombre ?? item.templateNorma?.nombre }}
                     </td>
                     <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                        {{ item.descripcion }}
+                        {{
+                            truncarDescripcion(item.descripcion ?? item.templateNorma?.descripcion)
+                        }}
                     </td>
                     <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                        {{ item.nombreTipoPeriodicidad }}
+                        {{
+                            item.nombreTipoPeriodicidad ??
+                                item.templateNorma?.nombreTipoPeriodicidad
+                        }}
                     </td>
                     <td hlmTd class="text-center px-0">
                         @if (item.activado) {

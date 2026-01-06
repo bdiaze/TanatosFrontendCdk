@@ -72,7 +72,7 @@
                                             variant="destructive"
                                             (click)="openModalDesinscribirse(item)"
                                         >
-                                            Desinscribirse
+                                            Cancelar inscripción
                                         </button>
                                         }
                                     </hlm-dropdown-menu-group>
@@ -118,8 +118,8 @@
     titulo="Inscribirte a una plantilla:"
     [descripcion]="`¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?`"
     [conFuncionSecundaria]="true"
-    textoBotonGuardar="Inscribirse a Todos"
-    textoBotonSecundario="Inscribirse"
+    textoBotonGuardar="Sí, a todos"
+    textoBotonSecundario="Sí, al indicado"
     (cerrar)="closeModalInscribirse()"
     (editar)="inscribirse($event)"
     (funcionSecundaria)="inscribirse($event)"
