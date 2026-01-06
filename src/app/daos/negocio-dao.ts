@@ -30,7 +30,9 @@ export class NegocioDao {
                     if (cookieSeleccionado) {
                         const encontrado = v.find((x) => x.id === Number(cookieSeleccionado));
                         if (encontrado) {
-                            this.negocioStore.negocioSeleccionado.set(encontrado);
+                            if (this.negocioStore.negocioSeleccionado()?.id !== encontrado.id) {
+                                this.negocioStore.negocioSeleccionado.set(encontrado);
+                            }
                             return;
                         } else {
                             clearCookie('NegocioSeleccionado');
@@ -38,7 +40,9 @@ export class NegocioDao {
                     }
 
                     if (v.length > 0) {
-                        this.negocioStore.negocioSeleccionado.set(v[0]);
+                        if (this.negocioStore.negocioSeleccionado()?.id !== v[0].id) {
+                            this.negocioStore.negocioSeleccionado.set(v[0]);
+                        }
                         setCookie('NegocioSeleccionado', `${v[0].id}`);
                     }
                 })
