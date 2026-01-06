@@ -15,7 +15,7 @@ export class AuthStore {
     constructor() {
         const token = sessionStorage.getItem('access_token');
         if (token) {
-            this._accessToken.set(token);
+            this.setAccessToken(token);
         }
     }
 
@@ -28,10 +28,16 @@ export class AuthStore {
 
         if (token) {
             sessionStorage.setItem('access_token', token);
+            if (this.sesionIniciada() !== true) {
+                this.sesionIniciada.set(true);
+            }
         } else {
             sessionStorage.removeItem('access_token');
+            this.sesionIniciada.set(false);
         }
     }
+
+    sesionIniciada = signal<boolean>(false);
 
     claims = computed<AuthClaims | null>(() => {
         const token = this._accessToken();
@@ -42,15 +48,6 @@ export class AuthStore {
 
     sub = computed<string | null>(() => {
         return this.claims()?.sub ?? null;
-    });
-
-    sesionIniciada = computed<boolean>(() => {
-        const token = this._accessToken();
-        if (!token) {
-            return false;
-        }
-
-        return true;
     });
 
     backgroundRefreshRunning = signal<boolean>(false);
