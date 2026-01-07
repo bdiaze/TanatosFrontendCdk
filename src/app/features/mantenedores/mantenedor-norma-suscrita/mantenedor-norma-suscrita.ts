@@ -22,6 +22,7 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
@@ -40,6 +41,7 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         HlmSpinnerImports,
         HlmP,
         RouterLink,
+        HlmSeparatorImports,
     ],
     templateUrl: './mantenedor-norma-suscrita.html',
     styleUrl: './mantenedor-norma-suscrita.scss',
@@ -171,5 +173,31 @@ export class MantenedorNormaSuscrita {
         }
 
         return cortado.slice(0, ultimoEspacio).trim() + '...';
+    }
+
+    obtenerNormasPropias(listado: SalNormaSuscrita[]): SalNormaSuscrita[] {
+        return listado.filter((x) => x.templateNorma == null);
+    }
+
+    obtenerNormasSegunTemplate(
+        listado: SalNormaSuscrita[],
+        nombreTemplate: string
+    ): SalNormaSuscrita[] {
+        return listado.filter(
+            (x) => x.templateNorma != null && x.templateNorma.nombreTemplate === nombreTemplate
+        );
+    }
+
+    obtenerTemplatesSuscritos(listado: SalNormaSuscrita[]): string[] {
+        const normasConTemplate = listado.filter((x) => x.templateNorma != null);
+
+        const templates: string[] = [
+            ...new Set(normasConTemplate.map((n) => n.templateNorma?.nombreTemplate!)),
+        ];
+        const retorno: string[] = templates.sort((a, b) =>
+            a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase())
+        );
+
+        return retorno;
     }
 }

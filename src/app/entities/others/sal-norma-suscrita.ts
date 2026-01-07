@@ -17,6 +17,8 @@ export interface SalNormaSuscrita {
 }
 
 export interface SalTemplateNorma {
+    idTemplate: number;
+    nombreTemplate: string;
     nombre: string;
     descripcion: string | null;
     idTipoPeriodicidad: number | null;

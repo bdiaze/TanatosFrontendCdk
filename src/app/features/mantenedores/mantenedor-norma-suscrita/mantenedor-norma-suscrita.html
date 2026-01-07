@@ -29,7 +29,7 @@
                         </div>
                     </td>
                 </tr>
-                } @else { @for (item of listado(); track item.id) {
+                } @else { @for (item of obtenerNormasPropias(listado()); track item.id) {
                 <tr hlmTr>
                     <td hlmTd class="whitespace-normal text-xs md:text-sm">
                         {{ item.nombre ?? item.templateNorma?.nombre }}
@@ -99,7 +99,7 @@
             </tbody>
         </table>
         <a hlmBtn [routerLink]="['/mantenedores/norma-suscrita/nuevo']" class="m-4"
-            >Nuevo Obligación</a
+            >Nueva Obligación</a
         >
     </div>
     @if (error()) {
@@ -109,6 +109,86 @@
         <p hlmAlertDescription>{{ error() }}</p>
     </div>
     }
+
+    <!-- Sección de templates inscritos -->
+    @if(!cargando()) { @for(template of obtenerTemplatesSuscritos(listado()); track template) {
+    <hlm-separator />
+    <div>
+        <div class="flex justify-center-safe items-center gap-3 pt-4 pb-5">
+            <ng-icon hlm name="lucideCalendarCog" />
+            <h4 hlmH4>Obligaciones - {{ template }}</h4>
+        </div>
+    </div>
+    <div hlmTableContainer>
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-xs md:text-sm">Descripción</th>
+                    <th hlmTh class="text-xs md:text-sm">Periodicidad</th>
+                    <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">¿Activa?</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @for (item of obtenerNormasSegunTemplate(listado(), template); track item.id) {
+                <tr hlmTr>
+                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                        {{ item.nombre ?? item.templateNorma?.nombre }}
+                    </td>
+                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                        {{
+                            truncarDescripcion(item.descripcion ?? item.templateNorma?.descripcion)
+                        }}
+                    </td>
+                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                        {{
+                            item.nombreTipoPeriodicidad ??
+                                item.templateNorma?.nombreTipoPeriodicidad
+                        }}
+                    </td>
+                    <td hlmTd class="text-center px-0">
+                        @if (item.activado) {
+                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                        } @else {
+                        <ng-icon
+                            hlmTooltipTrigger
+                            hlm
+                            name="lucideBadgeX"
+                            class="text-destructive"
+                        />
+                        }
+                    </td>
+                    <td hlmTd class="px-0">
+                        <div class="flex items-center justify-center-safe">
+                            <button
+                                hlmBtn
+                                variant="outline"
+                                size="sm"
+                                [hlmDropdownMenuTrigger]="menu"
+                            >
+                                <ng-icon hlm size="xs" name="lucideEllipsis" />
+                            </button>
+                            <ng-template #menu>
+                                <hlm-dropdown-menu>
+                                    <hlm-dropdown-menu-group>
+                                        <button
+                                            hlmDropdownMenuItem
+                                            [routerLink]="['/mantenedores/norma-suscrita', item.id]"
+                                        >
+                                            Editar
+                                        </button>
+                                    </hlm-dropdown-menu-group>
+                                </hlm-dropdown-menu>
+                            </ng-template>
+                        </div>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    } }
 </section>
 
 @if (showModalEliminar()) {
