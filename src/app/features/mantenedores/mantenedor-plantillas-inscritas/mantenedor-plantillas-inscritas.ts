@@ -220,4 +220,24 @@ export class MantenedorPlantillasInscritas {
             });
         this.showModalInscribirse.set(false);
     }
+
+    listadoHTMLNormas(item: TemplateConInscripcion | null): string {
+        if (!item || item.templateNormas.length == 0) {
+            return '';
+        }
+
+        let retorno = '<br/>';
+        retorno += '<div class="mt-2">';
+        retorno += '<p class="mb-1"><u>Obligaciones</u></p>';
+
+        item.templateNormas.forEach((norma) => {
+            retorno += `<p class="text-sm">· ${norma.nombreNorma}</p>`;
+        });
+
+        if (item.templateNormas.length > 0) {
+            retorno += '</div>';
+        }
+
+        return retorno;
+    }
 }

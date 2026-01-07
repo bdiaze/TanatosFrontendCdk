@@ -154,6 +154,7 @@
 >
 </app-modal-eliminacion>
 } @if (showModalInscribirse()) {
+<!--
 <app-modal-edicion
     [campos]="camposEdicion()"
     [item]="itemSeleccionado()"
@@ -165,6 +166,17 @@
     (cerrar)="closeModalInscribirse()"
     (editar)="inscribirse($event)"
     (funcionSecundaria)="inscribirse($event)"
+>
+</app-modal-edicion>
+-->
+<app-modal-edicion
+    [campos]="camposEdicion()"
+    [item]="itemSeleccionado()"
+    titulo="Inscribirte a una plantilla:"
+    [descripcion]="`¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?${listadoHTMLNormas(itemSeleccionado())}`"
+    textoBotonGuardar="Inscribirse"
+    (cerrar)="closeModalInscribirse()"
+    (editar)="inscribirse($event)"
 >
 </app-modal-edicion>
 }
