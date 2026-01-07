@@ -3,7 +3,10 @@ import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-elimi
 import { InscripcionTemplateDao } from '@/app/daos/inscripcion-template-dao';
 import { TemplateDao } from '@/app/daos/template-dao';
 import { SalInscripcionTemplate } from '@/app/entities/others/sal-inscripcion-template';
-import { TemplateConInscripcion } from '@/app/entities/others/template-con-inscripcion';
+import {
+    TemplateConInscripcion,
+    TemplateNormasConInscripcion,
+} from '@/app/entities/others/template-con-inscripcion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
@@ -17,12 +20,15 @@ import {
     lucideEllipsis,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
+import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 
@@ -41,6 +47,9 @@ import { forkJoin } from 'rxjs';
         HlmSpinnerImports,
         HlmP,
         RouterLink,
+        HlmBadgeImports,
+        BrnTooltipImports,
+        HlmTooltipImports,
     ],
     templateUrl: './mantenedor-plantillas-inscritas.html',
     styleUrl: './mantenedor-plantillas-inscritas.scss',
@@ -108,7 +117,7 @@ export class MantenedorPlantillasInscritas {
             inscripciones: this.inscripcionTemplateDao.obtenerVigentes(
                 this.negocioStore.negocioSeleccionado()?.id!
             ),
-            templates: this.templateDao.obtenerVigentes(),
+            templates: this.templateDao.obtenerVigentesConNormas(),
         })
             .subscribe({
                 next: ({ inscripciones, templates }) => {
@@ -118,10 +127,26 @@ export class MantenedorPlantillasInscritas {
 
                     const templatesConInscripciones: TemplateConInscripcion[] = [];
                     templatesSorted.forEach((template) => {
+                        const normasSorted =
+                            template.templateNormas?.sort((a, b) =>
+                                a.nombre
+                                    .toLocaleLowerCase()
+                                    .localeCompare(b.nombre.toLocaleLowerCase())
+                            ) ?? [];
+
+                        const templatesNormasConInscripciones: TemplateNormasConInscripcion[] = [];
+                        normasSorted.forEach((norma) => {
+                            templatesNormasConInscripciones.push({
+                                idNorma: norma.idNorma,
+                                nombreNorma: norma.nombre,
+                            });
+                        });
+
                         templatesConInscripciones.push({
                             idTemplate: template.id,
                             nombreTemplate: template.nombre,
                             inscrito: inscripciones.some((i) => i.idTemplate == template.id),
+                            templateNormas: templatesNormasConInscripciones,
                         });
                     });
 
