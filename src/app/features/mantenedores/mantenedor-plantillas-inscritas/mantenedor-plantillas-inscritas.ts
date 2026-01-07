@@ -2,7 +2,6 @@ import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/moda
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { InscripcionTemplateDao } from '@/app/daos/inscripcion-template-dao';
 import { TemplateDao } from '@/app/daos/template-dao';
-import { SalInscripcionTemplate } from '@/app/entities/others/sal-inscripcion-template';
 import {
     TemplateConInscripcion,
     TemplateNormasConInscripcion,
@@ -11,7 +10,6 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, effect, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -46,7 +44,6 @@ import { forkJoin } from 'rxjs';
         HlmDropdownMenuImports,
         HlmSpinnerImports,
         HlmP,
-        RouterLink,
         HlmBadgeImports,
         BrnTooltipImports,
         HlmTooltipImports,

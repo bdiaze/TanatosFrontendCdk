@@ -114,7 +114,7 @@
             <button
                 hlmBtn
                 variant="secondary"
-                (click)="funcionSecundaria.emit(this.form?.getRawValue())"
+                (click)="funcionSecundaria.emit(this.form.getRawValue())"
                 [disabled]="form.invalid"
             >
                 {{ textoBotonSecundario }}
