@@ -42,8 +42,8 @@
         "tslib": "^2.3.0"
     },
     "devDependencies": {
-        "@angular/build": "^21.0.1",
-        "@angular/cli": "^21.0.1",
+        "@angular/build": "^21.0.4",
+        "@angular/cli": "^21.0.4",
         "@angular/compiler-cli": "^21.0.0",
         "@spartan-ng/cli": "0.0.1-alpha.577",
         "@tailwindcss/postcss": "^4.1.17",
