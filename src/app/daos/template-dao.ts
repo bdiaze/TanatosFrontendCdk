@@ -19,6 +19,11 @@ export class TemplateDao {
     obtenerVigentes(): Observable<Template[]> {
         return this.http.get<Template[]>(environment.tanatosService.apiUrl + '/Template/Vigentes');
     }
+    obtenerVigentesConNormas(): Observable<Template[]> {
+        return this.http.get<Template[]>(
+            environment.tanatosService.apiUrl + '/Template/VigentesConNormas'
+        );
+    }
 
     obtenerPorVigencia(vigencia: boolean | null): Observable<Template[]> {
         return this.http.get<Template[]>(
