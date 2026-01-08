@@ -26,6 +26,8 @@ export interface SalTemplateNorma {
     multa: string | null;
     idCategoriaNorma: number;
     nombreCategoriaNorma: string | null;
+    fiscalizadores: SalFiscalizadorNormaSuscrita[] | null;
+    notificaciones: SalNotificacionNormaSuscrita[] | null;
 }
 
 export interface SalFiscalizadorNormaSuscrita {

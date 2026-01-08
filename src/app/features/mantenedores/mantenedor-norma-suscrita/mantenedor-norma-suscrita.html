@@ -76,6 +76,7 @@
                                         >
                                             Editar
                                         </button>
+                                        @if (item.editable) {
                                         <button
                                             hlmDropdownMenuItem
                                             variant="destructive"
@@ -83,6 +84,7 @@
                                         >
                                             Eliminar
                                         </button>
+                                        }
                                     </hlm-dropdown-menu-group>
                                 </hlm-dropdown-menu>
                             </ng-template>
@@ -178,6 +180,15 @@
                                         >
                                             Editar
                                         </button>
+                                        @if (item.editable) {
+                                        <button
+                                            hlmDropdownMenuItem
+                                            variant="destructive"
+                                            (click)="openModalEliminar(item)"
+                                        >
+                                            Eliminar
+                                        </button>
+                                        }
                                     </hlm-dropdown-menu-group>
                                 </hlm-dropdown-menu>
                             </ng-template>
@@ -202,4 +213,4 @@
     (eliminar)="eliminar($event)"
 >
 </app-modal-eliminacion>
-} @if (showModalCrear()) { }
+}

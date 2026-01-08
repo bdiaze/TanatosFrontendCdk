@@ -175,8 +175,11 @@
                                     >
                                         Cargando...</hlm-option
                                     >
-                                    } @else { @for (categoria of categoriasVigentes(); track
-                                    categoria.id) {
+                                    } @else {
+                                    <hlm-option class="text-xs md:text-sm" [value]="null"
+                                        >Sin categoría</hlm-option
+                                    >
+                                    @for (categoria of categoriasVigentes(); track categoria.id) {
                                     <hlm-option
                                         [value]="categoria.id"
                                         class="text-xs md:text-sm"

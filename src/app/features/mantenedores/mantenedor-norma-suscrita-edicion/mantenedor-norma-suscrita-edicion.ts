@@ -141,16 +141,12 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         nombre: new FormControl<string | null>({ value: null, disabled: false }, [
             Validators.required,
         ]),
-        descripcion: new FormControl<string | null>({ value: null, disabled: false }, [
-            Validators.required,
-        ]),
+        descripcion: new FormControl<string | null>({ value: null, disabled: false }),
         idTipoPeriodicidad: new FormControl<number | null>({ value: null, disabled: false }, [
             Validators.required,
         ]),
         multa: new FormControl<string | null>({ value: null, disabled: false }),
-        idCategoriaNorma: new FormControl<number | null>({ value: null, disabled: false }, [
-            Validators.required,
-        ]),
+        idCategoriaNorma: new FormControl<number | null>({ value: null, disabled: false }),
         activado: new FormControl<boolean | null>({ value: null, disabled: false }, [
             Validators.required,
         ]),
@@ -173,7 +169,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     titulo = computed<string>(() => {
         if (this.item()) {
-            return `Edita la obligación "${this.item()?.nombre}"`;
+            return `Edita la obligación "${
+                this.item()?.nombre ?? this.item()?.templateNorma?.nombre
+            }"`;
         }
         return `Crea una obligación nueva:`;
     });
@@ -262,46 +260,90 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 }
 
                 this.form.patchValue({
-                    nombre: this.item()?.nombre,
-                    descripcion: this.item()?.descripcion,
-                    idTipoPeriodicidad: this.item()?.idTipoPeriodicidad,
-                    multa: this.item()?.multa,
-                    idCategoriaNorma: this.item()?.idCategoriaNorma,
+                    nombre: this.item()?.nombre ?? this.item()?.templateNorma?.nombre,
+                    descripcion:
+                        this.item()?.descripcion ?? this.item()?.templateNorma?.descripcion,
+                    idTipoPeriodicidad:
+                        this.item()?.idTipoPeriodicidad ??
+                        this.item()?.templateNorma?.idTipoPeriodicidad,
+                    multa: this.item()?.multa ?? this.item()?.templateNorma?.multa,
+                    idCategoriaNorma:
+                        this.item()?.idCategoriaNorma ??
+                        this.item()?.templateNorma?.idCategoriaNorma,
                     activado: this.item()?.activado,
                     fechaProximoVencimiento: fechaProximoVencimiento ?? undefined,
                     horaProximoVencimiento: horaProximoVencimiento ?? undefined,
                 });
 
                 (this.form.get('fiscalizadores') as FormArray).clear();
-                this.item()!.fiscalizadores?.forEach((fiscalizador) => {
-                    (this.form.get('fiscalizadores') as FormArray).push(
-                        new FormGroup({
-                            idTipoFiscalizador: new FormControl(fiscalizador.idTipoFiscalizador, {
-                                nonNullable: true,
-                                validators: [Validators.required],
-                            }),
-                        })
-                    );
-                });
+                if (this.item()!.fiscalizadores && this.item()!.fiscalizadores!.length > 0) {
+                    this.item()!.fiscalizadores?.forEach((fiscalizador) => {
+                        (this.form.get('fiscalizadores') as FormArray).push(
+                            new FormGroup({
+                                idTipoFiscalizador: new FormControl(
+                                    fiscalizador.idTipoFiscalizador,
+                                    {
+                                        nonNullable: true,
+                                        validators: [Validators.required],
+                                    }
+                                ),
+                            })
+                        );
+                    });
+                } else {
+                    this.item()!.templateNorma?.fiscalizadores?.forEach((fiscalizador) => {
+                        (this.form.get('fiscalizadores') as FormArray).push(
+                            new FormGroup({
+                                idTipoFiscalizador: new FormControl(
+                                    fiscalizador.idTipoFiscalizador,
+                                    {
+                                        nonNullable: true,
+                                        validators: [Validators.required],
+                                    }
+                                ),
+                            })
+                        );
+                    });
+                }
 
                 (this.form.get('notificaciones') as FormArray).clear();
-                this.item()!.notificaciones?.forEach((notificacion) => {
-                    (this.form.get('notificaciones') as FormArray).push(
-                        new FormGroup({
-                            idTipoUnidadTiempoAntelacion: new FormControl(
-                                notificacion.idTipoUnidadTiempoAntelacion,
-                                {
+                if (this.item()!.notificaciones && this.item()!.notificaciones!.length > 0) {
+                    this.item()!.notificaciones?.forEach((notificacion) => {
+                        (this.form.get('notificaciones') as FormArray).push(
+                            new FormGroup({
+                                idTipoUnidadTiempoAntelacion: new FormControl(
+                                    notificacion.idTipoUnidadTiempoAntelacion,
+                                    {
+                                        nonNullable: true,
+                                        validators: [Validators.required],
+                                    }
+                                ),
+                                cantAntelacion: new FormControl(notificacion.cantAntelacion, {
                                     nonNullable: true,
                                     validators: [Validators.required],
-                                }
-                            ),
-                            cantAntelacion: new FormControl(notificacion.cantAntelacion, {
-                                nonNullable: true,
-                                validators: [Validators.required],
-                            }),
-                        })
-                    );
-                });
+                                }),
+                            })
+                        );
+                    });
+                } else {
+                    this.item()!.templateNorma?.notificaciones?.forEach((notificacion) => {
+                        (this.form.get('notificaciones') as FormArray).push(
+                            new FormGroup({
+                                idTipoUnidadTiempoAntelacion: new FormControl(
+                                    notificacion.idTipoUnidadTiempoAntelacion,
+                                    {
+                                        nonNullable: true,
+                                        validators: [Validators.required],
+                                    }
+                                ),
+                                cantAntelacion: new FormControl(notificacion.cantAntelacion, {
+                                    nonNullable: true,
+                                    validators: [Validators.required],
+                                }),
+                            })
+                        );
+                    });
+                }
             } else {
                 this.form.patchValue({
                     nombre: null,
