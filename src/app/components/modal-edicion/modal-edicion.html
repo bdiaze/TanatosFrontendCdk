@@ -89,6 +89,36 @@
                             <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
                             }
                         </div>
+                        } @if (campo.tipo === 'select') {
+                        <div class="flex justify-start items-center gap-4">
+                            <label
+                                [for]="campo.llave"
+                                hlmLabel
+                                class="opacity-80 font-semibold text-xs md:text-sm pl-2 whitespace-nowrap"
+                                >{{ campo.nombre ?? campo.llave }}</label
+                            >
+                            <brn-select
+                                [id]="campo.llave"
+                                class="inline-block z-10 w-full"
+                                [formControl]="form.controls[campo.llave]"
+                            >
+                                <hlm-select-trigger class="">
+                                    <div class="flex justify-start items-center gap-2">
+                                        <hlm-select-value class="text-xs md:text-sm truncate" />
+                                    </div>
+                                </hlm-select-trigger>
+                                <hlm-select-content>
+                                    @for (posibleValor of posiblesValores(campo.llave); track
+                                    posibleValor.id) {
+                                    <hlm-option
+                                        [value]="posibleValor.id"
+                                        class="text-xs md:text-sm"
+                                        >{{ `${posibleValor.valor}` }}</hlm-option
+                                    >
+                                    }
+                                </hlm-select-content>
+                            </brn-select>
+                        </div>
                         }
                         <hlm-field-error
                             class="transition-all duration-500 ease-out"
