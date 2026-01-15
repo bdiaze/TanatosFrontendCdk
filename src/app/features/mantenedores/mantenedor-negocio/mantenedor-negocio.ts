@@ -1,6 +1,14 @@
-import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
+import {
+    CampoDinamico,
+    ModalEdicion,
+    PosiblesValores,
+} from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { NegocioDao } from '@/app/daos/negocio-dao';
+import { TipoActividadDao } from '@/app/daos/tipo-actividad-dao';
+import { TipoRubroDao } from '@/app/daos/tipo-rubro-dao';
+import { TipoActividad } from '@/app/entities/models/tipo-actividad';
+import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { EntNegocioActualizar } from '@/app/entities/others/ent-negocio-actualizar';
 import { EntNegocioCrear } from '@/app/entities/others/ent-negocio-crear';
 import { SalNegocio } from '@/app/entities/others/sal-negocio';
@@ -20,6 +28,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4 } from '@spartan-ng/helm/typography';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-mantenedor-negocio',
@@ -43,8 +52,12 @@ import { HlmH4 } from '@spartan-ng/helm/typography';
 })
 export class MantenedorNegocio implements OnInit {
     private dao: NegocioDao = inject(NegocioDao);
+    private tipoRubroDao: TipoRubroDao = inject(TipoRubroDao);
+    private tipoActividadDao: TipoActividadDao = inject(TipoActividadDao);
 
     listado = signal([] as SalNegocio[]);
+    tiposRubros = signal([] as TipoRubro[]);
+    tiposActividades = signal([] as TipoActividad[]);
     cargando = signal(true);
     error = signal('');
 
@@ -74,6 +87,14 @@ export class MantenedorNegocio implements OnInit {
             requerido: false,
             deshabilitado: false,
         },
+        {
+            llave: 'idTipoActividad',
+            nombre: 'Actividad',
+            tipo: 'autocomplete',
+            requerido: true,
+            deshabilitado: false,
+            posiblesValores: [],
+        },
     ]);
 
     camposCreacion = signal<CampoDinamico[]>([
@@ -91,6 +112,14 @@ export class MantenedorNegocio implements OnInit {
             requerido: false,
             deshabilitado: false,
         },
+        {
+            llave: 'idTipoActividad',
+            nombre: 'Actividad',
+            tipo: 'autocomplete',
+            requerido: true,
+            deshabilitado: false,
+            posiblesValores: [],
+        },
     ]);
 
     itemSeleccionado = signal<SalNegocio | null>(null);
@@ -103,20 +132,72 @@ export class MantenedorNegocio implements OnInit {
         this.cargando.set(true);
         this.listado.set([]);
 
-        this.dao.obtenerVigentes().subscribe({
-            next: (res) => {
-                const sorted = res.sort((a, b) =>
-                    a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
-                );
-                this.listado.set(sorted);
+        forkJoin({
+            negocios: this.dao.obtenerVigentes(),
+            tiposRubros: this.tipoRubroDao.obtenerVigentes(),
+            tiposActividades: this.tipoActividadDao.obtenerVigentes(),
+        })
+            .subscribe({
+                next: ({ negocios, tiposRubros, tiposActividades }) => {
+                    this.tiposRubros.set(tiposRubros);
+                    this.tiposActividades.set(tiposActividades);
+
+                    const sorted = negocios.sort((a, b) =>
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                    );
+                    this.listado.set(sorted);
+
+                    const sortedActividades = tiposActividades.sort((a, b) =>
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                    );
+
+                    const posiblesValoresActividades = [] as PosiblesValores[];
+                    sortedActividades.forEach((tipoActividad) => {
+                        const tipoRubro = tiposRubros.find(
+                            (u) => u.id === tipoActividad.idTipoRubro
+                        );
+                        if (tipoRubro) {
+                            posiblesValoresActividades.push({
+                                id: tipoActividad.id,
+                                valor: tipoActividad.nombre,
+                                categoria: tipoRubro.nombre,
+                            });
+                        }
+                    });
+
+                    this.camposEdicion.update((lista) =>
+                        lista.map((u) =>
+                            u.llave === 'idTipoActividad'
+                                ? { ...u, posiblesValores: posiblesValoresActividades }
+                                : u
+                        )
+                    );
+
+                    this.camposCreacion.update((lista) =>
+                        lista.map((u) =>
+                            u.llave === 'idTipoActividad'
+                                ? { ...u, posiblesValores: posiblesValoresActividades }
+                                : u
+                        )
+                    );
+                },
+                error: (err) => {
+                    console.error('Error al obtener los negocios', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener los negocios');
+                },
+            })
+            .add(() => {
                 this.cargando.set(false);
-            },
-            error: (err) => {
-                console.error('Error al obtener los negocios', err);
-                this.error.set(getErrorMessage(err) ?? 'Error al obtener los negocios');
-                this.cargando.set(false);
-            },
-        });
+            });
+    }
+
+    obtenerNombreRubro(idTipoActividad: number | null): string {
+        const tipoActividad = this.tiposActividades().find((u) => u.id === idTipoActividad);
+        return this.tiposRubros().find((u) => u.id === tipoActividad?.idTipoRubro)?.nombre ?? '';
+    }
+
+    obtenerNombreActividad(idTipoActividad: number | null): string {
+        return this.tiposActividades().find((u) => u.id === idTipoActividad)?.nombre ?? '';
     }
 
     openModalEliminar(item: SalNegocio) {

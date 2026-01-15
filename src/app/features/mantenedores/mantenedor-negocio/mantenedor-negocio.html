@@ -3,20 +3,21 @@
         <table hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
-                    <th colspan="3">
+                    <th colspan="4">
                         <h4 hlmH4 class="py-3">Tus Negocios</h4>
                     </th>
                 </tr>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-xs md:text-sm">Dirección</th>
+                    <th hlmTh class="text-xs md:text-sm text-center">Actividad</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
             </thead>
             <tbody hlmTBody>
                 @if (cargando()) {
                 <tr hlmTr>
-                    <td hlmTd colspan="3">
+                    <td hlmTd colspan="4">
                         <div class="flex justify-center-safe items-center gap-2">
                             <hlm-spinner />
                             Cargando...
@@ -27,6 +28,14 @@
                 <tr hlmTr>
                     <td hlmTd class="whitespace-normal text-xs md:text-sm">{{ item.nombre }}</td>
                     <td hlmTd class="whitespace-normal text-xs md:text-sm">{{ item.direccion }}</td>
+                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                        <div class="flex flex-col justify-start items-center">
+                            <div class="text-[0.7rem] opacity-80">
+                                {{ obtenerNombreRubro(item.idTipoActividad) }}
+                            </div>
+                            {{ obtenerNombreActividad(item.idTipoActividad) }}
+                        </div>
+                    </td>
                     <td hlmTd class="px-0">
                         <div class="flex items-center justify-center-safe">
                             <button
@@ -58,7 +67,7 @@
                 </tr>
                 } @empty {
                 <tr hlmTr>
-                    <td hlmTd colspan="3" class="text-center">No existen negocios registradas</td>
+                    <td hlmTd colspan="4" class="text-center">No existen negocios registradas</td>
                 </tr>
                 } }
             </tbody>
