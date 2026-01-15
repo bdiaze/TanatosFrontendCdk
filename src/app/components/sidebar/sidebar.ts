@@ -160,6 +160,18 @@ export class Sidebar {
                             {
                                 id: crypto.randomUUID(),
                                 tipo: 'subitem',
+                                titulo: 'Tipo Rubro',
+                                url: '/administracion/mantenedores/tipo-rubro',
+                            },
+                            {
+                                id: crypto.randomUUID(),
+                                tipo: 'subitem',
+                                titulo: 'Tipo Actividad',
+                                url: '/administracion/mantenedores/tipo-actividad',
+                            },
+                            {
+                                id: crypto.randomUUID(),
+                                tipo: 'subitem',
                                 titulo: 'Tipo Destinatario',
                                 url: '/administracion/mantenedores/tipo-receptor-notificacion',
                             },

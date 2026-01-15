@@ -16,6 +16,8 @@ import { MantenedorNormaSuscrita } from './features/mantenedores/mantenedor-norm
 import { MantenedorTemplateEdicion } from './features/mantenedores/mantenedor-template-edicion/mantenedor-template-edicion';
 import { MantenedorNormaSuscritaEdicion } from './features/mantenedores/mantenedor-norma-suscrita-edicion/mantenedor-norma-suscrita-edicion';
 import { MantenedorPlantillasInscritas } from './features/mantenedores/mantenedor-plantillas-inscritas/mantenedor-plantillas-inscritas';
+import { MantenedorTipoRubro } from './features/mantenedores/mantenedor-tipo-rubro/mantenedor-tipo-rubro';
+import { MantenedorTipoActividad } from './features/mantenedores/mantenedor-tipo-actividad/mantenedor-tipo-actividad';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -36,6 +38,14 @@ export const routes: Routes = [
     {
         path: 'administracion/mantenedores/tipo-fiscalizador',
         component: MantenedorTipoFiscalizador,
+    },
+    {
+        path: 'administracion/mantenedores/tipo-rubro',
+        component: MantenedorTipoRubro,
+    },
+    {
+        path: 'administracion/mantenedores/tipo-actividad',
+        component: MantenedorTipoActividad,
     },
     {
         path: 'administracion/mantenedores/categoria-norma',

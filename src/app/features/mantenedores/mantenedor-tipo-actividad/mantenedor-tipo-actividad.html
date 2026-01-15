@@ -1,0 +1,124 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div hlmTableContainer>
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th colspan="6">
+                        <h4 hlmH4 class="py-3">Administrar Actividades</h4>
+                    </th>
+                </tr>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-xs md:text-sm">Descripción</th>
+                    <th hlmTh class="text-xs md:text-sm">Rubro</th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargando()) {
+                <tr hlmTr>
+                    <td hlmTd colspan="6">
+                        <div class="flex justify-center-safe items-center">
+                            <hlm-spinner class="mr-1" />
+                            Cargando...
+                        </div>
+                    </td>
+                </tr>
+                } @else { @for (item of listado(); track item.id) {
+                <tr hlmTr>
+                    <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
+                    <td hlmTd class="text-xs md:text-sm whitespace-normal">{{ item.nombre }}</td>
+                    <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                        {{ item.descripcion }}
+                    </td>
+                    <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                        {{ nombreRubro(item.idTipoRubro) ?? item.idTipoRubro }}
+                    </td>
+                    <td hlmTd class="text-center px-0">
+                        <div class="flex justify-center items-center">
+                            @if (item.vigencia) {
+                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                            } @else {
+                            <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                            }
+                        </div>
+                    </td>
+                    <td hlmTd class="px-0">
+                        <div class="flex items-center justify-center-safe">
+                            <button
+                                hlmBtn
+                                size="sm"
+                                variant="outline"
+                                [hlmDropdownMenuTrigger]="menu"
+                            >
+                                <ng-icon hlm size="xs" name="lucideEllipsis" />
+                            </button>
+                            <ng-template #menu>
+                                <hlm-dropdown-menu>
+                                    <hlm-dropdown-menu-group>
+                                        <button hlmDropdownMenuItem (click)="openModalEditar(item)">
+                                            Editar
+                                        </button>
+                                        <button
+                                            hlmDropdownMenuItem
+                                            variant="destructive"
+                                            (click)="openModalEliminar(item)"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </hlm-dropdown-menu-group>
+                                </hlm-dropdown-menu>
+                            </ng-template>
+                        </div>
+                    </td>
+                </tr>
+                } @empty {
+                <tr hlmTr>
+                    <td hlmTd colspan="6" class="text-center">
+                        No existen tipos de actividades registrados
+                    </td>
+                </tr>
+                } }
+            </tbody>
+        </table>
+        <button hlmBtn (click)="openModalCrear()" class="m-4">Crear Nuevo</button>
+    </div>
+    @if (error()) {
+    <div hlmAlert variant="destructive" class="mt-6">
+        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+        <p hlmAlertDescription>{{ error() }}</p>
+    </div>
+    }
+</section>
+
+@if (showModalEliminar()) {
+<app-modal-eliminacion
+    [item]="itemSeleccionado()"
+    titulo="Eliminar una actividad:"
+    [descripcion]="`¿Seguro que deseas eliminar la actividad <b>${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre}</b>?`"
+    (cerrar)="closeModalEliminar()"
+    (eliminar)="eliminar($event)"
+>
+</app-modal-eliminacion>
+} @if (showModalEditar()) {
+<app-modal-edicion
+    [campos]="camposEdicion()"
+    [item]="itemSeleccionado()"
+    titulo="Editar una actividad:"
+    (cerrar)="closeModalEditar()"
+    (editar)="editar($event)"
+>
+</app-modal-edicion>
+} @if (showModalCrear()) {
+<app-modal-edicion
+    [campos]="camposCreacion()"
+    [item]="itemSeleccionado()"
+    titulo="Crear una actividad:"
+    (cerrar)="closeModalCrear()"
+    (editar)="crear($event)"
+>
+</app-modal-edicion>
+}
