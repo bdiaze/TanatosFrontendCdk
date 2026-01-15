@@ -1,4 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
+import {
+    Component,
+    computed,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    Signal,
+    signal,
+    WritableSignal,
+} from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -14,6 +24,8 @@ import { lucideBadgeCheck, lucideBadgeX } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
+import { normalize } from '@/app/helpers/string-comparator';
 
 @Component({
     selector: 'app-modal-edicion',
@@ -32,6 +44,7 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
         NgIcon,
         BrnSelectImports,
         HlmSelectImports,
+        HlmAutocompleteImports,
     ],
     templateUrl: './modal-edicion.html',
     styleUrl: './modal-edicion.scss',
@@ -73,6 +86,26 @@ export class ModalEdicion implements OnInit {
                 validadores
             );
 
+            if (campo.tipo === 'autocomplete') {
+                campo.autocompleteSearch = signal('');
+                campo.autocompleteFilteredOptions = computed(() => {
+                    return campo.posiblesValores!.filter(
+                        (option) =>
+                            normalize(option.valor).includes(
+                                normalize(campo.autocompleteSearch!())
+                            ) ||
+                            (option.categoria
+                                ? normalize(option.categoria!).includes(
+                                      normalize(campo.autocompleteSearch!())
+                                  )
+                                : false)
+                    );
+                });
+                campo.autocompleteTransformOptionValue = (option: PosiblesValores) => option.id;
+                campo.autocompleteDisplayWith = (id: number) =>
+                    campo.posiblesValores?.find((option) => option.id === id)?.valor ?? '';
+            }
+
             camposForm[campo.llave] = control;
         });
 
@@ -87,23 +120,23 @@ export class ModalEdicion implements OnInit {
         const control = this.form.get(llave);
         return control?.invalid && control?.touched;
     }
-
-    posiblesValores(llave: string): PosiblesValores[] {
-        const campo = this.campos.find((u) => u.llave === llave);
-        return campo?.posiblesValores!;
-    }
 }
 
 export interface CampoDinamico {
     llave: string;
     nombre?: string;
-    tipo: 'string' | 'number' | 'boolean' | 'select' | 'oculto';
+    tipo: 'string' | 'number' | 'boolean' | 'select' | 'autocomplete' | 'oculto';
     requerido: boolean;
     deshabilitado: boolean;
     posiblesValores?: PosiblesValores[];
+    autocompleteSearch?: WritableSignal<string>;
+    autocompleteFilteredOptions?: Signal<PosiblesValores[]>;
+    autocompleteTransformOptionValue?: (option: PosiblesValores) => number;
+    autocompleteDisplayWith?: (id: number) => string;
 }
 
 export interface PosiblesValores {
     id: number;
     valor: string;
+    categoria?: string;
 }
