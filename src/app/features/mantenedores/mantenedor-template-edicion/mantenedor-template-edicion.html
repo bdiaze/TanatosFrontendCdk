@@ -141,7 +141,7 @@
                                 [formControl]="form.controls['idTemplatePadre']"
                             >
                                 <hlm-select-trigger class="w-full">
-                                    <div class="flex justify-center items-center gap-2">
+                                    <div class="flex justify-start items-center gap-2">
                                         @if (cargandoTemplatesExistentes()) {
                                         <hlm-spinner class="text-base md:text-lg" />
                                         }
@@ -209,6 +209,106 @@
                             [class.max-h-0]="!invalid('vigencia')"
                             >Debes ingresar la "Vigencia"</hlm-field-error
                         >
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center items-start gap-2">
+                    <div class="flex flex-row justify-start items-center gap-4 w-full">
+                        <label
+                            hlmLabel
+                            for="actividad"
+                            class="text-xs md:text-sm opacity-80 font-semibold px-2"
+                            >Actividades</label
+                        >
+                        <hlm-autocomplete
+                            inputId="actividad"
+                            [(search)]="searchActividad"
+                            [filteredOptions]="filteredActividades()"
+                            [displayWith]="displayWithActividades"
+                            [transformOptionToValue]="transformOptionValueActividades"
+                            searchPlaceholderText="Seleccionar actividad..."
+                            emptyText="Actividad no encontrada..."
+                            [optionTemplate]="option"
+                            [(ngModel)]="formActividad"
+                            showClearBtn
+                        />
+                        <ng-template #option let-option>
+                            <div class="flex flex-col items-start justify-center">
+                                @if (nombreRubro(option.idTipoRubro)) {
+                                <div class="text-[0.7rem] opacity-80">
+                                    {{ nombreRubro(option.idTipoRubro) }}
+                                </div>
+                                }
+                                {{ option.nombre }}
+                            </div>
+                        </ng-template>
+                        <button
+                            hlmBtn
+                            size="icon"
+                            variant="default"
+                            class="size-9"
+                            (click)="crearActividad()"
+                            [disabled]="!formActividad"
+                        >
+                            <ng-icon hlm size="sm" name="lucidePlus" />
+                        </button>
+                    </div>
+                    <div class="flex flex-wrap justify-center items-center gap-1 w-full">
+                        @for (actividad of form.controls['templateActividades'].controls; track
+                        $index) {
+                        <span
+                            hlmBadge
+                            variant="default"
+                            class="text-[0.7rem] md:text-xs py-1 pr-1 flex items-center"
+                            ><div class="flex flex-col">
+                                <div class="text-[0.6rem] opacity-80">
+                                    {{
+                                        nombreRubroPorActividad(
+                                            actividad.controls['idTipoActividad'].value!
+                                        )
+                                    }}
+                                </div>
+                                <div>
+                                    {{
+                                        nombreActividad(
+                                            actividad.controls['idTipoActividad'].value!
+                                        )
+                                    }}
+                                </div>
+                            </div>
+                            <button
+                                hlmBtn
+                                size="icon"
+                                variant="link"
+                                class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                [hlmDropdownMenuTrigger]="menuActividad"
+                            >
+                                <ng-icon hlm name="lucideX" />
+                            </button>
+                            <ng-template #menuActividad>
+                                <hlm-dropdown-menu class="w-[8.3rem]">
+                                    <hlm-dropdown-menu-label
+                                        class="font-normal text-center opacity-80"
+                                        >¿Estás seguro?</hlm-dropdown-menu-label
+                                    >
+                                    <hlm-dropdown-menu-group>
+                                        <button
+                                            hlmDropdownMenuItem
+                                            variant="destructive"
+                                            class="hover:cursor-pointer"
+                                            (click)="
+                                                quitarActividad(
+                                                    actividad.controls['idTipoActividad'].value!
+                                                )
+                                            "
+                                        >
+                                            ¡Sí, eliminalo!
+                                            <ng-icon hlm size="sm" name="lucideTrash2" />
+                                        </button>
+                                    </hlm-dropdown-menu-group>
+                                </hlm-dropdown-menu>
+                            </ng-template>
+                        </span>
+                        }
                     </div>
                 </div>
                 <hlm-separator />

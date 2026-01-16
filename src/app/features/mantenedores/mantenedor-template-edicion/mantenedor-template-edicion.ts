@@ -1,16 +1,22 @@
 import { CategoriaNormaDao } from '@/app/daos/categoria-norma-dao';
 import { TemplateDao } from '@/app/daos/template-dao';
+import { TipoActividadDao } from '@/app/daos/tipo-actividad-dao';
 import { TipoFiscalizadorDao } from '@/app/daos/tipo-fiscalizador-dao';
 import { TipoPeriodicidadDao } from '@/app/daos/tipo-periodicidad-dao';
+import { TipoRubroDao } from '@/app/daos/tipo-rubro-dao';
 import { TipoUnidadTiempoDao } from '@/app/daos/tipo-unidad-tiempo-dao';
 import { CategoriaNorma } from '@/app/entities/models/categoria-norma';
 import { Template } from '@/app/entities/models/template';
+import { TemplateActividad } from '@/app/entities/models/template-actividad';
 import { TemplateNorma } from '@/app/entities/models/template-norma';
 import { TemplateNormaFiscalizador } from '@/app/entities/models/template-norma-fiscalizador';
 import { TemplateNormaNotificacion } from '@/app/entities/models/template-norma-notificacion';
+import { TipoActividad } from '@/app/entities/models/tipo-actividad';
 import { TipoFiscalizador } from '@/app/entities/models/tipo-fiscalizador';
 import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
+import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
+import { normalize } from '@/app/helpers/string-comparator';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import {
     AbstractControl,
@@ -35,6 +41,7 @@ import { BrnPopoverImports } from '@spartan-ng/brain/popover';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmAccordionImports } from '@spartan-ng/helm/accordion';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
@@ -52,6 +59,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-mantenedor-template-edicion',
@@ -80,6 +88,7 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         HlmBadgeImports,
         FormsModule,
         RouterLink,
+        HlmAutocompleteImports,
     ],
     templateUrl: './mantenedor-template-edicion.html',
     styleUrl: './mantenedor-template-edicion.scss',
@@ -104,6 +113,8 @@ export class MantenedorTemplateEdicion {
     tipoPeriodicidadDao = inject(TipoPeriodicidadDao);
     tipoFiscalizadorDao = inject(TipoFiscalizadorDao);
     tipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
+    tipoRubroDao = inject(TipoRubroDao);
+    tipoActividadDao = inject(TipoActividadDao);
 
     form: FormGroup<{
         id: FormControl<number | null>;
@@ -131,6 +142,11 @@ export class MantenedorTemplateEdicion {
                     }>
                 >;
                 isOpened: FormControl<boolean>;
+            }>
+        >;
+        templateActividades: FormArray<
+            FormGroup<{
+                idTipoActividad: FormControl<number | null>;
             }>
         >;
     }> = new FormGroup({
@@ -179,6 +195,11 @@ export class MantenedorTemplateEdicion {
                 isOpened: FormControl<boolean>;
             }>
         >([]),
+        templateActividades: new FormArray<
+            FormGroup<{
+                idTipoActividad: FormControl<number | null>;
+            }>
+        >([]),
     });
 
     item = signal<Template | null>(null);
@@ -196,6 +217,10 @@ export class MantenedorTemplateEdicion {
     templatesExistentes = signal<Template[]>([]);
 
     cargandoDetalleTemplate = signal<boolean>(false);
+
+    cargandoActividadesExistentes = signal<boolean>(true);
+    actividadesExistentes = signal<TipoActividad[]>([]);
+    rubrosExistentes = signal<TipoRubro[]>([]);
 
     cargandoCategoriasExistentes = signal<boolean>(true);
     categoriasExistentes = signal<CategoriaNorma[]>([]);
@@ -316,6 +341,13 @@ export class MantenedorTemplateEdicion {
                         this.buildNormaFormGroup(norma)
                     );
                 });
+
+                (this.form.get('templateActividades') as FormArray).clear();
+                this.item()!.templateActividades?.forEach((actividad) => {
+                    (this.form.get('templateActividades') as FormArray).push(
+                        this.buildActividadFormGroup(actividad)
+                    );
+                });
             } else {
                 this.form.patchValue({
                     id: null,
@@ -326,6 +358,7 @@ export class MantenedorTemplateEdicion {
                 });
 
                 (this.form.get('templateNormas') as FormArray).clear();
+                (this.form.get('templateActividades') as FormArray).clear();
             }
         });
     }
@@ -342,6 +375,33 @@ export class MantenedorTemplateEdicion {
                 this.idTemplate.set(null);
             }
         });
+
+        this.cargandoActividadesExistentes.set(true);
+        forkJoin({
+            tiposRubros: this.tipoRubroDao.obtenerPorVigencia(null),
+            tiposActividades: this.tipoActividadDao.obtenerPorVigencia(null),
+        })
+            .subscribe({
+                next: ({ tiposRubros, tiposActividades }) => {
+                    const sortedActividades = tiposActividades.sort((a, b) =>
+                        a.idTipoRubro == b.idTipoRubro
+                            ? a.nombre
+                                  .toLocaleLowerCase()
+                                  .localeCompare(b.nombre.toLocaleLowerCase())
+                            : a.idTipoRubro - b.idTipoRubro
+                    );
+
+                    this.actividadesExistentes.set(sortedActividades);
+                    this.rubrosExistentes.set(tiposRubros);
+                },
+                error: (err) => {
+                    console.error('Error al obtener actividades', err);
+                    this.error.set(err.error ?? 'Error al obtener actividades');
+                },
+            })
+            .add(() => {
+                this.cargandoActividadesExistentes.set(false);
+            });
 
         this.cargandoCategoriasExistentes.set(true);
         this.categoriaNormaDao
@@ -589,6 +649,85 @@ export class MantenedorTemplateEdicion {
         this.form.controls['templateNormas'].removeAt(index);
     }
 
+    formActividad = '';
+
+    searchActividad = signal<string>('');
+    filteredActividades = computed(() =>
+        this.actividadesExistentes().filter(
+            (actividad) =>
+                (normalize(actividad.nombre).includes(normalize(this.searchActividad())) ||
+                    normalize(this.nombreRubro(actividad.idTipoRubro)).includes(
+                        normalize(this.searchActividad())
+                    )) &&
+                (this.form.controls['templateActividades'] as FormArray).controls.findIndex(
+                    (ctrl: AbstractControl) =>
+                        ctrl instanceof FormGroup &&
+                        ctrl.controls['idTipoActividad']?.value === actividad.id
+                ) === -1
+        )
+    );
+    displayWithActividades = (id: number) =>
+        this.actividadesExistentes().find((actividad) => actividad.id === id)?.nombre ?? '';
+    transformOptionValueActividades = (option: TipoActividad) => option.id;
+
+    crearActividad() {
+        const idTipoActividad = this.formActividad;
+
+        this.formActividad = '';
+
+        const idx = (this.form.controls['templateActividades'] as FormArray).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['idTipoActividad']?.value === idTipoActividad
+        );
+
+        if (idx !== -1) {
+            return;
+        }
+
+        (this.form.controls['templateActividades'] as FormArray).push(
+            new FormGroup({
+                idTipoActividad: new FormControl(idTipoActividad, { nonNullable: true }),
+            })
+        );
+    }
+
+    quitarActividad(idTipoActividad: number) {
+        const idx = (this.form.controls['templateActividades'] as FormArray).controls.findIndex(
+            (ctrl: AbstractControl) =>
+                ctrl instanceof FormGroup &&
+                ctrl.controls['idTipoActividad']?.value === idTipoActividad
+        );
+
+        if (idx !== -1) {
+            (this.form.controls['templateActividades'] as FormArray).removeAt(idx);
+        }
+    }
+
+    nombreActividad(idTipoActividad: number): string {
+        const tipoActividad = this.actividadesExistentes().find(
+            (actividad: TipoActividad) => actividad.id === idTipoActividad
+        );
+        return tipoActividad?.nombre!;
+    }
+
+    nombreRubroPorActividad(idTipoActividad: number): string {
+        const tipoActividad = this.actividadesExistentes().find(
+            (actividad: TipoActividad) => actividad.id === idTipoActividad
+        );
+        const tipoRubro = this.rubrosExistentes().find(
+            (rubro: TipoRubro) => rubro.id === tipoActividad?.idTipoRubro
+        );
+        return tipoRubro?.nombre!;
+    }
+
+    nombreRubro(idTipoRubro: number): string {
+        const tipoRubro = this.rubrosExistentes().find(
+            (rubro: TipoRubro) => rubro.id === idTipoRubro
+        );
+        return tipoRubro?.nombre!;
+    }
+
     private buildNormaFormGroup(norma: TemplateNorma) {
         return new FormGroup({
             idNorma: new FormControl(norma.idNorma, {
@@ -613,6 +752,15 @@ export class MantenedorTemplateEdicion {
                 norma.templateNormaNotificaciones ?? []
             ),
             isOpened: new FormControl(false, { nonNullable: true }),
+        });
+    }
+
+    private buildActividadFormGroup(actividad: TemplateActividad) {
+        return new FormGroup({
+            idTipoActividad: new FormControl(actividad.idTipoActividad, {
+                nonNullable: true,
+                validators: [Validators.required],
+            }),
         });
     }
 
@@ -655,6 +803,7 @@ export class MantenedorTemplateEdicion {
             descripcion: this.form.controls['descripcion'].value!,
             vigencia: this.form.controls['vigencia'].value!,
             templateNormas: [],
+            templateActividades: [],
         };
 
         this.form.controls['templateNormas'].controls.forEach((normaControl) => {
@@ -694,6 +843,15 @@ export class MantenedorTemplateEdicion {
             );
 
             template.templateNormas?.push(norma);
+        });
+
+        this.form.controls['templateActividades'].controls.forEach((actividadControl) => {
+            const actividad = {
+                idTemplate: template.id,
+                idTipoActividad: actividadControl.controls['idTipoActividad'].value!,
+            } as TemplateActividad;
+
+            template.templateActividades?.push(actividad);
         });
 
         if (this.idTemplate()) {
