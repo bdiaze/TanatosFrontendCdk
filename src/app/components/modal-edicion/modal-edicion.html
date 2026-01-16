@@ -137,12 +137,15 @@
                                 [searchPlaceholderText]="`Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`"
                                 [emptyText]="`${campo.nombre} no encontrad@...`"
                                 [optionTemplate]="option"
+                                autocompleteInputClass="text-xs md:text-sm"
                                 showClearBtn
                             />
                             <ng-template #option let-option>
-                                <div class="flex flex-col items-start justify-center">
+                                <div
+                                    class="flex flex-col items-start justify-center text-xs md:text-base"
+                                >
                                     @if (option.categoria) {
-                                    <div class="text-[0.7rem] opacity-80">
+                                    <div class="text-[0.65rem] md:text-[0.7rem] opacity-80">
                                         {{ option.categoria }}
                                     </div>
                                     }

@@ -126,7 +126,7 @@
                         >Debes ingresar la "Descripción"</hlm-field-error
                     >
                 </div>
-                <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex flex-row gap-2 md:gap-6">
                     <div hlmField class="flex justify-center items-center gap-1 px-2">
                         <div class="flex justify-start items-center gap-2 w-full">
                             <label
@@ -229,12 +229,15 @@
                             emptyText="Actividad no encontrada..."
                             [optionTemplate]="option"
                             [(ngModel)]="formActividad"
+                            autocompleteInputClass="text-xs md:text-sm"
                             showClearBtn
                         />
                         <ng-template #option let-option>
-                            <div class="flex flex-col items-start justify-center">
+                            <div
+                                class="flex flex-col items-start justify-center text-xs md:text-base"
+                            >
                                 @if (nombreRubro(option.idTipoRubro)) {
-                                <div class="text-[0.7rem] opacity-80">
+                                <div class="text-[0.65rem] md:text-[0.7rem] opacity-80">
                                     {{ nombreRubro(option.idTipoRubro) }}
                                 </div>
                                 }
