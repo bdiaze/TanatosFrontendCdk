@@ -33,7 +33,25 @@
                 } @else { @for (item of listado(); track item.idTemplate) {
                 <tr hlmTr>
                     <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                        {{ item.nombreTemplate }}
+                        <div class="flex justify-start items-center gap-2">
+                            @if (item.recomendado) {
+                            <div class="w-4 flex items-center">
+                                <hlm-tooltip>
+                                    <ng-icon
+                                        hlmTooltipTrigger
+                                        hlm
+                                        size="sm"
+                                        name="lucideStar"
+                                        class="text-yellow-600"
+                                    />
+                                    <span *brnTooltipContent>
+                                        ¡Plantilla perfecta para tu negocio!
+                                    </span>
+                                </hlm-tooltip>
+                            </div>
+                            }
+                            {{ item.nombreTemplate }}
+                        </div>
                     </td>
                     <td hlmTd class="whitespace-normal text-xs md:text-sm">
                         <div class="flex flex-wrap justify-center items-center gap-2">

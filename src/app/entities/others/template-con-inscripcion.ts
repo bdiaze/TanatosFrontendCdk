@@ -3,6 +3,7 @@ export interface TemplateConInscripcion {
     nombreTemplate: string;
     templateNormas: TemplateNormasConInscripcion[];
     inscrito: boolean;
+    recomendado: boolean;
 }
 
 export interface TemplateNormasConInscripcion {

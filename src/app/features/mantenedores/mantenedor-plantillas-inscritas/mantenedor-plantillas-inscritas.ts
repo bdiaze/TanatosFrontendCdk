@@ -16,6 +16,7 @@ import {
     lucideBadgeX,
     lucideClipboardPaste,
     lucideEllipsis,
+    lucideStar,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
@@ -57,6 +58,7 @@ import { forkJoin } from 'rxjs';
             lucideBadgeCheck,
             lucideBadgeX,
             lucideClipboardPaste,
+            lucideStar,
         }),
     ],
 })
@@ -114,7 +116,9 @@ export class MantenedorPlantillasInscritas {
             inscripciones: this.inscripcionTemplateDao.obtenerVigentes(
                 this.negocioStore.negocioSeleccionado()?.id!
             ),
-            templates: this.templateDao.obtenerVigentesConNormas(),
+            templates: this.templateDao.obtenerVigentesConNormasYRecomendacion(
+                this.negocioStore.negocioSeleccionado()?.idTipoActividad!
+            ),
         })
             .subscribe({
                 next: ({ inscripciones, templates }) => {
@@ -144,6 +148,13 @@ export class MantenedorPlantillasInscritas {
                             nombreTemplate: template.nombre,
                             inscrito: inscripciones.some((i) => i.idTemplate == template.id),
                             templateNormas: templatesNormasConInscripciones,
+                            recomendado: template.templateActividades?.find(
+                                (u) =>
+                                    u.idTipoActividad ===
+                                    this.negocioStore.negocioSeleccionado()?.idTipoActividad!
+                            )
+                                ? true
+                                : false,
                         });
                     });
 
