@@ -1,3 +1,4 @@
+import { TemplateActividad } from './template-actividad';
 import { TemplateNorma } from './template-norma';
 
 export interface Template {
@@ -8,4 +9,5 @@ export interface Template {
     vigencia: boolean;
 
     templateNormas: TemplateNorma[] | null;
+    templateActividades: TemplateActividad[] | null;
 }
