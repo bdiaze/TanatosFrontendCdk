@@ -191,22 +191,37 @@
     </app-modal-eliminacion>
 }
 @if (showModalInscribirse()) {
-    <app-modal-edicion
-        [campos]="camposEdicion()"
-        [item]="itemSeleccionado()"
-        titulo="Inscribirte a una plantilla:"
-        [descripcion]="
-            `<p class='text-left'>¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?</p><div class='mx-2'>${listadoHTMLNormas(itemSeleccionado())}</div>`
-        "
-        [descripcionSecundaria]="
-            `<div class='mx-2'>${informacionHTMLPadres(itemSeleccionado())}</div>`
-        "
-        [conFuncionSecundaria]="true"
-        textoBotonGuardar="Sí, solo a la indicada"
-        textoBotonSecundario="Sí, inscribirse a todas"
-        (cerrar)="closeModalInscribirse()"
-        (editar)="inscribirse($event, false)"
-        (funcionSecundaria)="inscribirse($event, true)"
-    >
-    </app-modal-edicion>
+    @if (conPadresNoInscritos()) {
+        <app-modal-edicion
+            [campos]="camposEdicion()"
+            [item]="itemSeleccionado()"
+            titulo="Inscribirte a una plantilla:"
+            [descripcion]="
+                `<p class='text-left'>¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?</p><div class='mx-2'>${listadoHTMLNormas(itemSeleccionado())}</div>`
+            "
+            [descripcionSecundaria]="
+                `<div class='mx-2'>${informacionHTMLPadres(itemSeleccionado())}</div>`
+            "
+            [conFuncionSecundaria]="true"
+            textoBotonGuardar="Sí, solo a la indicada"
+            textoBotonSecundario="Inscribirse a todas"
+            (cerrar)="closeModalInscribirse()"
+            (editar)="inscribirse($event, false)"
+            (funcionSecundaria)="inscribirse($event, true)"
+        >
+        </app-modal-edicion>
+    } @else {
+        <app-modal-edicion
+            [campos]="camposEdicion()"
+            [item]="itemSeleccionado()"
+            titulo="Inscribirte a una plantilla:"
+            [descripcion]="
+                `<p class='text-left'>¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?</p><div class='mx-2'>${listadoHTMLNormas(itemSeleccionado())}</div>`
+            "
+            textoBotonGuardar="Inscribirse"
+            (cerrar)="closeModalInscribirse()"
+            (editar)="inscribirse($event, false)"
+        >
+        </app-modal-edicion>
+    }
 }

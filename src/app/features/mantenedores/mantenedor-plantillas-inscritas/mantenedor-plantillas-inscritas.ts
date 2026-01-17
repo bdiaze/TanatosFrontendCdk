@@ -3,6 +3,7 @@ import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-elimi
 import { InscripcionTemplateDao } from '@/app/daos/inscripcion-template-dao';
 import { TemplateDao } from '@/app/daos/template-dao';
 import { Template } from '@/app/entities/models/template';
+import { SalInscripcionTemplate } from '@/app/entities/others/sal-inscripcion-template';
 import {
     TemplateConInscripcion,
     TemplateNormasConInscripcion,
@@ -10,7 +11,7 @@ import {
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -70,6 +71,7 @@ export class MantenedorPlantillasInscritas {
     negocioStore = inject(NegocioStore);
 
     templatesVigentes = signal([] as Template[]);
+    inscripciones = signal([] as SalInscripcionTemplate[]);
 
     listado = signal([] as TemplateConInscripcion[]);
     cargando = signal(true);
@@ -78,6 +80,32 @@ export class MantenedorPlantillasInscritas {
     showModalDesinscribirse = signal(false);
     showModalInscribirse = signal(false);
     itemSeleccionado = signal<TemplateConInscripcion | null>(null);
+
+    conPadresNoInscritos = computed(() => {
+        if (!this.itemSeleccionado()) {
+            return false;
+        }
+
+        const template = this.templatesVigentes().find(
+            (u) => u.id === this.itemSeleccionado()?.idTemplate,
+        );
+        if (!template) {
+            return false;
+        }
+
+        let templatePadre = this.templatesVigentes().find((u) => u.id === template.idTemplatePadre);
+        while (templatePadre) {
+            if (!this.inscripciones().some((i) => i.idTemplate == templatePadre?.id)) {
+                return true;
+            }
+
+            templatePadre = this.templatesVigentes().find(
+                (u) => u.id === templatePadre!.idTemplatePadre,
+            );
+        }
+
+        return false;
+    });
 
     camposEdicion = signal<CampoDinamico[]>([
         {
@@ -125,6 +153,8 @@ export class MantenedorPlantillasInscritas {
         })
             .subscribe({
                 next: ({ inscripciones, templates }) => {
+                    this.inscripciones.set(inscripciones);
+
                     const templatesSorted = templates.sort((a, b) =>
                         a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
@@ -272,14 +302,16 @@ export class MantenedorPlantillasInscritas {
             (u) => u.id === template!.idTemplatePadre,
         );
         while (templatePadre) {
-            retorno += `<p class="mt-1 px-2 text-sm text-left"><b>${templatePadre.nombre}</b></p>`;
-            retorno += '<div class="px-8">';
-            retorno += '<ul class="list-disc">';
-            templatePadre.templateNormas?.forEach((norma) => {
-                retorno += `<li class="text-sm text-left opacity-80">${norma.nombre}</li>`;
-            });
-            retorno += '</ul>';
-            retorno += '</div>';
+            if (!this.inscripciones().some((i) => i.idTemplate == templatePadre?.id)) {
+                retorno += `<p class="mt-1 px-2 text-sm text-left"><b>${templatePadre.nombre}</b></p>`;
+                retorno += '<div class="px-8">';
+                retorno += '<ul class="list-disc">';
+                templatePadre.templateNormas?.forEach((norma) => {
+                    retorno += `<li class="text-sm text-left opacity-80">${norma.nombre}</li>`;
+                });
+                retorno += '</ul>';
+                retorno += '</div>';
+            }
 
             templatePadre = this.templatesVigentes().find(
                 (u) => u.id === templatePadre!.idTemplatePadre,
