@@ -55,6 +55,7 @@ export class ModalEdicion implements OnInit {
     @Input() item: any;
     @Input() titulo: string = 'Editar';
     @Input() descripcion?: string;
+    @Input() descripcionSecundaria?: string;
     @Input() conFuncionSecundaria: boolean = false;
     @Input() textoBotonGuardar: string = 'Guardar';
     @Input() textoBotonSecundario?: string;
@@ -73,8 +74,8 @@ export class ModalEdicion implements OnInit {
                         ? this.item[campo.llave]
                         : false
                     : this.item
-                    ? this.item[campo.llave]
-                    : null;
+                      ? this.item[campo.llave]
+                      : null;
 
             if (valorInicial === '') valorInicial = null;
 
@@ -83,7 +84,7 @@ export class ModalEdicion implements OnInit {
 
             const control = new FormControl(
                 { value: valorInicial, disabled: campo.deshabilitado },
-                validadores
+                validadores,
             );
 
             if (campo.tipo === 'autocomplete') {
@@ -92,13 +93,13 @@ export class ModalEdicion implements OnInit {
                     return campo.posiblesValores!.filter(
                         (option) =>
                             normalize(option.valor).includes(
-                                normalize(campo.autocompleteSearch!())
+                                normalize(campo.autocompleteSearch!()),
                             ) ||
                             (option.categoria
                                 ? normalize(option.categoria!).includes(
-                                      normalize(campo.autocompleteSearch!())
+                                      normalize(campo.autocompleteSearch!()),
                                   )
-                                : false)
+                                : false),
                     );
                 });
                 campo.autocompleteTransformOptionValue = (option: PosiblesValores) => option.id;

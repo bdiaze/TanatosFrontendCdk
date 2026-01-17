@@ -28,165 +28,198 @@
         </div>
         <div hlmCardContent>
             @if (descripcion) {
-            <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
+                <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
             }
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
-                    @for (campo of campos; track campo.llave) { @if (campo.tipo !== 'oculto') {
-                    <div hlmField class="gap-1">
-                        @if (campo.tipo === 'string' || campo.tipo === 'number') {
-                        <div hlmButtonGroup>
-                            <div
-                                hlmButtonGroupText
-                                class="transition-all duration-500 ease-out"
-                                [class.border-destructive]="invalid(campo.llave)"
-                                [class.text-destructive]="invalid(campo.llave)"
-                            >
-                                <label
-                                    [for]="campo.llave"
-                                    hlmLabel
-                                    class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm"
-                                    >{{ campo.nombre ?? campo.llave }}</label
-                                >
-                            </div>
-                            <div hlmInputGroup>
-                                @if (campo.tipo === 'string') {
-                                <input
-                                    hlmInputGroupInput
-                                    type="text"
-                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
-                                    [id]="campo.llave"
-                                    [formControl]="form.controls[campo.llave]"
-                                />
-                                } @if (campo.tipo === 'number') {
-                                <input
-                                    hlmInputGroupInput
-                                    type="number"
-                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
-                                    [id]="campo.llave"
-                                    [formControl]="form.controls[campo.llave]"
-                                />
+                    @for (campo of campos; track campo.llave) {
+                        @if (campo.tipo !== 'oculto') {
+                            <div hlmField class="gap-1">
+                                @if (campo.tipo === 'string' || campo.tipo === 'number') {
+                                    <div hlmButtonGroup>
+                                        <div
+                                            hlmButtonGroupText
+                                            class="transition-all duration-500 ease-out"
+                                            [class.border-destructive]="invalid(campo.llave)"
+                                            [class.text-destructive]="invalid(campo.llave)"
+                                        >
+                                            <label
+                                                [for]="campo.llave"
+                                                hlmLabel
+                                                class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm"
+                                                >{{ campo.nombre ?? campo.llave }}</label
+                                            >
+                                        </div>
+                                        <div hlmInputGroup>
+                                            @if (campo.tipo === 'string') {
+                                                <input
+                                                    hlmInputGroupInput
+                                                    type="text"
+                                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                                    [id]="campo.llave"
+                                                    [formControl]="form.controls[campo.llave]"
+                                                />
+                                            }
+                                            @if (campo.tipo === 'number') {
+                                                <input
+                                                    hlmInputGroupInput
+                                                    type="number"
+                                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                                    [id]="campo.llave"
+                                                    [formControl]="form.controls[campo.llave]"
+                                                />
+                                            }
+                                        </div>
+                                    </div>
                                 }
-                            </div>
-                        </div>
-                        } @if (campo.tipo === 'boolean') {
-                        <div class="flex justify-end-safe items-center gap-4">
-                            <label
-                                [for]="campo.llave"
-                                hlmLabel
-                                class="opacity-80 font-semibold text-xs md:text-sm"
-                                >{{ campo.nombre ?? campo.llave }}</label
-                            >
-                            <hlm-switch
-                                [id]="campo.llave"
-                                class="scale-[120%]"
-                                [checked]="form.controls[campo.llave].value"
-                                (checkedChange)="form.controls[campo.llave].setValue($event)"
-                            />
-                            @if(form.controls[campo.llave].value) {
-                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                            } @else {
-                            <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
-                            }
-                        </div>
-                        } @if (campo.tipo === 'select') {
-                        <div class="flex justify-start items-center gap-4">
-                            <label
-                                [for]="campo.llave"
-                                hlmLabel
-                                class="opacity-80 font-semibold text-xs md:text-sm pl-2 whitespace-nowrap"
-                                >{{ campo.nombre ?? campo.llave }}</label
-                            >
-                            <brn-select
-                                [id]="campo.llave"
-                                class="inline-block z-10 w-full"
-                                [formControl]="form.controls[campo.llave]"
-                            >
-                                <hlm-select-trigger class="">
-                                    <div class="flex justify-start items-center gap-2">
-                                        <hlm-select-value class="text-xs md:text-sm truncate" />
+                                @if (campo.tipo === 'boolean') {
+                                    <div class="flex justify-end-safe items-center gap-4">
+                                        <label
+                                            [for]="campo.llave"
+                                            hlmLabel
+                                            class="opacity-80 font-semibold text-xs md:text-sm"
+                                            >{{ campo.nombre ?? campo.llave }}</label
+                                        >
+                                        <hlm-switch
+                                            [id]="campo.llave"
+                                            class="scale-[120%]"
+                                            [checked]="form.controls[campo.llave].value"
+                                            (checkedChange)="
+                                                form.controls[campo.llave].setValue($event)
+                                            "
+                                        />
+                                        @if (form.controls[campo.llave].value) {
+                                            <ng-icon
+                                                hlm
+                                                name="lucideBadgeCheck"
+                                                class="text-green-700"
+                                            />
+                                        } @else {
+                                            <ng-icon
+                                                hlm
+                                                name="lucideBadgeX"
+                                                class="text-destructive"
+                                            />
+                                        }
                                     </div>
-                                </hlm-select-trigger>
-                                <hlm-select-content>
-                                    @for (posibleValor of campo.posiblesValores; track
-                                    posibleValor.id) {
-                                    <hlm-option
-                                        [value]="posibleValor.id"
-                                        class="text-xs md:text-sm"
-                                        >{{ `${posibleValor.valor}` }}</hlm-option
-                                    >
-                                    }
-                                </hlm-select-content>
-                            </brn-select>
-                        </div>
-                        } @if (campo.tipo === 'autocomplete') {
-                        <div class="flex justify-start items-center gap-4">
-                            <label
-                                [for]="campo.llave"
-                                hlmLabel
-                                class="opacity-80 font-semibold text-xs md:text-sm pl-2 whitespace-nowrap"
-                                >{{ campo.nombre ?? campo.llave }}</label
-                            >
-                            <hlm-autocomplete
-                                [(search)]="campo.autocompleteSearch!"
-                                [inputId]="campo.llave"
-                                [transformOptionToValue]="campo.autocompleteTransformOptionValue"
-                                [displayWith]="campo.autocompleteDisplayWith"
-                                [filteredOptions]="campo.autocompleteFilteredOptions!()"
-                                [formControl]="form.controls[campo.llave]"
-                                [searchPlaceholderText]="`Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`"
-                                [emptyText]="`${campo.nombre} no encontrad@...`"
-                                [optionTemplate]="option"
-                                autocompleteInputClass="text-xs md:text-sm"
-                                showClearBtn
-                            />
-                            <ng-template #option let-option>
-                                <div
-                                    class="flex flex-col items-start justify-center text-xs md:text-base"
+                                }
+                                @if (campo.tipo === 'select') {
+                                    <div class="flex justify-start items-center gap-4">
+                                        <label
+                                            [for]="campo.llave"
+                                            hlmLabel
+                                            class="opacity-80 font-semibold text-xs md:text-sm pl-2 whitespace-nowrap"
+                                            >{{ campo.nombre ?? campo.llave }}</label
+                                        >
+                                        <brn-select
+                                            [id]="campo.llave"
+                                            class="inline-block z-10 w-full"
+                                            [formControl]="form.controls[campo.llave]"
+                                        >
+                                            <hlm-select-trigger class="">
+                                                <div class="flex justify-start items-center gap-2">
+                                                    <hlm-select-value
+                                                        class="text-xs md:text-sm truncate"
+                                                    />
+                                                </div>
+                                            </hlm-select-trigger>
+                                            <hlm-select-content>
+                                                @for (
+                                                    posibleValor of campo.posiblesValores;
+                                                    track posibleValor.id
+                                                ) {
+                                                    <hlm-option
+                                                        [value]="posibleValor.id"
+                                                        class="text-xs md:text-sm"
+                                                        >{{ `${posibleValor.valor}` }}</hlm-option
+                                                    >
+                                                }
+                                            </hlm-select-content>
+                                        </brn-select>
+                                    </div>
+                                }
+                                @if (campo.tipo === 'autocomplete') {
+                                    <div class="flex justify-start items-center gap-4">
+                                        <label
+                                            [for]="campo.llave"
+                                            hlmLabel
+                                            class="opacity-80 font-semibold text-xs md:text-sm pl-2 whitespace-nowrap"
+                                            >{{ campo.nombre ?? campo.llave }}</label
+                                        >
+                                        <hlm-autocomplete
+                                            [(search)]="campo.autocompleteSearch!"
+                                            [inputId]="campo.llave"
+                                            [transformOptionToValue]="
+                                                campo.autocompleteTransformOptionValue
+                                            "
+                                            [displayWith]="campo.autocompleteDisplayWith"
+                                            [filteredOptions]="campo.autocompleteFilteredOptions!()"
+                                            [formControl]="form.controls[campo.llave]"
+                                            [searchPlaceholderText]="
+                                                `Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`
+                                            "
+                                            [emptyText]="`${campo.nombre} no encontrad@...`"
+                                            [optionTemplate]="option"
+                                            autocompleteInputClass="text-xs md:text-sm"
+                                            showClearBtn
+                                        />
+                                        <ng-template #option let-option>
+                                            <div
+                                                class="flex flex-col items-start justify-center text-xs md:text-base"
+                                            >
+                                                @if (option.categoria) {
+                                                    <div
+                                                        class="text-[0.65rem] md:text-[0.7rem] opacity-80"
+                                                    >
+                                                        {{ option.categoria }}
+                                                    </div>
+                                                }
+                                                {{ option.valor }}
+                                            </div>
+                                        </ng-template>
+                                    </div>
+                                }
+                                <hlm-field-error
+                                    class="transition-all duration-500 ease-out"
+                                    [class.opacity-100]="invalid(campo.llave)"
+                                    [class.opacity-0]="!invalid(campo.llave)"
+                                    [class.max-h-10]="invalid(campo.llave)"
+                                    [class.max-h-0]="!invalid(campo.llave)"
+                                    >Debes ingresar el "{{
+                                        campo.nombre ?? campo.llave
+                                    }}"</hlm-field-error
                                 >
-                                    @if (option.categoria) {
-                                    <div class="text-[0.65rem] md:text-[0.7rem] opacity-80">
-                                        {{ option.categoria }}
-                                    </div>
-                                    }
-                                    {{ option.valor }}
-                                </div>
-                            </ng-template>
-                        </div>
+                            </div>
                         }
-                        <hlm-field-error
-                            class="transition-all duration-500 ease-out"
-                            [class.opacity-100]="invalid(campo.llave)"
-                            [class.opacity-0]="!invalid(campo.llave)"
-                            [class.max-h-10]="invalid(campo.llave)"
-                            [class.max-h-0]="!invalid(campo.llave)"
-                            >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
-                        >
-                    </div>
-                    } }
+                    }
                 </div>
             </fieldset>
         </div>
-        <div
-            hlmCardFooter
-            class="flex items-center justify-end"
-            [class.gap-6]="!conFuncionSecundaria"
-            [class.gap-4]="conFuncionSecundaria"
-        >
+        <div hlmCardFooter class="flex items-center justify-end gap-6">
             <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
-            @if(conFuncionSecundaria) {
-            <button
-                hlmBtn
-                variant="secondary"
-                (click)="funcionSecundaria.emit(this.form.getRawValue())"
-                [disabled]="form.invalid"
-            >
-                {{ textoBotonSecundario }}
-            </button>
-            }
             <button hlmBtn (click)="confirmar()" [disabled]="form.invalid">
                 {{ textoBotonGuardar }}
             </button>
         </div>
+        @if (conFuncionSecundaria) {
+            <div hlmCardContent>
+                @if (descripcionSecundaria) {
+                    <p
+                        hlmP
+                        class="text-center text-balance mx-1"
+                        [innerHTML]="descripcionSecundaria"
+                    ></p>
+                }
+            </div>
+            <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-4">
+                <button
+                    hlmBtn
+                    (click)="funcionSecundaria.emit(this.form.getRawValue())"
+                    [disabled]="form.invalid"
+                >
+                    {{ textoBotonSecundario }}
+                </button>
+            </div>
+        }
     </div>
 </div>
