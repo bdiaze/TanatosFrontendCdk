@@ -2,6 +2,7 @@ import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/moda
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { TipoPeriodicidadDao } from '@/app/daos/tipo-periodicidad-dao';
 import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
+import { getErrorMessage } from '@/app/helpers/error-message';
 import { DecimalPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -66,6 +67,13 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             deshabilitado: false,
         },
         {
+            llave: 'cron',
+            nombre: 'Cron',
+            tipo: 'string',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
             llave: 'vigencia',
             nombre: 'Vigencia',
             tipo: 'boolean',
@@ -88,6 +96,13 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             nombre: 'Descripción',
             tipo: 'string',
             requerido: true,
+            deshabilitado: false,
+        },
+        {
+            llave: 'cron',
+            nombre: 'Cron',
+            tipo: 'string',
+            requerido: false,
             deshabilitado: false,
         },
         {
@@ -117,7 +132,9 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             },
             error: (err) => {
                 console.error('Error al obtener tipos de periodicidad', err);
-                this.error.set(err.error ?? 'Error al obtener tipos de periodicidad');
+                this.error.set(
+                    getErrorMessage(err.error) ?? 'Error al obtener tipos de periodicidad',
+                );
                 this.cargando.set(false);
             },
         });
@@ -142,7 +159,9 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al eliminar el tipo de periodicidad', err);
-                this.error.set(err.error ?? 'Error al eliminar el tipo de periodicidad');
+                this.error.set(
+                    getErrorMessage(err.error) ?? 'Error al eliminar el tipo de periodicidad',
+                );
             },
         });
         this.showModalEliminar.set(false);
@@ -160,6 +179,11 @@ export class MantenedorTipoPeriodicidad implements OnInit {
 
     editar(item: TipoPeriodicidad) {
         this.cargando.set(true);
+
+        if (item.cron?.trim().length === 0) {
+            item.cron = null;
+        }
+
         this.dao.actualizar(item).subscribe({
             next: () => {
                 this.obtenerTodos();
@@ -167,7 +191,9 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al editar el tipo de periodicidad', err);
-                this.error.set(err.error ?? 'Error al editar el tipo de periodicidad');
+                this.error.set(
+                    getErrorMessage(err.error) ?? 'Error al editar el tipo de periodicidad',
+                );
             },
         });
         this.showModalEditar.set(false);
@@ -185,6 +211,11 @@ export class MantenedorTipoPeriodicidad implements OnInit {
 
     crear(item: TipoPeriodicidad) {
         this.cargando.set(true);
+
+        if (item.cron?.trim().length === 0) {
+            item.cron = null;
+        }
+
         this.dao.crear(item).subscribe({
             next: () => {
                 this.obtenerTodos();
@@ -192,7 +223,9 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al crear el tipo de periodicidad', err);
-                this.error.set(err.error ?? 'Error al crear el tipo de periodicidad');
+                this.error.set(
+                    getErrorMessage(err.error) ?? 'Error al crear el tipo de periodicidad',
+                );
             },
         });
         this.showModalCrear.set(false);
