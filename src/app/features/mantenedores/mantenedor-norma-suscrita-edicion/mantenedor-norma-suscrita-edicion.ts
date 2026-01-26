@@ -226,7 +226,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                             console.error('Error al obtener la información de la obligación', err);
                             this.error.set(
                                 getErrorMessage(err) ??
-                                    'Error al obtener la información de la obligación'
+                                    'Error al obtener la información de la obligación',
                             );
                         },
                     })
@@ -247,7 +247,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     fechaProximoVencimiento = new Date(
                         fechaVencimiento.getFullYear(),
                         fechaVencimiento.getMonth(),
-                        fechaVencimiento.getDate()
+                        fechaVencimiento.getDate(),
                     );
                 }
                 let horaProximoVencimiento = null;
@@ -285,9 +285,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                                     {
                                         nonNullable: true,
                                         validators: [Validators.required],
-                                    }
+                                    },
                                 ),
-                            })
+                            }),
                         );
                     });
                 } else {
@@ -299,9 +299,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                                     {
                                         nonNullable: true,
                                         validators: [Validators.required],
-                                    }
+                                    },
                                 ),
-                            })
+                            }),
                         );
                     });
                 }
@@ -316,13 +316,13 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                                     {
                                         nonNullable: true,
                                         validators: [Validators.required],
-                                    }
+                                    },
                                 ),
                                 cantAntelacion: new FormControl(notificacion.cantAntelacion, {
                                     nonNullable: true,
                                     validators: [Validators.required],
                                 }),
-                            })
+                            }),
                         );
                     });
                 } else {
@@ -334,13 +334,13 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                                     {
                                         nonNullable: true,
                                         validators: [Validators.required],
-                                    }
+                                    },
                                 ),
                                 cantAntelacion: new FormControl(notificacion.cantAntelacion, {
                                     nonNullable: true,
                                     validators: [Validators.required],
                                 }),
-                            })
+                            }),
                         );
                     });
                 }
@@ -396,7 +396,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
                     this.categoriasVigentes.set(vigentes);
                 },
@@ -420,7 +420,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 error: (err) => {
                     console.error('Error al obtener periodicidades vigentes', err);
                     this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener periodicidades vigentes'
+                        getErrorMessage(err) ?? 'Error al obtener periodicidades vigentes',
                     );
                 },
             })
@@ -434,14 +434,14 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
                     this.fiscalizadoresVigentes.set(vigentes);
                 },
                 error: (err) => {
                     console.error('Error al obtener fiscalizadores vigentes', err);
                     this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener fiscalizadores vigentes'
+                        getErrorMessage(err) ?? 'Error al obtener fiscalizadores vigentes',
                     );
                 },
             })
@@ -460,7 +460,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 error: (err) => {
                     console.error('Error al obtener unidades de tiempo vigentes', err);
                     this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener unidades de tiempo vigentes'
+                        getErrorMessage(err) ?? 'Error al obtener unidades de tiempo vigentes',
                     );
                 },
             })
@@ -479,7 +479,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         const idx = (this.form.controls['fiscalizadores'] as FormArray).controls.findIndex(
             (ctrl: AbstractControl) =>
                 ctrl instanceof FormGroup &&
-                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador
+                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
         );
 
         if (idx !== -1) {
@@ -491,7 +491,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 idTipoFiscalizador: new FormControl(idFiscalizador, {
                     nonNullable: true,
                 }),
-            })
+            }),
         );
     }
 
@@ -499,7 +499,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         const idx = (this.form.controls['fiscalizadores'] as FormArray).controls.findIndex(
             (ctrl: AbstractControl) =>
                 ctrl instanceof FormGroup &&
-                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador
+                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
         );
 
         if (idx !== -1) {
@@ -509,7 +509,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     nombreFiscalizador(idFiscalizador: number): string {
         const fiscalizador = this.fiscalizadoresVigentes().find(
-            (fiscalizador: TipoFiscalizador) => fiscalizador.id === idFiscalizador
+            (fiscalizador: TipoFiscalizador) => fiscalizador.id === idFiscalizador,
         );
         return fiscalizador?.nombreCorto && fiscalizador.nombreCorto.trim() !== ''
             ? fiscalizador.nombreCorto
@@ -530,7 +530,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             (ctrl: AbstractControl) =>
                 ctrl instanceof FormGroup &&
                 ctrl.controls['cantAntelacion']?.value === cantTiempo &&
-                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value === idUnidadTiempo
+                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value === idUnidadTiempo,
         );
 
         if (idx !== -1) {
@@ -545,7 +545,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 cantAntelacion: new FormControl(cantTiempo, {
                     nonNullable: true,
                 }),
-            })
+            }),
         );
     }
 
@@ -555,7 +555,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 ctrl instanceof FormGroup &&
                 ctrl.controls['cantAntelacion']?.value === cantAntelacion &&
                 ctrl.controls['idTipoUnidadTiempoAntelacion']?.value ===
-                    idTipoUnidadTiempoAntelacion
+                    idTipoUnidadTiempoAntelacion,
         );
 
         if (idx !== -1) {
@@ -565,7 +565,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     nombreUnidadTiempo(idUnidadTiempo: number, cantUnidadTiempo: number | null = null): string {
         const unidadTiempo = this.unidadesTiempoVigentes().find(
-            (unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo
+            (unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo,
         );
 
         let cantidad = '';
@@ -597,7 +597,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     hora,
                     minuto,
                     0,
-                    0
+                    0,
                 );
             }
 
@@ -659,7 +659,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     hora,
                     minuto,
                     0,
-                    0
+                    0,
                 );
             }
 

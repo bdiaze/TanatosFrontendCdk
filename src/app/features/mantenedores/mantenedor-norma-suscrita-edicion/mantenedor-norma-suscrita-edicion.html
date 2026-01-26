@@ -2,94 +2,34 @@
     class="max-w-screen md:max-w-2xl mx-auto px-4 py-4 flex flex-col justify-center items-center gap-4"
 >
     @if (cargandoNormaSuscrita()) {
-    <div class="flex justify-center-safe items-center gap-3 my-4">
-        <hlm-spinner class="text-2xl" />
-        <p hlmH4>Cargando información de la obligación...</p>
-    </div>
-    } @else {
-    <div class="w-full">
-        <div class="flex items-center gap-4">
-            <ng-icon hlm name="lucideSquarePen" />
-            <p hlmH4>{{ titulo() }}</p>
+        <div class="flex justify-center-safe items-center gap-3 my-4">
+            <hlm-spinner class="text-2xl" />
+            <p hlmH4>Cargando información de la obligación...</p>
         </div>
-        <hlm-separator />
-    </div>
-    <div class="w-full">
-        <fieldset hlmFieldSet>
-            <div hlmFieldGroup class="gap-3">
-                <div hlmField class="flex justify-center items-center gap-1">
-                    <div hlmButtonGroup>
-                        <div
-                            hlmButtonGroupText
-                            class="transition-all duration-500 ease-out"
-                            [class.border-destructive]="invalid('nombre')"
-                            [class.text-destructive]="invalid('nombre')"
-                        >
-                            <label
-                                for="nombre"
-                                hlmLabel
-                                class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                >Nombre</label
-                            >
-                        </div>
-                        <div hlmInputGroup>
-                            <input
-                                hlmInputGroupInput
-                                type="text"
-                                class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                id="nombre"
-                                [formControl]="form.controls['nombre']"
-                            />
-                        </div>
-                    </div>
-                    <hlm-field-error
-                        class="transition-all duration-500 ease-out text-xs"
-                        [class.opacity-100]="invalid('nombre')"
-                        [class.opacity-0]="!invalid('nombre')"
-                        [class.max-h-10]="invalid('nombre')"
-                        [class.max-h-0]="!invalid('nombre')"
-                        >Debes ingresar el "Nombre"</hlm-field-error
-                    >
-                </div>
-                <div hlmField class="flex justify-center items-center gap-1">
-                    <label
-                        for="descripcion"
-                        hlmLabel
-                        class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
-                        >Descripción</label
-                    >
-                    <textarea
-                        hlmTextarea
-                        type="text"
-                        class="text-xs md:text-sm transition-all duration-500 ease-out"
-                        id="descripcion"
-                        [formControl]="form.controls['descripcion']"
-                    ></textarea>
-                    <hlm-field-error
-                        class="transition-all duration-500 ease-out text-xs"
-                        [class.opacity-100]="invalid('descripcion')"
-                        [class.opacity-0]="!invalid('descripcion')"
-                        [class.max-h-10]="invalid('descripcion')"
-                        [class.max-h-0]="!invalid('descripcion')"
-                        >Debes ingresar la "Descripción"</hlm-field-error
-                    >
-                </div>
-                <div
-                    class="flex flex-col md:flex-row justify-stretch items-start md:items-center gap-3"
-                >
+    } @else {
+        <div class="w-full">
+            <div class="flex items-center gap-4">
+                <ng-icon hlm name="lucideSquarePen" />
+                <p hlmH4>{{ titulo() }}</p>
+            </div>
+            <hlm-separator />
+        </div>
+        <div class="w-full">
+            <fieldset hlmFieldSet>
+                <div hlmFieldGroup class="gap-3">
                     <div hlmField class="flex justify-center items-center gap-1">
                         <div hlmButtonGroup>
                             <div
                                 hlmButtonGroupText
                                 class="transition-all duration-500 ease-out"
-                                [class.border-destructive]="invalid('multa')"
-                                [class.text-destructive]="invalid('multa')"
+                                [class.border-destructive]="invalid('nombre')"
+                                [class.text-destructive]="invalid('nombre')"
                             >
                                 <label
-                                    for="multa"
+                                    for="nombre"
                                     hlmLabel
                                     class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                    >Multa</label
+                                    >Nombre</label
                                 >
                             </div>
                             <div hlmInputGroup>
@@ -97,448 +37,547 @@
                                     hlmInputGroupInput
                                     type="text"
                                     class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                    id="multa"
-                                    [formControl]="form.controls['multa']"
+                                    id="nombre"
+                                    [formControl]="form.controls['nombre']"
                                 />
                             </div>
                         </div>
                         <hlm-field-error
                             class="transition-all duration-500 ease-out text-xs"
-                            [class.opacity-100]="invalid('multa')"
-                            [class.opacity-0]="!invalid('multa')"
-                            [class.max-h-10]="invalid('multa')"
-                            [class.max-h-0]="!invalid('multa')"
-                            >Debes ingresar el "Multa"</hlm-field-error
+                            [class.opacity-100]="invalid('nombre')"
+                            [class.opacity-0]="!invalid('nombre')"
+                            [class.max-h-10]="invalid('nombre')"
+                            [class.max-h-0]="!invalid('nombre')"
+                            >Debes ingresar el "Nombre"</hlm-field-error
                         >
                     </div>
-                    <div hlmField class="flex justify-start items-center gap-1 w-fit">
-                        <div class="flex justify-start items-center gap-4 ml-3">
-                            <label
-                                for="activado"
-                                hlmLabel
-                                class="text-xs md:text-sm opacity-80 font-semibold"
-                                >¿Activada?</label
-                            >
-                            <hlm-switch
-                                class="scale-[120%]"
-                                id="activado"
-                                [checked]="form.controls['activado'].value!"
-                                (checkedChange)="form.controls['activado'].setValue($event)"
-                            />
-                            @if(form.controls['activado'].value!) {
-                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                            } @else {
-                            <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
-                            }
-                        </div>
+                    <div hlmField class="flex justify-center items-center gap-1">
+                        <label
+                            for="descripcion"
+                            hlmLabel
+                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                            >Descripción</label
+                        >
+                        <textarea
+                            hlmTextarea
+                            type="text"
+                            class="text-xs md:text-sm transition-all duration-500 ease-out"
+                            id="descripcion"
+                            [formControl]="form.controls['descripcion']"
+                        ></textarea>
                         <hlm-field-error
-                            class="transition-all duration-500 ease-out -z-10 text-xs"
-                            [class.opacity-100]="invalid('vigencia')"
-                            [class.opacity-0]="!invalid('vigencia')"
-                            [class.max-h-10]="invalid('vigencia')"
-                            [class.max-h-0]="!invalid('vigencia')"
-                            >Debes indicar la marca de "Activo"</hlm-field-error
+                            class="transition-all duration-500 ease-out text-xs"
+                            [class.opacity-100]="invalid('descripcion')"
+                            [class.opacity-0]="!invalid('descripcion')"
+                            [class.max-h-10]="invalid('descripcion')"
+                            [class.max-h-0]="!invalid('descripcion')"
+                            >Debes ingresar la "Descripción"</hlm-field-error
                         >
                     </div>
-                </div>
-                <div class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
                     <div
-                        hlmField
-                        class="flex justify-center items-center gap-1 w-full widthMitadConGap2"
+                        class="flex flex-col md:flex-row justify-stretch items-start md:items-center gap-3"
                     >
-                        <div class="flex flex-col justify-start md:items-center gap-2">
-                            <label
-                                for="categoria"
-                                hlmLabel
-                                class="text-xs md:text-sm opacity-80 pl-2 w-full"
-                                >Categoría</label
+                        <div hlmField class="flex justify-center items-center gap-1">
+                            <div hlmButtonGroup>
+                                <div
+                                    hlmButtonGroupText
+                                    class="transition-all duration-500 ease-out"
+                                    [class.border-destructive]="invalid('multa')"
+                                    [class.text-destructive]="invalid('multa')"
+                                >
+                                    <label
+                                        for="multa"
+                                        hlmLabel
+                                        class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
+                                        >Multa</label
+                                    >
+                                </div>
+                                <div hlmInputGroup>
+                                    <input
+                                        hlmInputGroupInput
+                                        type="text"
+                                        class="text-xs md:text-sm transition-all duration-500 ease-out"
+                                        id="multa"
+                                        [formControl]="form.controls['multa']"
+                                    />
+                                </div>
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out text-xs"
+                                [class.opacity-100]="invalid('multa')"
+                                [class.opacity-0]="!invalid('multa')"
+                                [class.max-h-10]="invalid('multa')"
+                                [class.max-h-0]="!invalid('multa')"
+                                >Debes ingresar el "Multa"</hlm-field-error
                             >
-                            <brn-select
-                                id="categoria"
-                                class="inline-block z-10 w-full"
-                                [formControl]="form.controls['idCategoriaNorma']"
-                                placeholder="Selecciona una categoría..."
+                        </div>
+                        <div hlmField class="flex justify-start items-center gap-1 w-fit">
+                            <div class="flex justify-start items-center gap-4 ml-3">
+                                <label
+                                    for="activado"
+                                    hlmLabel
+                                    class="text-xs md:text-sm opacity-80 font-semibold"
+                                    >¿Activada?</label
+                                >
+                                <hlm-switch
+                                    class="scale-[120%]"
+                                    id="activado"
+                                    [checked]="form.controls['activado'].value!"
+                                    (checkedChange)="form.controls['activado'].setValue($event)"
+                                />
+                                @if (form.controls['activado'].value!) {
+                                    <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                                } @else {
+                                    <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                                }
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out -z-10 text-xs"
+                                [class.opacity-100]="invalid('vigencia')"
+                                [class.opacity-0]="!invalid('vigencia')"
+                                [class.max-h-10]="invalid('vigencia')"
+                                [class.max-h-0]="!invalid('vigencia')"
+                                >Debes indicar la marca de "Activo"</hlm-field-error
                             >
-                                <hlm-select-trigger class="w-full">
-                                    <div class="flex justify-start items-center gap-2">
+                        </div>
+                    </div>
+                    <div class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
+                        <div
+                            hlmField
+                            class="flex justify-center items-center gap-1 w-full widthMitadConGap2"
+                        >
+                            <div class="flex flex-col justify-start md:items-center gap-2">
+                                <label
+                                    for="categoria"
+                                    hlmLabel
+                                    class="text-xs md:text-sm opacity-80 pl-2 w-full"
+                                    >Categoría</label
+                                >
+                                <brn-select
+                                    id="categoria"
+                                    class="inline-block z-10 w-full"
+                                    [formControl]="form.controls['idCategoriaNorma']"
+                                    placeholder="Selecciona una categoría..."
+                                >
+                                    <hlm-select-trigger class="w-full">
+                                        <div class="flex justify-start items-center gap-2">
+                                            @if (cargandoCategoriasVigentes()) {
+                                                <hlm-spinner class="text-base md:text-lg" />
+                                            }
+                                            <hlm-select-value class="text-xs md:text-sm truncate" />
+                                        </div>
+                                    </hlm-select-trigger>
+                                    <hlm-select-content>
                                         @if (cargandoCategoriasVigentes()) {
-                                        <hlm-spinner class="text-base md:text-lg" />
+                                            <hlm-option
+                                                [value]="form.controls['idCategoriaNorma'].value"
+                                                class="text-xs md:text-sm"
+                                            >
+                                                Cargando...</hlm-option
+                                            >
+                                        } @else {
+                                            <hlm-option class="text-xs md:text-sm" [value]="null"
+                                                >Sin categoría</hlm-option
+                                            >
+                                            @for (
+                                                categoria of categoriasVigentes();
+                                                track categoria.id
+                                            ) {
+                                                <hlm-option
+                                                    [value]="categoria.id"
+                                                    class="text-xs md:text-sm"
+                                                    >{{ `${categoria.nombre}` }}</hlm-option
+                                                >
+                                            }
                                         }
-                                        <hlm-select-value class="text-xs md:text-sm truncate" />
-                                    </div>
-                                </hlm-select-trigger>
-                                <hlm-select-content>
-                                    @if (cargandoCategoriasVigentes()) {
-                                    <hlm-option
-                                        [value]="form.controls['idCategoriaNorma'].value"
-                                        class="text-xs md:text-sm"
-                                    >
-                                        Cargando...</hlm-option
-                                    >
-                                    } @else {
-                                    <hlm-option class="text-xs md:text-sm" [value]="null"
-                                        >Sin categoría</hlm-option
-                                    >
-                                    @for (categoria of categoriasVigentes(); track categoria.id) {
-                                    <hlm-option
-                                        [value]="categoria.id"
-                                        class="text-xs md:text-sm"
-                                        >{{ `${categoria.nombre}` }}</hlm-option
-                                    >
-                                    }}
-                                </hlm-select-content>
-                            </brn-select>
+                                    </hlm-select-content>
+                                </brn-select>
+                            </div>
+                            <p
+                                hlmP
+                                class="transition-all duration-500 ease-out text-xs mt-0 px-3 text-destructive -z-10"
+                                [class.opacity-100]="invalid('idCategoriaNorma')"
+                                [class.opacity-0]="!invalid('idCategoriaNorma')"
+                                [class.max-h-10]="invalid('idCategoriaNorma')"
+                                [class.max-h-0]="!invalid('idCategoriaNorma')"
+                            >
+                                Debes ingresar la "Categoría"
+                            </p>
                         </div>
-                        <p
-                            hlmP
-                            class="transition-all duration-500 ease-out text-xs mt-0 px-3 text-destructive -z-10"
-                            [class.opacity-100]="invalid('idCategoriaNorma')"
-                            [class.opacity-0]="!invalid('idCategoriaNorma')"
-                            [class.max-h-10]="invalid('idCategoriaNorma')"
-                            [class.max-h-0]="!invalid('idCategoriaNorma')"
+                        <div
+                            hlmField
+                            class="flex justify-center items-center gap-1 w-full widthMitadConGap2"
                         >
-                            Debes ingresar la "Categoría"
-                        </p>
-                    </div>
-                    <div
-                        hlmField
-                        class="flex justify-center items-center gap-1 w-full widthMitadConGap2"
-                    >
-                        <div class="flex flex-col justify-start md:items-center gap-2">
-                            <label
-                                for="idTipoPeriodicidad"
-                                hlmLabel
-                                class="text-xs md:text-sm opacity-80 w-full pl-2"
-                                >Periodicidad</label
-                            >
-                            <brn-select
-                                id="idTipoPeriodicidad"
-                                class="inline-block w-full z-10"
-                                [formControl]="form.controls['idTipoPeriodicidad']"
-                                placeholder="Selecciona la periodicidad..."
-                            >
-                                <hlm-select-trigger class="w-full">
-                                    <div class="flex justify-start items-center gap-2">
+                            <div class="flex flex-col justify-start md:items-center gap-2">
+                                <label
+                                    for="idTipoPeriodicidad"
+                                    hlmLabel
+                                    class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                    >Periodicidad</label
+                                >
+                                <brn-select
+                                    id="idTipoPeriodicidad"
+                                    class="inline-block w-full z-10"
+                                    [formControl]="form.controls['idTipoPeriodicidad']"
+                                    placeholder="Selecciona la periodicidad..."
+                                >
+                                    <hlm-select-trigger class="w-full">
+                                        <div class="flex justify-start items-center gap-2">
+                                            @if (cargandoPeriodicidadVigentes()) {
+                                                <hlm-spinner class="text-base md:text-lg" />
+                                            }
+                                            <hlm-select-value class="text-xs md:text-sm truncate" />
+                                        </div>
+                                    </hlm-select-trigger>
+                                    <hlm-select-content>
                                         @if (cargandoPeriodicidadVigentes()) {
-                                        <hlm-spinner class="text-base md:text-lg" />
+                                            <hlm-option
+                                                [value]="form.controls['idTipoPeriodicidad'].value"
+                                                class="text-xs md:text-sm"
+                                            >
+                                                Cargando...</hlm-option
+                                            >
+                                        } @else {
+                                            @for (
+                                                periodicidad of periodicidadesVigentes();
+                                                track periodicidad.id
+                                            ) {
+                                                <hlm-option
+                                                    [value]="periodicidad.id"
+                                                    class="text-xs md:text-sm"
+                                                    >{{ `${periodicidad.nombre}` }}</hlm-option
+                                                >
+                                            }
                                         }
-                                        <hlm-select-value class="text-xs md:text-sm truncate" />
-                                    </div>
-                                </hlm-select-trigger>
-                                <hlm-select-content>
-                                    @if (cargandoPeriodicidadVigentes()) {
-                                    <hlm-option
-                                        [value]="form.controls['idTipoPeriodicidad'].value"
-                                        class="text-xs md:text-sm"
-                                    >
-                                        Cargando...</hlm-option
-                                    >
-                                    } @else { @for (periodicidad of periodicidadesVigentes(); track
-                                    periodicidad.id) {
-                                    <hlm-option
-                                        [value]="periodicidad.id"
-                                        class="text-xs md:text-sm"
-                                        >{{ `${periodicidad.nombre}` }}</hlm-option
-                                    >
-                                    }}
-                                </hlm-select-content>
-                            </brn-select>
-                        </div>
-                        <p
-                            hlmP
-                            class="transition-all duration-500 ease-out text-xs mt-0 px-3 text-destructive -z-10"
-                            [class.opacity-100]="invalid('idTipoPeriodicidad')"
-                            [class.opacity-0]="!invalid('idTipoPeriodicidad')"
-                            [class.max-h-10]="invalid('idTipoPeriodicidad')"
-                            [class.max-h-0]="!invalid('idTipoPeriodicidad')"
-                        >
-                            Debes ingresar la "Periodicidad"
-                        </p>
-                    </div>
-                </div>
-
-                <div class="flex flex-col md:flex-row items-start mt-2 mb-1 gap-3 md:gap-2">
-                    <div
-                        class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2"
-                    >
-                        <label
-                            hlmLabel
-                            for="formFiscalizador"
-                            class="text-xs md:text-sm opacity-80 w-full pl-2"
-                            >Fiscalizadores</label
-                        >
-
-                        <div class="flex justify-start items-center gap-2 w-full">
-                            <brn-select
-                                id="formFiscalizador"
-                                class="inline-block z-10 selectConBoton"
-                                [disabled]="cargandoFiscalizadoresVigentes()"
-                                [(ngModel)]="formFiscalizador"
-                                placeholder="Nuevo fiscalizador"
+                                    </hlm-select-content>
+                                </brn-select>
+                            </div>
+                            <p
+                                hlmP
+                                class="transition-all duration-500 ease-out text-xs mt-0 px-3 text-destructive -z-10"
+                                [class.opacity-100]="invalid('idTipoPeriodicidad')"
+                                [class.opacity-0]="!invalid('idTipoPeriodicidad')"
+                                [class.max-h-10]="invalid('idTipoPeriodicidad')"
+                                [class.max-h-0]="!invalid('idTipoPeriodicidad')"
                             >
-                                <hlm-select-trigger>
-                                    <div class="flex justify-start items-center gap-2">
+                                Debes ingresar la "Periodicidad"
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-start mt-2 mb-1 gap-3 md:gap-2">
+                        <div
+                            class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2"
+                        >
+                            <label
+                                hlmLabel
+                                for="formFiscalizador"
+                                class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                >Fiscalizadores</label
+                            >
+
+                            <div class="flex justify-start items-center gap-2 w-full">
+                                <brn-select
+                                    id="formFiscalizador"
+                                    class="inline-block z-10 selectConBoton"
+                                    [disabled]="cargandoFiscalizadoresVigentes()"
+                                    [(ngModel)]="formFiscalizador"
+                                    placeholder="Nuevo fiscalizador"
+                                >
+                                    <hlm-select-trigger>
+                                        <div class="flex justify-start items-center gap-2">
+                                            @if (cargandoFiscalizadoresVigentes()) {
+                                                <hlm-spinner class="text-base md:text-lg" />
+                                            }
+                                            <hlm-select-value class="text-xs md:text-sm truncate" />
+                                        </div>
+                                    </hlm-select-trigger>
+                                    <hlm-select-content>
                                         @if (cargandoFiscalizadoresVigentes()) {
-                                        <hlm-spinner class="text-base md:text-lg" />
+                                            <hlm-option class="text-xs md:text-sm">
+                                                Cargando...</hlm-option
+                                            >
+                                        } @else {
+                                            @for (
+                                                fiscalizador of fiscalizadoresVigentes();
+                                                track fiscalizador.id
+                                            ) {
+                                                <hlm-option
+                                                    [value]="fiscalizador.id"
+                                                    class="text-xs md:text-sm"
+                                                    >{{ `${fiscalizador.nombre}` }}</hlm-option
+                                                >
+                                            }
                                         }
-                                        <hlm-select-value class="text-xs md:text-sm truncate" />
-                                    </div>
-                                </hlm-select-trigger>
-                                <hlm-select-content>
-                                    @if (cargandoFiscalizadoresVigentes()) {
-                                    <hlm-option class="text-xs md:text-sm"> Cargando...</hlm-option>
-                                    } @else { @for (fiscalizador of fiscalizadoresVigentes(); track
-                                    fiscalizador.id) {
-                                    <hlm-option
-                                        [value]="fiscalizador.id"
-                                        class="text-xs md:text-sm"
-                                        >{{ `${fiscalizador.nombre}` }}</hlm-option
-                                    >
-                                    }}
-                                </hlm-select-content>
-                            </brn-select>
+                                    </hlm-select-content>
+                                </brn-select>
 
-                            <button
-                                hlmBtn
-                                size="icon"
-                                variant="default"
-                                class="size-9"
-                                (click)="agregarFiscalizador()"
-                                [disabled]="!formFiscalizador"
-                            >
-                                <ng-icon hlm size="sm" name="lucidePlus" />
-                            </button>
-                        </div>
-
-                        <div class="flex flex-wrap justify-center items-center gap-1">
-                            @for(fiscalizador of form.controls['fiscalizadores'].controls; track
-                            $index) {
-                            <span
-                                hlmBadge
-                                variant="default"
-                                class="text-[0.7rem] md:text-xs pr-1 flex items-center"
-                                >{{
-                                    nombreFiscalizador(
-                                        fiscalizador.controls['idTipoFiscalizador'].value!
-                                    )
-                                }}
                                 <button
                                     hlmBtn
                                     size="icon"
-                                    variant="link"
-                                    class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
-                                    [hlmDropdownMenuTrigger]="menuFiscalizador"
+                                    variant="default"
+                                    class="size-9"
+                                    (click)="agregarFiscalizador()"
+                                    [disabled]="!formFiscalizador"
                                 >
-                                    <ng-icon hlm name="lucideX" />
+                                    <ng-icon hlm size="sm" name="lucidePlus" />
                                 </button>
-                                <ng-template #menuFiscalizador>
-                                    <hlm-dropdown-menu class="w-[8.3rem]">
-                                        <hlm-dropdown-menu-label
-                                            class="font-normal text-center opacity-80"
-                                            >¿Estás seguro?</hlm-dropdown-menu-label
+                            </div>
+
+                            <div class="flex flex-wrap justify-center items-center gap-1">
+                                @for (
+                                    fiscalizador of form.controls['fiscalizadores'].controls;
+                                    track $index
+                                ) {
+                                    <span
+                                        hlmBadge
+                                        variant="default"
+                                        class="text-[0.7rem] md:text-xs pr-1 flex items-center"
+                                        >{{
+                                            nombreFiscalizador(
+                                                fiscalizador.controls['idTipoFiscalizador'].value!
+                                            )
+                                        }}
+                                        <button
+                                            hlmBtn
+                                            size="icon"
+                                            variant="link"
+                                            class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                            [hlmDropdownMenuTrigger]="menuFiscalizador"
                                         >
-                                        <hlm-dropdown-menu-group>
-                                            <button
-                                                hlmDropdownMenuItem
-                                                variant="destructive"
-                                                class="hover:cursor-pointer"
-                                                (click)="
-                                                    quitarFiscalizador(
-                                                        fiscalizador.controls['idTipoFiscalizador']
-                                                            .value!
-                                                    )
-                                                "
-                                            >
-                                                ¡Sí, eliminalo!
-                                                <ng-icon hlm size="sm" name="lucideTrash2" />
-                                            </button>
-                                        </hlm-dropdown-menu-group>
-                                    </hlm-dropdown-menu>
-                                </ng-template>
-                            </span>
-                            }
+                                            <ng-icon hlm name="lucideX" />
+                                        </button>
+                                        <ng-template #menuFiscalizador>
+                                            <hlm-dropdown-menu class="w-[8.3rem]">
+                                                <hlm-dropdown-menu-label
+                                                    class="font-normal text-center opacity-80"
+                                                    >¿Estás seguro?</hlm-dropdown-menu-label
+                                                >
+                                                <hlm-dropdown-menu-group>
+                                                    <button
+                                                        hlmDropdownMenuItem
+                                                        variant="destructive"
+                                                        class="hover:cursor-pointer"
+                                                        (click)="
+                                                            quitarFiscalizador(
+                                                                fiscalizador.controls[
+                                                                    'idTipoFiscalizador'
+                                                                ].value!
+                                                            )
+                                                        "
+                                                    >
+                                                        ¡Sí, eliminalo!
+                                                        <ng-icon
+                                                            hlm
+                                                            size="sm"
+                                                            name="lucideTrash2"
+                                                        />
+                                                    </button>
+                                                </hlm-dropdown-menu-group>
+                                            </hlm-dropdown-menu>
+                                        </ng-template>
+                                    </span>
+                                }
+                            </div>
                         </div>
-                    </div>
-                    <div
-                        class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2"
-                    >
-                        <label
-                            hlmLabel
-                            for="formNotifCantTiempo"
-                            class="text-xs md:text-sm opacity-80 w-full pl-2"
-                            >Notificaciones Previas</label
+                        <div
+                            class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2"
                         >
-                        <div class="flex justify-center items-center gap-2 pl-0">
-                            <input
-                                hlmInput
-                                id="formNotifCantTiempo"
-                                type="number"
-                                [(ngModel)]="formNotifCantTiempo"
-                                placeholder="Cantidad"
-                                class="text-xs md:text-sm"
-                            />
-
-                            <brn-select
-                                id="formNotifUnidadTiempo"
-                                class="inline-block z-10"
-                                [disabled]="cargandoUnidadesTiempoVigentes()"
-                                [(ngModel)]="formNotifUnidadTiempo"
-                                placeholder="Unidad"
+                            <label
+                                hlmLabel
+                                for="formNotifCantTiempo"
+                                class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                >Notificaciones Previas</label
                             >
-                                <hlm-select-trigger>
-                                    <div class="flex justify-center items-center gap-2">
+                            <div class="flex justify-center items-center gap-2 pl-0">
+                                <input
+                                    hlmInput
+                                    id="formNotifCantTiempo"
+                                    type="number"
+                                    [(ngModel)]="formNotifCantTiempo"
+                                    placeholder="Cantidad"
+                                    class="text-xs md:text-sm"
+                                />
+
+                                <brn-select
+                                    id="formNotifUnidadTiempo"
+                                    class="inline-block z-10"
+                                    [disabled]="cargandoUnidadesTiempoVigentes()"
+                                    [(ngModel)]="formNotifUnidadTiempo"
+                                    placeholder="Unidad"
+                                >
+                                    <hlm-select-trigger>
+                                        <div class="flex justify-center items-center gap-2">
+                                            @if (cargandoUnidadesTiempoVigentes()) {
+                                                <hlm-spinner class="text-base md:text-lg" />
+                                            }
+                                            <hlm-select-value
+                                                class="text-xs md:text-sm truncate w-14"
+                                            />
+                                        </div>
+                                    </hlm-select-trigger>
+                                    <hlm-select-content>
                                         @if (cargandoUnidadesTiempoVigentes()) {
-                                        <hlm-spinner class="text-base md:text-lg" />
+                                            <hlm-option class="text-xs md:text-sm">
+                                                Cargando...</hlm-option
+                                            >
+                                        } @else {
+                                            @for (
+                                                unidadTiempo of unidadesTiempoVigentes();
+                                                track unidadTiempo.id
+                                            ) {
+                                                <hlm-option
+                                                    [value]="unidadTiempo.id"
+                                                    class="text-xs md:text-sm"
+                                                    >{{ `${unidadTiempo.nombre}` }}</hlm-option
+                                                >
+                                            }
                                         }
-                                        <hlm-select-value
-                                            class="text-xs md:text-sm truncate w-14"
-                                        />
-                                    </div>
-                                </hlm-select-trigger>
-                                <hlm-select-content>
-                                    @if (cargandoUnidadesTiempoVigentes()) {
-                                    <hlm-option class="text-xs md:text-sm"> Cargando...</hlm-option>
-                                    } @else { @for (unidadTiempo of unidadesTiempoVigentes(); track
-                                    unidadTiempo.id) {
-                                    <hlm-option
-                                        [value]="unidadTiempo.id"
-                                        class="text-xs md:text-sm"
-                                        >{{ `${unidadTiempo.nombre}` }}</hlm-option
-                                    >
-                                    }}
-                                </hlm-select-content>
-                            </brn-select>
+                                    </hlm-select-content>
+                                </brn-select>
 
-                            <button
-                                hlmBtn
-                                size="icon"
-                                variant="default"
-                                class="size-9"
-                                (click)="agregarNotificacionPrevia()"
-                                [disabled]="
-                                    !formNotifCantTiempo ||
-                                    !formNotifUnidadTiempo ||
-                                    +formNotifCantTiempo <= 0
-                                "
-                            >
-                                <ng-icon hlm size="sm" name="lucidePlus" />
-                            </button>
-                        </div>
-
-                        <div class="flex flex-wrap justify-center items-center gap-1">
-                            @for(notificacion of form.controls['notificaciones'].controls; track
-                            $index) {
-                            <span
-                                hlmBadge
-                                variant="default"
-                                class="text-[0.7rem] md:text-xs pr-1 flex items-center"
-                                >{{
-                                    nombreUnidadTiempo(
-                                        notificacion.controls['idTipoUnidadTiempoAntelacion']
-                                            .value!,
-                                        notificacion.controls['cantAntelacion'].value
-                                    )
-                                }}
                                 <button
                                     hlmBtn
                                     size="icon"
-                                    variant="link"
-                                    class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
-                                    [hlmDropdownMenuTrigger]="menuNotificacion"
+                                    variant="default"
+                                    class="size-9"
+                                    (click)="agregarNotificacionPrevia()"
+                                    [disabled]="
+                                        !formNotifCantTiempo ||
+                                        !formNotifUnidadTiempo ||
+                                        +formNotifCantTiempo <= 0
+                                    "
                                 >
-                                    <ng-icon hlm name="lucideX" />
+                                    <ng-icon hlm size="sm" name="lucidePlus" />
                                 </button>
-                                <ng-template #menuNotificacion>
-                                    <hlm-dropdown-menu class="w-[8.3rem]">
-                                        <hlm-dropdown-menu-label
-                                            class="font-normal text-center opacity-80"
-                                            >¿Estás seguro?</hlm-dropdown-menu-label
+                            </div>
+
+                            <div class="flex flex-wrap justify-center items-center gap-1">
+                                @for (
+                                    notificacion of form.controls['notificaciones'].controls;
+                                    track $index
+                                ) {
+                                    <span
+                                        hlmBadge
+                                        variant="default"
+                                        class="text-[0.7rem] md:text-xs pr-1 flex items-center"
+                                        >{{
+                                            nombreUnidadTiempo(
+                                                notificacion.controls[
+                                                    'idTipoUnidadTiempoAntelacion'
+                                                ].value!,
+                                                notificacion.controls['cantAntelacion'].value
+                                            )
+                                        }}
+                                        <button
+                                            hlmBtn
+                                            size="icon"
+                                            variant="link"
+                                            class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                            [hlmDropdownMenuTrigger]="menuNotificacion"
                                         >
-                                        <hlm-dropdown-menu-group>
-                                            <button
-                                                hlmDropdownMenuItem
-                                                variant="destructive"
-                                                class="hover:cursor-pointer"
-                                                (click)="
-                                                    quitarNotificacionPrevia(
-                                                        notificacion.controls['cantAntelacion']
-                                                            .value!,
-                                                        notificacion.controls[
-                                                            'idTipoUnidadTiempoAntelacion'
-                                                        ].value!
-                                                    )
-                                                "
-                                            >
-                                                ¡Sí, eliminalo!
-                                                <ng-icon hlm size="sm" name="lucideTrash2" />
-                                            </button>
-                                        </hlm-dropdown-menu-group>
-                                    </hlm-dropdown-menu>
-                                </ng-template>
-                            </span>
-                            }
+                                            <ng-icon hlm name="lucideX" />
+                                        </button>
+                                        <ng-template #menuNotificacion>
+                                            <hlm-dropdown-menu class="w-[8.3rem]">
+                                                <hlm-dropdown-menu-label
+                                                    class="font-normal text-center opacity-80"
+                                                    >¿Estás seguro?</hlm-dropdown-menu-label
+                                                >
+                                                <hlm-dropdown-menu-group>
+                                                    <button
+                                                        hlmDropdownMenuItem
+                                                        variant="destructive"
+                                                        class="hover:cursor-pointer"
+                                                        (click)="
+                                                            quitarNotificacionPrevia(
+                                                                notificacion.controls[
+                                                                    'cantAntelacion'
+                                                                ].value!,
+                                                                notificacion.controls[
+                                                                    'idTipoUnidadTiempoAntelacion'
+                                                                ].value!
+                                                            )
+                                                        "
+                                                    >
+                                                        ¡Sí, eliminalo!
+                                                        <ng-icon
+                                                            hlm
+                                                            size="sm"
+                                                            name="lucideTrash2"
+                                                        />
+                                                    </button>
+                                                </hlm-dropdown-menu-group>
+                                            </hlm-dropdown-menu>
+                                        </ng-template>
+                                    </span>
+                                }
+                            </div>
                         </div>
                     </div>
-                </div>
-                @if (form.controls['activado'].value!) {
-                <hlm-separator />
-                <div class="flex flex-col justify-center items-start gap-2">
-                    <p hlmH4 class="text-base text-center w-full">¿Próximo vencimiento?</p>
-                    <p hlmP class="text-sm pl-2">
-                        Indícanos cuando sería la próxima fecha límite para cumplir con la
-                        obligación:
-                    </p>
-                    <div class="flex flex-col md:flex-row justify-center items-center gap-2 w-full">
-                        <div class="flex flex-col gap-1 w-full md:w-[50%]">
-                            <label
-                                for="proximoVencimientoFecha"
-                                hlmLabel
-                                class="text-xs md:text-sm opacity-80 pl-2"
-                                >Fecha</label
+                    @if (form.controls['activado'].value!) {
+                        <hlm-separator />
+                        <div class="flex flex-col justify-center items-start gap-2">
+                            <p hlmH4 class="text-base text-center w-full">¿Próximo vencimiento?</p>
+                            <p hlmP class="text-sm pl-2">
+                                Indícanos cuando sería la próxima fecha límite para cumplir con la
+                                obligación:
+                            </p>
+                            <div
+                                class="flex flex-col md:flex-row justify-center items-center gap-2 w-full"
                             >
-                            <hlm-date-picker
-                                [min]="minDate()"
-                                buttonId="proximoVencimientoFecha"
-                                class="text-xs md:text-sm w-full"
-                                [date]="form.controls['fechaProximoVencimiento'].value!"
-                                (dateChange)="
-                                    form.controls['fechaProximoVencimiento'].setValue($event)
-                                "
-                            >
-                                <span class="text-xs md:text-sm">Seleccionar fecha...</span>
-                            </hlm-date-picker>
+                                <div class="flex flex-col gap-1 w-full md:w-[50%]">
+                                    <label
+                                        for="proximoVencimientoFecha"
+                                        hlmLabel
+                                        class="text-xs md:text-sm opacity-80 pl-2"
+                                        >Fecha</label
+                                    >
+                                    <hlm-date-picker
+                                        [min]="minDate()"
+                                        buttonId="proximoVencimientoFecha"
+                                        class="text-xs md:text-sm w-full"
+                                        [date]="form.controls['fechaProximoVencimiento'].value!"
+                                        (dateChange)="
+                                            form.controls['fechaProximoVencimiento'].setValue(
+                                                $event
+                                            )
+                                        "
+                                    >
+                                        <span class="text-xs md:text-sm">Seleccionar fecha...</span>
+                                    </hlm-date-picker>
+                                </div>
+                                <div class="flex flex-col gap-1 w-full md:w-[50%]">
+                                    <label
+                                        for="proximoVencimientoHora"
+                                        hlmLabel
+                                        class="text-xs md:text-sm opacity-80 pl-2"
+                                        >Hora</label
+                                    >
+                                    <input
+                                        hlmInput
+                                        id="proximoVencimientoHora"
+                                        type="time"
+                                        step="60"
+                                        [formControl]="form.controls['horaProximoVencimiento']"
+                                        class="text-xs md:text-sm bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        <div class="flex flex-col gap-1 w-full md:w-[50%]">
-                            <label
-                                for="proximoVencimientoHora"
-                                hlmLabel
-                                class="text-xs md:text-sm opacity-80 pl-2"
-                                >Hora</label
-                            >
-                            <input
-                                hlmInput
-                                id="proximoVencimientoHora"
-                                type="time"
-                                step="60"
-                                [formControl]="form.controls['horaProximoVencimiento']"
-                                class="text-xs md:text-sm bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-                            />
-                        </div>
-                    </div>
+                    }
+                    <hlm-separator />
                 </div>
-                }
-                <hlm-separator />
-            </div>
-        </fieldset>
-    </div>
+            </fieldset>
+        </div>
     }
     <div class="w-full flex flex-col items-center gap-4">
         @if (error()) {
-        <div hlmAlert variant="destructive">
-            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
-            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-            <p hlmAlertDescription>{{ error() }}</p>
-        </div>
+            <div hlmAlert variant="destructive">
+                <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                <p hlmAlertDescription>{{ error() }}</p>
+            </div>
         }
         <div class="w-full flex items-center justify-end gap-6">
             <a hlmBtn variant="secondary" [routerLink]="['/mantenedores/norma-suscrita']"
@@ -546,8 +585,9 @@
             >
             <button hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()">
                 @if (procesando()) {
-                <hlm-spinner />
-                } Guardar
+                    <hlm-spinner />
+                }
+                Guardar
             </button>
         </div>
     </div>
