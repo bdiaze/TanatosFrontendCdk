@@ -60,6 +60,13 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             deshabilitado: false,
         },
         {
+            llave: 'nombrePlural',
+            nombre: 'Plural',
+            tipo: 'string',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
             llave: 'cantSegundos',
             nombre: 'Cant. Segundos',
             tipo: 'number',
@@ -82,6 +89,13 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             nombre: 'Nombre',
             tipo: 'string',
             requerido: true,
+            deshabilitado: false,
+        },
+        {
+            llave: 'nombrePlural',
+            nombre: 'Plural',
+            tipo: 'string',
+            requerido: false,
             deshabilitado: false,
         },
         {
@@ -161,6 +175,11 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
 
     editar(item: TipoUnidadTiempo) {
         this.cargando.set(true);
+
+        if (item.nombrePlural?.trim().length == 0) {
+            item.nombrePlural = null;
+        }
+
         this.dao.actualizar(item).subscribe({
             next: () => {
                 this.obtenerTodos();
@@ -186,6 +205,11 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
 
     crear(item: TipoUnidadTiempo) {
         this.cargando.set(true);
+
+        if (item.nombrePlural?.trim().length == 0) {
+            item.nombrePlural = null;
+        }
+
         this.dao.crear(item).subscribe({
             next: () => {
                 this.obtenerTodos();

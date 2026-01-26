@@ -10,8 +10,8 @@
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
-                    <th hlmTh class="text-xs md:text-sm">Descripción</th>
-                    <th hlmTh class="text-xs md:text-sm text-center md:w-30">Cron</th>
+                    <th hlmTh class="text-xs md:text-sm text-center md:w-48">Cron</th>
+                    <th hlmTh class="text-xs md:text-sm text-center md:w-22">Delta</th>
                     <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
@@ -48,11 +48,19 @@
                             <td hlmTd class="text-xs md:text-sm whitespace-normal">
                                 {{ item.nombre }}
                             </td>
-                            <td hlmTd class="text-xs md:text-sm whitespace-normal">
-                                {{ item.descripcion }}
-                            </td>
                             <td hlmTd class="text-xs md:text-sm text-center whitespace-normal">
                                 {{ item.cron }}
+                            </td>
+                            <td hlmTh class="text-xs md:text-sm text-center">
+                                @if (item.deltaDias) {
+                                    Días: {{ item.deltaDias }}
+                                } 
+                                @if (item.deltaMeses) {
+                                    Meses: {{ item.deltaMeses }}
+                                }
+                                @if (item.deltaAnnos) {
+                                    Años: {{ item.deltaAnnos }}
+                                }
                             </td>
                             <td hlmTd class="text-center px-0">
                                 <div class="flex justify-center items-center">

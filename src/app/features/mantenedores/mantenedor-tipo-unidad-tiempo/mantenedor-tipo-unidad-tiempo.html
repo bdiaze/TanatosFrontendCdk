@@ -3,13 +3,14 @@
         <table hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
-                    <th colspan="5">
+                    <th colspan="6">
                         <h4 hlmH4 class="py-3">Administrar Unidades de Tiempo</h4>
                     </th>
                 </tr>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-xs md:text-sm">Plural</th>
                     <th
                         hlmTh
                         class="text-xs md:text-sm text-center whitespace-break-spaces w-22 md:w-34"
@@ -23,7 +24,7 @@
             <tbody hlmTBody>
                 @if (cargando()) {
                 <tr hlmTr>
-                    <td hlmTd colspan="5">
+                    <td hlmTd colspan="6">
                         <div class="flex justify-center-safe">
                             <div class="mr-4">
                                 <svg
@@ -49,6 +50,7 @@
                 <tr hlmTr>
                     <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
                     <td hlmTd class="text-xs md:text-sm">{{ item.nombre }}</td>
+                    <td hlmTd class="text-xs md:text-sm">{{ item.nombrePlural }}</td>
                     <td hlmTd class="text-xs md:text-sm text-center">
                         {{ item.cantSegundos | number : '1.0-0' }}
                     </td>
@@ -90,7 +92,7 @@
                 </tr>
                 } @empty {
                 <tr hlmTr>
-                    <td hlmTd colspan="5" class="text-center">
+                    <td hlmTd colspan="6" class="text-center">
                         No existen tipos de unidades de tiempo registrados
                     </td>
                 </tr>
