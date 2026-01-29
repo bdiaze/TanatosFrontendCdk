@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SalNormaSuscrita } from '../entities/others/sal-norma-suscrita';
 import { EntNormaSuscritaCrear } from '../entities/others/ent-norma-suscrita-crear';
 import { EntNormaSuscritaActualizar } from '../entities/others/ent-norma-suscrita-actualizar';
+import { SalNormaSuscritaObtenerConVencimiento } from '../entities/others/sal-norma-suscrita-obtener-con-vencimiento';
 
 @Injectable({
     providedIn: 'root',
@@ -14,27 +15,33 @@ export class NormaSuscritaDao {
 
     obtenerVigentes(idNegocio: number): Observable<SalNormaSuscrita[]> {
         return this.http.get<SalNormaSuscrita[]>(
-            environment.tanatosService.apiUrl + `/NormaSuscrita/Vigentes/${idNegocio}`
+            environment.tanatosService.apiUrl + `/NormaSuscrita/Vigentes/${idNegocio}`,
         );
     }
 
     obtenerPorId(idNormaSuscrita: number): Observable<SalNormaSuscrita> {
         return this.http.get<SalNormaSuscrita>(
-            environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerPorId/${idNormaSuscrita}`
+            environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerPorId/${idNormaSuscrita}`,
+        );
+    }
+
+    obtenerConVencimiento(idNegocio: number): Observable<SalNormaSuscritaObtenerConVencimiento[]> {
+        return this.http.get<SalNormaSuscritaObtenerConVencimiento[]>(
+            environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerConVencimiento/${idNegocio}`,
         );
     }
 
     crear(entrada: EntNormaSuscritaCrear): Observable<SalNormaSuscrita> {
         return this.http.post<SalNormaSuscrita>(
             environment.tanatosService.apiUrl + '/NormaSuscrita/',
-            entrada
+            entrada,
         );
     }
 
     actualizar(entrada: EntNormaSuscritaActualizar): Observable<SalNormaSuscrita> {
         return this.http.put<SalNormaSuscrita>(
             environment.tanatosService.apiUrl + '/NormaSuscrita/',
-            entrada
+            entrada,
         );
     }
 
