@@ -31,13 +31,24 @@ export class Login {
         sessionStorage.setItem('pkce_state', state);
         sessionStorage.setItem('pkce_code_verifier', codeVerifier);
 
+        const publicScopes = [
+            'api/negocios.read.self',
+            'api/negocios.write.self',
+            'api/obligaciones.read.self',
+            'api/obligaciones.write.self',
+            'api/vencimientos.read.self',
+            'api/vencimientos.write.self',
+            'api/templates.read.public',
+            'api/sistema.read.public',
+        ];
+
         const url =
             `${environment.cognitoService.baseUrl}/login?` +
             new URLSearchParams({
                 response_type: 'code',
                 client_id: environment.cognitoService.clientId,
                 redirect_uri: environment.cognitoService.redirectUrl,
-                scope: 'openid profile email',
+                scope: `openid profile email ${publicScopes.join(' ')}`,
                 state: state,
                 code_challenge_method: 'S256',
                 code_challenge: codeChallenge,
