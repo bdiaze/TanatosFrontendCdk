@@ -24,6 +24,7 @@ import { lucideBadgeCheck, lucideBadgeX } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { BrnPopoverContent } from '@spartan-ng/brain/popover';
 import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
 import { normalize } from '@/app/helpers/string-comparator';
 
@@ -44,6 +45,7 @@ import { normalize } from '@/app/helpers/string-comparator';
         NgIcon,
         BrnSelectImports,
         HlmSelectImports,
+        BrnPopoverContent,
         HlmAutocompleteImports,
     ],
     templateUrl: './modal-edicion.html',
@@ -90,7 +92,7 @@ export class ModalEdicion implements OnInit {
             if (campo.tipo === 'autocomplete') {
                 campo.autocompleteSearch = signal('');
                 campo.autocompleteFilteredOptions = computed(() => {
-                    return campo.posiblesValores!.filter(
+                    const filtrados = campo.posiblesValores!.filter(
                         (option) =>
                             normalize(option.valor).includes(
                                 normalize(campo.autocompleteSearch!()),
@@ -101,10 +103,27 @@ export class ModalEdicion implements OnInit {
                                   )
                                 : false),
                     );
+
+                    const categorizados: PosiblesValoresCategorizados[] = [];
+                    [...new Set(filtrados.map((f) => f.categoria))].forEach((categoria) => {
+                        categorizados.push({
+                            categoria: categoria,
+                            items: filtrados.filter((f) => f.categoria === categoria),
+                        });
+                    });
+
+                    return categorizados;
                 });
-                campo.autocompleteTransformOptionValue = (option: PosiblesValores) => option.id;
-                campo.autocompleteDisplayWith = (id: number) =>
-                    campo.posiblesValores?.find((option) => option.id === id)?.valor ?? '';
+                campo.autocompleteItemToString = (id: number) => {
+                    const item = campo.posiblesValores?.find((x) => x.id === id);
+                    return `${item?.valor}`;
+                };
+                campo.autocompleteIsItemEqualToValue = (
+                    itemValue: number,
+                    idSelectedValue: number | null,
+                ) => {
+                    return itemValue === idSelectedValue;
+                };
             }
 
             camposForm[campo.llave] = control;
@@ -131,13 +150,18 @@ export interface CampoDinamico {
     deshabilitado: boolean;
     posiblesValores?: PosiblesValores[];
     autocompleteSearch?: WritableSignal<string>;
-    autocompleteFilteredOptions?: Signal<PosiblesValores[]>;
-    autocompleteTransformOptionValue?: (option: PosiblesValores) => number;
-    autocompleteDisplayWith?: (id: number) => string;
+    autocompleteFilteredOptions?: Signal<PosiblesValoresCategorizados[]>;
+    autocompleteItemToString?: (id: number) => string;
+    autocompleteIsItemEqualToValue?: (itemValue: number, idSelectedValue: number | null) => boolean;
 }
 
 export interface PosiblesValores {
     id: number;
     valor: string;
     categoria?: string;
+}
+
+interface PosiblesValoresCategorizados {
+    categoria?: string;
+    items: PosiblesValores[];
 }

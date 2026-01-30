@@ -148,35 +148,58 @@
                                         >
                                         <hlm-autocomplete
                                             [(search)]="campo.autocompleteSearch!"
-                                            [inputId]="campo.llave"
-                                            [transformOptionToValue]="
-                                                campo.autocompleteTransformOptionValue
+                                            [itemToString]="campo.autocompleteItemToString!"
+                                            [isItemEqualToValue]="
+                                                campo.autocompleteIsItemEqualToValue!
                                             "
-                                            [displayWith]="campo.autocompleteDisplayWith"
-                                            [filteredOptions]="campo.autocompleteFilteredOptions!()"
                                             [formControl]="form.controls[campo.llave]"
-                                            [searchPlaceholderText]="
-                                                `Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`
-                                            "
-                                            [emptyText]="`${campo.nombre} no encontrad@...`"
-                                            [optionTemplate]="option"
-                                            autocompleteInputClass="text-xs md:text-sm"
-                                            showClearBtn
-                                        />
-                                        <ng-template #option let-option>
-                                            <div
-                                                class="flex flex-col items-start justify-center text-xs md:text-base"
-                                            >
-                                                @if (option.categoria) {
-                                                    <div
-                                                        class="text-[0.65rem] md:text-[0.7rem] opacity-80"
-                                                    >
-                                                        {{ option.categoria }}
-                                                    </div>
-                                                }
-                                                {{ option.valor }}
+                                            class="w-full"
+                                        >
+                                            <hlm-autocomplete-input
+                                                [id]="campo.llave"
+                                                [placeholder]="
+                                                    `Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`
+                                                "
+                                                class="text-xs md:text-sm"
+                                                showClear
+                                            />
+                                            <div *brnPopoverContent hlmAutocompleteContent>
+                                                <hlm-autocomplete-empty
+                                                    >{{ campo.nombre }} no
+                                                    encontrad@...</hlm-autocomplete-empty
+                                                >
+                                                <div hlmAutocompleteList>
+                                                    @for (
+                                                        grupo of campo.autocompleteFilteredOptions!();
+                                                        track $index
+                                                    ) {
+                                                        <div hlmAutocompleteGroup>
+                                                            <div hlmAutocompleteLabel>
+                                                                {{ grupo.categoria }}
+                                                            </div>
+                                                            @for (
+                                                                option of grupo.items;
+                                                                track $index
+                                                            ) {
+                                                                <hlm-autocomplete-item
+                                                                    [value]="option.id"
+                                                                >
+                                                                    {{ option.valor }}
+                                                                </hlm-autocomplete-item>
+                                                            }
+                                                            @if (
+                                                                $index <
+                                                                campo.autocompleteFilteredOptions!()
+                                                                    .length -
+                                                                    1
+                                                            ) {
+                                                                <div hlmAutocompleteSeparator></div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                </div>
                                             </div>
-                                        </ng-template>
+                                        </hlm-autocomplete>
                                     </div>
                                 }
                                 <hlm-field-error
