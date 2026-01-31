@@ -11,6 +11,7 @@ import {
     lucideSettings,
     lucideCalendarCog,
     lucideClipboardPaste,
+    lucideCalendarRange,
 } from '@ng-icons/lucide';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -47,6 +48,7 @@ import { ClickOutside } from '@/app/directives/click-outside';
             lucideChevronsUpDown,
             lucideCalendarCog,
             lucideClipboardPaste,
+            lucideCalendarRange,
         }),
     ],
 })
@@ -80,16 +82,9 @@ export class Sidebar {
                     {
                         id: crypto.randomUUID(),
                         tipo: 'item',
-                        icon: 'lucideCalendarCog',
-                        titulo: 'Tus Obligaciones',
-                        url: '/mantenedores/norma-suscrita',
-                    },
-                    {
-                        id: crypto.randomUUID(),
-                        tipo: 'item',
-                        icon: 'lucideSend',
-                        titulo: 'Tus Destinatarios',
-                        url: '/mantenedores/destinatario',
+                        icon: 'lucideCalendarRange',
+                        titulo: 'Tu Calendario',
+                        url: 'tableros/vencimientos',
                     },
                     {
                         id: crypto.randomUUID(),
@@ -99,10 +94,24 @@ export class Sidebar {
                         items: [
                             {
                                 id: crypto.randomUUID(),
+                                tipo: 'item',
+                                icon: 'lucideCalendarCog',
+                                titulo: 'Tus Obligaciones',
+                                url: '/mantenedores/norma-suscrita',
+                            },
+                            {
+                                id: crypto.randomUUID(),
                                 tipo: 'subitem',
                                 titulo: 'Plantillas Inscritas',
                                 icon: 'lucideClipboardPaste',
                                 url: '/mantenedores/plantillas-inscritas',
+                            },
+                            {
+                                id: crypto.randomUUID(),
+                                tipo: 'item',
+                                icon: 'lucideSend',
+                                titulo: 'Tus Destinatarios',
+                                url: '/mantenedores/destinatario',
                             },
                         ],
                     },

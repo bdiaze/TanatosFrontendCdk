@@ -18,11 +18,16 @@ import { MantenedorNormaSuscritaEdicion } from './features/mantenedores/mantened
 import { MantenedorPlantillasInscritas } from './features/mantenedores/mantenedor-plantillas-inscritas/mantenedor-plantillas-inscritas';
 import { MantenedorTipoRubro } from './features/mantenedores/mantenedor-tipo-rubro/mantenedor-tipo-rubro';
 import { MantenedorTipoActividad } from './features/mantenedores/mantenedor-tipo-actividad/mantenedor-tipo-actividad';
+import { TableroVencimientos } from './features/tableros/tablero-vencimientos/tablero-vencimientos';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
     { path: 'callback', component: Callback },
     { path: 'logout', redirectTo: '', pathMatch: 'full' },
+    {
+        path: 'tableros/vencimientos',
+        component: TableroVencimientos,
+    },
     {
         path: 'administracion/mantenedores/tipo-receptor-notificacion',
         component: MantenedorTipoReceptorNotificacion,
