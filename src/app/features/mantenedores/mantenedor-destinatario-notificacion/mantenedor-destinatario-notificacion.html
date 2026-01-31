@@ -1,18 +1,16 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
-    <div hlmTableContainer>
+    <div>
+        <p hlmP class="font-semibold opacity-65 text-sm text-center">
+            {{ negocioStore.negocioSeleccionado()?.nombre }}
+        </p>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <ng-icon hlm name="lucideSend" />
+            <h4 hlmH4>Tus Destinatarios</h4>
+        </div>
+    </div>
+    <div hlmTableContainer class="fade-in">
         <table hlmTable>
             <thead hlmTHead>
-                <tr hlmTr>
-                    <th colspan="4">
-                        <p hlmP class="font-semibold opacity-65">
-                            {{ negocioStore.negocioSeleccionado()?.nombre }}
-                        </p>
-                        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
-                            <ng-icon hlm name="lucideSend" />
-                            <h4 hlmH4>Tus Destinatarios</h4>
-                        </div>
-                    </th>
-                </tr>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Destinatario</th>
                     <th hlmTh class="text-center text-xs md:text-sm">Tipo</th>
@@ -22,110 +20,123 @@
             </thead>
             <tbody hlmTBody>
                 @if (cargando()) {
-                <tr hlmTr>
-                    <td hlmTd colspan="4">
-                        <div class="flex justify-center-safe items-center gap-2">
-                            <hlm-spinner />
-                            Cargando...
-                        </div>
-                    </td>
-                </tr>
-                } @else { @for (item of listado(); track item.id) {
-                <tr hlmTr>
-                    <td hlmTd class="text-xs md:text-sm">
-                        <hlm-tooltip>
-                            <p hlmTooltipTrigger class="w-42 md:w-auto truncate">
-                                {{
-                                    item.idTipoReceptor === 2
-                                        ? (item.destino | formatearTelefono)
-                                        : item.destino
-                                }}
-                            </p>
-                            <span *brnTooltipContent>{{
-                                item.idTipoReceptor === 2
-                                    ? (item.destino | formatearTelefono)
-                                    : item.destino
-                            }}</span>
-                        </hlm-tooltip>
-                    </td>
-                    <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">
-                        {{ item.nombreTipoReceptor }}
-                    </td>
-                    <td hlmTd class="text-center px-0">
-                        <div class="flex justify-center items-center">
-                            @if (item.validado) {
-                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                            } @else {
-                            <hlm-tooltip>
-                                <ng-icon
-                                    hlmTooltipTrigger
-                                    hlm
-                                    name="lucideClockAlert"
-                                    class="opacity-65"
-                                />
-                                <span *brnTooltipContent
-                                    >Pendiente confirmación del destinatario...</span
-                                >
-                            </hlm-tooltip>
-                            }
-                        </div>
-                    </td>
-                    <td hlmTd class="px-0">
-                        <div class="flex items-center justify-center-safe">
-                            <button
-                                hlmBtn
-                                variant="outline"
-                                size="sm"
-                                [hlmDropdownMenuTrigger]="menu"
-                            >
-                                <ng-icon hlm size="xs" name="lucideEllipsis" />
-                            </button>
-                            <ng-template #menu>
-                                <hlm-dropdown-menu>
-                                    <hlm-dropdown-menu-group>
-                                        <button
-                                            hlmDropdownMenuItem
-                                            variant="destructive"
-                                            (click)="openModalEliminar(item)"
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </hlm-dropdown-menu-group>
-                                </hlm-dropdown-menu>
-                            </ng-template>
-                        </div>
-                    </td>
-                </tr>
-                } @empty {
-                <tr hlmTr>
-                    <td hlmTd colspan="4" class="text-center">
-                        No tienes destinatarios registrados
-                    </td>
-                </tr>
-                } }
+                    <tr hlmTr>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
+                        <td hlmTd></td>
+                    </tr>
+                } @else {
+                    @for (item of listado(); track item.id) {
+                        <tr hlmTr>
+                            <td hlmTd class="text-xs md:text-sm">
+                                <hlm-tooltip>
+                                    <p hlmTooltipTrigger class="w-42 md:w-auto truncate">
+                                        {{
+                                            item.idTipoReceptor === 2
+                                                ? (item.destino | formatearTelefono)
+                                                : item.destino
+                                        }}
+                                    </p>
+                                    <span *brnTooltipContent>{{
+                                        item.idTipoReceptor === 2
+                                            ? (item.destino | formatearTelefono)
+                                            : item.destino
+                                    }}</span>
+                                </hlm-tooltip>
+                            </td>
+                            <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">
+                                {{ item.nombreTipoReceptor }}
+                            </td>
+                            <td hlmTd class="text-center px-0">
+                                <div class="flex justify-center items-center">
+                                    @if (item.validado) {
+                                        <ng-icon
+                                            hlm
+                                            name="lucideBadgeCheck"
+                                            class="text-green-700"
+                                        />
+                                    } @else {
+                                        <hlm-tooltip>
+                                            <ng-icon
+                                                hlmTooltipTrigger
+                                                hlm
+                                                name="lucideClockAlert"
+                                                class="opacity-65"
+                                            />
+                                            <span *brnTooltipContent
+                                                >Pendiente confirmación del destinatario...</span
+                                            >
+                                        </hlm-tooltip>
+                                    }
+                                </div>
+                            </td>
+                            <td hlmTd class="px-0">
+                                <div class="flex items-center justify-center-safe">
+                                    <button
+                                        hlmBtn
+                                        variant="outline"
+                                        size="sm"
+                                        [hlmDropdownMenuTrigger]="menu"
+                                    >
+                                        <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                    </button>
+                                    <ng-template #menu>
+                                        <hlm-dropdown-menu>
+                                            <hlm-dropdown-menu-group>
+                                                <button
+                                                    hlmDropdownMenuItem
+                                                    variant="destructive"
+                                                    (click)="openModalEliminar(item)"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </hlm-dropdown-menu-group>
+                                        </hlm-dropdown-menu>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr hlmTr>
+                            <td hlmTd colspan="4" class="text-center">
+                                No tienes destinatarios registrados
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
         <button hlmBtn (click)="openModalCrear()" class="m-4">Crear Nuevo</button>
     </div>
     @if (error()) {
-    <div hlmAlert variant="destructive" class="mt-6">
-        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
-        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-        <p hlmAlertDescription>{{ error() }}</p>
-    </div>
+        <div hlmAlert variant="destructive" class="mt-6">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
     }
 </section>
 
 @if (showModalEliminar()) {
-<app-modal-eliminacion
-    [item]="itemSeleccionado()"
-    titulo="Eliminar un destinatario:"
-    [descripcion]="`¿Seguro que deseas eliminar el destinatario ${itemSeleccionado()?.destino}?`"
-    (cerrar)="closeModalEliminar()"
-    (eliminar)="eliminar($event)"
->
-</app-modal-eliminacion>
-} @if (showModalCrear()) {
-<app-modal-creacion-destinatario (cerrar)="closeModalCrear()" (confirmar)="confirmar($event)">
-</app-modal-creacion-destinatario>
+    <app-modal-eliminacion
+        [item]="itemSeleccionado()"
+        titulo="Eliminar un destinatario:"
+        [descripcion]="
+            `¿Seguro que deseas eliminar el destinatario ${itemSeleccionado()?.destino}?`
+        "
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    >
+    </app-modal-eliminacion>
+}
+@if (showModalCrear()) {
+    <app-modal-creacion-destinatario (cerrar)="closeModalCrear()" (confirmar)="confirmar($event)">
+    </app-modal-creacion-destinatario>
 }

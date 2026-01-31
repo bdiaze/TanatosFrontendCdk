@@ -3,12 +3,12 @@
         <p hlmP class="font-semibold opacity-65 text-sm text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
         </p>
-        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5">
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
             <ng-icon hlm name="lucideClipboardPaste" />
             <h4 hlmH4>Plantillas Inscritas</h4>
         </div>
     </div>
-    <div hlmTableContainer>
+    <div hlmTableContainer class="fade-in">
         <table hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
@@ -23,16 +23,32 @@
             <tbody hlmTBody>
                 @if (cargando()) {
                     <tr hlmTr>
-                        <td hlmTd colspan="4">
-                            <div class="flex justify-center-safe items-center">
-                                <hlm-spinner class="mr-1" />
-                                Cargando...
-                            </div>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
                         </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
+                        </td>
+                        <td hlmTd></td>
+                    </tr>
+                    <tr hlmTr>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
+                        </td>
+                        <td hlmTd></td>
                     </tr>
                 } @else {
                     @for (item of listado(); track item.idTemplate) {
-                        <tr hlmTr>
+                        <tr hlmTr class="fade-in">
                             <td hlmTd class="whitespace-normal text-xs md:text-sm">
                                 <div class="flex justify-start items-center gap-2">
                                     @if (item.recomendado) {
@@ -157,7 +173,7 @@
                             </td>
                         </tr>
                     } @empty {
-                        <tr hlmTr>
+                        <tr hlmTr class="fade-in">
                             <td hlmTd colspan="4" class="text-center">
                                 No tenemos plantillas disponibles para tu inscripción
                             </td>

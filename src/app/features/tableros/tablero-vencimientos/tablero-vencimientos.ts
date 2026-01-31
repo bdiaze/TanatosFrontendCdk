@@ -17,6 +17,7 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -35,6 +36,7 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
         HlmBadgeImports,
         BrnTooltipImports,
         HlmTooltipImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './tablero-vencimientos.html',
     styleUrl: './tablero-vencimientos.scss',

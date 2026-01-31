@@ -25,6 +25,7 @@ import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { AuthStore } from '@/app/services/auth-store';
 import { getErrorMessage } from '@/app/helpers/error-message';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-mantenedor-destinatario-notificacion',
@@ -44,6 +45,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
         FormatearTelefonoPipe,
         HlmP,
         HlmSpinnerImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-destinatario-notificacion.html',
     styleUrl: './mantenedor-destinatario-notificacion.scss',
@@ -89,7 +91,7 @@ export class MantenedorDestinatarioNotificacion {
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) =>
-                        a.destino.toLocaleLowerCase().localeCompare(b.destino.toLocaleLowerCase())
+                        a.destino.toLocaleLowerCase().localeCompare(b.destino.toLocaleLowerCase()),
                     );
                     this.listado.set(sorted);
                 },

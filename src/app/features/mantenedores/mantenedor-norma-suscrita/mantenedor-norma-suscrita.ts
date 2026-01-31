@@ -26,6 +26,7 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita',
@@ -42,6 +43,7 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         HlmP,
         RouterLink,
         HlmSeparatorImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-norma-suscrita.html',
     styleUrl: './mantenedor-norma-suscrita.scss',
@@ -93,7 +95,7 @@ export class MantenedorNormaSuscrita {
                             ? a.nombre
                                   .toLocaleLowerCase()
                                   .localeCompare(b.nombre.toLocaleLowerCase())
-                            : a.id - b.id
+                            : a.id - b.id,
                     );
                     this.listado.set(sorted);
                 },
@@ -181,10 +183,10 @@ export class MantenedorNormaSuscrita {
 
     obtenerNormasSegunTemplate(
         listado: SalNormaSuscrita[],
-        nombreTemplate: string
+        nombreTemplate: string,
     ): SalNormaSuscrita[] {
         return listado.filter(
-            (x) => x.templateNorma != null && x.templateNorma.nombreTemplate === nombreTemplate
+            (x) => x.templateNorma != null && x.templateNorma.nombreTemplate === nombreTemplate,
         );
     }
 
@@ -195,7 +197,7 @@ export class MantenedorNormaSuscrita {
             ...new Set(normasConTemplate.map((n) => n.templateNorma?.nombreTemplate!)),
         ];
         const retorno: string[] = templates.sort((a, b) =>
-            a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase())
+            a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()),
         );
 
         return retorno;
