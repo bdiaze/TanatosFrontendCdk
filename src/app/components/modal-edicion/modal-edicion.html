@@ -3,7 +3,7 @@
     (click)="cerrar.emit()"
 >
     <div hlmCard (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md">
-        <div hlmCardHeader>
+        <div hlmCardHeader class="faster-fade-in">
             <div class="flex items-center gap-4">
                 <div class="text-green-700">
                     <svg
@@ -26,7 +26,7 @@
 
             <hlm-separator />
         </div>
-        <div hlmCardContent>
+        <div hlmCardContent class="faster-fade-in">
             @if (descripcion) {
                 <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
             }
@@ -218,15 +218,15 @@
                 </div>
             </fieldset>
         </div>
-        <div hlmCardFooter class="flex items-center justify-end gap-6">
+        <div hlmCardFooter class="flex items-center justify-end gap-6 faster-fade-in">
             <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
             <button hlmBtn (click)="confirmar()" [disabled]="form.invalid">
                 {{ textoBotonGuardar }}
             </button>
         </div>
         @if (conFuncionSecundaria) {
-            <hlm-separator />
-            <div hlmCardContent>
+            <hlm-separator class="faster-fade-in" />
+            <div hlmCardContent class="faster-fade-in">
                 @if (descripcionSecundaria) {
                     <p
                         hlmP
@@ -235,7 +235,7 @@
                     ></p>
                 }
             </div>
-            <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-4">
+            <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-4 faster-fade-in">
                 <button
                     hlmBtn
                     (click)="funcionSecundaria.emit(this.form.getRawValue())"

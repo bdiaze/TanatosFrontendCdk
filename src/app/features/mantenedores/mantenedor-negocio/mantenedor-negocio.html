@@ -1,12 +1,13 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
-    <div hlmTableContainer>
+    <div>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <ng-icon hlm name="lucideStore" />
+            <h4 hlmH4>Tus Negocios</h4>
+        </div>
+    </div>
+    <div hlmTableContainer class="fade-in">
         <table hlmTable>
             <thead hlmTHead>
-                <tr hlmTr>
-                    <th colspan="4">
-                        <h4 hlmH4 class="py-3">Tus Negocios</h4>
-                    </th>
-                </tr>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-xs md:text-sm">Dirección</th>
@@ -16,100 +17,119 @@
             </thead>
             <tbody hlmTBody>
                 @if (cargando()) {
-                <tr hlmTr>
-                    <td hlmTd colspan="4">
-                        <div class="flex justify-center-safe items-center gap-2">
-                            <hlm-spinner />
-                            Cargando...
-                        </div>
-                    </td>
-                </tr>
-                } @else { @for (item of listado(); track item.id) {
-                <tr hlmTr>
-                    <td hlmTd class="whitespace-normal text-xs md:text-sm">{{ item.nombre }}</td>
-                    <td hlmTd class="whitespace-normal text-xs md:text-sm">{{ item.direccion }}</td>
-                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                        <div class="flex flex-col justify-start items-center">
-                            <div class="text-[0.6rem] md:text-[0.7rem] opacity-80 text-center">
-                                {{ obtenerNombreRubro(item.idTipoActividad) }}
-                            </div>
-                            {{ obtenerNombreActividad(item.idTipoActividad) }}
-                        </div>
-                    </td>
-                    <td hlmTd class="px-0">
-                        <div class="flex items-center justify-center-safe">
-                            <button
-                                hlmBtn
-                                variant="outline"
-                                size="sm"
-                                [hlmDropdownMenuTrigger]="menu"
-                            >
-                                <ng-icon hlm size="xs" name="lucideEllipsis" />
-                            </button>
-                            <ng-template #menu>
-                                <hlm-dropdown-menu>
-                                    <hlm-dropdown-menu-group>
-                                        <button hlmDropdownMenuItem (click)="openModalEditar(item)">
-                                            Editar
-                                        </button>
-                                        <button
-                                            hlmDropdownMenuItem
-                                            variant="destructive"
-                                            (click)="openModalEliminar(item)"
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </hlm-dropdown-menu-group>
-                                </hlm-dropdown-menu>
-                            </ng-template>
-                        </div>
-                    </td>
-                </tr>
-                } @empty {
-                <tr hlmTr>
-                    <td hlmTd colspan="4" class="text-center">No existen negocios registradas</td>
-                </tr>
-                } }
+                    <tr hlmTr>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-10 rounded-xl" />
+                        </td>
+                        <td hlmTd></td>
+                    </tr>
+                } @else {
+                    @for (item of listado(); track item.id) {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                                {{ item.nombre }}
+                            </td>
+                            <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                                {{ item.direccion }}
+                            </td>
+                            <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                                <div class="flex flex-col justify-start items-center">
+                                    <div
+                                        class="text-[0.6rem] md:text-[0.7rem] opacity-80 text-center"
+                                    >
+                                        {{ obtenerNombreRubro(item.idTipoActividad) }}
+                                    </div>
+                                    {{ obtenerNombreActividad(item.idTipoActividad) }}
+                                </div>
+                            </td>
+                            <td hlmTd class="px-0">
+                                <div class="flex items-center justify-center-safe">
+                                    <button
+                                        hlmBtn
+                                        variant="outline"
+                                        size="sm"
+                                        [hlmDropdownMenuTrigger]="menu"
+                                    >
+                                        <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                    </button>
+                                    <ng-template #menu>
+                                        <hlm-dropdown-menu>
+                                            <hlm-dropdown-menu-group>
+                                                <button
+                                                    hlmDropdownMenuItem
+                                                    (click)="openModalEditar(item)"
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button
+                                                    hlmDropdownMenuItem
+                                                    variant="destructive"
+                                                    (click)="openModalEliminar(item)"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </hlm-dropdown-menu-group>
+                                        </hlm-dropdown-menu>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr hlmTr>
+                            <td hlmTd colspan="4" class="text-center">
+                                No existen negocios registradas
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
         <button hlmBtn (click)="openModalCrear()" class="m-4">Nuevo Negocio</button>
     </div>
     @if (error()) {
-    <div hlmAlert variant="destructive" class="mt-6">
-        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
-        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-        <p hlmAlertDescription>{{ error() }}</p>
-    </div>
+        <div hlmAlert variant="destructive" class="mt-6">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
     }
 </section>
 
 @if (showModalEliminar()) {
-<app-modal-eliminacion
-    [item]="itemSeleccionado()"
-    titulo="Eliminar un negocio:"
-    [descripcion]="`¿Seguro que deseas eliminar el negocio ${itemSeleccionado()?.nombre}?`"
-    descripcionTextVerificacion="Para confirmar, escribe a continuación el nombre del negocio:"
-    [textoVerificacion]="itemSeleccionado()?.nombre"
-    (cerrar)="closeModalEliminar()"
-    (eliminar)="eliminar($event)"
->
-</app-modal-eliminacion>
-} @if (showModalEditar()) {
-<app-modal-edicion
-    [campos]="camposEdicion()"
-    [item]="itemSeleccionado()"
-    titulo="Editar un negocio:"
-    (cerrar)="closeModalEditar()"
-    (editar)="editar($event)"
->
-</app-modal-edicion>
-} @if (showModalCrear()) {
-<app-modal-edicion
-    [campos]="camposCreacion()"
-    [item]="itemSeleccionado()"
-    titulo="Crear un negocio:"
-    (cerrar)="closeModalCrear()"
-    (editar)="crear($event)"
->
-</app-modal-edicion>
+    <app-modal-eliminacion
+        [item]="itemSeleccionado()"
+        titulo="Eliminar un negocio:"
+        [descripcion]="`¿Seguro que deseas eliminar el negocio ${itemSeleccionado()?.nombre}?`"
+        descripcionTextVerificacion="Para confirmar, escribe a continuación el nombre del negocio:"
+        [textoVerificacion]="itemSeleccionado()?.nombre"
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    >
+    </app-modal-eliminacion>
+}
+@if (showModalEditar()) {
+    <app-modal-edicion
+        [campos]="camposEdicion()"
+        [item]="itemSeleccionado()"
+        titulo="Editar un negocio:"
+        (cerrar)="closeModalEditar()"
+        (editar)="editar($event)"
+    >
+    </app-modal-edicion>
+}
+@if (showModalCrear()) {
+    <app-modal-edicion
+        [campos]="camposCreacion()"
+        [item]="itemSeleccionado()"
+        titulo="Crear un negocio:"
+        (cerrar)="closeModalCrear()"
+        (editar)="crear($event)"
+    >
+    </app-modal-edicion>
 }

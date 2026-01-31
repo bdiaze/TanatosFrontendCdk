@@ -25,6 +25,7 @@ import { FormatoTelefono } from '@/app/directives/formato-telefono';
 import { FormatoCorreo } from '@/app/directives/formato-correo';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { getErrorMessage } from '@/app/helpers/error-message';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-modal-creacion-destinatario',
@@ -46,6 +47,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
         HlmP,
         FormatoTelefono,
         FormatoCorreo,
+        HlmSkeletonImports,
     ],
     templateUrl: './modal-creacion-destinatario.html',
     styleUrl: './modal-creacion-destinatario.scss',
@@ -72,14 +74,14 @@ export class ModalCreacionDestinatario implements OnInit {
                         control.value?.trim().length === 0 ? { soloEspacios: true } : null,
                 ],
                 nonNullable: true,
-            }
+            },
         ),
         idTipoReceptor: new FormControl<number | null>(
             { value: 1, disabled: false },
             {
                 validators: [Validators.required],
                 nonNullable: true,
-            }
+            },
         ),
     });
 
@@ -103,7 +105,7 @@ export class ModalCreacionDestinatario implements OnInit {
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
                     this.tiposReceptoresVigentes.set(vigentes);
                 },

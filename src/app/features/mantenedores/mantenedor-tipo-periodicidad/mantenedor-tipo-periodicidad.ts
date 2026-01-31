@@ -16,6 +16,7 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4 } from '@spartan-ng/helm/typography';
 import { catchError, combineLatest, of } from 'rxjs';
@@ -32,6 +33,7 @@ import { catchError, combineLatest, of } from 'rxjs';
         NgIcon,
         HlmIcon,
         HlmDropdownMenuImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-periodicidad.html',
     styleUrl: './mantenedor-tipo-periodicidad.scss',

@@ -26,6 +26,7 @@ import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4 } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-mantenedor-tipo-actividad',
@@ -41,6 +42,7 @@ import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
         HlmDropdownMenuImports,
         HlmSpinnerImports,
         HlmScrollAreaImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-actividad.html',
     styleUrl: './mantenedor-tipo-actividad.scss',
@@ -148,7 +150,7 @@ export class MantenedorTipoActividad implements OnInit {
                     this.listado.set(sorted);
 
                     const sortedRubros = tiposRubros.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
                     this.tiposRubros.set(sortedRubros);
 
@@ -164,16 +166,16 @@ export class MantenedorTipoActividad implements OnInit {
                         lista.map((u) =>
                             u.llave === 'idTipoRubro'
                                 ? { ...u, posiblesValores: posiblesValoresRubros }
-                                : u
-                        )
+                                : u,
+                        ),
                     );
 
                     this.camposCreacion.update((lista) =>
                         lista.map((u) =>
                             u.llave === 'idTipoRubro'
                                 ? { ...u, posiblesValores: posiblesValoresRubros }
-                                : u
-                        )
+                                : u,
+                        ),
                     );
                 },
                 error: (err) => {

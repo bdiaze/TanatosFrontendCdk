@@ -15,6 +15,7 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4 } from '@spartan-ng/helm/typography';
 import { catchError, combineLatest, of } from 'rxjs';
@@ -32,6 +33,7 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmIcon,
         HlmDropdownMenuImports,
         DecimalPipe,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-unidad-tiempo.html',
     styleUrl: './mantenedor-tipo-unidad-tiempo.scss',

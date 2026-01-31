@@ -51,6 +51,7 @@ import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita-edicion',
@@ -81,6 +82,7 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
         HlmDatePickerImports,
         BrnPopoverImports,
         HlmPopoverImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-norma-suscrita-edicion.html',
     styleUrl: './mantenedor-norma-suscrita-edicion.scss',

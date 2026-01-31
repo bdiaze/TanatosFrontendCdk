@@ -2,19 +2,34 @@
     class="max-w-screen md:max-w-2xl mx-auto px-4 py-4 flex flex-col justify-center items-center gap-4"
 >
     @if (cargandoNormaSuscrita()) {
-        <div class="flex justify-center-safe items-center gap-3 my-4">
-            <hlm-spinner class="text-2xl" />
-            <p hlmH4>Cargando información de la obligación...</p>
+        <div class="flex flex-col gap-4 justify-center-safe items-start fade-in w-full">
+            <hlm-skeleton class="h-10 w-2/3 rounded-xl" />
+            <hlm-separator />
+            <hlm-skeleton class="h-10 w-full rounded-xl" />
+            <hlm-skeleton class="h-20 w-full rounded-xl" />
+            <div class="flex flex-row gap-4 w-full">
+                <hlm-skeleton class="h-11 w-3/4 rounded-xl" />
+                <hlm-skeleton class="h-11 w-1/4 rounded-xl" />
+            </div>
+            <div class="flex flex-row gap-4 w-full">
+                <hlm-skeleton class="h-17 w-1/2 rounded-xl" />
+                <hlm-skeleton class="h-17 w-1/2 rounded-xl" />
+            </div>
+            <div class="flex flex-row gap-4 w-full">
+                <hlm-skeleton class="h-20 w-1/2 rounded-xl" />
+                <hlm-skeleton class="h-20 w-1/2 rounded-xl" />
+            </div>
+            <hlm-separator />
         </div>
     } @else {
-        <div class="w-full">
+        <div class="w-full fade-in">
             <div class="flex items-center gap-4">
                 <ng-icon hlm name="lucideSquarePen" />
                 <p hlmH4>{{ titulo() }}</p>
             </div>
             <hlm-separator />
         </div>
-        <div class="w-full">
+        <div class="w-full fade-in">
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
                     <div hlmField class="flex justify-center items-center gap-1">
@@ -571,7 +586,7 @@
             </fieldset>
         </div>
     }
-    <div class="w-full flex flex-col items-center gap-4">
+    <div class="w-full flex flex-col items-center gap-4 fade-in">
         @if (error()) {
             <div hlmAlert variant="destructive">
                 <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />

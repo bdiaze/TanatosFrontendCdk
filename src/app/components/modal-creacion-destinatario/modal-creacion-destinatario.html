@@ -4,7 +4,7 @@
 >
     <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
         <div hlmCard (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md gap-3">
-            <div hlmCardHeader>
+            <div hlmCardHeader class="faster-fade-in">
                 <div class="flex items-center gap-4">
                     <ng-icon hlm name="lucideSend" class="text-green-700" />
                     <h3 hlmCardTitle>Nuevo Destinatario:</h3>
@@ -12,34 +12,36 @@
 
                 <hlm-separator />
             </div>
-            <div hlmCardContent>
+            <div hlmCardContent class="faster-fade-in">
                 <fieldset hlmFieldSet>
                     <div hlmFieldGroup class="gap-3">
                         <div hlmField class="gap-1">
                             @if (cargandoTipoReceptores()) {
-                            <div class="flex justify-center-safe items-center gap-2">
-                                <hlm-spinner />
-                                <p hlmP>Cargando tipos...</p>
-                            </div>
+                                <hlm-skeleton class="h-19 rounded-xl" />
                             } @else {
-                            <hlm-radio-group
-                                formControlName="idTipoReceptor"
-                                class="grid gap-4"
-                                [class.grid-cols-2]="tiposReceptoresVigentes().length >= 2"
-                            >
-                                @for (tipoReceptor of tiposReceptoresVigentes(); track
-                                tipoReceptor.id) {
-                                <label
-                                    hlmLabel
-                                    class="text-center relative space-x-0 border-border flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-primary [&:has([data-checked=true])]:border-2 text-border [&:has([data-checked=true])]:text-primary"
+                                <hlm-radio-group
+                                    formControlName="idTipoReceptor"
+                                    class="grid gap-4 fade-in"
+                                    [class.grid-cols-2]="tiposReceptoresVigentes().length >= 2"
                                 >
-                                    <hlm-radio [value]="tipoReceptor.id">
-                                        <ng-icon hlm [name]="obtenerIconName(tipoReceptor.id)" />
-                                    </hlm-radio>
-                                    {{ tipoReceptor.nombre }}
-                                </label>
-                                }
-                            </hlm-radio-group>
+                                    @for (
+                                        tipoReceptor of tiposReceptoresVigentes();
+                                        track tipoReceptor.id
+                                    ) {
+                                        <label
+                                            hlmLabel
+                                            class="text-center relative space-x-0 border-border flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-primary [&:has([data-checked=true])]:border-2 text-border [&:has([data-checked=true])]:text-primary"
+                                        >
+                                            <hlm-radio [value]="tipoReceptor.id">
+                                                <ng-icon
+                                                    hlm
+                                                    [name]="obtenerIconName(tipoReceptor.id)"
+                                                />
+                                            </hlm-radio>
+                                            {{ tipoReceptor.nombre }}
+                                        </label>
+                                    }
+                                </hlm-radio-group>
                             }
                         </div>
                         <div hlmField class="gap-1">
@@ -89,20 +91,21 @@
                     </div>
                 </fieldset>
             </div>
-            <div hlmCardFooter class="flex flex-col items-center gap-4">
+            <div hlmCardFooter class="flex flex-col items-center gap-4 faster-fade-in">
                 @if (error()) {
-                <div hlmAlert variant="destructive">
-                    <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
-                    <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-                    <p hlmAlertDescription>{{ error() }}</p>
-                </div>
+                    <div hlmAlert variant="destructive">
+                        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                        <p hlmAlertDescription>{{ error() }}</p>
+                    </div>
                 }
                 <div class="w-full flex items-center justify-end gap-6">
                     <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
                     <button hlmBtn type="submit" [disabled]="form.invalid || procesando()">
                         @if (procesando()) {
-                        <hlm-spinner />
-                        } Guardar
+                            <hlm-spinner />
+                        }
+                        Guardar
                     </button>
                 </div>
             </div>

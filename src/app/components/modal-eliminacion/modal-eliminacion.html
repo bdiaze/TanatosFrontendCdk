@@ -3,33 +3,34 @@
     (click)="cerrar.emit()"
 >
     <div hlmCard (click)="$event.stopPropagation()" class="px-3">
-        <div hlmCardHeader>
+        <div hlmCardHeader class="faster-fade-in">
             <div class="flex items-center gap-3 my-2">
                 <ng-icon hlm name="lucideCircleAlert" class="text-destructive" />
                 <h3 hlmCardTitle>{{ titulo }}</h3>
             </div>
             <hlm-separator />
         </div>
-        <div hlmCardContent>
+        <div hlmCardContent class="faster-fade-in">
             <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
             @if (textoVerificacion) {
-            <div class="mt-4">
-                <p class="text-sm mx-1">
-                    {{
-                        descripcionTextVerificacion ?? `Para confirmar, escribe a continuación "${textoVerificacion}":`
-                    }}
-                </p>
-                <input
-                    hlmInput
-                    [placeholder]="textoVerificacion"
-                    class="mt-2"
-                    [value]="textoVerificacionIngresado()"
-                    (input)="textoVerificacionIngresado.set($any($event.target).value)"
-                />
-            </div>
+                <div class="mt-4">
+                    <p class="text-sm mx-1">
+                        {{
+                            descripcionTextVerificacion ??
+                                `Para confirmar, escribe a continuación "${textoVerificacion}":`
+                        }}
+                    </p>
+                    <input
+                        hlmInput
+                        [placeholder]="textoVerificacion"
+                        class="mt-2"
+                        [value]="textoVerificacionIngresado()"
+                        (input)="textoVerificacionIngresado.set($any($event.target).value)"
+                    />
+                </div>
             }
         </div>
-        <div hlmCardFooter class="flex items-center justify-end gap-6">
+        <div hlmCardFooter class="flex items-center justify-end gap-6 faster-fade-in">
             <button hlmBtn variant="secondary" (click)="cerrar.emit()">
                 {{ textoBotonCancelar }}
             </button>

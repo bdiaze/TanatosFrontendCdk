@@ -17,6 +17,7 @@ import {
 } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-mantenedor-tipo-receptor-notificacion',
@@ -30,6 +31,7 @@ import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
         NgIcon,
         HlmIcon,
         HlmDropdownMenuImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-receptor-notificacion.html',
     styleUrl: './mantenedor-tipo-receptor-notificacion.scss',
@@ -39,7 +41,7 @@ import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 })
 export class MantenedorTipoReceptorNotificacion implements OnInit {
     private tipoReceptorNotificacionDao: TipoReceptorNotificacionDao = inject(
-        TipoReceptorNotificacionDao
+        TipoReceptorNotificacionDao,
     );
 
     tiposReceptoresNotificacion = signal([] as TipoReceptorNotificacion[]);
@@ -144,7 +146,7 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
                 this.cargando.set(false);
                 console.error('Error al eliminar el tipo de receptor de notificación', err);
                 this.error.set(
-                    err.error ?? 'Error al eliminar el tipo de receptor de notificación'
+                    err.error ?? 'Error al eliminar el tipo de receptor de notificación',
                 );
             },
         });

@@ -61,6 +61,7 @@ import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-mantenedor-template-edicion',
@@ -91,6 +92,7 @@ import { forkJoin } from 'rxjs';
         RouterLink,
         BrnPopoverContent,
         HlmAutocompleteImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-template-edicion.html',
     styleUrl: './mantenedor-template-edicion.scss',

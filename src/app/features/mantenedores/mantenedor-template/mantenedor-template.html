@@ -1,12 +1,12 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
-    <div hlmTableContainer>
+    <div>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <h4 hlmH4>Administrar Templates</h4>
+        </div>
+    </div>
+    <div hlmTableContainer class="fade-in">
         <table hlmTable>
             <thead hlmTHead>
-                <tr hlmTr>
-                    <th colspan="6">
-                        <h4 hlmH4 class="py-3">Administrar Templates</h4>
-                    </th>
-                </tr>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
@@ -18,100 +18,97 @@
             </thead>
             <tbody hlmTBody>
                 @if (cargando()) {
-                <tr hlmTr>
-                    <td hlmTd colspan="6">
-                        <div class="flex justify-center-safe">
-                            <div class="mr-4">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    class="size-6 transform animate-spin"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
-                                    />
-                                </svg>
-                            </div>
-                            Cargando...
-                        </div>
-                    </td>
-                </tr>
-                } @else { @for (item of listado(); track item.id) {
-                <tr hlmTr>
-                    <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
-                    <td hlmTd class="text-xs md:text-sm whitespace-normal">{{ item.nombre }}</td>
-                    <td hlmTd class="text-xs md:text-sm whitespace-normal">
-                        {{ item.descripcion }}
-                    </td>
-                    <td hlmTd class="text-xs md:text-sm text-center">
-                        @if (item.idTemplatePadre) {
-                        <span
-                            hlmBadge
-                            class="text-[0.7rem] md:text-xs whitespace-normal text-center"
-                            variant="secondary"
-                        >
-                            {{
-                                item.idTemplatePadre
-                                    ? obtenerPadre(item.idTemplatePadre!)?.nombre
-                                    : ''
-                            }}
-                        </span>
-                        }
-                    </td>
-                    <td hlmTd class="text-center px-0">
-                        <div class="flex justify-center items-center">
-                            @if (item.vigencia) {
-                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                            } @else {
-                            <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                    @for (_ of [1, 2, 3]; track $index) {
+                        <tr hlmTr>
+                            @for (_ of [1, 2, 3, 4, 5]; track $index) {
+                                <td hlmTd>
+                                    <hlm-skeleton class="h-14 rounded-xl" />
+                                </td>
                             }
-                        </div>
-                    </td>
-                    <td hlmTd>
-                        <div class="flex items-center justify-center-safe">
-                            <button
-                                hlmBtn
-                                size="sm"
-                                variant="outline"
-                                [hlmDropdownMenuTrigger]="menu"
-                            >
-                                <ng-icon hlm size="xs" name="lucideEllipsis" />
-                            </button>
-                            <ng-template #menu>
-                                <hlm-dropdown-menu>
-                                    <hlm-dropdown-menu-group>
-                                        <button
-                                            hlmDropdownMenuItem
-                                            [routerLink]="[
-                                                '/administracion/mantenedores/template',
-                                                item.id
-                                            ]"
-                                        >
-                                            Editar
-                                        </button>
-                                        <button
-                                            hlmDropdownMenuItem
-                                            variant="destructive"
-                                            (click)="openModalEliminar(item)"
-                                        >
-                                            Eliminar
-                                        </button>
-                                    </hlm-dropdown-menu-group>
-                                </hlm-dropdown-menu>
-                            </ng-template>
-                        </div>
-                    </td>
-                </tr>
-                } @empty {
-                <tr hlmTr>
-                    <td hlmTd colspan="5" class="text-center">No existen templates registrados</td>
-                </tr>
-                } }
+                            <td hlmTd></td>
+                        </tr>
+                    }
+                } @else {
+                    @for (item of listado(); track item.id) {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                                {{ item.nombre }}
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                                {{ item.descripcion }}
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm text-center">
+                                @if (item.idTemplatePadre) {
+                                    <span
+                                        hlmBadge
+                                        class="text-[0.7rem] md:text-xs whitespace-normal text-center"
+                                        variant="secondary"
+                                    >
+                                        {{
+                                            item.idTemplatePadre
+                                                ? obtenerPadre(item.idTemplatePadre!)?.nombre
+                                                : ''
+                                        }}
+                                    </span>
+                                }
+                            </td>
+                            <td hlmTd class="text-center px-0">
+                                <div class="flex justify-center items-center">
+                                    @if (item.vigencia) {
+                                        <ng-icon
+                                            hlm
+                                            name="lucideBadgeCheck"
+                                            class="text-green-700"
+                                        />
+                                    } @else {
+                                        <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                                    }
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div class="flex items-center justify-center-safe">
+                                    <button
+                                        hlmBtn
+                                        size="sm"
+                                        variant="outline"
+                                        [hlmDropdownMenuTrigger]="menu"
+                                    >
+                                        <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                    </button>
+                                    <ng-template #menu>
+                                        <hlm-dropdown-menu>
+                                            <hlm-dropdown-menu-group>
+                                                <button
+                                                    hlmDropdownMenuItem
+                                                    [routerLink]="[
+                                                        '/administracion/mantenedores/template',
+                                                        item.id,
+                                                    ]"
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button
+                                                    hlmDropdownMenuItem
+                                                    variant="destructive"
+                                                    (click)="openModalEliminar(item)"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </hlm-dropdown-menu-group>
+                                        </hlm-dropdown-menu>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd colspan="5" class="text-center">
+                                No existen templates registrados
+                            </td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
         <a hlmBtn [routerLink]="['/administracion/mantenedores/template/nuevo']" class="m-4"
@@ -119,20 +116,22 @@
         >
     </div>
     @if (error()) {
-    <div hlmAlert variant="destructive" class="mt-6">
-        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
-        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-        <p hlmAlertDescription>{{ error() }}</p>
-    </div>
+        <div hlmAlert variant="destructive" class="mt-6">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
     }
 </section>
 
 @if (showModalEliminar()) {
-<app-modal-eliminacion
-    [item]="itemSeleccionado()"
-    titulo="Eliminar un template:"
-    [descripcion]="`¿Seguro que deseas eliminar el template (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
-    (cerrar)="closeModalEliminar()"
-    (eliminar)="eliminar($event)"
-></app-modal-eliminacion>
+    <app-modal-eliminacion
+        [item]="itemSeleccionado()"
+        titulo="Eliminar un template:"
+        [descripcion]="
+            `¿Seguro que deseas eliminar el template (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`
+        "
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    ></app-modal-eliminacion>
 }

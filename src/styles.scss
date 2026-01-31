@@ -99,6 +99,11 @@ button[brnselecttrigger] > div {
         animation: fadeIn 1s forwards;
     }
 
+    .faster-fade-in {
+        @apply opacity-0 transition-opacity duration-300 ease-out;
+        animation: fadeIn 0.3s forwards;
+    }
+
     @keyframes fadeIn {
         to {
             opacity: 1;

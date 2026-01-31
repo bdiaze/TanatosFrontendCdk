@@ -17,6 +17,7 @@ import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { RouterLink } from '@angular/router';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-mantenedor-template',
@@ -31,6 +32,7 @@ import { RouterLink } from '@angular/router';
         HlmDropdownMenuImports,
         HlmBadgeImports,
         RouterLink,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-template.html',
     styleUrl: './mantenedor-template.scss',

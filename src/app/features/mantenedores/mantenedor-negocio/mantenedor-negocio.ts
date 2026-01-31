@@ -19,12 +19,14 @@ import {
     lucideBadgeCheck,
     lucideBadgeX,
     lucideEllipsis,
+    lucideStore,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4 } from '@spartan-ng/helm/typography';
@@ -43,11 +45,18 @@ import { forkJoin } from 'rxjs';
         HlmIcon,
         HlmDropdownMenuImports,
         HlmSpinnerImports,
+        HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-negocio.html',
     styleUrl: './mantenedor-negocio.scss',
     providers: [
-        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
+        provideIcons({
+            lucideTriangleAlert,
+            lucideEllipsis,
+            lucideBadgeCheck,
+            lucideBadgeX,
+            lucideStore,
+        }),
     ],
 })
 export class MantenedorNegocio implements OnInit {
@@ -143,18 +152,18 @@ export class MantenedorNegocio implements OnInit {
                     this.tiposActividades.set(tiposActividades);
 
                     const sorted = negocios.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
                     this.listado.set(sorted);
 
                     const sortedActividades = tiposActividades.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
 
                     const posiblesValoresActividades = [] as PosiblesValores[];
                     sortedActividades.forEach((tipoActividad) => {
                         const tipoRubro = tiposRubros.find(
-                            (u) => u.id === tipoActividad.idTipoRubro
+                            (u) => u.id === tipoActividad.idTipoRubro,
                         );
                         if (tipoRubro) {
                             posiblesValoresActividades.push({
@@ -169,16 +178,16 @@ export class MantenedorNegocio implements OnInit {
                         lista.map((u) =>
                             u.llave === 'idTipoActividad'
                                 ? { ...u, posiblesValores: posiblesValoresActividades }
-                                : u
-                        )
+                                : u,
+                        ),
                     );
 
                     this.camposCreacion.update((lista) =>
                         lista.map((u) =>
                             u.llave === 'idTipoActividad'
                                 ? { ...u, posiblesValores: posiblesValoresActividades }
-                                : u
-                        )
+                                : u,
+                        ),
                     );
                 },
                 error: (err) => {
