@@ -22,7 +22,7 @@ export class NegocioDao {
             .pipe(
                 tap((v) => {
                     v = v.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
+                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
                     this.negocioStore.negociosUsuario.set(v);
 
@@ -30,7 +30,15 @@ export class NegocioDao {
                     if (cookieSeleccionado) {
                         const encontrado = v.find((x) => x.id === Number(cookieSeleccionado));
                         if (encontrado) {
-                            if (this.negocioStore.negocioSeleccionado()?.id !== encontrado.id) {
+                            if (
+                                this.negocioStore.negocioSeleccionado()?.id !== encontrado.id ||
+                                this.negocioStore.negocioSeleccionado()?.nombre !==
+                                    encontrado.nombre ||
+                                this.negocioStore.negocioSeleccionado()?.idTipoActividad !==
+                                    encontrado.idTipoActividad ||
+                                this.negocioStore.negocioSeleccionado()?.direccion !==
+                                    encontrado.direccion
+                            ) {
                                 this.negocioStore.negocioSeleccionado.set(encontrado);
                             }
                             return;
@@ -45,7 +53,7 @@ export class NegocioDao {
                         }
                         setCookie('NegocioSeleccionado', `${v[0].id}`);
                     }
-                })
+                }),
             );
     }
 
