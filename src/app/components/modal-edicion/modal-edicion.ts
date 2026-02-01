@@ -90,7 +90,8 @@ export class ModalEdicion implements OnInit {
             );
 
             if (campo.tipo === 'autocomplete') {
-                campo.autocompleteSearch = signal('');
+                const itemSeleccionado = campo.posiblesValores!.find((v) => v.id === valorInicial);
+                campo.autocompleteSearch = signal(itemSeleccionado?.valor ?? '');
                 campo.autocompleteFilteredOptions = computed(() => {
                     const filtrados = campo.posiblesValores!.filter(
                         (option) =>

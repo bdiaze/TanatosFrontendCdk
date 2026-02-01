@@ -171,7 +171,8 @@
                                                 <div hlmAutocompleteList>
                                                     @for (
                                                         grupo of campo.autocompleteFilteredOptions!();
-                                                        track $index
+                                                        track $index;
+                                                        let last = $last
                                                     ) {
                                                         <div hlmAutocompleteGroup>
                                                             <div hlmAutocompleteLabel>
@@ -187,12 +188,7 @@
                                                                     {{ option.valor }}
                                                                 </hlm-autocomplete-item>
                                                             }
-                                                            @if (
-                                                                $index <
-                                                                campo.autocompleteFilteredOptions!()
-                                                                    .length -
-                                                                    1
-                                                            ) {
+                                                            @if (!last) {
                                                                 <div hlmAutocompleteSeparator></div>
                                                             }
                                                         </div>
