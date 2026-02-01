@@ -4,7 +4,12 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, effect, inject, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideCalendarRange, lucideCircleAlert, lucideClockAlert } from '@ng-icons/lucide';
+import {
+    lucideCalendarRange,
+    lucideCircleAlert,
+    lucideCircleCheck,
+    lucideClockAlert,
+} from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
@@ -45,6 +50,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
             lucideCalendarRange,
             lucideClockAlert,
             lucideCircleAlert,
+            lucideCircleCheck,
         }),
     ],
 })

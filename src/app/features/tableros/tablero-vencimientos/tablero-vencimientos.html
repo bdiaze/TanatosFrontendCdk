@@ -5,72 +5,85 @@
         </p>
         <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
             <ng-icon hlm name="lucideCalendarRange" />
-            <h4 hlmH4>Tu Calendario</h4>
+            <h4 hlmH4>Mi Calendario</h4>
         </div>
         <div class="flex flex-col gap-6 fade-in">
             <h4 hlmH4>¡Obligaciones Vencidas!</h4>
             <div hlmItemGroup class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch fade-in">
                 @if (cargando()) {
                     <hlm-skeleton class="h-50 rounded-xl" />
-                }
-                @for (vencido of normasVencidas(); track vencido.idNormaSuscrita) {
-                    <a
-                        hlmItem
-                        variant="outline"
-                        [routerLink]="null"
-                        class="flex flex-row items-start justify-start px-5"
-                    >
-                        <div hlmItemHeader class="flex flex-col items-stretch justify-start">
-                            <div class="w-full text-right">
-                                <span hlmBadge variant="destructive">{{
-                                    haceCuanto(vencido.fechaVencimiento)
-                                }}</span>
-                            </div>
-                            <p hlmItemDescription class="text-center mt-1">
-                                {{ vencido.fechaVencimiento | date: 'd MMM yyyy' }}
-                            </p>
-                            <p hlmItemDescription class="text-center text-xs">
-                                {{ vencido.fechaVencimiento | date: 'HH:mm' }}
-                            </p>
-                        </div>
-                        <div
-                            hlmItemContent
-                            class="flex-1 flex flex-col items-start justify-start mb-2"
+                } @else {
+                    @for (vencido of normasVencidas(); track vencido.idNormaSuscrita) {
+                        <a
+                            hlmItem
+                            variant="outline"
+                            [routerLink]="null"
+                            class="flex flex-row items-start justify-start px-5 fade-in"
                         >
-                            <div hlmItemTitle class="w-full justify-center text-center">
-                                {{ vencido.nombreNorma }}
+                            <div hlmItemHeader class="flex flex-col items-stretch justify-start">
+                                <div class="w-full text-right">
+                                    <span hlmBadge variant="destructive">{{
+                                        haceCuanto(vencido.fechaVencimiento)
+                                    }}</span>
+                                </div>
+                                <p hlmItemDescription class="text-center mt-1">
+                                    {{ vencido.fechaVencimiento | date: 'd MMM yyyy' }}
+                                </p>
+                                <p hlmItemDescription class="text-center text-xs">
+                                    {{ vencido.fechaVencimiento | date: 'HH:mm' }}
+                                </p>
                             </div>
-                            <p hlmItemDescription>{{ vencido.descripcionNorma }}</p>
-                            @if (vencido.multaNorma) {
-                                <hlm-tooltip>
-                                    <p
-                                        hlmTooltipTrigger
-                                        position="below"
-                                        hlmItemDescription
-                                        class="text-destructive opacity-90 text-xs mt-1"
-                                    >
-                                        Multa: {{ vencido.multaNorma }}
-                                    </p>
-                                    <span *brnTooltipContent class="flex items-center">
-                                        {{ vencido.multaNorma }}
-                                        <span
-                                            class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
+                            <div
+                                hlmItemContent
+                                class="flex-1 flex flex-col items-start justify-start mb-2"
+                            >
+                                <div hlmItemTitle class="w-full justify-center text-center">
+                                    {{ vencido.nombreNorma }}
+                                </div>
+                                <p hlmItemDescription>{{ vencido.descripcionNorma }}</p>
+                                @if (vencido.multaNorma) {
+                                    <hlm-tooltip>
+                                        <p
+                                            hlmTooltipTrigger
+                                            position="below"
+                                            hlmItemDescription
+                                            class="text-destructive opacity-90 text-xs mt-1"
                                         >
-                                            <svg
-                                                class="bg-primary fill-primary z-50 block size-2.5 rotate-45"
-                                                width="10"
-                                                height="5"
-                                                viewBox="0 0 30 10"
-                                                preserveAspectRatio="none"
+                                            <b>Multa:</b><br />
+                                            {{ vencido.multaNorma }}
+                                        </p>
+                                        <span *brnTooltipContent class="flex items-center">
+                                            {{ vencido.multaNorma }}
+                                            <span
+                                                class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
                                             >
-                                                <polygon points="0,0 30,0 15,10"></polygon>
-                                            </svg>
+                                                <svg
+                                                    class="bg-primary fill-primary z-50 block size-2.5 rotate-45"
+                                                    width="10"
+                                                    height="5"
+                                                    viewBox="0 0 30 10"
+                                                    preserveAspectRatio="none"
+                                                >
+                                                    <polygon points="0,0 30,0 15,10"></polygon>
+                                                </svg>
+                                            </span>
                                         </span>
-                                    </span>
-                                </hlm-tooltip>
-                            }
+                                    </hlm-tooltip>
+                                }
+                            </div>
+                        </a>
+                    } @empty {
+                        <div hlmAlert class="col-span-1 md:col-span-3">
+                            <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" />
+                            <h4 hlmAlertTitle>¡Felicidades! Obligaciones al día.</h4>
+                            <p hlmAlertDescription>
+                                Las obligaciones de
+                                {{ negocioStore.negocioSeleccionado()?.nombre }}
+                                se encuentran al día. Te recomendamos revisar a continuación las
+                                próximas obligaciones que tienes por completar.
+                            </p>
                         </div>
-                    </a>
+                    }
                 }
             </div>
             <hlm-separator />
@@ -80,63 +93,84 @@
                     <hlm-skeleton class="h-50 rounded-xl" />
                     <hlm-skeleton class="h-50 rounded-xl" />
                     <hlm-skeleton class="h-50 rounded-xl" />
-                }
-                @for (futuro of normasFuturas(); track futuro.idNormaSuscrita) {
-                    <a
-                        hlmItem
-                        variant="outline"
-                        [routerLink]="null"
-                        class="flex flex-row items-start justify-start px-5 fade-in"
-                    >
-                        <div hlmItemHeader class="flex flex-col items-stretch justify-start">
-                            <div class="text-right">
-                                <span hlmBadge>{{ enCuanto(futuro.fechaVencimiento) }}</span>
-                            </div>
-                            <p hlmItemDescription class="text-center mt-1">
-                                {{ futuro.fechaVencimiento | date: 'd MMM yyyy' }}
-                            </p>
-                            <p hlmItemDescription class="text-center text-xs">
-                                {{ futuro.fechaVencimiento | date: 'HH:mm' }}
-                            </p>
-                        </div>
-                        <div
-                            hlmItemContent
-                            class="flex-1 flex flex-col items-start justify-start mb-2"
+                } @else {
+                    @for (futuro of normasFuturas(); track futuro.idNormaSuscrita) {
+                        <a
+                            hlmItem
+                            variant="outline"
+                            [routerLink]="null"
+                            class="flex flex-row items-start justify-start px-5 fade-in"
                         >
-                            <div hlmItemTitle class="w-full justify-center text-center">
-                                {{ futuro.nombreNorma }}
+                            <div hlmItemHeader class="flex flex-col items-stretch justify-start">
+                                <div class="text-right">
+                                    <span hlmBadge>{{ enCuanto(futuro.fechaVencimiento) }}</span>
+                                </div>
+                                <p hlmItemDescription class="text-center mt-1">
+                                    {{ futuro.fechaVencimiento | date: 'd MMM yyyy' }}
+                                </p>
+                                <p hlmItemDescription class="text-center text-xs">
+                                    {{ futuro.fechaVencimiento | date: 'HH:mm' }}
+                                </p>
                             </div>
-                            <p hlmItemDescription>{{ futuro.descripcionNorma }}</p>
-                            @if (futuro.multaNorma) {
-                                <hlm-tooltip>
-                                    <p
-                                        hlmTooltipTrigger
-                                        position="below"
-                                        hlmItemDescription
-                                        class="opacity-90 text-xs mt-1"
-                                    >
-                                        Multa: {{ futuro.multaNorma }}
-                                    </p>
-                                    <span *brnTooltipContent class="flex items-center">
-                                        {{ futuro.multaNorma }}
-                                        <span
-                                            class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
+                            <div
+                                hlmItemContent
+                                class="flex-1 flex flex-col items-start justify-start mb-2"
+                            >
+                                <div hlmItemTitle class="w-full justify-center text-center">
+                                    {{ futuro.nombreNorma }}
+                                </div>
+                                <p hlmItemDescription>{{ futuro.descripcionNorma }}</p>
+                                @if (futuro.multaNorma) {
+                                    <hlm-tooltip>
+                                        <p
+                                            hlmTooltipTrigger
+                                            position="below"
+                                            hlmItemDescription
+                                            class="opacity-90 text-xs mt-1"
                                         >
-                                            <svg
-                                                class="bg-primary fill-primary z-50 block size-2.5 rotate-45"
-                                                width="10"
-                                                height="5"
-                                                viewBox="0 0 30 10"
-                                                preserveAspectRatio="none"
+                                            <b>Multa:</b><br />
+                                            {{ futuro.multaNorma }}
+                                        </p>
+                                        <span *brnTooltipContent class="flex items-center">
+                                            {{ futuro.multaNorma }}
+                                            <span
+                                                class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
                                             >
-                                                <polygon points="0,0 30,0 15,10"></polygon>
-                                            </svg>
+                                                <svg
+                                                    class="bg-primary fill-primary z-50 block size-2.5 rotate-45"
+                                                    width="10"
+                                                    height="5"
+                                                    viewBox="0 0 30 10"
+                                                    preserveAspectRatio="none"
+                                                >
+                                                    <polygon points="0,0 30,0 15,10"></polygon>
+                                                </svg>
+                                            </span>
                                         </span>
-                                    </span>
-                                </hlm-tooltip>
-                            }
+                                    </hlm-tooltip>
+                                }
+                            </div>
+                        </a>
+                    } @empty {
+                        <div hlmAlert class="col-span-1 md:col-span-3">
+                            <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
+                            <h4 hlmAlertTitle>¿Sin obligaciones?</h4>
+                            <div hlmAlertDescription>
+                                Por lo visto no tienes obligaciones programadas, haz click a
+                                continuación para configurar las obligaciones de
+                                {{ negocioStore.negocioSeleccionado()?.nombre }}:
+                                <div class="my-1 w-full flex justify-center">
+                                    <a
+                                        hlmBtn
+                                        variant="secondary"
+                                        routerLink="/mantenedores/norma-suscrita"
+                                    >
+                                        Mis Obligaciones
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    </a>
+                    }
                 }
             </div>
         </div>
