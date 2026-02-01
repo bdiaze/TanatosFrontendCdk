@@ -1,7 +1,5 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
-import { InscripcionTemplateDao } from '@/app/daos/inscripcion-template-dao';
 import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
-import { SalInscripcionTemplate } from '@/app/entities/others/sal-inscripcion-template';
 import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
@@ -13,6 +11,8 @@ import {
     lucideBadgeCheck,
     lucideBadgeX,
     lucideCalendarCog,
+    lucideClipboardList,
+    lucideClipboardPaste,
     lucideEllipsis,
     lucideFrown,
     lucideLayers,
@@ -56,6 +56,8 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
             lucideCalendarCog,
             lucideLayers,
             lucideFrown,
+            lucideClipboardList,
+            lucideClipboardPaste,
         }),
     ],
 })

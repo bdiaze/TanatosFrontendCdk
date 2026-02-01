@@ -128,12 +128,34 @@
 
     <!-- Sección de templates inscritos -->
     @if (!cargando()) {
+        <div
+            class="fade-in w-full flex flex-col md:flex-row items-start justify-end-safe md:justify-center"
+        >
+            <div
+                class="w-full flex-1 flex justify-center-safe items-center order-2 md:order-1 gap-3 mt-3 md:mt-0 mb-2"
+            >
+                <ng-icon hlm name="lucideClipboardList" />
+                <h4 hlmH4>Según Plantillas</h4>
+            </div>
+            <div
+                class="w-full flex justify-end-safe items-center md:relative md:w-0 order-1 md:order-2"
+            >
+                <a
+                    hlmBtn
+                    variant="secondary"
+                    routerLink="/mantenedores/plantillas-inscritas"
+                    class="text-xs md:text-sm md:absolute md:-top-1 md:right-0"
+                >
+                    <ng-icon hlm size="sm" name="lucideClipboardPaste" />
+                    Plantillas Inscritas
+                </a>
+            </div>
+        </div>
         @for (template of obtenerTemplatesSuscritos(listado()); track template) {
             <hlm-separator class="fade-in" />
             <div class="fade-in">
-                <div class="flex justify-center-safe items-center gap-3 pt-4 pb-5">
-                    <ng-icon hlm name="lucideCalendarCog" />
-                    <h4 hlmH4>Obligaciones - {{ template }}</h4>
+                <div class="flex justify-center-safe items-center gap-3 py-2">
+                    <h4 hlmH4 class="text-lg">Obligaciones - {{ template }}</h4>
                 </div>
             </div>
             <div hlmTableContainer class="fade-in">
@@ -227,6 +249,26 @@
                         }
                     </tbody>
                 </table>
+            </div>
+        } @empty {
+            <div hlmAlert class="col-span-1 md:col-span-3 fade-in my-3">
+                <ng-icon hlm hlmAlertIcon name="lucideClipboardList" />
+                <h4 hlmAlertTitle>No estás inscrito a ninguna plantilla</h4>
+                <div hlmAlertDescription>
+                    Te recomendamos revisar las plantillas disponibles para ti. Estas plantillas
+                    vienen configuradas con una serie de obligaciones que pueden aplicar a tu
+                    negocio:
+                    <div class="w-full flex justify-center">
+                        <a
+                            hlmBtn
+                            variant="link"
+                            routerLink="/mantenedores/plantillas-inscritas"
+                            class="text-xs md:text-sm"
+                        >
+                            Click aquí para revisar las plantillas
+                        </a>
+                    </div>
+                </div>
             </div>
         }
     }
