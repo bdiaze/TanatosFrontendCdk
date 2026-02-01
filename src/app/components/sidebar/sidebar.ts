@@ -83,7 +83,7 @@ export class Sidebar {
                         id: crypto.randomUUID(),
                         tipo: 'item',
                         icon: 'lucideCalendarRange',
-                        titulo: 'Tu Calendario',
+                        titulo: 'Mi Calendario',
                         url: 'tableros/vencimientos',
                     },
                     {
@@ -96,7 +96,7 @@ export class Sidebar {
                                 id: crypto.randomUUID(),
                                 tipo: 'item',
                                 icon: 'lucideCalendarCog',
-                                titulo: 'Tus Obligaciones',
+                                titulo: 'Mis Obligaciones',
                                 url: '/mantenedores/norma-suscrita',
                             },
                             {
@@ -110,7 +110,7 @@ export class Sidebar {
                                 id: crypto.randomUUID(),
                                 tipo: 'item',
                                 icon: 'lucideSend',
-                                titulo: 'Tus Destinatarios',
+                                titulo: 'Mis Destinatarios',
                                 url: '/mantenedores/destinatario',
                             },
                         ],
@@ -133,7 +133,7 @@ export class Sidebar {
                         {
                             id: crypto.randomUUID(),
                             tipo: 'subitem',
-                            titulo: 'Tus Negocios',
+                            titulo: 'Mis Negocios',
                             icon: 'lucideStore',
                             url: '/mantenedores/negocio',
                         },
