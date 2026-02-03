@@ -11,7 +11,10 @@ let refreshTokenSubject = new Subject<string>();
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     // Si la URL esta en el listado de 'skip', no se añade el Authorization...
-    const skipUrls = [`${environment.tanatosService.apiUrl}/public/`];
+    const skipUrls = [
+        `${environment.tanatosService.apiUrl}/public/`,
+        `${environment.tanatosService.documentosAdjuntosUrl}/`,
+    ];
     if (skipUrls.some((url) => req.url.startsWith(url))) {
         return next(req);
     }
@@ -66,9 +69,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                                     setHeaders: {
                                         Authorization: `Bearer ${newToken.accessToken}`,
                                     },
-                                })
-                            )
-                        )
+                                }),
+                            ),
+                        ),
                     );
                 } else {
                     return refreshTokenSubject.pipe(
@@ -78,13 +81,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                             next(
                                 req.clone({
                                     setHeaders: { Authorization: `Bearer ${newToken}` },
-                                })
-                            )
-                        )
+                                }),
+                            ),
+                        ),
                     );
                 }
             }
             return throwError(() => err);
-        })
+        }),
     );
 };
