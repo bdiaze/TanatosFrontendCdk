@@ -19,6 +19,7 @@ import { MantenedorPlantillasInscritas } from './features/mantenedores/mantenedo
 import { MantenedorTipoRubro } from './features/mantenedores/mantenedor-tipo-rubro/mantenedor-tipo-rubro';
 import { MantenedorTipoActividad } from './features/mantenedores/mantenedor-tipo-actividad/mantenedor-tipo-actividad';
 import { TableroVencimientos } from './features/tableros/tablero-vencimientos/tablero-vencimientos';
+import { Vencimiento } from './features/tableros/vencimiento/vencimiento';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -27,6 +28,10 @@ export const routes: Routes = [
     {
         path: 'tableros/vencimientos',
         component: TableroVencimientos,
+    },
+    {
+        path: 'vencimiento/:idNormaSuscrita/:idHistorialNormaSuscrita',
+        component: Vencimiento,
     },
     {
         path: 'administracion/mantenedores/tipo-receptor-notificacion',

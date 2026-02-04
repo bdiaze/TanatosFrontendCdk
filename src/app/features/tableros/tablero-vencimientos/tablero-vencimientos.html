@@ -17,7 +17,11 @@
                         <a
                             hlmItem
                             variant="outline"
-                            [routerLink]="null"
+                            [routerLink]="[
+                                '/vencimiento',
+                                vencido.idNormaSuscrita,
+                                vencido.idHistorialNormaSuscrita,
+                            ]"
                             class="flex flex-row items-start justify-start px-5 fade-in"
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
@@ -98,7 +102,11 @@
                         <a
                             hlmItem
                             variant="outline"
-                            [routerLink]="null"
+                            [routerLink]="[
+                                '/vencimiento',
+                                futuro.idNormaSuscrita,
+                                futuro.idHistorialNormaSuscrita,
+                            ]"
                             class="flex flex-row items-start justify-start px-5 fade-in"
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
