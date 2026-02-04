@@ -8,7 +8,6 @@ export const environment = {
     },
     tanatosService: {
         apiUrl: '',
-        documentosAdjuntosUrl: '',
     },
     urlImages: '',
 };
