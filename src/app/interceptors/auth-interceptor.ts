@@ -10,11 +10,14 @@ let isRefreshing = false;
 let refreshTokenSubject = new Subject<string>();
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
+    // Si la URL no está en el listado de "addAuthorization", no se añade el Authorization...
+    const addAuthorizationUrls = [`${environment.tanatosService.apiUrl}`];
+    if (!addAuthorizationUrls.some((url) => req.url.startsWith(url))) {
+        return next(req);
+    }
+
     // Si la URL esta en el listado de 'skip', no se añade el Authorization...
-    const skipUrls = [
-        `${environment.tanatosService.apiUrl}/public/`,
-        `${environment.tanatosService.documentosAdjuntosUrl}/`,
-    ];
+    const skipUrls = [`${environment.tanatosService.apiUrl}/public/`];
     if (skipUrls.some((url) => req.url.startsWith(url))) {
         return next(req);
     }
