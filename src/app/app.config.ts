@@ -2,7 +2,13 @@ import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import {
+    HttpBackend,
+    HttpXhrBackend,
+    provideHttpClient,
+    withFetch,
+    withInterceptors,
+} from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth-interceptor';
 
 import '@/app/helpers/locales';
@@ -14,6 +20,7 @@ export const appConfig: ApplicationConfig = {
         provideBrowserGlobalErrorListeners(),
         provideRouter(routes),
         provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
+        { provide: HttpBackend, useClass: HttpXhrBackend },
         { provide: LOCALE_ID, useValue: 'es-CL' },
         { provide: LocationStrategy, useClass: HashLocationStrategy },
         provideBrnCalendarI18n({
