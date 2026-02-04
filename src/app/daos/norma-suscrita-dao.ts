@@ -6,6 +6,7 @@ import { SalNormaSuscrita } from '../entities/others/sal-norma-suscrita';
 import { EntNormaSuscritaCrear } from '../entities/others/ent-norma-suscrita-crear';
 import { EntNormaSuscritaActualizar } from '../entities/others/ent-norma-suscrita-actualizar';
 import { SalNormaSuscritaObtenerConVencimiento } from '../entities/others/sal-norma-suscrita-obtener-con-vencimiento';
+import { SalNormaSuscritaObtenerPorIdConVencimiento } from '../entities/others/sal-norma-suscrita-obtener-por-id-con-vencimiento';
 
 @Injectable({
     providedIn: 'root',
@@ -28,6 +29,16 @@ export class NormaSuscritaDao {
     obtenerConVencimiento(idNegocio: number): Observable<SalNormaSuscritaObtenerConVencimiento[]> {
         return this.http.get<SalNormaSuscritaObtenerConVencimiento[]>(
             environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerConVencimiento/${idNegocio}`,
+        );
+    }
+
+    obtenerPorIdConVencimiento(
+        idNormaSuscrita: number,
+        idHistorialNormaSuscrita: number,
+    ): Observable<SalNormaSuscritaObtenerPorIdConVencimiento> {
+        return this.http.get<SalNormaSuscritaObtenerPorIdConVencimiento>(
+            environment.tanatosService.apiUrl +
+                `/NormaSuscrita/ObtenerPorIdConVencimiento/${idNormaSuscrita}/${idHistorialNormaSuscrita}`,
         );
     }
 
