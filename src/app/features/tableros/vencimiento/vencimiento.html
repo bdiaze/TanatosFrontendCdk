@@ -249,8 +249,17 @@
                                     <div
                                         class="flex flex-col md:flex-row items-center gap-2 md:gap-3 w-full"
                                     >
-                                        <button hlmBtn class="w-full py-6">
-                                            <ng-icon hlm size="sm" name="lucideBadgeCheck" />
+                                        <button
+                                            hlmBtn
+                                            class="w-full py-6"
+                                            (click)="completar()"
+                                            [disabled]="completando()"
+                                        >
+                                            @if (completando()) {
+                                                <hlm-spinner />
+                                            } @else {
+                                                <ng-icon hlm size="sm" name="lucideBadgeCheck" />
+                                            }
                                             <div>¡Completar!</div>
                                         </button>
                                     </div>

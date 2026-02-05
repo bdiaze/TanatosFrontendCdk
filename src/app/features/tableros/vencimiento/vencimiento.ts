@@ -38,6 +38,7 @@ import { SalDocumentoAdjunto } from '@/app/entities/others/sal-documento-adjunto
 import { EntDocumentoAdjuntoGenerarUrlBajada } from '@/app/entities/others/ent-documento-adjunto-generar-url-bajada';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { debounceTime, Subject, switchMap } from 'rxjs';
+import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-suscrita-completar-norma';
 
 @Component({
     selector: 'app-vencimiento',
@@ -104,6 +105,8 @@ export class Vencimiento implements OnInit {
     documentosEnProgreso = signal<DocumentoEnProgreso[]>([]);
 
     cargandoNormaSuscritaConVencimiento = signal<boolean>(true);
+
+    completando = signal<boolean>(false);
 
     constructor() {
         effect(() => {
@@ -408,6 +411,32 @@ export class Vencimiento implements OnInit {
         });
 
         this.closeModalEliminar();
+    }
+
+    completar() {
+        this.completando.set(true);
+        this.normaSuscritaDao
+            .completarNorma({
+                idNormaSuscrita: this.idNormaSuscrita(),
+                idHistorialNormaSuscrita: this.idHistorialNormaSuscrita(),
+            } as EntNormaSuscritaCompletarNorma)
+            .subscribe({
+                next: (retorno) => {
+                    this.item.update((normaSuscrita) => {
+                        if (normaSuscrita) {
+                            normaSuscrita.fechaCompletitud = retorno.fechaCompletitud;
+                        }
+                        return normaSuscrita;
+                    });
+                },
+                error: (err) => {
+                    console.error('Error al completar la obligación', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al completar la obligación');
+                },
+            })
+            .add(() => {
+                this.completando.set(false);
+            });
     }
 }
 

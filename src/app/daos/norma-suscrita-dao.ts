@@ -7,6 +7,8 @@ import { EntNormaSuscritaCrear } from '../entities/others/ent-norma-suscrita-cre
 import { EntNormaSuscritaActualizar } from '../entities/others/ent-norma-suscrita-actualizar';
 import { SalNormaSuscritaObtenerConVencimiento } from '../entities/others/sal-norma-suscrita-obtener-con-vencimiento';
 import { SalNormaSuscritaObtenerPorIdConVencimiento } from '../entities/others/sal-norma-suscrita-obtener-por-id-con-vencimiento';
+import { EntNormaSuscritaCompletarNorma } from '../entities/others/ent-norma-suscrita-completar-norma';
+import { SalNormaSuscritaCompletarNorma } from '../entities/others/sal-norma-suscrita-completar-norma';
 
 @Injectable({
     providedIn: 'root',
@@ -52,6 +54,15 @@ export class NormaSuscritaDao {
     actualizar(entrada: EntNormaSuscritaActualizar): Observable<SalNormaSuscrita> {
         return this.http.put<SalNormaSuscrita>(
             environment.tanatosService.apiUrl + '/NormaSuscrita/',
+            entrada,
+        );
+    }
+
+    completarNorma(
+        entrada: EntNormaSuscritaCompletarNorma,
+    ): Observable<SalNormaSuscritaCompletarNorma> {
+        return this.http.put<SalNormaSuscritaCompletarNorma>(
+            environment.tanatosService.apiUrl + '/NormaSuscrita/CompletarNorma',
             entrada,
         );
     }
