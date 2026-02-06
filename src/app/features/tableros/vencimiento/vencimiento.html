@@ -72,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <p HlmP class="text-justify opacity-85 mx-4">
+                <p HlmP class="text-justify opacity-85 mx-4 whitespace-pre-wrap">
                     {{ item()?.descripcion ?? item()?.templateNorma?.descripcion }}
                 </p>
                 <div hlmItem variant="outline" size="sm" class="w-full">
@@ -265,7 +265,7 @@
                             </div>
                             <div hlmItemContent>
                                 <div hlmItemTitle class="text-lg">
-                                    ¡Completado el
+                                    ¡Completada el
                                     {{
                                         item()?.fechaCompletitud
                                             | date: "EEEE d 'de' MMMM 'de' yyyy"
