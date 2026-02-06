@@ -1,4 +1,4 @@
-import { RouterListener } from '@/app/services/router-listener';
+import { environment } from '@/environments/environment';
 import { Component, inject } from '@angular/core';
 import { HlmH1, HlmH4 } from '@spartan-ng/helm/typography';
 
@@ -9,5 +9,5 @@ import { HlmH1, HlmH4 } from '@spartan-ng/helm/typography';
     styleUrl: './hero.scss',
 })
 export class Hero {
-    urlLogo = inject(RouterListener).urlLogo;
+    urlLogo = `${environment.urlImages}/images/logo.svg`;
 }

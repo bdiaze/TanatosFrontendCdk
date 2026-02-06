@@ -4,7 +4,7 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Login } from '@/app/features/auth/login/login';
 import { Logout } from '@/app/features/auth/logout/logout';
 import { RouterLink } from '@angular/router';
-import { RouterListener } from '@/app/services/router-listener';
+import { environment } from '@/environments/environment';
 
 @Component({
     selector: 'app-header',
@@ -13,7 +13,7 @@ import { RouterListener } from '@/app/services/router-listener';
     styleUrl: './header.scss',
 })
 export class Header implements OnInit {
-    urlLogo = inject(RouterListener).urlLogo;
+    urlLogo = `${environment.urlImages}/images/logo.svg`;
 
     private authStore = inject(AuthStore);
 

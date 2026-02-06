@@ -3,20 +3,20 @@
         <a routerLink="/">
             <img
                 class="w-28 md:w-34 select-none ml-3 md:ml-0"
-                [src]="urlLogo()"
+                [src]="urlLogo"
                 alt="Logo Todo en Orden"
             />
         </a>
         <nav>
             <ul class="flex flex-wrap gap-4 md:gap-6 justify-center items-center">
                 @if (!sesionIniciada() && !logoutRunning()) {
-                <li>
-                    <app-login></app-login>
-                </li>
+                    <li>
+                        <app-login></app-login>
+                    </li>
                 } @else {
-                <li>
-                    <app-logout></app-logout>
-                </li>
+                    <li>
+                        <app-logout></app-logout>
+                    </li>
                 }
             </ul>
         </nav>
