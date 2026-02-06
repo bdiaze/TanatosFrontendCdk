@@ -1,6 +1,171 @@
-<main class="max-w-2xl mx-auto flex flex-col items-center justify-center">
-    <h4 hlmH4 class="text-center text-balance">
-        La mejor herramienta para gestionar las obligaciones de tu negocio.
-    </h4>
-    <img class="w-80 md:w-140 select-none" [src]="urlLogo" alt="Logo Todo en Orden" />
-</main>
+<section class="relative h-[45vw] w-full overflow-hidden flex flex-col items-start justify-center">
+    <img
+        [src]="urlFondo"
+        alt="Mujer emprendedora"
+        class="absolute inset-0 h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 bg-black/30"></div>
+    <div class="relative z-10 h-full flex flex-col items-start justify-center gap-2 pl-28">
+        <h4
+            hlmH4
+            class="text-primary-foreground text-balance font-serif text-[5vw] font-normal leading-[5.5vw]"
+        >
+            Evita multas y<br />
+            malos ratos.<br />
+            <p class="font-semibold">
+                Mantén tu negocio<br />
+                al día y en buen<br />
+                funcionamiento.<br />
+            </p>
+        </h4>
+    </div>
+</section>
+<section
+    class="relative h-[25vw] w-full overflow-hidden flex flex-col items-center justify-center my-[4vw]"
+>
+    <div class="flex flex-row justify-evenly w-full">
+        <div class="flex flex-col items-center gap-4">
+            <img [src]="urlCalendario" alt="Calendario" class="w-[5vw]" />
+            <p hlmP class="text-(--tertiary-foreground) font-serif text-center text-[2vw]">
+                Somos una herramienta de gestión<br />
+                para ayudar a los microempresarios<br />
+                a administrar sus obligaciones<br />
+                adquiridas, según el rubro de sus<br />
+                empresas.
+            </p>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <img [src]="urlMundo" alt="Calendario" class="w-[5vw]" />
+            <p hlmP class="text-(--tertiary-foreground) font-serif text-center text-[2vw]">
+                Estas obligaciones pueden provenir<br />
+                desde la normativa Chilena vigente,<br />
+                como así las interpuestas de forma<br />
+                personalizada según la operación de<br />
+                sus negocios.
+            </p>
+        </div>
+    </div>
+</section>
+<section
+    class="relative h-[35vw] w-full overflow-hidden flex flex-col items-center justify-center bg-(--quaternary)"
+>
+    <div class="flex flex-row items-center justify-evenly w-full">
+        <div class="flex flex-col items-center gap-2">
+            <p
+                hlmP
+                class="text-(--quaternary-foreground) font-serif text-center text-[2.5vw] font-semibold"
+            >
+                Conoce los servicios que<br />
+                tenemos para tu negocio
+            </p>
+            <p hlmP class="text-(--quaternary-foreground) font-serif text-center text-[2vw]">
+                Nuestra plataforma integral te<br />
+                ayuda a agendar tareas según<br />
+                relaciones locales
+            </p>
+            <button
+                hlmBtn
+                variant="secondary"
+                size="lg"
+                class="mt-[1.5vw] text-[max(1.2vw,1rem)] h-[max(3vw,2.5rem)] bg-(--quaternary) text-(--quaternary-foreground) border-(--quaternary-foreground) hover:border-(--quaternary-foreground)/80"
+            >
+                Nuestros Servicios
+            </button>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <img [src]="urlTarea" alt="Tarea" class="-rotate-12 w-[25vw]" />
+        </div>
+    </div>
+</section>
+<section
+    class="relative h-[35vw] w-full overflow-hidden flex flex-col items-center justify-center bg-(--quinary) p-0"
+>
+    <div class="flex flex-row items-center h-full w-full">
+        <div class="relative w-1/2 h-full overflow-hidden">
+            <img
+                [src]="urlFondo2"
+                alt="Gerente de pequeña empresa"
+                class="absolute inset-0 h-full w-full object-cover object-[-12vw_4.5vw] scale-160"
+            />
+        </div>
+        <div class="flex-1 flex flex-col items-center justify-center gap-2">
+            <p
+                hlmP
+                class="text-(--quaternary-foreground) font-serif text-center text-[2.5vw] font-semibold"
+            >
+                Descubre los planes que se<br />
+                acomodan a tu crecimiento
+            </p>
+            <p hlmP class="text-(--quaternary-foreground) font-serif text-center text-[2vw]">
+                Diferentes opciones que se<br />
+                adaptan a tu presupuesto
+            </p>
+            <button
+                hlmBtn
+                variant="secondary"
+                size="lg"
+                class="mt-[1.5vw] text-[max(1.2vw,1rem)] h-[max(3vw,2.5rem)] bg-(--quinary) text-(--quinary-foreground) border-(--quinary-foreground) hover:border-(--quinary-foreground)/80"
+            >
+                Nuestros Planes
+            </button>
+        </div>
+    </div>
+</section>
+<section class="relative h-[45vw] w-full overflow-hidden flex flex-col items-center justify-center">
+    <div class="flex flex-row items-center justify-evenly h-full w-full">
+        <div class="flex-1 flex flex-col items-center justify-center gap-2">
+            <p
+                hlmP
+                class="text-(--tertiary-foreground) font-serif text-center text-[2.7vw] font-semibold"
+            >
+                Somos Todo En Orden
+            </p>
+            <p hlmP class="text-(--tertiary-foreground) font-serif text-center text-[2.1vw]">
+                Conoce más de nuestra<br />
+                plataforma, nuestro equipo y lo <br />
+                que nos motiva mejorar cada día
+            </p>
+            <button
+                hlmBtn
+                variant="secondary"
+                size="lg"
+                class="mt-[1.5vw] px-[8vw] text-[max(1.2vw,1rem)] h-[max(3vw,2.5rem)] bg-(--tertiary-foreground) border-(--tertiary-foreground) hover:border-(--tertiary-foreground)/80 text-(--tertiary) hover:bg-(--tertiary-foreground)/80"
+            >
+                Nosotros
+            </button>
+        </div>
+        <div class="relative w-1/2 h-full overflow-hidden flex items-center justify-center">
+            <img
+                [src]="urlFondo3"
+                alt="Hombre de negocios"
+                class="inset-0 h-[30vw] w-[30vw] object-cover object-[-2vw_0vw] scale-105 rounded-full"
+            />
+        </div>
+    </div>
+</section>
+<section
+    class="relative h-[30vw] w-full overflow-hidden flex flex-col items-center justify-center bg-(--primary)"
+>
+    <div class="flex flex-row items-center justify-evenly h-full w-full">
+        <div class="flex-1 flex flex-col items-center justify-center gap-2">
+            <p
+                hlmP
+                class="text-(--primary-foreground) font-serif text-center text-[2.7vw] font-semibold"
+            >
+                ¿Necesitas ayuda?
+            </p>
+            <p hlmP class="text-(--primary-foreground) font-serif text-center text-[2.1vw]">
+                Te ofrecemos una asesoría personalizada para conocer más de<br />
+                nuestra plataforma y cómo beneficia a tu negocio
+            </p>
+            <button
+                hlmBtn
+                variant="secondary"
+                size="lg"
+                class="mt-[1.5vw] px-[8vw] text-[max(1.2vw,1rem)] h-[max(3vw,2.5rem)] bg-(--primary) border-(--primary-foreground) hover:border-(--primary-foreground)/80 text-(--primary-foreground) hover:bg-(--primary)/80"
+            >
+                Contáctanos
+            </button>
+        </div>
+    </div>
+</section>

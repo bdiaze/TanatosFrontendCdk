@@ -10,19 +10,20 @@ export const buttonVariants = cva(
     {
         variants: {
             variant: {
-                default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+                default: 'bg-primary text-primary-foreground hover:bg-primary/80 rounded-full',
                 destructive:
-                    'bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 text-white',
+                    'bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 text-white rounded-full',
                 outline:
-                    'bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 border shadow-xs',
-                secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+                    'bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 border shadow-xs rounded-full',
+                secondary:
+                    'bg-secondary text-secondary-foreground rounded-full border-2 border-primary hover:border-primary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
                 link: 'text-primary underline-offset-4 hover:underline',
             },
             size: {
-                default: 'h-9 px-4 py-2 has-[>ng-icon]:px-3',
-                sm: 'h-8 gap-1.5 rounded-md px-3 has-[>ng-icon]:px-2.5',
-                lg: 'h-10 rounded-md px-6 has-[>ng-icon]:px-4',
+                default: 'h-7 px-6 py-2 has-[>ng-icon]:px-3',
+                sm: 'h-8 gap-1.5 rounded-full px-3 has-[>ng-icon]:px-2.5',
+                lg: 'h-10 rounded-full px-10 has-[>ng-icon]:px-4',
                 icon: 'size-9',
                 'icon-sm': 'size-8',
                 'icon-lg': 'size-10',
@@ -32,7 +33,7 @@ export const buttonVariants = cva(
             variant: 'default',
             size: 'default',
         },
-    }
+    },
 );
 
 export type ButtonVariants = VariantProps<typeof buttonVariants>;
@@ -57,8 +58,8 @@ export class HlmButton {
         hlm(
             buttonVariants({ variant: this.variant(), size: this.size() }),
             this.userClass(),
-            this._additionalClasses()
-        )
+            this._additionalClasses(),
+        ),
     );
 
     public readonly variant = input<ButtonVariants['variant']>(this._config.variant);

@@ -15,18 +15,25 @@
     --font-sans:
         -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
         sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 
     --radius: 0.625rem;
-    --background: oklch(1 0 0);
+    --background: oklch(97.02% 0 0);
     --foreground: oklch(0.145 0 0);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.145 0 0);
     --popover: oklch(1 0 0);
     --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
+    --primary: oklch(70.1% 0.122 212.27);
+    --primary-foreground: oklch(97.02% 0 0);
+    --secondary: oklch(97.02% 0 0);
+    --secondary-foreground: oklch(70.1% 0.122 212.27);
+    --tertiary: oklch(97.02% 0 0);
+    --tertiary-foreground: oklch(48.25% 0.154 254.11);
+    --quaternary: oklch(68.77% 0.137 248.65);
+    --quaternary-foreground: oklch(97.02% 0 0);
+    --quinary: oklch(76.79% 0.153 51.03);
+    --quinary-foreground: oklch(97.02% 0 0);
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);
     --accent: oklch(0.97 0 0);

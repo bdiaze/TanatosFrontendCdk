@@ -1,3 +1,25 @@
-<button hlmBtn (click)="iniciarSesion()" [disabled]="deshabilitarBoton()">
-    @if(deshabilitarBoton()){<hlm-spinner />}Iniciar Sesión
-</button>
+<div class="flex flex-row gap-3">
+    <button
+        hlmBtn
+        (click)="iniciarSesion()"
+        [disabled]="deshabilitarBoton()"
+        class="px-[2vw] text-[max(1vw,1rem)] h-[max(2vw,2rem)]"
+    >
+        @if (deshabilitarBoton()) {
+            <hlm-spinner />
+        }
+        Inicia Sesión
+    </button>
+    <button
+        hlmBtn
+        variant="secondary"
+        (click)="iniciarSesion()"
+        [disabled]="deshabilitarBoton()"
+        class="px-[2vw] text-[max(1vw,1rem)] h-[max(2vw,2rem)]"
+    >
+        @if (deshabilitarBoton()) {
+            <hlm-spinner />
+        }
+        Regístrate
+    </button>
+</div>

@@ -21,7 +21,7 @@ export class Login {
         return this.iniciandoSesion() || this.backgroundRefreshRunning() || this.callbackRunning();
     });
 
-    async iniciarSesion() {
+    async iniciarSesion(registrarse: boolean = false) {
         this.iniciandoSesion.set(true);
 
         const state = this.generateRandomString(32);
@@ -43,7 +43,9 @@ export class Login {
         ];
 
         const url =
-            `${environment.cognitoService.baseUrl}/login?` +
+            (!registrarse
+                ? `${environment.cognitoService.baseUrl}/login?`
+                : `${environment.cognitoService.baseUrl}/signup?`) +
             new URLSearchParams({
                 response_type: 'code',
                 client_id: environment.cognitoService.clientId,
