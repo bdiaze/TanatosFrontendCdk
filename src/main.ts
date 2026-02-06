@@ -13,5 +13,9 @@ if (url.pathname === '/callback') {
     console.log(`Redirigiendo a ${newUrl}`);
     window.location.replace(newUrl);
 } else {
-    bootstrapApplication(App, appConfig).catch((err) => console.error(err));
+    bootstrapApplication(App, appConfig)
+        .then(() => {
+            document.querySelector('app-root')?.classList.add('app-ready');
+        })
+        .catch((err) => console.error(err));
 }

@@ -28,12 +28,13 @@
     --primary-foreground: oklch(97.02% 0 0);
     --secondary: oklch(97.02% 0 0);
     --secondary-foreground: oklch(70.1% 0.122 212.27);
-    --tertiary: oklch(97.02% 0 0);
-    --tertiary-foreground: oklch(48.25% 0.154 254.11);
-    --quaternary: oklch(68.77% 0.137 248.65);
-    --quaternary-foreground: oklch(97.02% 0 0);
-    --quinary: oklch(76.79% 0.153 51.03);
-    --quinary-foreground: oklch(97.02% 0 0);
+
+    --blanco: oklch(97.02% 0 0);
+    --azul: oklch(48.25% 0.154 254.11);
+    --celeste: oklch(68.77% 0.137 248.65);
+    --naranjo: oklch(76.79% 0.153 51.03);
+    --negro: oklch(29.7% 0.013 267.1);
+
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);
     --accent: oklch(0.97 0 0);
@@ -116,4 +117,13 @@ button[brnselecttrigger] > div {
             opacity: 1;
         }
     }
+}
+
+app-root {
+    opacity: 0;
+    transition: opacity 120ms ease-in;
+}
+
+app-root.app-ready {
+    opacity: 1;
 }

@@ -1,53 +1,153 @@
-<footer class="px-8 md:px-6 py-2 relative">
-    <div class="w-full max-w-2xl mx-auto flex gap-4 md:gap-0 flex-row justify-between items-center">
-        <a routerLink="/">
-            <img
-                class="w-30 md:w-30 select-none mr-4 md:mr-0"
-                [src]="urlLogo"
-                alt="Logo Todo en Orden"
-            />
-        </a>
-        <nav>
-            <ul class="flex flex-wrap gap-1 md:gap-6 justify-center items-center">
-                <li>
-                    <a
-                        hlmBtn
-                        class="py-0 text-xs md:text-base"
-                        variant="link"
-                        routerLink="/privacidad"
-                        >Privacidad</a
-                    >
-                </li>
-                <li>
-                    <a
-                        hlmBtn
-                        class="py-0 text-xs md:text-base"
-                        variant="link"
-                        routerLink="/aviso-legal"
-                        >Aviso Legal</a
-                    >
-                </li>
-                <li>
-                    <a
-                        hlmBtn
-                        class="py-0 text-xs md:text-base"
-                        variant="link"
-                        routerLink="/politica-cookies"
-                        >Política de Cookies</a
-                    >
-                </li>
-            </ul>
-        </nav>
+<footer class="px-8 md:px-6 py-8 relative bg-(--negro) flex flex-col gap-12 max-w-dvw">
+    <div class="flex gap-0 flex-col md:flex-row justify-center items-start">
+        <div class="flex flex-col gap-0.5 items-start">
+            <a routerLink="/">
+                <img
+                    class="h-[5.1rem] w-36 select-none object-cover object-top"
+                    [src]="urlLogo"
+                    alt="Logo Todo en Orden"
+                />
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70 ml-3"
+            >
+                <ng-icon hlm size="sm" name="lucideInstagram" />
+                Instagram
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70 ml-3"
+            >
+                <ng-icon hlm size="sm" name="lucideTwitter" />
+                Twitter
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70 ml-3"
+            >
+                <ng-icon hlm size="sm" name="lucideFacebook" />
+                Facebook
+            </a>
+        </div>
+        <div class="flex flex-col gap-0.5 items-start mt-6 md:mt-14">
+            <a hlmBtn variant="link" class="text-(--blanco) text-base md:text-xs font-normal">
+                Nosotros
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Sobre Todo En Orden
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Nuestros Valores
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Nuestros Objetivos
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Nuestro Equipo
+            </a>
+        </div>
+        <div class="flex flex-col gap-0.5 items-start mt-6 md:mt-14">
+            <a hlmBtn variant="link" class="text-(--blanco) text-base md:text-xs font-normal">
+                Servicios
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Nuestros Servicios
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Principales Funciones
+            </a>
+        </div>
+        <div class="flex flex-col gap-0.5 items-start mt-6 md:mt-14">
+            <a hlmBtn variant="link" class="text-(--blanco) text-base md:text-xs font-normal">
+                Planes
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Nuestros Planes
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Ofertas y Promociones
+            </a>
+        </div>
+        <div class="flex flex-col gap-0.5 items-start mt-6 md:mt-14">
+            <a hlmBtn variant="link" class="text-(--blanco) text-base md:text-xs font-normal">
+                Contacto
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Formulario de Contacto
+            </a>
+            <a
+                hlmBtn
+                variant="link"
+                class="text-(--blanco) text-sm md:text-[0.7rem] font-normal opacity-70"
+            >
+                Centro de Atención
+            </a>
+        </div>
     </div>
-    <div class="text-center flex justify-center-safe items-center gap-4">
-        <small class="opacity-80 text-xs md:text-sm">© 2025 Ankatu SpA </small>
-        <small class="opacity-80 text-xs md:text-sm">·</small>
+    <div class="flex flex-col md:flex-row justify-center-safe md:items-center gap-0 md:gap-12">
         <a
             hlmBtn
             variant="link"
-            href="mailto:contacto@ankatu.cl"
-            class="font-normal pl-0 opacity-80 text-xs md:text-sm"
-            >contacto@ankatu.cl</a
+            class="font-normal opacity-40 text-xs md:text-[0.65rem] text-(--blanco) h-5 md:h-7 text-left justify-start md:justify-center"
+            >© 2026 Ankatu SpA
+        </a>
+        <a
+            hlmBtn
+            variant="link"
+            class="font-normal opacity-40 text-xs md:text-[0.65rem] text-(--blanco) h-5 md:h-7 text-left justify-start md:justify-center"
+            >Privacidad</a
+        >
+        <a
+            hlmBtn
+            variant="link"
+            class="font-normal opacity-40 text-xs md:text-[0.65rem] text-(--blanco) h-5 md:h-7 justify-start md:justify-center"
+            >Aviso Legal</a
+        >
+        <a
+            hlmBtn
+            variant="link"
+            class="font-normal opacity-40 text-xs md:text-[0.65rem] text-(--blanco) h-5 md:h-7 justify-start md:justify-center"
+            >Política de Cookies</a
         >
     </div>
 </footer>
