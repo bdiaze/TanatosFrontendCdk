@@ -181,6 +181,87 @@
                     }
                 }
             </div>
+            <hlm-separator />
+            <h4 hlmH4>Obligaciones Completadas</h4>
+            <div hlmItemGroup class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch fade-in">
+                @if (cargando()) {
+                    <hlm-skeleton class="h-50 rounded-xl" />
+                    <hlm-skeleton class="h-50 rounded-xl" />
+                    <hlm-skeleton class="h-50 rounded-xl" />
+                } @else {
+                    @for (futuro of normasCompletadas(); track futuro.idNormaSuscrita) {
+                        <a
+                            hlmItem
+                            variant="outline"
+                            [routerLink]="[
+                                '/vencimiento',
+                                futuro.idNormaSuscrita,
+                                futuro.idHistorialNormaSuscrita,
+                            ]"
+                            class="flex flex-row items-start justify-start px-5 fade-in"
+                        >
+                            <div hlmItemHeader class="flex flex-col items-stretch justify-start">
+                                <div class="text-center">
+                                    <span hlmBadge variant="secondary">Completada</span>
+                                </div>
+                                <p hlmItemDescription class="text-center mt-1">
+                                    {{ futuro.fechaVencimiento | date: 'd MMM yyyy' }}
+                                </p>
+                                <p hlmItemDescription class="text-center text-xs">
+                                    {{ futuro.fechaVencimiento | date: 'HH:mm' }}
+                                </p>
+                            </div>
+                            <div
+                                hlmItemContent
+                                class="flex-1 flex flex-col items-start justify-start mb-2"
+                            >
+                                <div hlmItemTitle class="w-full justify-center text-center">
+                                    {{ futuro.nombreNorma }}
+                                </div>
+                                <p hlmItemDescription>{{ futuro.descripcionNorma }}</p>
+                                @if (futuro.multaNorma) {
+                                    <hlm-tooltip>
+                                        <p
+                                            hlmTooltipTrigger
+                                            position="below"
+                                            hlmItemDescription
+                                            class="opacity-90 text-xs mt-1"
+                                        >
+                                            <b>Multa:</b><br />
+                                            {{ futuro.multaNorma }}
+                                        </p>
+                                        <span *brnTooltipContent class="flex items-center">
+                                            {{ futuro.multaNorma }}
+                                            <span
+                                                class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
+                                            >
+                                                <svg
+                                                    class="bg-primary fill-primary z-50 block size-2.5 rotate-45"
+                                                    width="10"
+                                                    height="5"
+                                                    viewBox="0 0 30 10"
+                                                    preserveAspectRatio="none"
+                                                >
+                                                    <polygon points="0,0 30,0 15,10"></polygon>
+                                                </svg>
+                                            </span>
+                                        </span>
+                                    </hlm-tooltip>
+                                }
+                            </div>
+                        </a>
+                    } @empty {
+                        <div hlmAlert class="col-span-1 md:col-span-3">
+                            <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
+                            <h4 hlmAlertTitle>Sin obligaciones completadas</h4>
+                            <div hlmAlertDescription>
+                                Aún no has completado ninguna obligación, te recomendamos revisar
+                                tus próximas obligaciones para ir adelantando trabajo.
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
         </div>
     </div>
 </section>

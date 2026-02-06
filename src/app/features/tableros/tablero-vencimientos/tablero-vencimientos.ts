@@ -60,6 +60,7 @@ export class TableroVencimientos {
 
     normasVencidas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
     normasFuturas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
+    normasCompletadas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
     cargando = signal(true);
     error = signal('');
 
@@ -75,6 +76,7 @@ export class TableroVencimientos {
         this.cargando.set(true);
         this.normasVencidas.set([]);
         this.normasFuturas.set([]);
+        this.normasCompletadas.set([]);
 
         this.normaSuscritaDao
             .obtenerConVencimiento(this.negocioStore.negocioSeleccionado()?.id!)
@@ -89,14 +91,27 @@ export class TableroVencimientos {
                     const ahora = new Date();
                     this.normasVencidas.set(
                         sorted.filter(
-                            (x) => new Date(x.fechaVencimiento).getTime() <= ahora.getTime(),
+                            (x) =>
+                                new Date(x.fechaVencimiento).getTime() <= ahora.getTime() &&
+                                !x.fechaCompletitud,
                         ),
                     );
                     this.normasFuturas.set(
                         sorted.filter(
-                            (x) => new Date(x.fechaVencimiento).getTime() > ahora.getTime(),
+                            (x) =>
+                                new Date(x.fechaVencimiento).getTime() > ahora.getTime() &&
+                                !x.fechaCompletitud,
                         ),
                     );
+
+                    const sortedFechaCompletitud = res
+                        .filter((x) => x.fechaCompletitud)
+                        .sort(
+                            (a, b) =>
+                                new Date(b.fechaCompletitud!).getTime() -
+                                new Date(a.fechaCompletitud!).getTime(),
+                        );
+                    this.normasCompletadas.set(sortedFechaCompletitud);
                 },
                 error: (err) => {
                     console.error('Error al obtener los vencimientos', err);

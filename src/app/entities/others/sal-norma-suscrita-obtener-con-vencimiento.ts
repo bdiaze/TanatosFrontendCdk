@@ -1,5 +1,6 @@
 export interface SalNormaSuscritaObtenerConVencimiento {
     fechaVencimiento: string;
+    fechaCompletitud: string | null;
     idNormaSuscrita: number;
     idHistorialNormaSuscrita: number;
     nombreNorma: string | null;
