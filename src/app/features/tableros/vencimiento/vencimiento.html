@@ -30,20 +30,25 @@
                 <h4 hlmH4>{{ item()?.nombre ?? item()?.templateNorma?.nombre }}</h4>
             </div>
             <div class="flex flex-col items-center justify-center pb-5">
-                <p HlmP class="opacity-80">
-                    {{
-                        item()?.nombreCategoriaNorma ?? item()?.templateNorma?.nombreCategoriaNorma
-                    }}
-                </p>
-                <div class="flex flex-row items-center justify-center gap-3 pt-2">
-                    <div class="flex flex-wrap justify-center items-center gap-1 pt-1">
-                        @for (fiscalizador of fiscalizadores(); track fiscalizador.id) {
-                            <span hlmBadge>
-                                {{ fiscalizador.nombreTipoFiscalizador }}
-                            </span>
-                        }
+                @if (item()?.nombreCategoriaNorma || item()?.templateNorma?.nombreCategoriaNorma) {
+                    <p HlmP class="opacity-80">
+                        {{
+                            item()?.nombreCategoriaNorma ??
+                                item()?.templateNorma?.nombreCategoriaNorma
+                        }}
+                    </p>
+                }
+                @if (fiscalizadores().length > 0) {
+                    <div class="flex flex-row items-center justify-center gap-3 pt-2">
+                        <div class="flex flex-wrap justify-center items-center gap-1 pt-1">
+                            @for (fiscalizador of fiscalizadores(); track fiscalizador.id) {
+                                <span hlmBadge>
+                                    {{ fiscalizador.nombreTipoFiscalizador }}
+                                </span>
+                            }
+                        </div>
                     </div>
-                </div>
+                }
             </div>
             <div class="flex flex-col gap-6">
                 <div class="flex flex-row items-stretch gap-4 w-full">
@@ -76,7 +81,9 @@
                         <div hlmItemDescription>
                             <div class="mb-2">
                                 No olvides adjuntar los documentos asociados al cumplimiento de la
-                                obligación:
+                                obligación. Solo se aceptan archivos
+                                <span class="italic">PDF</span> o imagenes
+                                <span class="italic">JPEG/PNG/WEBP</span>:
                             </div>
                             <div hlmTableContainer>
                                 <table hlmTable>
@@ -184,25 +191,49 @@
                                     </tbody>
                                     <tfoot hlmTFoot>
                                         <tr hlmTr>
-                                            <td hlmTd colspan="3" class="text-center p-0">
-                                                <button
-                                                    hlmBtn
-                                                    size="icon"
-                                                    variant="link"
-                                                    class="size-8 w-full h-full p-3"
-                                                    (click)="fileInput.click()"
+                                            <td
+                                                hlmTd
+                                                colspan="3"
+                                                class="text-center p-0 border-dashed border-2 transition-colors duration-200"
+                                                [ngClass]="{
+                                                    'border-primary': draggingFile(),
+                                                }"
+                                            >
+                                                <div
+                                                    (dragover)="onDragOver($event)"
+                                                    (dragleave)="onDragLeave($event)"
+                                                    (drop)="onDropFile($event)"
+                                                    class="py-6"
                                                 >
-                                                    <ng-icon hlm size="sm" name="lucidePlus" />
-                                                    Click aquí para adjuntar
-                                                </button>
-                                                <input
-                                                    type="file"
-                                                    #fileInput
-                                                    hidden
-                                                    accept="application/pdf,image/*"
-                                                    (change)="archivosSeleccionados($event)"
-                                                    multiple
-                                                />
+                                                    <button
+                                                        hlmBtn
+                                                        size="icon"
+                                                        variant="link"
+                                                        class="size-8 w-full h-full"
+                                                        (click)="fileInput.click()"
+                                                    >
+                                                        <ng-icon hlm size="sm" name="lucidePlus" />
+                                                        <div>
+                                                            Click aquí para adjuntar tu documento
+                                                        </div>
+                                                        <br />
+                                                    </button>
+                                                    <p
+                                                        hlmP
+                                                        class="text-xs mt-2 font-normal italic opacity-80"
+                                                    >
+                                                        (también puedes arrastrar aquí tus
+                                                        documentos)
+                                                    </p>
+                                                    <input
+                                                        type="file"
+                                                        #fileInput
+                                                        hidden
+                                                        [accept]="allowedFileTypes.join(',')"
+                                                        (change)="archivosSeleccionados($event)"
+                                                        multiple
+                                                    />
+                                                </div>
                                             </td>
                                         </tr>
                                     </tfoot>

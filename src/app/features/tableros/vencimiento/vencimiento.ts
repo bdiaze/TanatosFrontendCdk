@@ -4,7 +4,7 @@ import { SalNormaSuscritaObtenerPorIdConVencimiento } from '@/app/entities/other
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -59,6 +59,7 @@ import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-
         HlmInput,
         HlmTableImports,
         HlmProgressImports,
+        CommonModule,
     ],
     templateUrl: './vencimiento.html',
     styleUrl: './vencimiento.scss',
@@ -182,7 +183,7 @@ export class Vencimiento implements OnInit {
 
         this.refrescarAdjuntos$
             .pipe(
-                debounceTime(300),
+                debounceTime(500),
                 switchMap(() =>
                     this.normaSuscritaDao.obtenerPorIdConVencimiento(
                         this.idNormaSuscrita()!,
@@ -230,14 +231,50 @@ export class Vencimiento implements OnInit {
             });
     }
 
-    archivosSeleccionados(event: Event) {
-        const input = event.target as HTMLInputElement;
-        if (!input.files || input.files.length === 0) {
+    draggingFile = signal<boolean>(false);
+    allowedFileTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
+
+    onDragOver(event: DragEvent) {
+        event.preventDefault();
+        this.draggingFile.set(true);
+    }
+
+    onDragLeave(event: DragEvent) {
+        event.preventDefault();
+        this.draggingFile.set(false);
+    }
+
+    onDropFile(event: DragEvent) {
+        event.preventDefault();
+
+        let files = event.dataTransfer?.files;
+
+        if (!files || files.length === 0) {
             return;
         }
 
-        const archivosSeleccionados = Array.from(input.files);
+        this.subirArchivos(files);
+        this.draggingFile.set(false);
+    }
+
+    archivosSeleccionados(event: Event) {
+        const input = event.target as HTMLInputElement;
+
+        const files = input.files;
+        if (!files || files.length === 0) {
+            return;
+        }
+
+        this.subirArchivos(files);
+
         input.value = '';
+    }
+
+    subirArchivos(files: FileList) {
+        let archivosSeleccionados = Array.from(files);
+        archivosSeleccionados = archivosSeleccionados.filter((archivo) =>
+            this.allowedFileTypes.includes(archivo.type),
+        );
 
         archivosSeleccionados.forEach((archivoSeleccionado) => {
             // Se crea documento en progreso...
