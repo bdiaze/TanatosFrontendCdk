@@ -233,6 +233,7 @@ export class Vencimiento implements OnInit {
 
     draggingFile = signal<boolean>(false);
     allowedFileTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
+    maxFileSize = 10 * 1024 * 1024;
 
     onDragOver(event: DragEvent) {
         event.preventDefault();
@@ -272,8 +273,33 @@ export class Vencimiento implements OnInit {
 
     subirArchivos(files: FileList) {
         let archivosSeleccionados = Array.from(files);
-        archivosSeleccionados = archivosSeleccionados.filter((archivo) =>
-            this.allowedFileTypes.includes(archivo.type),
+
+        let errores = '';
+        if (archivosSeleccionados.some((archivo) => archivo.size > this.maxFileSize)) {
+            archivosSeleccionados
+                .filter((archivo) => archivo.size > this.maxFileSize)
+                .forEach((archivo) => {
+                    errores += `- El archivo "${archivo.name}" supera el tamaño máximo, tiene un tamaño de ${new Intl.NumberFormat('es-CL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(archivo.size / (1024 * 1024))} MB. \n`;
+                });
+        }
+
+        if (
+            archivosSeleccionados.some((archivo) => !this.allowedFileTypes.includes(archivo.type))
+        ) {
+            archivosSeleccionados
+                .filter((archivo) => !this.allowedFileTypes.includes(archivo.type))
+                .forEach((archivo) => {
+                    errores += `- El archivo "${archivo.name}" no es de un tipo aceptado, es del tipo ${archivo.type}. \n`;
+                });
+        }
+
+        if (errores.length > 0) {
+            this.error.set(errores);
+        }
+
+        archivosSeleccionados = archivosSeleccionados.filter(
+            (archivo) =>
+                this.allowedFileTypes.includes(archivo.type) && archivo.size <= this.maxFileSize,
         );
 
         archivosSeleccionados.forEach((archivoSeleccionado) => {
@@ -310,7 +336,11 @@ export class Vencimiento implements OnInit {
                         );
 
                         this.s3Service
-                            .subirArchivo(salidaUrlSubida.preSignedUrl, archivoSeleccionado)
+                            .subirArchivo(
+                                salidaUrlSubida.preSignedUrl,
+                                salidaUrlSubida.preSignedFields,
+                                archivoSeleccionado,
+                            )
                             .subscribe({
                                 next: (event) => {
                                     if (event.type === HttpEventType.UploadProgress) {

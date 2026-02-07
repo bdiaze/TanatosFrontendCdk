@@ -209,7 +209,7 @@
                                                         hlmBtn
                                                         size="icon"
                                                         variant="link"
-                                                        class="size-8 w-full h-full"
+                                                        class="size-8"
                                                         (click)="fileInput.click()"
                                                     >
                                                         <ng-icon hlm size="sm" name="lucidePlus" />
@@ -246,7 +246,7 @@
                     <div hlmAlert variant="destructive">
                         <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
                         <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-                        <p hlmAlertDescription>{{ error() }}</p>
+                        <p hlmAlertDescription class="whitespace-pre-line">{{ error() }}</p>
                     </div>
                 }
                 <div class="flex flex-row items-stretch gap-4 w-full">
