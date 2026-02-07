@@ -1,5 +1,5 @@
 <section
-    class="relative h-[15.2rem] md:h-[45vw] w-full overflow-hidden flex flex-col items-start justify-center max-w-dvw"
+    class="relative h-[clamp(16rem,45vw,35rem)] md:h-[45vw] w-full overflow-hidden flex flex-col items-start justify-center max-w-dvw"
 >
     <img
         [src]="urlFondo"
@@ -25,24 +25,24 @@
     </div>
 </section>
 <section
-    class="relative h-126 md:h-[clamp(13.4rem,25vw,20rem)] w-full overflow-hidden flex flex-col items-center justify-center my-[4vw] max-w-dvw"
+    class="relative w-full flex flex-col items-center justify-center my-10 md:my-14 px-8 md:px-12 max-w-dvw"
 >
-    <div class="flex flex-col md:flex-row justify-evenly w-full gap-8 md:gap-0 px-12 md:px-12">
-        <div class="flex flex-col items-center gap-4 md:gap-[2.5vw] md:px-10">
+    <div class="flex flex-col md:flex-row justify-evenly w-full gap-8 md:gap-8">
+        <div class="flex flex-col items-center gap-4 md:gap-[2.5vw] w-full md:w-1/2">
             <img [src]="urlCalendario" alt="Calendario" class="w-[clamp(2.5rem,5vw,10rem)]" />
             <p
                 hlmP
-                class="text-(--azul) font-serif text-center text-[clamp(1.15rem,2.0vw,1.8rem)] text-balance"
+                class="text-(--azul) font-serif text-center text-[clamp(1.25rem,2.0vw,1.8rem)] text-balance"
             >
                 Somos una herramienta de gestión para ayudar a los microempresarios a administrar
                 sus obligaciones adquiridas, según el rubro de sus empresas.
             </p>
         </div>
-        <div class="flex flex-col items-center gap-4 md:gap-[2.5vw] md:px-10">
+        <div class="flex flex-col items-center gap-4 md:gap-[2.5vw] w-full md:w-1/2">
             <img [src]="urlMundo" alt="Calendario" class="w-[clamp(2.5rem,5vw,10rem)]" />
             <p
                 hlmP
-                class="text-(--azul) font-serif text-center text-[clamp(1.15rem,2.0vw,1.8rem)] text-balance"
+                class="text-(--azul) font-serif text-center text-[clamp(1.25rem,2.0vw,1.8rem)] text-balance"
             >
                 Estas obligaciones pueden provenir desde la normativa Chilena vigente, como así las
                 interpuestas de forma personalizada según la operación de sus negocios.
@@ -51,71 +51,69 @@
     </div>
 </section>
 <section
-    class="relative h-100 md:h-[clamp(13.4rem,35vw,35rem)] w-full overflow-hidden flex flex-col items-center justify-center bg-(--celeste) max-w-dvw"
+    class="relative w-full flex flex-col md:flex-row items-center justify-evenly bg-(--celeste) max-w-dvw py-10 md:py-12 px-8 md:px-12 gap-8 md:gap-6"
 >
-    <div class="flex flex-col md:flex-row tems-center justify-evenly w-full gap-8 md:gap-0">
-        <div
-            class="flex flex-col items-center md:justify-center gap-4 md:gap-2 order-2 md:order-1 md:w-1/2 md:p-12"
+    <div
+        class="flex flex-col items-center md:justify-center gap-4 md:gap-2 order-2 md:order-1 md:w-1/2"
+    >
+        <p
+            hlmP
+            class="text-(--blanco) font-serif text-center text-[clamp(1.2rem,2.8vw,2.3rem)] font-semibold text-balance"
         >
-            <p
-                hlmP
-                class="text-(--blanco) font-serif text-center text-[clamp(1.2rem,2.8vw,2.3rem)] font-semibold text-balance"
-            >
-                Conoce los servicios que tenemos para tu negocio
-            </p>
-            <p
-                hlmP
-                class="text-(--blanco) font-serif text-center text-[clamp(.9rem,2.0vw,1.8rem)] text-balance w-66 md:w-full"
-            >
-                Nuestra plataforma integral te ayuda a agendar tareas según relaciones locales
-            </p>
-            <button
-                hlmBtn
-                variant="outline"
-                size="lg"
-                class="mt-[1.5vw] text-[clamp(0.95rem,1.8vw,1.3rem)] h-[clamp(2.3rem,5vw,3.2rem)] bg-transparent text-(--blanco) border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
-            >
-                Nuestros Servicios
-            </button>
-        </div>
-        <div class="flex flex-col items-center gap-4 order-1 md:order-2 md:w-1/2 md:p-12">
-            <img [src]="urlTarea" alt="Tarea" class="-rotate-12 w-[clamp(7.5rem,25vw,25rem)]" />
-        </div>
+            Conoce los servicios que tenemos para tu negocio
+        </p>
+        <p
+            hlmP
+            class="text-(--blanco) font-serif text-center text-[clamp(.9rem,2.0vw,1.8rem)] text-balance"
+        >
+            Nuestra plataforma integral te ayuda a agendar tareas según regulaciones locales
+        </p>
+        <button
+            hlmBtn
+            variant="outline"
+            size="lg"
+            class="mt-[1.5vw] text-[clamp(0.95rem,1.8vw,1.3rem)] h-[clamp(2.3rem,5vw,3.2rem)] bg-transparent text-(--blanco) border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
+        >
+            Nuestros Servicios
+        </button>
+    </div>
+    <div class="flex flex-col items-center gap-4 order-1 md:order-2 md:w-1/2">
+        <img [src]="urlTarea" alt="Tarea" class="-rotate-12 w-[clamp(7.5rem,25vw,25rem)]" />
     </div>
 </section>
 <section
-    class="relative h-135 md:h-[35vw] w-full overflow-hidden flex flex-col items-center justify-center bg-(--naranjo) p-0 max-w-dvw"
+    class="relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw"
 >
-    <div class="flex flex-col md:flex-row items-center h-full w-full">
-        <div class="relative w-full md:w-1/2 h-76 md:h-full overflow-hidden">
-            <img
-                [src]="urlFondo2"
-                alt="Gerente de pequeña empresa"
-                class="absolute inset-0 h-full w-full object-cover object-[-34vw_8vw] md:object-[-12vw_4.5vw] scale-160"
-            />
-        </div>
-        <div class="flex-1 flex flex-col items-center justify-center gap-4 md:gap-2 md:p-12">
-            <p
-                hlmP
-                class="text-(--blanco) font-serif text-center text-[clamp(1.1rem,2.8vw,2.3rem)] font-semibold text-balance"
-            >
-                Descubre los planes que se acomodan a tu crecimiento
-            </p>
-            <p
-                hlmP
-                class="text-(--blanco) font-serif text-center text-[clamp(.9rem,2.1vw,1.8rem)] text-balance px-8"
-            >
-                Diferentes opciones que se adaptan a tu presupuesto
-            </p>
-            <button
-                hlmBtn
-                variant="outline"
-                size="lg"
-                class="mt-[1.5vw] text-[clamp(0.95rem,1.8vw,1.3rem)] h-[clamp(2.3rem,5vw,3.2rem)] bg-transparent text-(--blanco) border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
-            >
-                Nuestros Planes
-            </button>
-        </div>
+    <div class="relative w-full md:w-1/2 h-[clamp(18rem,50vw,30rem)] overflow-hidden">
+        <img
+            [src]="urlFondo2"
+            alt="Gerente de pequeña empresa"
+            class="absolute inset-0 h-full w-full object-cover object-[-4rem_2rem] md:object-[-7.5vw_3vw] scale-160"
+        />
+    </div>
+    <div
+        class="flex-1 flex flex-col items-center justify-center gap-4 md:gap-2 px-8 md:px-12 py-10 md:py-16"
+    >
+        <p
+            hlmP
+            class="text-(--blanco) font-serif text-center text-[clamp(1.1rem,2.8vw,2.3rem)] font-semibold text-balance"
+        >
+            Descubre los planes que se acomodan a tu crecimiento
+        </p>
+        <p
+            hlmP
+            class="text-(--blanco) font-serif text-center text-[clamp(.9rem,2.1vw,1.8rem)] text-balance px-8"
+        >
+            Diferentes opciones que se adaptan a tu presupuesto
+        </p>
+        <button
+            hlmBtn
+            variant="outline"
+            size="lg"
+            class="mt-[1.5vw] text-[clamp(0.95rem,1.8vw,1.3rem)] h-[clamp(2.3rem,5vw,3.2rem)] bg-transparent text-(--blanco) border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
+        >
+            Nuestros Planes
+        </button>
     </div>
 </section>
 <section
@@ -157,10 +155,10 @@
     </div>
 </section>
 <section
-    class="relative h-[clamp(13.4rem,30vw,25rem)] w-full overflow-hidden flex flex-col items-center justify-center bg-(--primary) max-w-dvw"
+    class="relative h-[clamp(14rem,30vw,25rem)] w-full overflow-hidden flex flex-col items-center justify-center bg-(--primary) max-w-dvw"
 >
     <div class="flex flex-row items-center justify-evenly h-full w-full">
-        <div class="flex-1 flex flex-col items-center justify-center gap-2">
+        <div class="flex-1 flex flex-col items-center justify-center gap-2 px-6">
             <p
                 hlmP
                 class="text-(--blanco) font-serif text-center text-[clamp(1.8rem,2.8vw,2.2rem)] font-semibold"
