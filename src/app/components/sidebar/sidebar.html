@@ -1,173 +1,122 @@
-@if(sesionIniciada()){
-<div hlmSidebarWrapper>
-    <hlm-sidebar class="shadow-md z-50" clickOutside (onClickOutside)="ocultarSidebar()">
-        <div hlmSidebarHeader>
-            <ul hlmSidebarMenu>
-                @if (negociosUsuario().length <= 1) {
-                <li hlmSidebarMenuItem>
-                    <div class="h-16 p-2 flex justify-center items-center w-full gap-3">
-                        <div
-                            class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
-                        >
-                            <ng-icon name="lucideStore" class="text-base" />
-                        </div>
-                        <div class="grid flex-1 text-left text-sm leading-tight">
-                            <span class="truncate font-medium">TODO EN ORDEN</span>
-                            <span class="truncate text-xs flex items-center gap-1">
-                                @if (cargandoNegocios()) {
-                                <hlm-spinner class="text-xs" />
-                                Cargando negocios... } @else {
-                                {{
-                                    cargandoNegocios()
-                                        ? 'Cargando negocios...'
-                                        : negocioSeleccionado()?.nombre ?? 'Seleccionar negocio...'
-                                }}
-                                }
-                            </span>
-                        </div>
-                    </div>
-                </li>
-                } @else {
-                <li hlmSidebarMenuItem>
-                    <button
-                        hlmSidebarMenuButton
-                        [hlmDropdownMenuTrigger]="menuNegocios"
-                        class="h-16"
-                        [disabled]="cargandoNegocios()"
-                    >
-                        <div class="flex justify-center items-center w-full gap-3">
-                            <div
-                                class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
-                            >
-                                <ng-icon name="lucideStore" class="text-base" />
+@if (sesionIniciada()) {
+    <div hlmSidebarWrapper>
+        <hlm-sidebar
+            variant="sidebar"
+            class="shadow-md z-50"
+            clickOutside
+            (onClickOutside)="ocultarSidebar()"
+        >
+            <div hlmSidebarHeader>
+                <ul hlmSidebarMenu>
+                    @if (negociosUsuario().length <= 1) {
+                        <li hlmSidebarMenuItem>
+                            <div class="h-16 p-2 flex justify-center items-center w-full gap-3">
+                                <div
+                                    class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+                                >
+                                    <ng-icon name="lucideStore" class="text-base" />
+                                </div>
+                                <div class="grid flex-1 text-left text-sm leading-tight">
+                                    <span class="truncate font-medium">TODO EN ORDEN</span>
+                                    <span class="truncate text-xs flex items-center gap-1">
+                                        @if (cargandoNegocios()) {
+                                            <hlm-spinner class="text-xs" />
+                                            Cargando negocios...
+                                        } @else {
+                                            {{
+                                                cargandoNegocios()
+                                                    ? 'Cargando negocios...'
+                                                    : (negocioSeleccionado()?.nombre ??
+                                                      'Seleccionar negocio...')
+                                            }}
+                                        }
+                                    </span>
+                                </div>
                             </div>
-                            <div class="grid flex-1 text-left text-sm leading-tight">
-                                <span class="truncate font-medium">TODO EN ORDEN</span>
-                                <span class="truncate text-xs flex items-center gap-1">
-                                    @if (cargandoNegocios()) {
-                                    <hlm-spinner class="text-xs" />
-                                    Cargando negocios... } @else {
-                                    {{
-                                        cargandoNegocios()
-                                            ? 'Cargando negocios...'
-                                            : negocioSeleccionado()?.nombre ??
-                                              'Seleccionar negocio...'
-                                    }}
-                                    }
-                                </span>
-                            </div>
-                            <div class="size-4">
-                                <ng-icon
-                                    hlm
-                                    name="lucideChevronsUpDown"
-                                    class="ml-auto"
-                                    size="sm"
-                                />
-                            </div>
-                        </div>
-                    </button>
-                    <ng-template #menuNegocios>
-                        <hlm-dropdown-menu class="w-60" sidebar-dropdown-menu>
-                            @for(negocio of negociosUsuario(); track negocio.id) {
+                        </li>
+                    } @else {
+                        <li hlmSidebarMenuItem>
                             <button
-                                hlmDropdownMenuCheckbox
-                                [checked]="negocioSeleccionado()?.id === negocio.id"
-                                (triggered)="cambiarNegocio(negocio)"
+                                hlmSidebarMenuButton
+                                [hlmDropdownMenuTrigger]="menuNegocios"
+                                class="h-16"
+                                [disabled]="cargandoNegocios()"
                             >
-                                <hlm-dropdown-menu-checkbox-indicator />
-                                <span>{{ negocio.nombre }}</span>
-                                <hlm-dropdown-menu-shortcut>
-                                    <ng-icon
-                                        name="lucideStore"
-                                        class="text-sm translate-y-0.5 mr-1"
-                                    />
-                                </hlm-dropdown-menu-shortcut>
+                                <div class="flex justify-center items-center w-full gap-3">
+                                    <div
+                                        class="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
+                                    >
+                                        <ng-icon name="lucideStore" class="text-base" />
+                                    </div>
+                                    <div class="grid flex-1 text-left text-sm leading-tight">
+                                        <span class="truncate font-medium">TODO EN ORDEN</span>
+                                        <span class="truncate text-xs flex items-center gap-1">
+                                            @if (cargandoNegocios()) {
+                                                <hlm-spinner class="text-xs" />
+                                                Cargando negocios...
+                                            } @else {
+                                                {{
+                                                    cargandoNegocios()
+                                                        ? 'Cargando negocios...'
+                                                        : (negocioSeleccionado()?.nombre ??
+                                                          'Seleccionar negocio...')
+                                                }}
+                                            }
+                                        </span>
+                                    </div>
+                                    <div class="size-4">
+                                        <ng-icon
+                                            hlm
+                                            name="lucideChevronsUpDown"
+                                            class="ml-auto"
+                                            size="sm"
+                                        />
+                                    </div>
+                                </div>
                             </button>
-                            }
-                        </hlm-dropdown-menu>
-                    </ng-template>
-                </li>
-                }
-            </ul>
-        </div>
-        <div hlmSidebarContent class="overflow-x-hidden">
-            @for (item of opcionesMenu(); track item.id) { @if (item.tipo === 'item' && item.url) {
-            <ul hlmSidebarMenu>
-                <li hlmSidebarMenuItem>
-                    <a hlmSidebarMenuButton [routerLink]="item.url" (click)="ocultarSidebar()">
-                        @if (item.icon) {
-                        <ng-icon hlm [name]="item.icon" />
-                        }
-                        <span>{{ item.titulo }}</span>
-                    </a>
-                </li>
-            </ul>
-            } @if (item.tipo === 'item' && item.items && item.items.length > 0) {
-            <hlm-collapsible class="group/collapsible">
-                <li hlmSidebarMenuItem>
-                    <button
-                        hlmCollapsibleTrigger
-                        hlmSidebarMenuButton
-                        class="flex w-full items-center"
-                    >
-                        @if (item.icon) {
-                        <ng-icon hlm [name]="item.icon" />
-                        }
-                        <span>{{ item.titulo }}</span>
-                        <ng-icon
-                            name="lucideChevronRight"
-                            class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
-                            hlm
-                        />
-                    </button>
-                    <hlm-collapsible-content>
-                        <ul hlmSidebarMenuSub>
-                            @for (subItem of item.items; track subItem.id) {
-                            <li hlmSidebarMenuSubItem>
+                            <ng-template #menuNegocios>
+                                <hlm-dropdown-menu class="w-60" sidebar-dropdown-menu>
+                                    @for (negocio of negociosUsuario(); track negocio.id) {
+                                        <button
+                                            hlmDropdownMenuCheckbox
+                                            [checked]="negocioSeleccionado()?.id === negocio.id"
+                                            (triggered)="cambiarNegocio(negocio)"
+                                        >
+                                            <hlm-dropdown-menu-checkbox-indicator />
+                                            <span>{{ negocio.nombre }}</span>
+                                            <hlm-dropdown-menu-shortcut>
+                                                <ng-icon
+                                                    name="lucideStore"
+                                                    class="text-sm translate-y-0.5 mr-1"
+                                                />
+                                            </hlm-dropdown-menu-shortcut>
+                                        </button>
+                                    }
+                                </hlm-dropdown-menu>
+                            </ng-template>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div hlmSidebarContent class="overflow-x-hidden">
+                @for (item of opcionesMenu(); track item.id) {
+                    @if (item.tipo === 'item' && item.url) {
+                        <ul hlmSidebarMenu>
+                            <li hlmSidebarMenuItem>
                                 <a
-                                    hlmSidebarMenuSubButton
-                                    [routerLink]="subItem.url"
-                                    class="w-full"
+                                    hlmSidebarMenuButton
+                                    [routerLink]="item.url"
                                     (click)="ocultarSidebar()"
                                 >
-                                    @if (subItem.icon) {
-                                    <ng-icon hlm [name]="subItem.icon" />
+                                    @if (item.icon) {
+                                        <ng-icon hlm [name]="item.icon" />
                                     }
-                                    <span>{{ subItem.titulo }}</span>
+                                    <span>{{ item.titulo }}</span>
                                 </a>
                             </li>
-                            }
                         </ul>
-                    </hlm-collapsible-content>
-                </li>
-            </hlm-collapsible>
-            } @if (item.tipo === 'group') {
-            <div hlmSidebarSeparator></div>
-            <div hlmSidebarGroup class="pt-0">
-                <div hlmSidebarGroupLabel>
-                    @if (item.icon) {
-                    <ng-icon hlm [name]="item.icon" />
                     }
-                    <span>{{ item.titulo }}</span>
-                </div>
-                <div hlmSidebarGroupContent>
-                    <ul hlmSidebarMenu>
-                        @for (groupItem of item.items; track groupItem.id) { @if (groupItem.tipo ===
-                        'item' && groupItem.url) {
-                        <li hlmSidebarMenuItem>
-                            <a
-                                hlmSidebarMenuButton
-                                [routerLink]="groupItem.url"
-                                (click)="ocultarSidebar()"
-                            >
-                                @if (groupItem.icon) {
-                                <ng-icon hlm [name]="groupItem.icon" />
-                                }
-                                <span>{{ groupItem.titulo }}</span>
-                            </a>
-                        </li>
-                        } @if (groupItem.tipo === 'item' && groupItem.items &&
-                        groupItem.items.length > 0) {
+                    @if (item.tipo === 'item' && item.items && item.items.length > 0) {
                         <hlm-collapsible class="group/collapsible">
                             <li hlmSidebarMenuItem>
                                 <button
@@ -175,10 +124,10 @@
                                     hlmSidebarMenuButton
                                     class="flex w-full items-center"
                                 >
-                                    @if (groupItem.icon) {
-                                    <ng-icon hlm [name]="groupItem.icon" />
+                                    @if (item.icon) {
+                                        <ng-icon hlm [name]="item.icon" />
                                     }
-                                    <span>{{ groupItem.titulo }}</span>
+                                    <span>{{ item.titulo }}</span>
                                     <ng-icon
                                         name="lucideChevronRight"
                                         class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
@@ -187,38 +136,123 @@
                                 </button>
                                 <hlm-collapsible-content>
                                     <ul hlmSidebarMenuSub>
-                                        @for (subItem of groupItem.items; track subItem.id) {
-                                        <li hlmSidebarMenuSubItem>
-                                            <a
-                                                hlmSidebarMenuSubButton
-                                                [routerLink]="subItem.url"
-                                                class="w-full"
-                                                (click)="ocultarSidebar()"
-                                            >
-                                                @if (subItem.icon) {
-                                                <ng-icon hlm [name]="subItem.icon" />
-                                                }
-                                                <span>{{ subItem.titulo }}</span>
-                                            </a>
-                                        </li>
+                                        @for (subItem of item.items; track subItem.id) {
+                                            <li hlmSidebarMenuSubItem>
+                                                <a
+                                                    hlmSidebarMenuSubButton
+                                                    [routerLink]="subItem.url"
+                                                    class="w-full"
+                                                    (click)="ocultarSidebar()"
+                                                >
+                                                    @if (subItem.icon) {
+                                                        <ng-icon hlm [name]="subItem.icon" />
+                                                    }
+                                                    <span>{{ subItem.titulo }}</span>
+                                                </a>
+                                            </li>
                                         }
                                     </ul>
                                 </hlm-collapsible-content>
                             </li>
                         </hlm-collapsible>
-                        } }
-                    </ul>
-                </div>
+                    }
+                    @if (item.tipo === 'group') {
+                        <div hlmSidebarSeparator></div>
+                        <div hlmSidebarGroup class="pt-0">
+                            <div hlmSidebarGroupLabel>
+                                @if (item.icon) {
+                                    <ng-icon hlm [name]="item.icon" />
+                                }
+                                <span>{{ item.titulo }}</span>
+                            </div>
+                            <div hlmSidebarGroupContent>
+                                <ul hlmSidebarMenu>
+                                    @for (groupItem of item.items; track groupItem.id) {
+                                        @if (groupItem.tipo === 'item' && groupItem.url) {
+                                            <li hlmSidebarMenuItem>
+                                                <a
+                                                    hlmSidebarMenuButton
+                                                    [routerLink]="groupItem.url"
+                                                    (click)="ocultarSidebar()"
+                                                >
+                                                    @if (groupItem.icon) {
+                                                        <ng-icon hlm [name]="groupItem.icon" />
+                                                    }
+                                                    <span>{{ groupItem.titulo }}</span>
+                                                </a>
+                                            </li>
+                                        }
+                                        @if (
+                                            groupItem.tipo === 'item' &&
+                                            groupItem.items &&
+                                            groupItem.items.length > 0
+                                        ) {
+                                            <hlm-collapsible class="group/collapsible">
+                                                <li hlmSidebarMenuItem>
+                                                    <button
+                                                        hlmCollapsibleTrigger
+                                                        hlmSidebarMenuButton
+                                                        class="flex w-full items-center"
+                                                    >
+                                                        @if (groupItem.icon) {
+                                                            <ng-icon hlm [name]="groupItem.icon" />
+                                                        }
+                                                        <span>{{ groupItem.titulo }}</span>
+                                                        <ng-icon
+                                                            name="lucideChevronRight"
+                                                            class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
+                                                            hlm
+                                                        />
+                                                    </button>
+                                                    <hlm-collapsible-content>
+                                                        <ul hlmSidebarMenuSub>
+                                                            @for (
+                                                                subItem of groupItem.items;
+                                                                track subItem.id
+                                                            ) {
+                                                                <li hlmSidebarMenuSubItem>
+                                                                    <a
+                                                                        hlmSidebarMenuSubButton
+                                                                        [routerLink]="subItem.url"
+                                                                        class="w-full"
+                                                                        (click)="ocultarSidebar()"
+                                                                    >
+                                                                        @if (subItem.icon) {
+                                                                            <ng-icon
+                                                                                hlm
+                                                                                [name]="
+                                                                                    subItem.icon
+                                                                                "
+                                                                            />
+                                                                        }
+                                                                        <span>{{
+                                                                            subItem.titulo
+                                                                        }}</span>
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </hlm-collapsible-content>
+                                                </li>
+                                            </hlm-collapsible>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
-            } }
-        </div>
-    </hlm-sidebar>
-    <main hlmSidebarInset class="bg-transparent z-50">
-        <header class="flex items-center justify-between px-4 pt-4">
-            <button hlmSidebarTrigger class="bg-sidebar scale-125 shadow-md hover:cursor-pointer">
-                <span class="sr-only"></span>
-            </button>
-        </header>
-    </main>
-</div>
+        </hlm-sidebar>
+        <main hlmSidebarInset class="bg-transparent z-50">
+            <header class="flex items-center justify-between px-4 pt-4">
+                <button
+                    hlmSidebarTrigger
+                    class="bg-sidebar scale-125 shadow-md hover:cursor-pointer"
+                >
+                    <span class="sr-only"></span>
+                </button>
+            </header>
+        </main>
+    </div>
 }
