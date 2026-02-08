@@ -5,30 +5,37 @@
                 Bienvenid@
                 <span class="font-bold">...</span>
             </h1>
-            <h4 hlmH4 class="text-(--negro)/70 font-semibold">Te encuentras en ...</h4>
+            @if (!negocioSeleccionado()) {
+                <hlm-skeleton class="h-7 w-64 rounded-xl" />
+            } @else {
+                <h4 hlmH4 class="text-(--negro)/70 font-semibold">
+                    Te encuentras en
+                    {{ negocioSeleccionado()?.nombre }}
+                </h4>
+            }
             <p hlmP class="text-(--negro)/70 font-normal">
                 Aquí podrás visualizar y administrar las obligaciones y tareas de tus negocios:
             </p>
         </div>
-        <div class="flex flex-col md:flex-row items-stretch justify-evenly gap-2 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 items-stretch gap-3 w-full">
             <a
                 hlmItem
                 routerLink="/mantenedores/norma-suscrita"
-                class="bg-(--celeste) [a]:hover:bg-(--celeste)/80 w-full md:w-1/2 flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
+                class="bg-(--celeste) [a]:hover:bg-(--celeste)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
             >
                 <div hlmItemHeader class="flex flex-col items-center justify-start">
                     <img [src]="urlCalendario" alt="Calendario" class="w-9" />
                     <p class="text-xl text-center">Tus Obligaciones</p>
                 </div>
                 <div hlmItemContent class="text-sm text-center text-balance font-light">
-                    Revisa, añade y edita obligaciones se tu negocio. Agrega plantillas
+                    Revisa, añade y edita obligaciones de tu negocio. Agrega plantillas
                     predeterminadas según las regulaciones locales.
                 </div>
             </a>
             <a
                 hlmItem
                 routerLink="/mantenedores/norma-suscrita"
-                class="bg-(--naranjo) [a]:hover:bg-(--naranjo)/80 w-full md:w-1/2 flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
+                class="bg-(--naranjo) [a]:hover:bg-(--naranjo)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
             >
                 <div hlmItemHeader class="flex flex-col items-center justify-start">
                     <img [src]="urlComprobacionLista" alt="Comprobacion Lista" class="w-9" />
@@ -39,12 +46,10 @@
                     empleados.
                 </div>
             </a>
-        </div>
-        <div class="flex flex-col md:flex-row items-stretch justify-evenly gap-2 w-full">
             <a
                 hlmItem
                 routerLink="/mantenedores/negocio"
-                class="bg-(--primary) [a]:hover:bg-(--primary)/80 w-full md:w-1/2 flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
+                class="bg-(--primary) [a]:hover:bg-(--primary)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
             >
                 <div hlmItemHeader class="flex flex-col items-center justify-start">
                     <img [src]="urlTienda" alt="Tienda" class="w-9" />
@@ -57,7 +62,7 @@
             </a>
             <a
                 hlmItem
-                class="bg-(--azul) [a]:hover:bg-(--azul)/80 w-full md:w-1/2 flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
+                class="bg-(--azul) [a]:hover:bg-(--azul)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
             >
                 <div hlmItemHeader class="flex flex-col items-center justify-start">
                     <img [src]="urlCaracteristicas" alt="Características" class="w-9" />
