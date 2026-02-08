@@ -1,5 +1,5 @@
 import { AuthStore } from '@/app/services/auth-store';
-import { Component, computed, inject, Inject, signal } from '@angular/core';
+import { Component, computed, inject, Inject, Input, signal } from '@angular/core';
 import { environment } from '@environment';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
@@ -11,6 +11,8 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
     styleUrl: './login.scss',
 })
 export class Login {
+    @Input() vertical: boolean = false;
+
     private authStore = inject(AuthStore);
 
     backgroundRefreshRunning = this.authStore.backgroundRefreshRunning;

@@ -1,3 +1,12 @@
-<button hlmBtn variant="outline" (click)="cerrarSesion()" [disabled]="deshabilitarBoton()">
-    @if(deshabilitarBoton()){<hlm-spinner />} Cerrar Sesión
+<button
+    hlmBtn
+    [variant]="primary ? 'default' : 'secondary'"
+    (click)="cerrarSesion()"
+    [disabled]="deshabilitarBoton()"
+    class="px-4 text-[clamp(0.7rem,1.5vw,1.1rem)] h-[clamp(2rem,3.5vw,2.4rem)]"
+>
+    @if (deshabilitarBoton()) {
+        <hlm-spinner />
+    }
+    Cerrar Sesión
 </button>

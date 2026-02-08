@@ -1,6 +1,6 @@
 import { AuthDao } from '@daos/auth-dao';
 import { AuthStore } from '@services/auth-store';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, Input, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@environment';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -15,6 +15,8 @@ import { NegocioStore } from '@/app/services/negocio-store';
     styleUrl: './logout.scss',
 })
 export class Logout {
+    @Input() primary: boolean = false;
+
     private authDao = inject(AuthDao);
     private authStore = inject(AuthStore);
     private negocioStore = inject(NegocioStore);
