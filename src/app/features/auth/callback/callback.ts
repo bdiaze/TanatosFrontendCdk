@@ -24,7 +24,7 @@ export class Callback implements OnInit {
     private authDao = inject(AuthDao);
 
     progreso = signal<number>(0);
-    desc_progreso = signal<string>('Obteniendo código de autorización...');
+    desc_progreso = signal<string>('Cargando la información de tus negocios...');
 
     interval!: number;
 
@@ -83,13 +83,13 @@ export class Callback implements OnInit {
                         this.progreso.set(100);
                         this.desc_progreso.set('Sesión iniciada exitosamente...');
 
-                        this.router.navigateByUrl('/');
+                        this.router.navigateByUrl('/inicio');
                     },
                     error: (err) => {
                         clearInterval(this.interval);
                         this.progreso.set(100);
                         this.desc_progreso.set(
-                            'Ocurrió un error al iniciar sesión, intente nuevamente...'
+                            'Ocurrió un error al iniciar sesión, intente nuevamente...',
                         );
                         console.error('Ocurrió un error al obtener tokens', err);
                     },
@@ -111,9 +111,9 @@ export class Callback implements OnInit {
             this.progreso.update((oldValue) => (oldValue < 90 ? oldValue + 10 : oldValue));
             i += 10;
             if (i == 30) {
-                this.desc_progreso.set('Validando estado contra XSRF...');
+                // this.desc_progreso.set('Validando estado contra XSRF...');
             } else if (i == 60) {
-                this.desc_progreso.set('Generando tokens de autenticación...');
+                // this.desc_progreso.set('Generando tokens de autenticación...');
             }
         }, 100);
     }

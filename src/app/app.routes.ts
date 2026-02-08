@@ -20,11 +20,16 @@ import { MantenedorTipoRubro } from './features/mantenedores/mantenedor-tipo-rub
 import { MantenedorTipoActividad } from './features/mantenedores/mantenedor-tipo-actividad/mantenedor-tipo-actividad';
 import { TableroVencimientos } from './features/tableros/tablero-vencimientos/tablero-vencimientos';
 import { Vencimiento } from './features/tableros/vencimiento/vencimiento';
+import { MenuInicial } from './features/tableros/menu-inicial/menu-inicial';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
     { path: 'callback', component: Callback },
     { path: 'logout', redirectTo: '', pathMatch: 'full' },
+    {
+        path: 'inicio',
+        component: MenuInicial,
+    },
     {
         path: 'tableros/vencimientos',
         component: TableroVencimientos,
