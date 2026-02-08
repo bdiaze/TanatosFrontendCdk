@@ -1,42 +1,30 @@
 <section
-    class="relative z-50 h-full bg-(--gris) text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden pb-4"
+    class="relative z-50 h-lvh bg-(--gris) text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden pb-4"
 >
     @if (withClose) {
-        <div
-            class="flex items-center justify-end h-19 md:h-[clamp(3rem,10vw,7rem)] min-h-19 md:min-h-[clamp(3rem,10vw,7rem)] pr-4"
-        >
-            <button
-                hlmBtn
-                hlmsidebartrigger
-                variant="ghost"
-                class="hover:bg-transparent py-4"
-                (click)="cerrar()"
-            >
-                <ng-icon hlm name="lucideX" size="base" class="text-(--negro)/60 scale-100" />
-            </button>
-        </div>
-        <hlm-separator />
-    }
-    @if (sesionIniciada()) {
-        <div class="sticky">
+        <div class="sticky flex flex-row w-full items-center justify-between">
             <button
                 hlmBtn
                 variant="outline"
                 [hlmDropdownMenuTrigger]="menuNegocios"
-                class="h-18 border-none border-0 rounded-xs px-4 hover:text-(--negro)/70 w-full"
+                class="h-full border-none border-0 rounded-xs hover:text-(--negro)/70 pl-4 pr-8 shadow-none"
                 [disabled]="cargandoNegocios()"
             >
-                <div class="flex justify-center items-center w-full gap-3">
-                    <div
-                        class="text-(--negro)/70 flex aspect-square size-8 items-center justify-center rounded-lg"
-                    >
-                        <ng-icon name="lucideStore" class="text-2xl" />
-                    </div>
+                <div class="flex flex-row justify-center items-center gap-4 w-full">
+                    @if (negociosUsuario().length > 1) {
+                        <div class="size-6">
+                            <ng-icon
+                                hlm
+                                name="lucideChevronsUpDown"
+                                class="ml-auto opacity-80"
+                                size="base"
+                            />
+                        </div>
+                    }
                     <div class="grid flex-1 text-left text-sm leading-tight">
-                        <span class="truncate font-semibold">
+                        <span class="truncate font-semibold opacity-90 text-base">
                             @if (cargandoNegocios()) {
-                                <hlm-spinner class="text-xs" />
-                                Cargando negocios...
+                                <hlm-skeleton class="h-7 w-32 rounded-xl" />
                             } @else {
                                 {{
                                     cargandoNegocios()
@@ -47,19 +35,15 @@
                             }
                         </span>
                         <span
-                            class="truncate text-xs flex items-center gap-1 font-normal font-serif"
+                            class="truncate text-xs flex items-center gap-1 font-normal font-serif opacity-80"
                         >
+                            ...
                         </span>
                     </div>
-                    @if (negociosUsuario().length > 1) {
-                        <div class="size-4">
-                            <ng-icon hlm name="lucideChevronsUpDown" class="ml-auto" size="sm" />
-                        </div>
-                    }
                 </div>
             </button>
             <ng-template #menuNegocios>
-                <hlm-dropdown-menu sidebar-dropdown-menu class="mx-2">
+                <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
                     @for (negocio of negociosUsuario(); track negocio.id) {
                         <button
                             hlmDropdownMenuCheckbox
@@ -67,7 +51,7 @@
                             (triggered)="cambiarNegocio(negocio)"
                         >
                             <hlm-dropdown-menu-checkbox-indicator />
-                            <span class="pr-5">{{ negocio.nombre }}</span>
+                            <span class="pr-8">{{ negocio.nombre }}</span>
                             <hlm-dropdown-menu-shortcut>
                                 <ng-icon name="lucideStore" class="text-sm translate-y-0.5 mr-1" />
                             </hlm-dropdown-menu-shortcut>
@@ -75,7 +59,92 @@
                     }
                 </hlm-dropdown-menu>
             </ng-template>
+            <div class="flex-1"></div>
+            <div
+                class="flex items-center justify-center h-19 md:h-[clamp(3rem,10vw,7rem)] min-h-19 md:min-h-[clamp(3rem,10vw,7rem)] pr-2"
+            >
+                <button
+                    hlmBtn
+                    hlmsidebartrigger
+                    variant="ghost"
+                    class="hover:bg-transparent py-4"
+                    (click)="cerrar()"
+                >
+                    <ng-icon hlm name="lucideX" size="base" class="text-(--negro)/60 scale-100" />
+                </button>
+            </div>
         </div>
+        <hlm-separator />
+    }
+    @if (sesionIniciada()) {
+        @if (!withClose) {
+            <div class="sticky">
+                <button
+                    hlmBtn
+                    variant="outline"
+                    [hlmDropdownMenuTrigger]="menuNegocios"
+                    class="h-18 border-none border-0 rounded-xs px-4 hover:text-(--negro)/70 w-full"
+                    [disabled]="cargandoNegocios()"
+                >
+                    <div class="flex justify-center items-center w-full gap-3">
+                        <div
+                            class="text-(--negro)/70 flex aspect-square size-8 items-center justify-center rounded-lg"
+                        >
+                            <ng-icon name="lucideStore" class="text-2xl" />
+                        </div>
+                        <div class="grid flex-1 text-left text-sm leading-tight">
+                            <span class="truncate font-semibold">
+                                @if (cargandoNegocios()) {
+                                    <hlm-spinner class="text-xs" />
+                                    Cargando negocios...
+                                } @else {
+                                    {{
+                                        cargandoNegocios()
+                                            ? 'Cargando negocios...'
+                                            : (negocioSeleccionado()?.nombre ??
+                                              'Seleccionar negocio...')
+                                    }}
+                                }
+                            </span>
+                            <span
+                                class="truncate text-xs flex items-center gap-1 font-normal font-serif"
+                            >
+                            </span>
+                        </div>
+                        @if (negociosUsuario().length > 1) {
+                            <div class="size-4">
+                                <ng-icon
+                                    hlm
+                                    name="lucideChevronsUpDown"
+                                    class="ml-auto"
+                                    size="sm"
+                                />
+                            </div>
+                        }
+                    </div>
+                </button>
+                <ng-template #menuNegocios>
+                    <hlm-dropdown-menu sidebar-dropdown-menu class="mx-2">
+                        @for (negocio of negociosUsuario(); track negocio.id) {
+                            <button
+                                hlmDropdownMenuCheckbox
+                                [checked]="negocioSeleccionado()?.id === negocio.id"
+                                (triggered)="cambiarNegocio(negocio)"
+                            >
+                                <hlm-dropdown-menu-checkbox-indicator />
+                                <span class="pr-5">{{ negocio.nombre }}</span>
+                                <hlm-dropdown-menu-shortcut>
+                                    <ng-icon
+                                        name="lucideStore"
+                                        class="text-sm translate-y-0.5 mr-1"
+                                    />
+                                </hlm-dropdown-menu-shortcut>
+                            </button>
+                        }
+                    </hlm-dropdown-menu>
+                </ng-template>
+            </div>
+        }
         <div class="overflow-y-auto overflow-x-hidden pb-4">
             @for (item of opcionesMenu(); track item.id; let first = $first) {
                 @if (item.tipo === 'item' && item.url) {
@@ -155,7 +224,7 @@
                                         [routerLink]="groupItem.url"
                                         routerLinkActive="active"
                                         [routerLinkActiveOptions]="{ exact: true }"
-                                        class="w-full items-center justify-start text-(--negro)/80 font-normal ml-2"
+                                        class="w-full items-center justify-start text-(--negro)/80 font-normal ml-2 my-0.5"
                                         (click)="click()"
                                     >
                                         @if (groupItem.icon) {
@@ -178,7 +247,7 @@
                                             hlmBtn
                                             variant="link"
                                             hlmCollapsibleTrigger
-                                            class="w-full flex items-center justify-start gap-2 text-(--negro)/80 py- text-sm font-normal"
+                                            class="w-full flex items-center justify-start gap-2 text-(--negro)/80 py- text-sm font-normal my-0.5"
                                         >
                                             @if (groupItem.icon) {
                                                 <ng-icon hlm [name]="groupItem.icon" size="sm" />
@@ -203,8 +272,10 @@
                                                         variant="link"
                                                         [routerLink]="subItem.url"
                                                         routerLinkActive="active"
-                                                        [routerLinkActiveOptions]="{ exact: true }"
-                                                        class="w-full items-center justify-start text-(--negro)/80 font-normal"
+                                                        [routerLinkActiveOptions]="{
+                                                            exact: true,
+                                                        }"
+                                                        class="w-full items-center justify-start text-(--negro)/80 font-normal my-0.5"
                                                         (click)="click()"
                                                     >
                                                         @if (subItem.icon) {

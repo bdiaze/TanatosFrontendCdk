@@ -31,7 +31,9 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCollapsibleImports } from '@spartan-ng/helm/collapsible';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 
 @Component({
@@ -46,6 +48,8 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
         HlmSeparatorImports,
         HlmButtonImports,
         RouterModule,
+        HlmSkeletonImports,
+        HlmScrollAreaImports,
     ],
     templateUrl: './menu.html',
     styleUrl: './menu.scss',
