@@ -6,7 +6,7 @@ import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -32,6 +32,7 @@ import { EntDocumentoAdjuntoGenerarUrlBajada } from '@/app/entities/others/ent-d
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { debounceTime, Subject, switchMap } from 'rxjs';
 import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-suscrita-completar-norma';
+import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 
 @Component({
     selector: 'app-vencimiento',
@@ -52,6 +53,8 @@ import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-
         HlmTableImports,
         HlmProgressImports,
         CommonModule,
+        HlmBreadCrumbImports,
+        RouterLink,
     ],
     templateUrl: './vencimiento.html',
     styleUrl: './vencimiento.scss',

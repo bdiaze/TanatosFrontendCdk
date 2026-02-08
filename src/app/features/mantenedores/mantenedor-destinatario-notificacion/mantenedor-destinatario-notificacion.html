@@ -1,5 +1,16 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
     <div>
+        <nav hlmBreadcrumb class="mb-4 pl-2">
+            <ol hlmBreadcrumbList>
+                <li hlmBreadcrumbItem>
+                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                </li>
+                <li hlmBreadcrumbSeparator></li>
+                <li hlmBreadcrumbItem>
+                    <span hlmBreadcrumbPage>Mis Destinatarios</span>
+                </li>
+            </ol>
+        </nav>
         <p hlmP class="font-semibold opacity-65 text-sm text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
         </p>

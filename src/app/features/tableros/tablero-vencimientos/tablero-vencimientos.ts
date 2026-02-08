@@ -23,6 +23,7 @@ import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -42,6 +43,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         BrnTooltipImports,
         HlmTooltipImports,
         HlmSkeletonImports,
+        HlmBreadCrumbImports,
     ],
     templateUrl: './tablero-vencimientos.html',
     styleUrl: './tablero-vencimientos.scss',

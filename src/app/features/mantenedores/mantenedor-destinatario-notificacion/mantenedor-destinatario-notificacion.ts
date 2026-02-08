@@ -26,6 +26,7 @@ import { NegocioStore } from '@/app/services/negocio-store';
 import { AuthStore } from '@/app/services/auth-store';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 
 @Component({
     selector: 'app-mantenedor-destinatario-notificacion',
@@ -46,6 +47,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         HlmP,
         HlmSpinnerImports,
         HlmSkeletonImports,
+        HlmBreadCrumbImports,
     ],
     templateUrl: './mantenedor-destinatario-notificacion.html',
     styleUrl: './mantenedor-destinatario-notificacion.scss',

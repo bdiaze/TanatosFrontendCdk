@@ -33,6 +33,7 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 
 @Component({
     selector: 'app-mantenedor-plantillas-inscritas',
@@ -52,6 +53,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         BrnTooltipImports,
         HlmTooltipImports,
         HlmSkeletonImports,
+        HlmBreadCrumbImports,
     ],
     templateUrl: './mantenedor-plantillas-inscritas.html',
     styleUrl: './mantenedor-plantillas-inscritas.scss',

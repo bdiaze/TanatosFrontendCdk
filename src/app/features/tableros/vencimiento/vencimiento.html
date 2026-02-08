@@ -1,4 +1,26 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <nav hlmBreadcrumb class="mb-4 pl-2">
+        <ol hlmBreadcrumbList>
+            <li hlmBreadcrumbItem>
+                <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+            </li>
+            <li hlmBreadcrumbSeparator></li>
+            <li hlmBreadcrumbItem>
+                <a hlmBreadcrumbLink link="/tableros/vencimientos">Mi Calendario</a>
+            </li>
+            <li hlmBreadcrumbSeparator></li>
+            <li hlmBreadcrumbItem>
+                <span hlmBreadcrumbPage>
+                    @if (cargandoNormaSuscritaConVencimiento()) {
+                        <hlm-skeleton class="h-5 w-30 rounded-xl" />
+                    } @else {
+                        {{ item()?.nombre ?? item()?.templateNorma?.nombre }}
+                    }
+                </span>
+            </li>
+        </ol>
+    </nav>
+
     <p hlmP class="font-semibold opacity-65 text-sm text-center">
         {{ negocioStore.negocioSeleccionado()?.nombre }}
     </p>
@@ -114,7 +136,10 @@
                                             track documento.id
                                         ) {
                                             <tr hlmTr class="fade-in">
-                                                <td hlmTd class="whitespace-normal wrap-break-word">
+                                                <td
+                                                    hlmTd
+                                                    class="whitespace-normal wrap-break-word break-all"
+                                                >
                                                     {{ documento.nombreArchivo }}
                                                 </td>
                                                 <td hlmTd class="text-center">
@@ -184,7 +209,7 @@
                                             <tr hlmTr class="fade-in">
                                                 <td
                                                     hlmTd
-                                                    class="whitespace-normal wrap-break-word"
+                                                    class="whitespace-normal wrap-break-word break-all"
                                                     colspan="3"
                                                 >
                                                     {{ documentoEnProgreso.nombre }}

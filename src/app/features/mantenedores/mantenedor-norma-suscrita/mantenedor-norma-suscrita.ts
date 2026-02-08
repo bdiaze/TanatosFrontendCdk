@@ -27,6 +27,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita',
@@ -44,6 +45,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         RouterLink,
         HlmSeparatorImports,
         HlmSkeletonImports,
+        HlmBreadCrumbImports,
     ],
     templateUrl: './mantenedor-norma-suscrita.html',
     styleUrl: './mantenedor-norma-suscrita.scss',

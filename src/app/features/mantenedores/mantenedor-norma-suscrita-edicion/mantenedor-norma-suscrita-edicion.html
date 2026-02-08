@@ -1,6 +1,27 @@
 <div
-    class="max-w-screen md:max-w-2xl mx-auto px-4 py-4 flex flex-col justify-center items-center gap-4"
+    class="max-w-screen md:max-w-2xl mx-auto px-6 py-4 flex flex-col justify-center items-center gap-4"
 >
+    <nav hlmBreadcrumb class="mb-4 w-full">
+        <ol hlmBreadcrumbList>
+            <li hlmBreadcrumbItem>
+                <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+            </li>
+            <li hlmBreadcrumbSeparator></li>
+            <li hlmBreadcrumbItem>
+                <a hlmBreadcrumbLink link="/mantenedores/norma-suscrita">Mis Obligaciones</a>
+            </li>
+            <li hlmBreadcrumbSeparator></li>
+            <li hlmBreadcrumbItem>
+                <span hlmBreadcrumbPage>
+                    @if (cargandoNormaSuscrita()) {
+                        <hlm-skeleton class="h-5 w-30 rounded-xl" />
+                    } @else {
+                        {{ form.controls['nombre'].value }}
+                    }
+                </span>
+            </li>
+        </ol>
+    </nav>
     @if (cargandoNormaSuscrita()) {
         <div class="flex flex-col gap-4 justify-center-safe items-start fade-in w-full">
             <hlm-skeleton class="h-10 w-2/3 rounded-xl" />

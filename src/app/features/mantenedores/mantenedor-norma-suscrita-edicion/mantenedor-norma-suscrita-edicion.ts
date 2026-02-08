@@ -52,6 +52,7 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita-edicion',
@@ -83,6 +84,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         BrnPopoverImports,
         HlmPopoverImports,
         HlmSkeletonImports,
+        HlmBreadCrumbImports,
     ],
     templateUrl: './mantenedor-norma-suscrita-edicion.html',
     styleUrl: './mantenedor-norma-suscrita-edicion.scss',

@@ -23,6 +23,7 @@ import {
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -46,6 +47,7 @@ import { forkJoin } from 'rxjs';
         HlmDropdownMenuImports,
         HlmSpinnerImports,
         HlmSkeletonImports,
+        HlmBreadCrumbImports,
     ],
     templateUrl: './mantenedor-negocio.html',
     styleUrl: './mantenedor-negocio.scss',
