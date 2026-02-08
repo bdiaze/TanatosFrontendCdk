@@ -3,70 +3,75 @@
 >
     @if (withClose) {
         <div class="sticky flex flex-row w-full items-center justify-between">
-            <button
-                hlmBtn
-                variant="outline"
-                [hlmDropdownMenuTrigger]="menuNegocios"
-                class="h-full border-none border-0 rounded-xs hover:text-(--negro)/70 pl-4 pr-8 shadow-none"
-                [disabled]="cargandoNegocios()"
-            >
-                <div class="flex flex-row justify-center items-center gap-4 w-full">
-                    @if (negociosUsuario().length > 1) {
-                        <div class="size-6">
-                            <ng-icon
-                                hlm
-                                name="lucideChevronsUpDown"
-                                class="ml-auto opacity-80"
-                                size="base"
-                            />
+            @if (sesionIniciada()) {
+                <button
+                    hlmBtn
+                    variant="outline"
+                    [hlmDropdownMenuTrigger]="menuNegocios"
+                    class="h-full border-none border-0 rounded-xs hover:text-(--negro)/70 pl-4 pr-8 shadow-none"
+                    [disabled]="cargandoNegocios()"
+                >
+                    <div class="flex flex-row justify-center items-center gap-4 w-full">
+                        @if (negociosUsuario().length > 1) {
+                            <div class="size-6">
+                                <ng-icon
+                                    hlm
+                                    name="lucideChevronsUpDown"
+                                    class="ml-auto opacity-80"
+                                    size="base"
+                                />
+                            </div>
+                        }
+                        <div class="grid flex-1 text-left text-sm leading-tight">
+                            <span class="truncate font-semibold opacity-90 text-base">
+                                @if (cargandoNegocios()) {
+                                    <hlm-skeleton class="h-7 w-32 rounded-xl" />
+                                } @else {
+                                    {{
+                                        cargandoNegocios()
+                                            ? 'Cargando negocios...'
+                                            : (negocioSeleccionado()?.nombre ??
+                                              'Seleccionar negocio...')
+                                    }}
+                                }
+                            </span>
+                            <span
+                                class="truncate text-xs flex items-center gap-1 font-normal font-serif opacity-80"
+                            >
+                                @if (cargandoInformacionUsuario()) {
+                                    <hlm-skeleton class="h-5 w-36 rounded-xl" />
+                                } @else {
+                                    {{
+                                        cargandoInformacionUsuario()
+                                            ? 'Cargando nombre...'
+                                            : `${informacionUsuario()?.nombre ?? ''} ${informacionUsuario()?.apellido ?? ''}`
+                                    }}
+                                }
+                            </span>
                         </div>
-                    }
-                    <div class="grid flex-1 text-left text-sm leading-tight">
-                        <span class="truncate font-semibold opacity-90 text-base">
-                            @if (cargandoNegocios()) {
-                                <hlm-skeleton class="h-7 w-32 rounded-xl" />
-                            } @else {
-                                {{
-                                    cargandoNegocios()
-                                        ? 'Cargando negocios...'
-                                        : (negocioSeleccionado()?.nombre ??
-                                          'Seleccionar negocio...')
-                                }}
-                            }
-                        </span>
-                        <span
-                            class="truncate text-xs flex items-center gap-1 font-normal font-serif opacity-80"
-                        >
-                            @if (cargandoInformacionUsuario() || false) {
-                                <hlm-skeleton class="h-5 w-36 rounded-xl" />
-                            } @else {
-                                {{
-                                    cargandoInformacionUsuario()
-                                        ? 'Cargando nombre...'
-                                        : `${informacionUsuario()?.nombre} ${informacionUsuario()?.apellido}`
-                                }}
-                            }
-                        </span>
                     </div>
-                </div>
-            </button>
-            <ng-template #menuNegocios>
-                <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
-                    @for (negocio of negociosUsuario(); track negocio.id) {
-                        <button
-                            hlmDropdownMenuCheckbox
-                            [checked]="negocioSeleccionado()?.id === negocio.id"
-                            (triggered)="cambiarNegocio(negocio)"
-                        >
-                            <hlm-dropdown-menu-checkbox-indicator />
-                            <span class="pr-8">{{ negocio.nombre }}</span>
-                            <hlm-dropdown-menu-shortcut>
-                                <ng-icon name="lucideStore" class="text-sm translate-y-0.5 mr-1" />
-                            </hlm-dropdown-menu-shortcut>
-                        </button>
-                    }
-                </hlm-dropdown-menu>
-            </ng-template>
+                </button>
+                <ng-template #menuNegocios>
+                    <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
+                        @for (negocio of negociosUsuario(); track negocio.id) {
+                            <button
+                                hlmDropdownMenuCheckbox
+                                [checked]="negocioSeleccionado()?.id === negocio.id"
+                                (triggered)="cambiarNegocio(negocio)"
+                            >
+                                <hlm-dropdown-menu-checkbox-indicator />
+                                <span class="pr-8">{{ negocio.nombre }}</span>
+                                <hlm-dropdown-menu-shortcut>
+                                    <ng-icon
+                                        name="lucideStore"
+                                        class="text-sm translate-y-0.5 mr-1"
+                                    />
+                                </hlm-dropdown-menu-shortcut>
+                            </button>
+                        }
+                    </hlm-dropdown-menu>
+                </ng-template>
+            }
             <div class="flex-1"></div>
             <div
                 class="flex items-center justify-center h-19 md:h-[clamp(3rem,10vw,7rem)] min-h-19 md:min-h-[clamp(3rem,10vw,7rem)] pr-2"
