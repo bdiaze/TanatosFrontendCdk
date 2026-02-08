@@ -3,7 +3,9 @@
         <div class="flex flex-col justify-start items-start gap-1 pt-1 pb-5 fade-in">
             <h1 hlmH1 class="font-serif text-(--negro)/70 font-semibold">
                 Bienvenid@
-                <span class="font-bold">...</span>
+                @if (informacionUsuario()?.nombre) {
+                    <span class="font-bold">{{ informacionUsuario()?.nombre }}</span>
+                }
             </h1>
             @if (!negocioSeleccionado()) {
                 <hlm-skeleton class="h-7 w-64 rounded-xl" />

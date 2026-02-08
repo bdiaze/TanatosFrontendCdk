@@ -33,4 +33,5 @@ export class MenuInicial {
 
     negocioStore = inject(NegocioStore);
     negocioSeleccionado = this.negocioStore.negocioSeleccionado;
+    informacionUsuario = this.negocioStore.informacionUsuario;
 }
