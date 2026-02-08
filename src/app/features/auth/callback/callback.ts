@@ -7,10 +7,11 @@ import { AuthDao } from '@/app/daos/auth-dao';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmProgressImports } from '@spartan-ng/helm/progress';
+import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-callback',
-    imports: [HlmSpinnerImports, HlmH4, HlmProgressImports],
+    imports: [HlmSpinnerImports, HlmH4, HlmProgressImports, HlmSkeletonImports],
     templateUrl: './callback.html',
     styleUrl: './callback.scss',
     host: {
@@ -31,7 +32,7 @@ export class Callback implements OnInit {
     ngOnInit() {
         this.authStore.callbackRunning.set(true);
 
-        this.iniciarProgresoFalso();
+        // this.iniciarProgresoFalso();
 
         this.route.queryParams.subscribe((params) => {
             const code = params['code'];
