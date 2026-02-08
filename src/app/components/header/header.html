@@ -93,7 +93,10 @@
                         @if (!sesionIniciada() && !logoutRunning()) {
                             <app-login [vertical]="false"></app-login>
                         } @else {
-                            <app-logout [primary]="true"></app-logout>
+                            <app-logout
+                                [primary]="true"
+                                (click)="cerrarSesionGatillado()"
+                            ></app-logout>
                         }
                     </div>
                 </div>

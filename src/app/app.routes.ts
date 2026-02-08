@@ -21,9 +21,11 @@ import { MantenedorTipoActividad } from './features/mantenedores/mantenedor-tipo
 import { TableroVencimientos } from './features/tableros/tablero-vencimientos/tablero-vencimientos';
 import { Vencimiento } from './features/tableros/vencimiento/vencimiento';
 import { MenuInicial } from './features/tableros/menu-inicial/menu-inicial';
+import { EmptyHero } from './components/empty-hero/empty-hero';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
+    { path: 'cargando-inicio', component: EmptyHero },
     { path: 'callback', component: Callback },
     { path: 'logout', redirectTo: '', pathMatch: 'full' },
     {

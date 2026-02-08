@@ -3,7 +3,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Login } from '@/app/features/auth/login/login';
 import { Logout } from '@/app/features/auth/logout/logout';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { environment } from '@/environments/environment';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmP } from '@spartan-ng/helm/typography';
@@ -47,6 +47,7 @@ export class Header implements OnInit {
     });
 
     private authStore = inject(AuthStore);
+    private router = inject(Router);
 
     sesionIniciada = this.authStore.sesionIniciada;
     logoutRunning = this.authStore.logoutRunning;
@@ -63,5 +64,10 @@ export class Header implements OnInit {
 
     cerrarMenu() {
         this.menuAbierto.set(false);
+    }
+
+    cerrarSesionGatillado() {
+        this.menuAbierto.set(false);
+        this.router.navigateByUrl('/cargando-inicio');
     }
 }
