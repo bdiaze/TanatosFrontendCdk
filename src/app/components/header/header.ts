@@ -1,5 +1,5 @@
 import { AuthStore } from '@services/auth-store';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Login } from '@/app/features/auth/login/login';
 import { Logout } from '@/app/features/auth/logout/logout';
@@ -39,6 +39,12 @@ import { CommonModule } from '@angular/common';
 })
 export class Header implements OnInit {
     urlLogo = `${environment.urlImages}/images/logo.svg`;
+    logoRedirect = computed(() => {
+        if (this.sesionIniciada() || this.logoutRunning()) {
+            return '/inicio';
+        }
+        return '/';
+    });
 
     private authStore = inject(AuthStore);
 

@@ -3,7 +3,7 @@
     [class.border-b]="sesionIniciada() || logoutRunning()"
 >
     <div class="w-full mx-auto flex flex-row justify-between items-center">
-        <a routerLink="/">
+        <a [routerLink]="logoRedirect()">
             <img
                 class="h-19 md:h-[clamp(3rem,10vw,7rem)] select-none ml-3 md:ml-0"
                 [src]="urlLogo"
