@@ -1,4 +1,4 @@
-<section class="max-w-screen md:max-w-2xl mx-auto px-4 pt-4 pb-6 fade-in">
+<section class="max-w-screen md:max-w-2xl mx-auto px-6 pt-4 pb-6 fade-in">
     <div class="flex flex-col gap-2">
         <div class="flex flex-col justify-start items-start gap-1 pt-1 pb-5 fade-in">
             <h1 hlmH1 class="font-serif text-(--negro)/70 font-semibold">
@@ -22,16 +22,16 @@
         <div class="grid grid-cols-1 md:grid-cols-2 items-stretch gap-3 w-full">
             <a
                 hlmItem
-                routerLink="/mantenedores/norma-suscrita"
+                routerLink="/tableros/vencimientos"
                 class="bg-(--celeste) [a]:hover:bg-(--celeste)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
             >
                 <div hlmItemHeader class="flex flex-col items-center justify-start">
                     <img [src]="urlCalendario" alt="Calendario" class="w-9" />
-                    <p class="text-xl text-center">Tus Obligaciones</p>
+                    <p class="text-xl text-center">Mi Calendario</p>
                 </div>
                 <div hlmItemContent class="text-sm text-center text-balance font-light">
-                    Revisa, añade y edita obligaciones de tu negocio. Agrega plantillas
-                    predeterminadas según las regulaciones locales.
+                    Revisa y da por completadas tus próximas obligaciones. No dejes que venzan,
+                    recuerda que existen multas por no cumplirlas.
                 </div>
             </a>
             <a
@@ -41,11 +41,11 @@
             >
                 <div hlmItemHeader class="flex flex-col items-center justify-start">
                     <img [src]="urlComprobacionLista" alt="Comprobacion Lista" class="w-9" />
-                    <p class="text-xl text-center">Tus Tareas</p>
+                    <p class="text-xl text-center">Mis Obligaciones</p>
                 </div>
                 <div hlmItemContent class="text-sm text-center text-balance font-light">
-                    Revisa, añade y borra tareas personalizadas de tu negocio para ti y tus
-                    empleados.
+                    Revisa, añade y edita obligaciones de tu negocio. Agrega plantillas
+                    predeterminadas según las regulaciones locales.
                 </div>
             </a>
             <a
@@ -55,7 +55,7 @@
             >
                 <div hlmItemHeader class="flex flex-col items-center justify-start">
                     <img [src]="urlTienda" alt="Tienda" class="w-9" />
-                    <p class="text-xl text-center">Tus Negocios</p>
+                    <p class="text-xl text-center">Mis Negocios</p>
                 </div>
                 <div hlmItemContent class="text-sm text-center text-balance font-light">
                     Revisa, añade y administra tus negocios según tu plan con nosotros. Añade nuevos
@@ -68,7 +68,7 @@
             >
                 <div hlmItemHeader class="flex flex-col items-center justify-start">
                     <img [src]="urlCaracteristicas" alt="Características" class="w-9" />
-                    <p class="text-xl text-center">Tu Plan</p>
+                    <p class="text-xl text-center">Mi Plan</p>
                 </div>
                 <div hlmItemContent class="text-sm text-center text-balance font-light">
                     Revisa y actualiza los detalles de tu plan (Tipo de plan, métodos de pago,
