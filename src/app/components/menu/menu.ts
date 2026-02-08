@@ -89,6 +89,7 @@ export class Menu {
 
     negocioSeleccionado = this.negocioStore.negocioSeleccionado;
     negociosUsuario = this.negocioStore.negociosUsuario;
+    informacionUsuario = this.negocioStore.informacionUsuario;
 
     opcionesMenu = computed<OpcionMenu[]>(() => {
         const opciones: OpcionMenu[] = [];
@@ -235,6 +236,7 @@ export class Menu {
         effect(() => {
             if (this.sesionIniciada()) {
                 this.obtenerNegocios();
+                this.obtenerInformacionUsuario();
             }
         });
     }
@@ -253,6 +255,18 @@ export class Menu {
             .subscribe({})
             .add(() => {
                 this.cargandoNegocios.set(false);
+            });
+    }
+
+    cargandoInformacionUsuario = signal<boolean>(true);
+
+    obtenerInformacionUsuario() {
+        this.cargandoInformacionUsuario.set(true);
+        this.negocioDao
+            .obtenerInformacionUsuario()
+            .subscribe({})
+            .add(() => {
+                this.cargandoInformacionUsuario.set(false);
             });
     }
 

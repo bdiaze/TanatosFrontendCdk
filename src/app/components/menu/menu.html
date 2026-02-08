@@ -37,7 +37,15 @@
                         <span
                             class="truncate text-xs flex items-center gap-1 font-normal font-serif opacity-80"
                         >
-                            ...
+                            @if (cargandoInformacionUsuario() || false) {
+                                <hlm-skeleton class="h-5 w-36 rounded-xl" />
+                            } @else {
+                                {{
+                                    cargandoInformacionUsuario()
+                                        ? 'Cargando nombre...'
+                                        : `${informacionUsuario()?.nombre} ${informacionUsuario()?.apellido}`
+                                }}
+                            }
                         </span>
                     </div>
                 </div>
