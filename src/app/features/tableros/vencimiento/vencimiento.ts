@@ -6,14 +6,11 @@ import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
     lucideCalendarCheck,
-    lucideCircleAlert,
-    lucideCircleCheck,
-    lucideClockAlert,
     lucideDownload,
     lucidePlus,
     lucideTrash,
@@ -27,14 +24,10 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
-import { HlmInput } from '@spartan-ng/helm/input';
 import { SalFiscalizadorNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { EntDocumentoAdjuntoGenerarUrlSubida } from '@/app/entities/others/ent-documento-adjunto-generar-url-subida';
-import { EntDocumentoAdjuntoConfirmarSubida } from '@/app/entities/others/ent-documento-adjunto-confirmar-subida';
 import { HttpEventType } from '@angular/common/http';
 import { HlmProgressImports } from '@spartan-ng/helm/progress';
-import { SalDocumentoAdjunto } from '@/app/entities/others/sal-documento-adjunto';
 import { EntDocumentoAdjuntoGenerarUrlBajada } from '@/app/entities/others/ent-documento-adjunto-generar-url-bajada';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { debounceTime, Subject, switchMap } from 'rxjs';
@@ -56,7 +49,6 @@ import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-
         HlmAlertImports,
         HlmSkeletonImports,
         HlmBadgeImports,
-        HlmInput,
         HlmTableImports,
         HlmProgressImports,
         CommonModule,
