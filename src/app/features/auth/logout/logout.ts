@@ -47,6 +47,7 @@ export class Logout {
 
                 this.negocioStore.negociosUsuario.set([]);
                 this.negocioStore.negocioSeleccionado.set(null);
+                this.negocioStore.informacionUsuario.set(null);
                 clearCookie('NegocioSeleccionado');
 
                 const url =

@@ -7,6 +7,7 @@ import { EntNegocioCrear } from '../entities/others/ent-negocio-crear';
 import { EntNegocioActualizar } from '../entities/others/ent-negocio-actualizar';
 import { NegocioStore } from '../services/negocio-store';
 import { clearCookie, getCookie, setCookie } from '../helpers/cookie-helper';
+import { SalNegocioInformacionUsuario } from '../entities/others/sal-negocio-informacion-usuario';
 
 @Injectable({
     providedIn: 'root',
@@ -15,6 +16,25 @@ export class NegocioDao {
     constructor(private http: HttpClient) {}
 
     negocioStore = inject(NegocioStore);
+
+    obtenerInformacionUsuario(): Observable<SalNegocioInformacionUsuario> {
+        return this.http
+            .get<SalNegocioInformacionUsuario>(
+                environment.tanatosService.apiUrl + '/Negocio/InformacionUsuario',
+            )
+            .pipe(
+                tap((v) => {
+                    const informacionExistente = this.negocioStore.informacionUsuario();
+                    if (
+                        v.nombre !== informacionExistente?.nombre ||
+                        v.apellido !== informacionExistente.apellido ||
+                        v.email !== informacionExistente.email
+                    ) {
+                        this.negocioStore.informacionUsuario.set(v);
+                    }
+                }),
+            );
+    }
 
     obtenerVigentes(): Observable<SalNegocio[]> {
         return this.http
