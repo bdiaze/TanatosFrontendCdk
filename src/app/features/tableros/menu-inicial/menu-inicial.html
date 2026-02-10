@@ -1,7 +1,7 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-6 pt-4 pb-6 fade-in">
     <div class="flex flex-col gap-2">
         <div class="flex flex-col justify-start items-start gap-1 pt-1 pb-5 fade-in">
-            <h1 hlmH1 class="font-serif text-(--negro)/70 font-semibold">
+            <h1 hlmH1>
                 Bienvenid@
                 @if (informacionUsuario()?.nombre) {
                     <span class="font-bold">{{ informacionUsuario()?.nombre }}</span>
@@ -10,12 +10,12 @@
             @if (!negocioSeleccionado()) {
                 <hlm-skeleton class="h-7 w-64 rounded-xl" />
             } @else {
-                <h4 hlmH4 class="text-(--negro)/70 font-semibold">
+                <p hlmP class="font-semibold">
                     Te encuentras en
                     {{ negocioSeleccionado()?.nombre }}
-                </h4>
+                </p>
             }
-            <p hlmP class="text-(--negro)/70 font-normal">
+            <p hlmP>
                 Aquí podrás visualizar y administrar las obligaciones y tareas de tus negocios:
             </p>
         </div>

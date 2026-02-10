@@ -46,37 +46,27 @@
         <div class="w-full fade-in">
             <div class="flex items-center gap-4">
                 <ng-icon hlm name="lucideSquarePen" />
-                <p hlmH4>{{ titulo() }}</p>
+                <hlm3 hlmH3>{{ titulo() }}</hlm3>
             </div>
-            <hlm-separator />
         </div>
         <div class="w-full fade-in">
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
                     <div hlmField class="flex justify-center items-center gap-1">
-                        <div hlmButtonGroup>
-                            <div
-                                hlmButtonGroupText
-                                class="transition-all duration-500 ease-out"
-                                [class.border-destructive]="invalid('nombre')"
-                                [class.text-destructive]="invalid('nombre')"
-                            >
-                                <label
-                                    for="nombre"
-                                    hlmLabel
-                                    class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                    >Nombre</label
-                                >
-                            </div>
-                            <div hlmInputGroup>
-                                <input
-                                    hlmInputGroupInput
-                                    type="text"
-                                    class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                    id="nombre"
-                                    [formControl]="form.controls['nombre']"
-                                />
-                            </div>
+                        <label
+                            for="nombre"
+                            hlmLabel
+                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                            >Nombre</label
+                        >
+                        <div hlmInputGroup>
+                            <input
+                                hlmInputGroupInput
+                                type="text"
+                                class="text-xs md:text-sm transition-all duration-500 ease-out"
+                                id="nombre"
+                                [formControl]="form.controls['nombre']"
+                            />
                         </div>
                         <hlm-field-error
                             class="transition-all duration-500 ease-out text-xs"
@@ -114,29 +104,20 @@
                         class="flex flex-col md:flex-row justify-stretch items-start md:items-center gap-3"
                     >
                         <div hlmField class="flex justify-center items-center gap-1">
-                            <div hlmButtonGroup>
-                                <div
-                                    hlmButtonGroupText
-                                    class="transition-all duration-500 ease-out"
-                                    [class.border-destructive]="invalid('multa')"
-                                    [class.text-destructive]="invalid('multa')"
-                                >
-                                    <label
-                                        for="multa"
-                                        hlmLabel
-                                        class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                        >Multa</label
-                                    >
-                                </div>
-                                <div hlmInputGroup>
-                                    <input
-                                        hlmInputGroupInput
-                                        type="text"
-                                        class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                        id="multa"
-                                        [formControl]="form.controls['multa']"
-                                    />
-                                </div>
+                            <label
+                                for="multa"
+                                hlmLabel
+                                class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                                >Multa</label
+                            >
+                            <div hlmInputGroup>
+                                <input
+                                    hlmInputGroupInput
+                                    type="text"
+                                    class="text-xs md:text-sm transition-all duration-500 ease-out"
+                                    id="multa"
+                                    [formControl]="form.controls['multa']"
+                                />
                             </div>
                             <hlm-field-error
                                 class="transition-all duration-500 ease-out text-xs"
@@ -186,7 +167,7 @@
                                 <label
                                     for="categoria"
                                     hlmLabel
-                                    class="text-xs md:text-sm opacity-80 pl-2 w-full"
+                                    class="text-xs md:text-sm opacity-80 pl-2 w-full font-semibold"
                                     >Categoría</label
                                 >
                                 <brn-select
@@ -248,7 +229,7 @@
                                 <label
                                     for="idTipoPeriodicidad"
                                     hlmLabel
-                                    class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                    class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
                                     >Periodicidad</label
                                 >
                                 <brn-select
@@ -308,7 +289,7 @@
                             <label
                                 hlmLabel
                                 for="formFiscalizador"
-                                class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
                                 >Fiscalizadores</label
                             >
 
@@ -422,7 +403,7 @@
                             <label
                                 hlmLabel
                                 for="formNotifCantTiempo"
-                                class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
                                 >Notificaciones Previas</label
                             >
                             <div class="flex justify-center items-center gap-2 pl-0">
@@ -566,7 +547,7 @@
                                     <label
                                         for="proximoVencimientoFecha"
                                         hlmLabel
-                                        class="text-xs md:text-sm opacity-80 pl-2"
+                                        class="text-xs md:text-sm opacity-80 pl-2 font-semibold"
                                         >Fecha</label
                                     >
                                     <hlm-date-picker
@@ -587,7 +568,7 @@
                                     <label
                                         for="proximoVencimientoHora"
                                         hlmLabel
-                                        class="text-xs md:text-sm opacity-80 pl-2"
+                                        class="text-xs md:text-sm opacity-80 pl-2 font-semibold"
                                         >Hora</label
                                     >
                                     <input

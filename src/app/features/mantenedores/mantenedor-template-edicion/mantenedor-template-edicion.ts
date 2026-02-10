@@ -34,6 +34,7 @@ import {
     lucideBadgeX,
     lucideChevronDown,
     lucidePlus,
+    lucideSquarePen,
     lucideTrash2,
     lucideX,
 } from '@ng-icons/lucide';
@@ -59,7 +60,7 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
-import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
@@ -87,6 +88,8 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         HlmDropdownMenuImports,
         HlmAlertImports,
         HlmP,
+        HlmH3,
+        HlmH4,
         HlmBadgeImports,
         FormsModule,
         RouterLink,
@@ -104,6 +107,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
             lucideTrash2,
             lucidePlus,
             lucideX,
+            lucideSquarePen,
         }),
     ],
 })

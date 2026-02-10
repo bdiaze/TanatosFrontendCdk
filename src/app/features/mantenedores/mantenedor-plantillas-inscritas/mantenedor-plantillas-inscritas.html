@@ -11,12 +11,12 @@
                 </li>
             </ol>
         </nav>
-        <p hlmP class="font-semibold opacity-65 text-sm text-center">
+        <h4 hlmH4 class="text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
-        </p>
+        </h4>
         <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
             <ng-icon hlm name="lucideClipboardPaste" />
-            <h4 hlmH4>Plantillas Inscritas</h4>
+            <h3 hlmH3>Plantillas Inscritas</h3>
         </div>
     </div>
     <div hlmTableContainer class="fade-in">
@@ -92,7 +92,7 @@
                                             <hlm-tooltip>
                                                 <span
                                                     hlmBadge
-                                                    variant="secondary"
+                                                    variant="default"
                                                     hlmTooltipTrigger
                                                     position="below"
                                                     class="text-[0.65rem] md:text-xs"
@@ -103,12 +103,27 @@
                                                 >
                                                 <span *brnTooltipContent>
                                                     {{ norma.nombreNorma }}
+                                                    <span
+                                                        class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
+                                                    >
+                                                        <svg
+                                                            class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
+                                                            width="10"
+                                                            height="5"
+                                                            viewBox="0 0 30 10"
+                                                            preserveAspectRatio="none"
+                                                        >
+                                                            <polygon
+                                                                points="0,0 30,0 15,10"
+                                                            ></polygon>
+                                                        </svg>
+                                                    </span>
                                                 </span>
                                             </hlm-tooltip>
                                         } @else {
                                             <span
                                                 hlmBadge
-                                                variant="secondary"
+                                                variant="default"
                                                 class="text-[0.65rem] md:text-xs"
                                                 >{{ norma.nombreNorma }}</span
                                             >
@@ -118,7 +133,7 @@
                                         <hlm-tooltip>
                                             <span
                                                 hlmBadge
-                                                variant="secondary"
+                                                variant="default"
                                                 hlmTooltipTrigger
                                                 position="below"
                                                 class="text-[0.65rem] md:text-xs"
@@ -131,6 +146,19 @@
                                                 ) {
                                                     {{ '· ' + norma.nombreNorma }} <br />
                                                 }
+                                                <span
+                                                    class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
+                                                >
+                                                    <svg
+                                                        class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
+                                                        width="10"
+                                                        height="5"
+                                                        viewBox="0 0 30 10"
+                                                        preserveAspectRatio="none"
+                                                    >
+                                                        <polygon points="0,0 30,0 15,10"></polygon>
+                                                    </svg>
+                                                </span>
                                             </span>
                                         </hlm-tooltip>
                                     }

@@ -12,12 +12,12 @@
             </ol>
         </nav>
 
-        <p hlmP class="font-semibold opacity-65 text-sm text-center">
+        <h4 hlmH4 class="text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
-        </p>
+        </h4>
         <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
             <ng-icon hlm name="lucideCalendarRange" />
-            <h4 hlmH4>Mi Calendario</h4>
+            <h3 hlmH3>Mi Calendario</h3>
         </div>
         <div class="flex flex-col gap-6 fade-in">
             <h4 hlmH4>¡Obligaciones Vencidas!</h4>
@@ -76,7 +76,7 @@
                                                 class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
                                             >
                                                 <svg
-                                                    class="bg-primary fill-primary z-50 block size-2.5 rotate-45"
+                                                    class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
                                                     width="10"
                                                     height="5"
                                                     viewBox="0 0 30 10"
@@ -161,7 +161,7 @@
                                                 class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
                                             >
                                                 <svg
-                                                    class="bg-primary fill-primary z-50 block size-2.5 rotate-45"
+                                                    class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
                                                     width="10"
                                                     height="5"
                                                     viewBox="0 0 30 10"
@@ -218,7 +218,12 @@
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
                                 <div class="text-center">
-                                    <span hlmBadge variant="secondary">Completada</span>
+                                    <span
+                                        hlmBadge
+                                        variant="secondary"
+                                        class="bg-(--azul) text-(--blanco)"
+                                        >Completada</span
+                                    >
                                 </div>
                                 <p hlmItemDescription class="text-center mt-1">
                                     {{ futuro.fechaVencimiento | date: 'd MMM yyyy' }}
@@ -254,7 +259,7 @@
                                                 class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
                                             >
                                                 <svg
-                                                    class="bg-primary fill-primary z-50 block size-2.5 rotate-45"
+                                                    class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
                                                     width="10"
                                                     height="5"
                                                     viewBox="0 0 30 10"

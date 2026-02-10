@@ -17,7 +17,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH4 } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-mantenedor-tipo-rubro',
@@ -26,6 +26,8 @@ import { HlmH4 } from '@spartan-ng/helm/typography';
         ModalEdicion,
         HlmButtonImports,
         HlmTableImports,
+        HlmP,
+        HlmH3,
         HlmH4,
         HlmAlertImports,
         NgIcon,

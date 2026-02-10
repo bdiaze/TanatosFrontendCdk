@@ -20,13 +20,14 @@ import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideBadgeX } from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideSquarePen } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { BrnPopoverContent } from '@spartan-ng/brain/popover';
 import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
 import { normalize } from '@/app/helpers/string-comparator';
+import { HlmH3 } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-modal-edicion',
@@ -43,6 +44,7 @@ import { normalize } from '@/app/helpers/string-comparator';
         HlmButtonGroupImports,
         HlmIcon,
         NgIcon,
+        HlmH3,
         BrnSelectImports,
         HlmSelectImports,
         BrnPopoverContent,
@@ -50,7 +52,7 @@ import { normalize } from '@/app/helpers/string-comparator';
     ],
     templateUrl: './modal-edicion.html',
     styleUrl: './modal-edicion.scss',
-    providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX })],
+    providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideSquarePen })],
 })
 export class ModalEdicion implements OnInit {
     @Input() campos: CampoDinamico[] = [];

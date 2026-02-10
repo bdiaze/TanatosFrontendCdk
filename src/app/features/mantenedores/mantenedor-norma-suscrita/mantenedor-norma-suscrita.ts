@@ -25,7 +25,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 
@@ -35,13 +35,14 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
         ModalEliminacion,
         HlmButtonImports,
         HlmTableImports,
-        HlmH4,
         HlmAlertImports,
         NgIcon,
         HlmIcon,
         HlmDropdownMenuImports,
         HlmSpinnerImports,
         HlmP,
+        HlmH3,
+        HlmH4,
         RouterLink,
         HlmSeparatorImports,
         HlmSkeletonImports,

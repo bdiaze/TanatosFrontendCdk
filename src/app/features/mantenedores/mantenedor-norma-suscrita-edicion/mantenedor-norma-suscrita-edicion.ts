@@ -48,7 +48,7 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
-import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
@@ -72,10 +72,11 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
         BrnSelectImports,
         HlmSelectImports,
         HlmSpinnerImports,
-        HlmH4,
         HlmIconImports,
         HlmAlertImports,
         HlmP,
+        HlmH3,
+        HlmH4,
         HlmBadgeImports,
         FormsModule,
         RouterLink,

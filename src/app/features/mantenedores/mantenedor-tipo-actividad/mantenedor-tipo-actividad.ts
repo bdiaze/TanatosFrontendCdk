@@ -23,7 +23,7 @@ import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH4 } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
@@ -35,7 +35,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         ModalEdicion,
         HlmButtonImports,
         HlmTableImports,
-        HlmH4,
+        HlmH3,
         HlmAlertImports,
         NgIcon,
         HlmIcon,

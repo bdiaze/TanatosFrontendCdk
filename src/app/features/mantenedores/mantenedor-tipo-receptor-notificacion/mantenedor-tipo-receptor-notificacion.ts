@@ -6,7 +6,7 @@ import { ModalEliminacion } from '@components/modal-eliminacion/modal-eliminacio
 import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH4 } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -26,7 +26,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         ModalEdicion,
         HlmButtonImports,
         HlmTableImports,
-        HlmH4,
+        HlmH3,
         HlmAlertImports,
         NgIcon,
         HlmIcon,

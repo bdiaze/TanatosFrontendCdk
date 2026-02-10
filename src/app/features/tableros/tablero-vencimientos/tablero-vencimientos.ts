@@ -13,7 +13,7 @@ import {
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { DatePipe } from '@angular/common';
@@ -30,6 +30,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
     imports: [
         NgIcon,
         HlmIcon,
+        HlmH3,
         HlmH4,
         HlmP,
         HlmSpinnerImports,

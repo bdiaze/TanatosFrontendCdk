@@ -5,26 +5,9 @@
     <div hlmCard (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md">
         <div hlmCardHeader class="faster-fade-in">
             <div class="flex items-center gap-4">
-                <div class="text-green-700">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-7"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                        />
-                    </svg>
-                </div>
-                <h3 hlmCardTitle>{{ titulo }}</h3>
+                <ng-icon hlm name="lucideSquarePen" />
+                <h3 hlmH3 hlmCardTitle>{{ titulo }}</h3>
             </div>
-
-            <hlm-separator />
         </div>
         <div hlmCardContent class="faster-fade-in">
             @if (descripcion) {
@@ -36,40 +19,31 @@
                         @if (campo.tipo !== 'oculto') {
                             <div hlmField class="gap-1">
                                 @if (campo.tipo === 'string' || campo.tipo === 'number') {
-                                    <div hlmButtonGroup>
-                                        <div
-                                            hlmButtonGroupText
-                                            class="transition-all duration-500 ease-out"
-                                            [class.border-destructive]="invalid(campo.llave)"
-                                            [class.text-destructive]="invalid(campo.llave)"
-                                        >
-                                            <label
-                                                [for]="campo.llave"
-                                                hlmLabel
-                                                class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm"
-                                                >{{ campo.nombre ?? campo.llave }}</label
-                                            >
-                                        </div>
-                                        <div hlmInputGroup>
-                                            @if (campo.tipo === 'string') {
-                                                <input
-                                                    hlmInputGroupInput
-                                                    type="text"
-                                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
-                                                    [id]="campo.llave"
-                                                    [formControl]="form.controls[campo.llave]"
-                                                />
-                                            }
-                                            @if (campo.tipo === 'number') {
-                                                <input
-                                                    hlmInputGroupInput
-                                                    type="number"
-                                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
-                                                    [id]="campo.llave"
-                                                    [formControl]="form.controls[campo.llave]"
-                                                />
-                                            }
-                                        </div>
+                                    <label
+                                        [for]="campo.llave"
+                                        hlmLabel
+                                        class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm px-2"
+                                        >{{ campo.nombre ?? campo.llave }}</label
+                                    >
+                                    <div hlmInputGroup>
+                                        @if (campo.tipo === 'string') {
+                                            <input
+                                                hlmInputGroupInput
+                                                type="text"
+                                                class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                                [id]="campo.llave"
+                                                [formControl]="form.controls[campo.llave]"
+                                            />
+                                        }
+                                        @if (campo.tipo === 'number') {
+                                            <input
+                                                hlmInputGroupInput
+                                                type="number"
+                                                class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                                [id]="campo.llave"
+                                                [formControl]="form.controls[campo.llave]"
+                                            />
+                                        }
                                     </div>
                                 }
                                 @if (campo.tipo === 'boolean') {

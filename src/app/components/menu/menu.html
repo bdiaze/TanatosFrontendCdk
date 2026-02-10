@@ -8,7 +8,7 @@
                     hlmBtn
                     variant="outline"
                     [hlmDropdownMenuTrigger]="menuNegocios"
-                    class="h-full border-none border-0 rounded-xs hover:text-(--negro)/70 pl-4 pr-8 shadow-none"
+                    class="h-full border-none border-0 rounded-xs hover:text-(--negro)/80 pl-4 pr-8 shadow-none"
                     [disabled]="cargandoNegocios()"
                 >
                     <div class="flex flex-row justify-center items-center gap-4 w-full">
@@ -36,7 +36,7 @@
                                 }
                             </span>
                             <span
-                                class="truncate text-xs flex items-center gap-1 font-normal font-serif opacity-80"
+                                class="truncate text-sm flex items-center gap-1 font-normal font-serif"
                             >
                                 @if (cargandoInformacionUsuario()) {
                                     <hlm-skeleton class="h-5 w-36 rounded-xl" />
@@ -83,7 +83,7 @@
                     class="hover:bg-transparent py-4"
                     (click)="cerrar()"
                 >
-                    <ng-icon hlm name="lucideX" size="base" class="text-(--negro)/60 scale-100" />
+                    <ng-icon hlm name="lucideX" size="base" class="text-(--negro)/70 scale-100" />
                 </button>
             </div>
         </div>
@@ -96,12 +96,12 @@
                     hlmBtn
                     variant="outline"
                     [hlmDropdownMenuTrigger]="menuNegocios"
-                    class="h-18 border-none border-0 rounded-xs px-4 hover:text-(--negro)/70 w-full"
+                    class="h-18 border-none border-0 rounded-xs px-4 hover:text-(--negro)/80 w-full"
                     [disabled]="cargandoNegocios()"
                 >
                     <div class="flex justify-center items-center w-full gap-3">
                         <div
-                            class="text-(--negro)/70 flex aspect-square size-8 items-center justify-center rounded-lg"
+                            class="text-(--negro)/80 flex aspect-square size-8 items-center justify-center rounded-lg"
                         >
                             <ng-icon name="lucideStore" class="text-2xl" />
                         </div>

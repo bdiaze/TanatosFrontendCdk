@@ -11,12 +11,12 @@
                 </li>
             </ol>
         </nav>
-        <p hlmP class="font-semibold opacity-65 text-sm text-center">
+        <h4 hlmH4 class="text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
-        </p>
+        </h4>
         <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
             <ng-icon hlm name="lucideCalendarCog" />
-            <h4 hlmH4>Mis Obligaciones</h4>
+            <h3 hlmH3>Mis Obligaciones</h3>
         </div>
     </div>
     <div hlmTableContainer class="fade-in">
@@ -140,13 +140,13 @@
     <!-- Sección de templates inscritos -->
     @if (!cargando()) {
         <div
-            class="fade-in w-full flex flex-col md:flex-row items-start justify-end-safe md:justify-center"
+            class="fade-in w-full flex flex-col md:flex-row items-start justify-end-safe md:justify-center mt-4"
         >
             <div
                 class="w-full flex-1 flex justify-center-safe items-center order-2 md:order-1 gap-3 mt-3 md:mt-0 mb-2"
             >
                 <ng-icon hlm name="lucideClipboardList" />
-                <h4 hlmH4>Según Plantillas</h4>
+                <h3 hlmH3>Según Plantillas</h3>
             </div>
             <div
                 class="w-full flex justify-end-safe items-center md:relative md:w-0 order-1 md:order-2"

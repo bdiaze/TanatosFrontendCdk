@@ -23,55 +23,29 @@
     } @else {
         <div class="w-full fade-in">
             <div class="flex items-center gap-4">
-                <div class="text-green-700">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-7"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                        />
-                    </svg>
-                </div>
-                <h3 hlmH4>{{ titulo() }}</h3>
+                <ng-icon hlm name="lucideSquarePen" />
+                <h3 hlmH3>{{ titulo() }}</h3>
             </div>
-
-            <hlm-separator />
         </div>
         <div class="w-full fade-in">
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
                     <div class="flex flex-col md:flex-row items-start gap-3">
                         <div hlmField class="flex justify-center items-center gap-1 md:w-[30%]">
-                            <div hlmButtonGroup>
-                                <div
-                                    hlmButtonGroupText
-                                    class="transition-all duration-500 ease-out"
-                                    [class.border-destructive]="invalid('id')"
-                                    [class.text-destructive]="invalid('id')"
-                                >
-                                    <label
-                                        for="id"
-                                        hlmLabel
-                                        class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                        >ID</label
-                                    >
-                                </div>
-                                <div hlmInputGroup>
-                                    <input
-                                        hlmInputGroupInput
-                                        type="text"
-                                        class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                        id="id"
-                                        [formControl]="form.controls['id']"
-                                    />
-                                </div>
+                            <label
+                                for="id"
+                                hlmLabel
+                                class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                                >ID</label
+                            >
+                            <div hlmInputGroup>
+                                <input
+                                    hlmInputGroupInput
+                                    type="text"
+                                    class="text-xs md:text-sm transition-all duration-500 ease-out"
+                                    id="id"
+                                    [formControl]="form.controls['id']"
+                                />
                             </div>
                             <hlm-field-error
                                 class="transition-all duration-500 ease-out text-xs"
@@ -83,29 +57,20 @@
                             >
                         </div>
                         <div hlmField class="flex justify-center items-center gap-1">
-                            <div hlmButtonGroup>
-                                <div
-                                    hlmButtonGroupText
-                                    class="transition-all duration-500 ease-out"
-                                    [class.border-destructive]="invalid('nombre')"
-                                    [class.text-destructive]="invalid('nombre')"
-                                >
-                                    <label
-                                        for="nombre"
-                                        hlmLabel
-                                        class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                        >Nombre</label
-                                    >
-                                </div>
-                                <div hlmInputGroup>
-                                    <input
-                                        hlmInputGroupInput
-                                        type="text"
-                                        class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                        id="nombre"
-                                        [formControl]="form.controls['nombre']"
-                                    />
-                                </div>
+                            <label
+                                for="nombre"
+                                hlmLabel
+                                class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                                >Nombre</label
+                            >
+                            <div hlmInputGroup>
+                                <input
+                                    hlmInputGroupInput
+                                    type="text"
+                                    class="text-xs md:text-sm transition-all duration-500 ease-out"
+                                    id="nombre"
+                                    [formControl]="form.controls['nombre']"
+                                />
                             </div>
                             <hlm-field-error
                                 class="transition-all duration-500 ease-out text-xs"
@@ -345,7 +310,6 @@
                             }
                         </div>
                     </div>
-                    <hlm-separator />
                     @if (cargandoDetalleTemplate()) {
                         <div class="flex justify-center items-center-safe gap-3">
                             <hlm-spinner class="text-base md:text-lg" />
@@ -359,18 +323,16 @@
                                 <div
                                     class="w-full flex-1 flex justify-center items-center order-2 md:order-1"
                                 >
-                                    <label
-                                        hlmLabel
-                                        class="opacity-80 font-semibold text-base md:text-lg py-1"
-                                        >Listado de Normas</label
-                                    >
+                                    <h3 hlmH3 class="font-semibold text-base md:text-lg py-1">
+                                        Listado de Normas
+                                    </h3>
                                 </div>
                                 <div
                                     class="w-full flex justify-end-safe items-center md:relative md:w-0 order-1 md:order-2"
                                 >
                                     <button
                                         hlmBtn
-                                        variant="outline"
+                                        variant="secondary"
                                         (click)="crearNorma()"
                                         class="text-xs md:text-sm md:absolute md:top-0 md:right-0"
                                         size="sm"
@@ -394,9 +356,9 @@
                                                     class="py-2 px-2 hover:cursor-pointer w-full flex items-center z-10"
                                                     (click)="toggleOpenedNorma(norma)"
                                                 >
-                                                    <p
-                                                        hlmP
-                                                        class="text-sm md:text-base mx-auto opacity-75"
+                                                    <h4
+                                                        hlmH4
+                                                        class="text-base md:text-lg mx-auto font-normal"
                                                     >
                                                         {{
                                                             norma.controls['nombre'].value !== ''
@@ -406,7 +368,7 @@
                                                                   norma.controls['nombre'].value
                                                                 : 'Nueva Norma'
                                                         }}
-                                                    </p>
+                                                    </h4>
                                                     <ng-icon
                                                         name="lucideChevronDown"
                                                         hlm
@@ -421,49 +383,30 @@
                                                 <div class="fade-in pb-4">
                                                     <div class="flex flex-col">
                                                         <div
-                                                            class="flex flex-wrap md:flex-nowrap justify-between items-start gap-3 mb-2"
+                                                            class="flex flex-wrap md:flex-nowrap justify-between items-center gap-3 mb-2"
                                                         >
                                                             <div
                                                                 hlmField
                                                                 class="flex justify-center items-center gap-1 cabecera-norma md:w-[30%] order-1"
                                                             >
-                                                                <div hlmButtonGroup>
-                                                                    <div
-                                                                        hlmButtonGroupText
-                                                                        class="transition-all duration-500 ease-out"
-                                                                        [class.border-destructive]="
-                                                                            invalid(
-                                                                                'idNorma',
-                                                                                norma
-                                                                            )
+                                                                <label
+                                                                    for="id"
+                                                                    hlmLabel
+                                                                    class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                                                                    >ID</label
+                                                                >
+                                                                <div hlmInputGroup>
+                                                                    <input
+                                                                        hlmInputGroupInput
+                                                                        type="text"
+                                                                        class="text-xs md:text-sm transition-all duration-500 ease-out"
+                                                                        id="id"
+                                                                        [formControl]="
+                                                                            norma.controls[
+                                                                                'idNorma'
+                                                                            ]
                                                                         "
-                                                                        [class.text-destructive]="
-                                                                            invalid(
-                                                                                'idNorma',
-                                                                                norma
-                                                                            )
-                                                                        "
-                                                                    >
-                                                                        <label
-                                                                            for="id"
-                                                                            hlmLabel
-                                                                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                                                            >ID</label
-                                                                        >
-                                                                    </div>
-                                                                    <div hlmInputGroup>
-                                                                        <input
-                                                                            hlmInputGroupInput
-                                                                            type="text"
-                                                                            class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                                                            id="id"
-                                                                            [formControl]="
-                                                                                norma.controls[
-                                                                                    'idNorma'
-                                                                                ]
-                                                                            "
-                                                                        />
-                                                                    </div>
+                                                                    />
                                                                 </div>
                                                                 <hlm-field-error
                                                                     class="transition-all duration-500 ease-out text-xs"
@@ -487,37 +430,22 @@
                                                                 hlmField
                                                                 class="flex justify-center items-center gap-1 order-3 md:order-2"
                                                             >
-                                                                <div hlmButtonGroup>
-                                                                    <div
-                                                                        hlmButtonGroupText
-                                                                        class="transition-all duration-500 ease-out"
-                                                                        [class.border-destructive]="
-                                                                            invalid('nombre', norma)
+                                                                <label
+                                                                    for="nombre"
+                                                                    hlmLabel
+                                                                    class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                                                                    >Nombre</label
+                                                                >
+                                                                <div hlmInputGroup>
+                                                                    <input
+                                                                        hlmInputGroupInput
+                                                                        type="text"
+                                                                        class="text-xs md:text-sm transition-all duration-500 ease-out"
+                                                                        id="nombre"
+                                                                        [formControl]="
+                                                                            norma.controls['nombre']
                                                                         "
-                                                                        [class.text-destructive]="
-                                                                            invalid('nombre', norma)
-                                                                        "
-                                                                    >
-                                                                        <label
-                                                                            for="nombre"
-                                                                            hlmLabel
-                                                                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                                                            >Nombre</label
-                                                                        >
-                                                                    </div>
-                                                                    <div hlmInputGroup>
-                                                                        <input
-                                                                            hlmInputGroupInput
-                                                                            type="text"
-                                                                            class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                                                            id="nombre"
-                                                                            [formControl]="
-                                                                                norma.controls[
-                                                                                    'nombre'
-                                                                                ]
-                                                                            "
-                                                                        />
-                                                                    </div>
+                                                                    />
                                                                 </div>
                                                                 <hlm-field-error
                                                                     class="transition-all duration-500 ease-out text-xs"
@@ -621,37 +549,22 @@
                                                                 hlmField
                                                                 class="flex justify-center items-center gap-1"
                                                             >
-                                                                <div hlmButtonGroup>
-                                                                    <div
-                                                                        hlmButtonGroupText
-                                                                        class="transition-all duration-500 ease-out"
-                                                                        [class.border-destructive]="
-                                                                            invalid('multa', norma)
+                                                                <label
+                                                                    for="multa"
+                                                                    hlmLabel
+                                                                    class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
+                                                                    >Multa</label
+                                                                >
+                                                                <div hlmInputGroup>
+                                                                    <input
+                                                                        hlmInputGroupInput
+                                                                        type="text"
+                                                                        class="text-xs md:text-sm transition-all duration-500 ease-out"
+                                                                        id="multa"
+                                                                        [formControl]="
+                                                                            norma.controls['multa']
                                                                         "
-                                                                        [class.text-destructive]="
-                                                                            invalid('multa', norma)
-                                                                        "
-                                                                    >
-                                                                        <label
-                                                                            for="multa"
-                                                                            hlmLabel
-                                                                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap"
-                                                                            >Multa</label
-                                                                        >
-                                                                    </div>
-                                                                    <div hlmInputGroup>
-                                                                        <input
-                                                                            hlmInputGroupInput
-                                                                            type="text"
-                                                                            class="text-xs md:text-sm transition-all duration-500 ease-out"
-                                                                            id="multa"
-                                                                            [formControl]="
-                                                                                norma.controls[
-                                                                                    'multa'
-                                                                                ]
-                                                                            "
-                                                                        />
-                                                                    </div>
+                                                                    />
                                                                 </div>
                                                                 <hlm-field-error
                                                                     class="transition-all duration-500 ease-out text-xs"
@@ -685,7 +598,7 @@
                                                                     <label
                                                                         for="categoria"
                                                                         hlmLabel
-                                                                        class="text-xs md:text-sm opacity-80 pl-2 w-full"
+                                                                        class="text-xs md:text-sm opacity-80 pl-2 w-full font-semibold"
                                                                         >Categoría</label
                                                                     >
                                                                     <brn-select
@@ -793,7 +706,7 @@
                                                                     <label
                                                                         for="idTipoPeriodicidad"
                                                                         hlmLabel
-                                                                        class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                                                        class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
                                                                         >Periodicidad</label
                                                                     >
                                                                     <brn-select
@@ -901,7 +814,7 @@
                                                                 <label
                                                                     hlmLabel
                                                                     for="formNotifCantTiempo"
-                                                                    class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                                                    class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
                                                                     >Fiscalizadores</label
                                                                 >
 
@@ -1071,7 +984,7 @@
                                                                 <label
                                                                     hlmLabel
                                                                     for="formNotifCantTiempo"
-                                                                    class="text-xs md:text-sm opacity-80 w-full pl-2"
+                                                                    class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
                                                                     >Notificaciones Previas</label
                                                                 >
                                                                 <div

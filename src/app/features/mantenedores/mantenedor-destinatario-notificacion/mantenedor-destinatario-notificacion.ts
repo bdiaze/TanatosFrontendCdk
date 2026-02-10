@@ -17,7 +17,7 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { ModalCreacionDestinatario } from '@/app/components/modal-creacion-destinatario/modal-creacion-destinatario';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
@@ -34,7 +34,6 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
         ModalEliminacion,
         HlmButtonImports,
         HlmTableImports,
-        HlmH4,
         HlmAlertImports,
         NgIcon,
         HlmIcon,
@@ -45,6 +44,8 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
         HlmTooltipImports,
         FormatearTelefonoPipe,
         HlmP,
+        HlmH3,
+        HlmH4,
         HlmSpinnerImports,
         HlmSkeletonImports,
         HlmBreadCrumbImports,

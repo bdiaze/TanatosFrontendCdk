@@ -17,7 +17,7 @@ import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH4 } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { catchError, combineLatest, of } from 'rxjs';
 
 @Component({
@@ -27,7 +27,7 @@ import { catchError, combineLatest, of } from 'rxjs';
         ModalEdicion,
         HlmButtonImports,
         HlmTableImports,
-        HlmH4,
+        HlmH3,
         HlmAlertImports,
         NgIcon,
         HlmIcon,

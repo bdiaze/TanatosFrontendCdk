@@ -45,39 +45,26 @@
                             }
                         </div>
                         <div hlmField class="gap-1">
-                            <div hlmButtonGroup>
-                                <div
-                                    hlmButtonGroupText
-                                    class="transition-all duration-500 ease-out"
-                                    [class.border-destructive]="invalid('destino')"
-                                    [class.text-destructive]="invalid('destino')"
-                                >
-                                    <label
-                                        for="destino"
-                                        hlmLabel
-                                        class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm"
-                                        >Destinatario</label
-                                    >
-                                </div>
-                                <div hlmInputGroup>
-                                    <input
-                                        [formatoTelefono]="
-                                            form.controls['idTipoReceptor'].value === 2
-                                        "
-                                        [formatoCorreo]="
-                                            form.controls['idTipoReceptor'].value === 1
-                                        "
-                                        hlmInputGroupInput
-                                        class="transition-all duration-500 ease-out text-xs md:text-sm"
-                                        id="destino"
-                                        [placeholder]="
-                                            obtenerDestinoPlaceholder(
-                                                form.controls['idTipoReceptor'].value
-                                            )
-                                        "
-                                        formControlName="destino"
-                                    />
-                                </div>
+                            <label
+                                for="destino"
+                                hlmLabel
+                                class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm px-2 pb-1"
+                                >Destinatario</label
+                            >
+                            <div hlmInputGroup>
+                                <input
+                                    [formatoTelefono]="form.controls['idTipoReceptor'].value === 2"
+                                    [formatoCorreo]="form.controls['idTipoReceptor'].value === 1"
+                                    hlmInputGroupInput
+                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                    id="destino"
+                                    [placeholder]="
+                                        obtenerDestinoPlaceholder(
+                                            form.controls['idTipoReceptor'].value
+                                        )
+                                    "
+                                    formControlName="destino"
+                                />
                             </div>
                             <hlm-field-error
                                 class="transition-all duration-500 ease-out"
