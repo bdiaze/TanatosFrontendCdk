@@ -199,13 +199,26 @@
             </div>
             <hlm-separator />
             <h4 hlmH4>Obligaciones Completadas</h4>
+            <div hlmInputGroup>
+                <input
+                    hlmInputGroupInput
+                    placeholder="Filtro de búsqueda..."
+                    [value]="filtroCompletadas()"
+                    (input)="filtroCompletadas.set($any($event.target).value)"
+                />
+                <div hlmInputGroupAddon align="inline-end">
+                    <button hlmInputGroupButton size="icon-xs" (click)="filtroCompletadas.set('')">
+                        <ng-icon name="lucideX" />
+                    </button>
+                </div>
+            </div>
             <div hlmItemGroup class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch fade-in">
                 @if (cargando()) {
                     <hlm-skeleton class="h-50 rounded-xl" />
                     <hlm-skeleton class="h-50 rounded-xl" />
                     <hlm-skeleton class="h-50 rounded-xl" />
                 } @else {
-                    @for (futuro of normasCompletadas(); track futuro.idNormaSuscrita) {
+                    @for (futuro of normasCompletadasFiltradas(); track futuro.idNormaSuscrita) {
                         <a
                             hlmItem
                             variant="outline"
@@ -274,14 +287,25 @@
                             </div>
                         </a>
                     } @empty {
-                        <div hlmAlert class="col-span-1 md:col-span-3">
-                            <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
-                            <h4 hlmAlertTitle>Sin obligaciones completadas</h4>
-                            <div hlmAlertDescription>
-                                Aún no has completado ninguna obligación, te recomendamos revisar
-                                tus próximas obligaciones para ir adelantando trabajo.
+                        @if (normasCompletadas().length == 0) {
+                            <div hlmAlert class="col-span-1 md:col-span-3">
+                                <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
+                                <h4 hlmAlertTitle>Sin obligaciones completadas</h4>
+                                <div hlmAlertDescription>
+                                    Aún no has completado ninguna obligación, te recomendamos
+                                    revisar tus próximas obligaciones para ir adelantando trabajo.
+                                </div>
                             </div>
-                        </div>
+                        } @else {
+                            <div hlmAlert class="col-span-1 md:col-span-3">
+                                <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
+                                <h4 hlmAlertTitle>Obligaciones no encontradas</h4>
+                                <div hlmAlertDescription>
+                                    No tienes obligaciones completadas que cumplan con tu filtro de
+                                    búsqueda.
+                                </div>
+                            </div>
+                        }
                     }
                 }
             </div>

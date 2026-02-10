@@ -2,13 +2,15 @@ import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
 import { SalNormaSuscritaObtenerConVencimiento } from '@/app/entities/others/sal-norma-suscrita-obtener-con-vencimiento';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideCalendarRange,
     lucideCircleAlert,
     lucideCircleCheck,
     lucideClockAlert,
+    lucideSearch,
+    lucideX,
 } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
@@ -24,6 +26,8 @@ import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { normalize } from '@/app/helpers/string-comparator';
+import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -33,6 +37,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
         HlmH3,
         HlmH4,
         HlmP,
+        HlmInputGroupImports,
         HlmSpinnerImports,
         HlmSeparatorImports,
         HlmItemImports,
@@ -54,6 +59,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
             lucideClockAlert,
             lucideCircleAlert,
             lucideCircleCheck,
+            lucideX,
         }),
     ],
 })
@@ -64,6 +70,14 @@ export class TableroVencimientos {
     normasVencidas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
     normasFuturas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
     normasCompletadas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
+
+    filtroCompletadas = signal<string>('');
+    normasCompletadasFiltradas = computed(() => {
+        return this.normasCompletadas().filter((n) =>
+            normalize(n.nombreNorma!).includes(normalize(this.filtroCompletadas())),
+        );
+    });
+
     cargando = signal(true);
     error = signal('');
 
