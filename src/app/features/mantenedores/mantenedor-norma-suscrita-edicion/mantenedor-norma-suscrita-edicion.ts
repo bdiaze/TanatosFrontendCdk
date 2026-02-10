@@ -639,7 +639,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 .actualizar(normaSuscrita)
                 .subscribe({
                     next: () => {
-                        this.router.navigate(['/mantenedores/norma-suscrita']);
+                        this.router.navigate(['/mis-obligaciones']);
                     },
                     error: (err) => {
                         console.error('Error al editar la norma suscrita', err);
@@ -700,7 +700,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 .crear(normaSuscrita)
                 .subscribe({
                     next: () => {
-                        this.router.navigate(['/mantenedores/norma-suscrita']);
+                        this.router.navigate(['/mis-obligaciones']);
                     },
                     error: (err) => {
                         console.error('Error al crear la norma suscrita', err);

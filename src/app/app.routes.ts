@@ -33,11 +33,11 @@ export const routes: Routes = [
         component: MenuInicial,
     },
     {
-        path: 'tableros/vencimientos',
+        path: 'mi-calendario',
         component: TableroVencimientos,
     },
     {
-        path: 'vencimiento/:idNormaSuscrita/:idHistorialNormaSuscrita',
+        path: 'obligacion/:idNormaSuscrita/:idHistorialNormaSuscrita',
         component: Vencimiento,
     },
     {
@@ -81,27 +81,27 @@ export const routes: Routes = [
         component: MantenedorTemplateEdicion,
     },
     {
-        path: 'mantenedores/destinatario',
+        path: 'mis-destinatario',
         component: MantenedorDestinatarioNotificacion,
     },
     {
-        path: 'mantenedores/negocio',
+        path: 'mis-negocios',
         component: MantenedorNegocio,
     },
     {
-        path: 'mantenedores/norma-suscrita',
+        path: 'mis-obligaciones',
         component: MantenedorNormaSuscrita,
     },
     {
-        path: 'mantenedores/norma-suscrita/:idNormaSuscrita',
+        path: 'editar-obligacion/:idNormaSuscrita',
         component: MantenedorNormaSuscritaEdicion,
     },
     {
-        path: 'mantenedores/norma-suscrita/nuevo',
+        path: 'crear-obligacion',
         component: MantenedorNormaSuscritaEdicion,
     },
     {
-        path: 'mantenedores/plantillas-inscritas',
+        path: 'plantillas-inscritas',
         component: MantenedorPlantillasInscritas,
     },
     {

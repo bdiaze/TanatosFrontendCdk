@@ -8,7 +8,7 @@
             </li>
             <li hlmBreadcrumbSeparator></li>
             <li hlmBreadcrumbItem>
-                <a hlmBreadcrumbLink link="/mantenedores/norma-suscrita">Mis Obligaciones</a>
+                <a hlmBreadcrumbLink link="/mis-obligaciones">Mis Obligaciones</a>
             </li>
             <li hlmBreadcrumbSeparator></li>
             <li hlmBreadcrumbItem>
@@ -597,9 +597,7 @@
             </div>
         }
         <div class="w-full flex items-center justify-end gap-6">
-            <a hlmBtn variant="secondary" [routerLink]="['/mantenedores/norma-suscrita']"
-                >Cancelar</a
-            >
+            <a hlmBtn variant="secondary" [routerLink]="['/mis-obligaciones']">Cancelar</a>
             <button hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()">
                 @if (procesando()) {
                     <hlm-spinner />

@@ -30,7 +30,7 @@
                             hlmItem
                             variant="outline"
                             [routerLink]="[
-                                '/vencimiento',
+                                '/obligacion',
                                 vencido.idNormaSuscrita,
                                 vencido.idHistorialNormaSuscrita,
                             ]"
@@ -117,7 +117,7 @@
                             hlmItem
                             variant="outline"
                             [routerLink]="[
-                                '/vencimiento',
+                                '/obligacion',
                                 futuro.idNormaSuscrita,
                                 futuro.idHistorialNormaSuscrita,
                             ]"
@@ -184,11 +184,7 @@
                                 continuación para configurar las obligaciones de
                                 {{ negocioStore.negocioSeleccionado()?.nombre }}:
                                 <div class="my-1 w-full flex justify-center">
-                                    <a
-                                        hlmBtn
-                                        variant="secondary"
-                                        routerLink="/mantenedores/norma-suscrita"
-                                    >
+                                    <a hlmBtn variant="secondary" routerLink="/mis-obligaciones">
                                         Mis Obligaciones
                                     </a>
                                 </div>
@@ -226,7 +222,7 @@
                             hlmItem
                             variant="outline"
                             [routerLink]="[
-                                '/vencimiento',
+                                '/obligacion',
                                 futuro.idNormaSuscrita,
                                 futuro.idHistorialNormaSuscrita,
                             ]"
