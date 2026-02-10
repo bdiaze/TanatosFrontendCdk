@@ -218,7 +218,10 @@
                     <hlm-skeleton class="h-50 rounded-xl" />
                     <hlm-skeleton class="h-50 rounded-xl" />
                 } @else {
-                    @for (futuro of normasCompletadasFiltradas(); track futuro.idNormaSuscrita) {
+                    @for (
+                        futuro of normasCompletadasFiltradasPaginadas();
+                        track futuro.idNormaSuscrita
+                    ) {
                         <a
                             hlmItem
                             variant="outline"
@@ -307,6 +310,21 @@
                             </div>
                         }
                     }
+                }
+                @if (
+                    normasCompletadasFiltradasPaginadas().length <
+                    normasCompletadasFiltradas().length
+                ) {
+                    <div class="w-full flex items-center justify-center md:col-span-3">
+                        <button
+                            hlmBtn
+                            variant="link"
+                            class="text-(--negro)/80"
+                            (click)="mostrarMasCompletadas()"
+                        >
+                            Mostrar más resultados
+                        </button>
+                    </div>
                 }
             </div>
         </div>

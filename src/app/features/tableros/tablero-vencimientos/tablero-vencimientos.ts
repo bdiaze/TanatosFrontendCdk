@@ -28,6 +28,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { normalize } from '@/app/helpers/string-comparator';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
+import { HlmInput, HlmInputImports } from '@spartan-ng/helm/input';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -37,6 +38,7 @@ import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
         HlmH3,
         HlmH4,
         HlmP,
+        HlmInputImports,
         HlmInputGroupImports,
         HlmSpinnerImports,
         HlmSeparatorImports,
@@ -71,11 +73,18 @@ export class TableroVencimientos {
     normasFuturas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
     normasCompletadas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
 
+    readonly initialMostrarMas = 6;
+    readonly deltaMostrarMas = 3;
+
     filtroCompletadas = signal<string>('');
+    cuantosMostrarCompletadas = signal<number>(this.initialMostrarMas);
     normasCompletadasFiltradas = computed(() => {
         return this.normasCompletadas().filter((n) =>
             normalize(n.nombreNorma!).includes(normalize(this.filtroCompletadas())),
         );
+    });
+    normasCompletadasFiltradasPaginadas = computed(() => {
+        return this.normasCompletadasFiltradas().slice(0, this.cuantosMostrarCompletadas());
     });
 
     cargando = signal(true);
@@ -203,5 +212,11 @@ export class TableroVencimientos {
         }
 
         return '';
+    }
+
+    mostrarMasCompletadas() {
+        this.cuantosMostrarCompletadas.update((v) => {
+            return v + this.deltaMostrarMas;
+        });
     }
 }
