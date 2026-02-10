@@ -311,8 +311,9 @@
                     <div hlmItem variant="outline" size="sm" class="md:px-8">
                         <div hlmItemContent>
                             <div hlmItemTitle>Vencimiento</div>
-                            <div hlmItemDescription>
-                                {{ item()?.fechaVencimiento | date: 'd MMM yyyy' }}
+                            <div hlmItemDescription class="text-center">
+                                {{ item()?.fechaVencimiento | date: 'd MMM yyyy' }}<br />
+                                {{ item()?.fechaVencimiento | date: 'HH:mm' }}
                             </div>
                         </div>
                     </div>
@@ -331,13 +332,13 @@
                                     class="text-(--blanco)"
                                 />
                             </div>
-                            <div hlmItemContent class="flex-none">
-                                <div hlmItemTitle class="text-lg text-(--blanco)">
+                            <div hlmItemContent class="flex-none max-w-full">
+                                <div
+                                    hlmItemTitle
+                                    class="text-base md:text-lg text-(--blanco) text-center"
+                                >
                                     ¡Completada el
-                                    {{
-                                        item()?.fechaCompletitud
-                                            | date: "EEEE d 'de' MMMM 'de' yyyy"
-                                    }}!
+                                    {{ item()?.fechaCompletitud | date: "d 'de' MMMM 'de' yyyy" }}!
                                 </div>
                             </div>
                         </div>
