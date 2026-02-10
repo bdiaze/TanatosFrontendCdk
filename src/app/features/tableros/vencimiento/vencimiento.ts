@@ -33,11 +33,13 @@ import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-elimi
 import { debounceTime, Subject, switchMap } from 'rxjs';
 import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-suscrita-completar-norma';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 
 @Component({
     selector: 'app-vencimiento',
     imports: [
         ModalEliminacion,
+        ModalEdicion,
         NgIcon,
         HlmIcon,
         HlmH2,
@@ -68,6 +70,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
             lucideDownload,
             lucideTrash,
         }),
+        DatePipe,
     ],
 })
 export class Vencimiento implements OnInit {
@@ -76,6 +79,8 @@ export class Vencimiento implements OnInit {
 
     idNormaSuscrita = signal<number | null>(null);
     idHistorialNormaSuscrita = signal<number | null>(null);
+
+    datePipe = inject(DatePipe);
 
     normaSuscritaDao = inject(NormaSuscritaDao);
     documentoAdjuntoDao = inject(DocumentoAdjuntoDao);
@@ -103,8 +108,6 @@ export class Vencimiento implements OnInit {
     documentosEnProgreso = signal<DocumentoEnProgreso[]>([]);
 
     cargandoNormaSuscritaConVencimiento = signal<boolean>(true);
-
-    completando = signal<boolean>(false);
 
     constructor() {
         effect(() => {
@@ -477,7 +480,46 @@ export class Vencimiento implements OnInit {
         this.closeModalEliminar();
     }
 
+    showModalConfirmar = signal<boolean>(false);
+    textoModalConfirmar = computed(() => {
+        const nombre = this.item()?.nombre ?? this.item()?.templateNorma?.nombre;
+        let texto = `<p class='text-center'>¿Seguro que deseas dar por completada la obligación <b>${nombre}</b>?</p>`;
+
+        const vencimiento = this.item()?.fechaVencimiento;
+        let vencimientoTexto =
+            this.datePipe.transform(vencimiento, "EEEE d 'de' MMMM 'de' yyyy 'a las' HH:mm") ?? '';
+        vencimientoTexto =
+            vencimientoTexto.charAt(0).toLocaleUpperCase() + vencimientoTexto.slice(1);
+        texto += `<p class='mt-2 text-left'><b>Vencimiento:</b> ${vencimientoTexto}</p>`;
+
+        let listadoDocumentos = '';
+        if (this.documentosAdjuntos().length > 0) {
+            listadoDocumentos += `<br/><span class='mt-2 text-left text-sm'><ul class='list-disc ml-7'>`;
+            this.documentosAdjuntos().forEach((doc) => {
+                const nombreArchivo = doc.nombreArchivo;
+                listadoDocumentos += `<li>${nombreArchivo}</li>`;
+            });
+            listadoDocumentos += `</ul></span>`;
+        } else {
+            listadoDocumentos += `<span class='mt-2 text-center text-destructive text-sm italic'>Sin documentos adjuntos</span>`;
+        }
+        texto += `<div class='mt-2 text-left'><b>Documentos Adjuntos:</b> ${listadoDocumentos}</div>`;
+
+        return texto;
+    });
+
+    openModalConfirmar() {
+        this.showModalConfirmar.set(true);
+    }
+
+    closeModalConfirmar() {
+        this.showModalConfirmar.set(false);
+    }
+
+    completando = signal<boolean>(false);
+
     completar() {
+        this.closeModalConfirmar();
         this.completando.set(true);
         this.normaSuscritaDao
             .completarNorma({

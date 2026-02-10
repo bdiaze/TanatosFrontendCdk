@@ -97,184 +97,209 @@
                 <p HlmP class="text-justify mx-4 whitespace-pre-line">
                     {{ item()?.descripcion ?? item()?.templateNorma?.descripcion }}
                 </p>
-                <div hlmItem variant="outline" size="sm" class="w-full">
-                    <div hlmItemContent>
-                        <div hlmItemTitle>Documentos Adjuntos</div>
-                        <div hlmItemDescription>
-                            <div class="mb-2">
-                                No olvides adjuntar los documentos asociados al cumplimiento de la
-                                obligación.
-                                <ul class="list-disc ml-6">
-                                    <li>
-                                        Archivos <span class="italic">PDF</span> o imagenes
-                                        <span class="italic">JPEG/PNG/WEBP</span>.
-                                    </li>
-                                    <li>
-                                        Archivos con un tamaño máximo de
-                                        <span class="italic">10 MB</span>.
-                                    </li>
-                                </ul>
-                            </div>
-                            <div hlmTableContainer>
-                                <table hlmTable>
-                                    @if (
-                                        (documentosAdjuntos() && documentosAdjuntos().length > 0) ||
-                                        (documentosEnProgreso() &&
-                                            documentosEnProgreso().length > 0)
-                                    ) {
-                                        <thead hlmTHead>
-                                            <tr hlmTr>
-                                                <th hlmTh>Nombre</th>
-                                                <th hlmTh class="text-center">Fecha Subida</th>
-                                                <th hlmTh></th>
-                                            </tr>
-                                        </thead>
-                                    }
-                                    <tbody hlmTBody>
-                                        @for (
-                                            documento of documentosAdjuntos();
-                                            track documento.id
+                @if (
+                    !item()?.fechaCompletitud ||
+                    (documentosAdjuntos() && documentosAdjuntos().length > 0)
+                ) {
+                    <div hlmItem variant="outline" size="sm" class="w-full">
+                        <div hlmItemContent>
+                            <div hlmItemTitle>Documentos Adjuntos</div>
+                            <div hlmItemDescription>
+                                @if (!item()?.fechaCompletitud) {
+                                    <div class="mb-2">
+                                        No olvides adjuntar los documentos asociados al cumplimiento
+                                        de la obligación.
+                                        <ul class="list-disc ml-6">
+                                            <li>
+                                                Archivos <span class="italic">PDF</span> o imagenes
+                                                <span class="italic">JPEG/PNG/WEBP</span>.
+                                            </li>
+                                            <li>
+                                                Archivos con un tamaño máximo de
+                                                <span class="italic">10 MB</span>.
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                                <div hlmTableContainer>
+                                    <table hlmTable>
+                                        @if (
+                                            (documentosAdjuntos() &&
+                                                documentosAdjuntos().length > 0) ||
+                                            (documentosEnProgreso() &&
+                                                documentosEnProgreso().length > 0)
                                         ) {
-                                            <tr hlmTr class="fade-in">
-                                                <td
-                                                    hlmTd
-                                                    class="whitespace-normal wrap-break-word break-all"
-                                                >
-                                                    {{ documento.nombreArchivo }}
-                                                </td>
-                                                <td hlmTd class="text-center">
-                                                    <div class="flex flex-col gap-1">
-                                                        <div class="text-xs">
-                                                            {{
-                                                                documento.fechaSubida
-                                                                    | date: 'd MMM yyyy'
-                                                            }}
-                                                        </div>
-                                                        <div class="text-xs">
-                                                            {{
-                                                                documento.fechaSubida
-                                                                    | date: 'HH:mm:ss'
-                                                            }}
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td hlmTd>
-                                                    <div
-                                                        class="flex flex-row items-center justify-end gap-2"
+                                            <thead hlmTHead>
+                                                <tr hlmTr>
+                                                    <th hlmTh>Nombre</th>
+                                                    <th hlmTh class="text-center">Fecha Subida</th>
+                                                    <th hlmTh></th>
+                                                </tr>
+                                            </thead>
+                                        }
+                                        <tbody hlmTBody>
+                                            @for (
+                                                documento of documentosAdjuntos();
+                                                track documento.id
+                                            ) {
+                                                <tr hlmTr class="fade-in">
+                                                    <td
+                                                        hlmTd
+                                                        class="whitespace-normal wrap-break-word break-all"
                                                     >
-                                                        <button
-                                                            hlmBtn
-                                                            size="icon"
-                                                            variant="secondary"
-                                                            class="size-8"
-                                                            (click)="descargaArchivo(documento.id)"
-                                                            [disabled]="documento.descargando"
+                                                        {{ documento.nombreArchivo }}
+                                                    </td>
+                                                    <td hlmTd class="text-center">
+                                                        <div class="flex flex-col gap-1">
+                                                            <div class="text-xs">
+                                                                {{
+                                                                    documento.fechaSubida
+                                                                        | date: 'd MMM yyyy'
+                                                                }}
+                                                            </div>
+                                                            <div class="text-xs">
+                                                                {{
+                                                                    documento.fechaSubida
+                                                                        | date: 'HH:mm:ss'
+                                                                }}
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td hlmTd>
+                                                        <div
+                                                            class="flex flex-row items-center justify-end gap-2"
                                                         >
-                                                            @if (documento.descargando) {
-                                                                <hlm-spinner />
-                                                            } @else {
+                                                            <button
+                                                                hlmBtn
+                                                                size="icon"
+                                                                variant="secondary"
+                                                                class="size-8"
+                                                                (click)="
+                                                                    descargaArchivo(documento.id)
+                                                                "
+                                                                [disabled]="documento.descargando"
+                                                            >
+                                                                @if (documento.descargando) {
+                                                                    <hlm-spinner />
+                                                                } @else {
+                                                                    <ng-icon
+                                                                        hlm
+                                                                        size="sm"
+                                                                        name="lucideDownload"
+                                                                    />
+                                                                }
+                                                            </button>
+                                                            @if (!item()?.fechaCompletitud) {
+                                                                <button
+                                                                    hlmBtn
+                                                                    size="icon"
+                                                                    variant="destructive"
+                                                                    class="size-8"
+                                                                    (click)="
+                                                                        openModalEliminar(documento)
+                                                                    "
+                                                                    [disabled]="documento.borrando"
+                                                                >
+                                                                    @if (documento.borrando) {
+                                                                        <hlm-spinner />
+                                                                    } @else {
+                                                                        <ng-icon
+                                                                            hlm
+                                                                            size="sm"
+                                                                            name="lucideTrash"
+                                                                        />
+                                                                    }
+                                                                </button>
+                                                            }
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @for (
+                                                documentoEnProgreso of documentosEnProgreso();
+                                                track documentoEnProgreso.idTemporal
+                                            ) {
+                                                <tr hlmTr class="fade-in">
+                                                    <td
+                                                        hlmTd
+                                                        class="whitespace-normal wrap-break-word break-all"
+                                                        colspan="3"
+                                                    >
+                                                        {{ documentoEnProgreso.nombre }}
+                                                        <hlm-progress
+                                                            [value]="documentoEnProgreso.progreso"
+                                                        >
+                                                            <hlm-progress-indicator />
+                                                        </hlm-progress>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        @if (!item()?.fechaCompletitud) {
+                                            <tfoot hlmTFoot>
+                                                <tr hlmTr>
+                                                    <td
+                                                        hlmTd
+                                                        colspan="3"
+                                                        class="text-center p-0 border-dashed border-(--negro) border-2 transition-colors duration-200"
+                                                        [ngClass]="{
+                                                            'bg-(--negro)/10': draggingFile(),
+                                                        }"
+                                                    >
+                                                        <div
+                                                            (dragover)="onDragOver($event)"
+                                                            (dragleave)="onDragLeave($event)"
+                                                            (drop)="onDropFile($event)"
+                                                            class="py-6"
+                                                        >
+                                                            <button
+                                                                hlmBtn
+                                                                size="icon"
+                                                                variant="link"
+                                                                class="size-8 text-(--negro)"
+                                                                (click)="fileInput.click()"
+                                                            >
                                                                 <ng-icon
                                                                     hlm
                                                                     size="sm"
-                                                                    name="lucideDownload"
+                                                                    name="lucidePlus"
                                                                 />
-                                                            }
-                                                        </button>
-                                                        <button
-                                                            hlmBtn
-                                                            size="icon"
-                                                            variant="destructive"
-                                                            class="size-8"
-                                                            (click)="openModalEliminar(documento)"
-                                                            [disabled]="documento.borrando"
-                                                        >
-                                                            @if (documento.borrando) {
-                                                                <hlm-spinner />
-                                                            } @else {
-                                                                <ng-icon
-                                                                    hlm
-                                                                    size="sm"
-                                                                    name="lucideTrash"
-                                                                />
-                                                            }
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-                                        @for (
-                                            documentoEnProgreso of documentosEnProgreso();
-                                            track documentoEnProgreso.idTemporal
-                                        ) {
-                                            <tr hlmTr class="fade-in">
-                                                <td
-                                                    hlmTd
-                                                    class="whitespace-normal wrap-break-word break-all"
-                                                    colspan="3"
-                                                >
-                                                    {{ documentoEnProgreso.nombre }}
-                                                    <hlm-progress
-                                                        [value]="documentoEnProgreso.progreso"
-                                                    >
-                                                        <hlm-progress-indicator />
-                                                    </hlm-progress>
-                                                </td>
-                                            </tr>
-                                        }
-                                    </tbody>
-                                    <tfoot hlmTFoot>
-                                        <tr hlmTr>
-                                            <td
-                                                hlmTd
-                                                colspan="3"
-                                                class="text-center p-0 border-dashed border-(--negro) border-2 transition-colors duration-200"
-                                                [ngClass]="{
-                                                    'bg-(--negro)/10': draggingFile(),
-                                                }"
-                                            >
-                                                <div
-                                                    (dragover)="onDragOver($event)"
-                                                    (dragleave)="onDragLeave($event)"
-                                                    (drop)="onDropFile($event)"
-                                                    class="py-6"
-                                                >
-                                                    <button
-                                                        hlmBtn
-                                                        size="icon"
-                                                        variant="link"
-                                                        class="size-8 text-(--negro)"
-                                                        (click)="fileInput.click()"
-                                                    >
-                                                        <ng-icon hlm size="sm" name="lucidePlus" />
-                                                        <div>
-                                                            Click aquí para adjuntar tu documento
+                                                                <div>
+                                                                    Click aquí para adjuntar tu
+                                                                    documento
+                                                                </div>
+                                                                <br />
+                                                            </button>
+                                                            <p
+                                                                hlmP
+                                                                class="text-xs mt-2 font-normal italic opacity-80"
+                                                            >
+                                                                (también puedes arrastrar aquí tus
+                                                                documentos)
+                                                            </p>
+                                                            <input
+                                                                type="file"
+                                                                #fileInput
+                                                                hidden
+                                                                [accept]="
+                                                                    allowedFileTypes.join(',')
+                                                                "
+                                                                (change)="
+                                                                    archivosSeleccionados($event)
+                                                                "
+                                                                multiple
+                                                            />
                                                         </div>
-                                                        <br />
-                                                    </button>
-                                                    <p
-                                                        hlmP
-                                                        class="text-xs mt-2 font-normal italic opacity-80"
-                                                    >
-                                                        (también puedes arrastrar aquí tus
-                                                        documentos)
-                                                    </p>
-                                                    <input
-                                                        type="file"
-                                                        #fileInput
-                                                        hidden
-                                                        [accept]="allowedFileTypes.join(',')"
-                                                        (change)="archivosSeleccionados($event)"
-                                                        multiple
-                                                    />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        }
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                }
                 @if (error()) {
                     <div hlmAlert variant="destructive">
                         <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
@@ -326,8 +351,12 @@
                                         <button
                                             hlmBtn
                                             class="w-full py-7 gap-4 text-lg"
-                                            (click)="completar()"
-                                            [disabled]="completando()"
+                                            (click)="openModalConfirmar()"
+                                            [disabled]="
+                                                completando() ||
+                                                (documentosEnProgreso() &&
+                                                    documentosEnProgreso().length > 0)
+                                            "
                                         >
                                             @if (completando()) {
                                                 <hlm-spinner />
@@ -354,10 +383,21 @@
         [descripcion]="
             `¿Seguro que deseas borrar el siguiente documento? <br/><b>${itemSeleccionado()?.nombreArchivo}</b><div class='text-sm mt-2 text-destructive'><b>¡Una vez eliminado no es posible recuperarlo!</b></div>`
         "
-        descripcionTextVerificacion="Para confirmar, escribe a continuación el nombre del documento:"
-        [textoVerificacion]="itemSeleccionado()?.nombreArchivo"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >
     </app-modal-eliminacion>
+} @else {
+    @if (showModalConfirmar()) {
+        <app-modal-edicion
+            [campos]="[]"
+            [item]="null"
+            titulo="Completar Obligación:"
+            [descripcion]="textoModalConfirmar()"
+            textoBotonGuardar="Completar"
+            (cerrar)="closeModalConfirmar()"
+            (editar)="completar()"
+        >
+        </app-modal-edicion>
+    }
 }
