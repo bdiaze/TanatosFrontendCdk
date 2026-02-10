@@ -22,6 +22,13 @@ import { TableroVencimientos } from './features/tableros/tablero-vencimientos/ta
 import { Vencimiento } from './features/tableros/vencimiento/vencimiento';
 import { MenuInicial } from './features/tableros/menu-inicial/menu-inicial';
 import { EmptyHero } from './components/empty-hero/empty-hero';
+import { Nosotros } from './features/tableros/nosotros/nosotros';
+import { Planes } from './features/tableros/planes/planes';
+import { Servicios } from './features/tableros/servicios/servicios';
+import { Contacto } from './features/tableros/contacto/contacto';
+import { Privacidad } from './features/tableros/privacidad/privacidad';
+import { AvisoLegal } from './features/tableros/aviso-legal/aviso-legal';
+import { PoliticaDeCookies } from './features/tableros/politica-de-cookies/politica-de-cookies';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -31,6 +38,34 @@ export const routes: Routes = [
     {
         path: 'inicio',
         component: MenuInicial,
+    },
+    {
+        path: 'nosotros',
+        component: Nosotros,
+    },
+    {
+        path: 'planes',
+        component: Planes,
+    },
+    {
+        path: 'servicios',
+        component: Servicios,
+    },
+    {
+        path: 'contacto',
+        component: Contacto,
+    },
+    {
+        path: 'privacidad',
+        component: Privacidad,
+    },
+    {
+        path: 'aviso-legal',
+        component: AvisoLegal,
+    },
+    {
+        path: 'politica-de-cookies',
+        component: PoliticaDeCookies,
     },
     {
         path: 'mi-calendario',
