@@ -21,7 +21,7 @@
     class="text-(--azul) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center p-0 max-w-dvw fade-in"
 >
     <div
-        class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(30rem,40vw,50rem)] overflow-hidden object-top-right"
+        class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(30rem,40vw,40rem)] overflow-hidden object-top-right"
     >
         <video
             autoplay
@@ -49,7 +49,7 @@
 </section>
 <section
     id="nuestros-valores"
-    class="text-(--blanco) relative w-full flex flex-col items-center justify-center bg-(--azul) py-10 lg:py-16 px-12 max-w-dvw fade-in"
+    class="text-(--blanco) relative w-full flex flex-col items-center justify-center bg-(--azul) py-14 lg:py-20 px-12 max-w-dvw fade-in"
 >
     <p hlmP class="font-serif text-center text-3xl lg:text-5xl font-semibold text-balance mb-8">
         Nuestros Valores
@@ -115,25 +115,25 @@
     <div
         class="font-serif flex flex-col items-center justify-center w-full gap-6 lg:gap-8 text-lg lg:text-xl"
     >
-        <div class="flex flex-row items-center justify-center text-balance gap-4">
+        <div class="flex flex-row items-center justify-center gap-4">
             <div class="flex items-center justify-center">
                 <ng-icon hlm size="lg" name="lucideReceipt" />
             </div>
             <div>Reducir multas por incumplimiento normativo.</div>
         </div>
-        <div class="flex flex-row items-center justify-center text-balance gap-4">
+        <div class="flex flex-row items-center justify-center gap-4">
             <div class="flex items-center justify-center">
                 <ng-icon hlm size="lg" name="lucidePencilRuler" />
             </div>
             <div>Entregar herramientas simples para micro y pequeños empresarios.</div>
         </div>
-        <div class="flex flex-row items-center justify-center text-balance gap-4">
+        <div class="flex flex-row items-center justify-center gap-4">
             <div class="flex items-center justify-center">
                 <ng-icon hlm size="lg" name="lucideUsers" />
             </div>
             <div>Democratizar el acceso a organización y cumplimiento.</div>
         </div>
-        <div class="flex flex-row items-center justify-center text-balance gap-4">
+        <div class="flex flex-row items-center justify-center gap-4">
             <div class="flex items-center justify-center">
                 <ng-icon hlm size="lg" name="lucideMedal" />
             </div>
@@ -146,16 +146,7 @@
     class="text-(--blanco) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw fade-in"
 >
     <div
-        class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(20rem,40vw,30rem)] overflow-hidden object-top-right"
-    >
-        <img
-            [src]="urlFondo1"
-            alt="Empleado sirviendo café"
-            class="absolute inset-0 h-full w-full object-cover"
-        />
-    </div>
-    <div
-        class="flex flex-col items-center justify-center gap-4 lg:gap-8 w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8"
+        class="flex flex-col items-center justify-center gap-4 lg:gap-10 w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8 order-2 md:order-1"
     >
         <p hlmP class="font-serif text-center text-2xl lg:text-4xl font-semibold text-balance">
             Nuestro Equipo
@@ -168,16 +159,25 @@
             Creemos que la tecnología debe facilitar la vida, no complicarla.
         </p>
     </div>
+    <div
+        class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(20rem,55vw,35rem)] overflow-hidden object-top-right order-1 md:order-2"
+    >
+        <img
+            [src]="urlFondo1"
+            alt="Empleado sirviendo café"
+            class="absolute inset-0 h-full w-full object-cover"
+        />
+    </div>
 </section>
 <section
     class="relative w-full overflow-hidden flex flex-col items-center justify-center max-w-dvw p-0 fade-in bg-primary"
 >
     <div
-        class="flex-1 flex flex-col items-center justify-evenly px-12 py-10 md:py-12 lg:py-16 h-full gap-8 lg:gap-12"
+        class="flex-1 flex flex-col items-center justify-evenly px-12 py-10 md:py-12 lg:py-18 h-full gap-8 lg:gap-12"
     >
         <p
             hlmP
-            class="text-(--blanco) font-serif text-center text-xl md:text-2xl lg:text-3xl font-semibold text-balance"
+            class="text-(--blanco) font-serif text-center text-xl md:text-2xl lg:text-3xl leading-8 md:leading-12 lg:leading-16 font-semibold text-balance"
         >
             Nuestro compromiso es seguir mejorando la plataforma, incorporar nuevas plantillas
             normativas y escuchar constantemente a nuestra comunidad.
