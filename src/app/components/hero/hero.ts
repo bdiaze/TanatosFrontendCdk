@@ -1,11 +1,12 @@
 import { environment } from '@/environments/environment';
 import { Component, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmH1, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-hero',
-    imports: [HlmH4, HlmP, HlmButtonImports],
+    imports: [HlmH4, HlmP, HlmButtonImports, RouterLink],
     templateUrl: './hero.html',
     styleUrl: './hero.scss',
     host: {
