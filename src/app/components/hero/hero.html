@@ -2,7 +2,11 @@
     class="relative h-[clamp(16rem,75vw,35rem)] md:h-[45vw] w-full overflow-hidden flex flex-col items-start justify-center max-w-dvw fade-in"
 >
     <img
-        [src]="urlFondo"
+        [src]="urlFondo1_1920"
+        [srcset]="
+            `${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w, ${urlFondo1_2560} 2560w`
+        "
+        sizes="100vw"
         alt="Mujer emprendedora"
         class="absolute inset-0 h-full w-full object-cover object-[1rem_1rem] scale-120 md:object-[0%_50%] md:scale-100"
     />
@@ -29,7 +33,7 @@
 >
     <div class="flex flex-col md:flex-row justify-evenly w-full gap-8 md:gap-8">
         <div class="flex flex-col items-center gap-4 md:gap-[2.5vw] w-full md:w-1/2">
-            <img [src]="urlCalendario" alt="Calendario" class="w-[clamp(2.5rem,5vw,10rem)]" />
+            <ng-icon hlm size="xl" name="lucideCalendarClock" class="text-(--azul)" />
             <p
                 hlmP
                 class="text-(--azul) font-serif text-center text-[clamp(1.25rem,2.0vw,1.8rem)] text-balance"
@@ -39,7 +43,7 @@
             </p>
         </div>
         <div class="flex flex-col items-center gap-4 md:gap-[2.5vw] w-full md:w-1/2">
-            <img [src]="urlMundo" alt="Calendario" class="w-[clamp(2.5rem,5vw,10rem)]" />
+            <ng-icon hlm size="xl" name="lucideEarth" class="text-(--azul)" />
             <p
                 hlmP
                 class="text-(--azul) font-serif text-center text-[clamp(1.25rem,2.0vw,1.8rem)] text-balance"
@@ -89,7 +93,11 @@
         class="relative w-full md:w-1/2 h-[clamp(16rem,60vw,40rem)] md:h-[clamp(18rem,50vw,40rem)] overflow-hidden object-top-right"
     >
         <img
-            [src]="urlFondo2"
+            [src]="urlFondo2_1280"
+            [srcset]="
+                `${urlFondo2_640} 640w, ${urlFondo2_960} 960w, ${urlFondo2_1280} 1280w, ${urlFondo2_1920} 1920w`
+            "
+            sizes="(max-width: 767px) 100vw, 50vw"
             alt="Gerente de pequeña empresa"
             class="absolute inset-0 h-full w-full object-cover"
         />
@@ -150,7 +158,11 @@
         class="relative w-full md:w-1/2 overflow-hidden flex items-center justify-center order-1 md:order-2"
     >
         <img
-            [src]="urlFondo3"
+            [src]="urlFondo3_1280"
+            [srcset]="
+                `${urlFondo3_640} 640w, ${urlFondo3_960} 960w, ${urlFondo3_1280} 1280w, ${urlFondo3_1920} 1920w`
+            "
+            sizes="(max-width: 767px) 100vw, 50vw"
             alt="Hombre de negocios"
             class="inset-0 h-[clamp(11.1rem,35vw,30rem)] w-[clamp(11.1rem,35vw,30rem)] object-cover rounded-full"
         />
