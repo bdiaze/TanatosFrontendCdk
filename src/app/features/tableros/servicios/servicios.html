@@ -76,9 +76,12 @@
             muted
             loop
             playsinline
+            preload="metadata"
+            [poster]="urlVideo1Poster"
             class="absolute inset-0 w-full h-full object-cover -z-10"
         >
-            <source [src]="urlVideo1" type="video/mp4" />
+            <source [src]="urlVideo1WebM" type="video/webm" />
+            <source [src]="urlVideo1MP4" type="video/mp4" />
         </video>
     </div>
     <div

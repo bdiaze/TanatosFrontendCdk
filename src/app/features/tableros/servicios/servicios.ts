@@ -35,5 +35,8 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 })
 export class Servicios {
     urlFondo1 = `${environment.urlImages}/images/vista-frontal-empleado-masculino-sirviendo-cafe.jpg`;
-    urlVideo1 = `${environment.urlImages}/videos/mujer-trabajando-en-tablet.mp4`;
+
+    urlVideo1Poster = `${environment.urlImages}/videos/mujer-trabajando-en-tablet/mujer-trabajando-en-tablet.webp`;
+    urlVideo1WebM = `${environment.urlImages}/videos/mujer-trabajando-en-tablet/mujer-trabajando-en-tablet_720p.webm`;
+    urlVideo1MP4 = `${environment.urlImages}/videos/mujer-trabajando-en-tablet/mujer-trabajando-en-tablet_720p.mp4`;
 }
