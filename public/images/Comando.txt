@@ -1,0 +1,11 @@
+640:
+ffmpeg -i acotado.webp -vf "scale=640:-2:flags=lanczos" -c:v libwebp -quality 90 640.webp
+
+960:
+ffmpeg -i acotado.webp -vf "scale=960:-2:flags=lanczos" -c:v libwebp -quality 90 960.webp
+
+1280:
+ffmpeg -i acotado.webp -vf "scale=1280:-2:flags=lanczos" -c:v libwebp -quality 90 1280.webp
+
+1920:
+ffmpeg -i acotado.webp -vf "scale=1920:-2:flags=lanczos" -c:v libwebp -quality 90 1920.webp

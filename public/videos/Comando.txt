@@ -1,8 +1,8 @@
 Para comprimir:
-ffmpeg -i mujer-trabajando-en-tablet_original.mp4 -vf "scale=1280:720:flags=lanczos" -r 30 -c:v libx264 -crf 22 -preset slow -profile:v high -level 4.0 -pix_fmt yuv420p -an -movflags +faststart mujer-trabajando-en-tablet_720p.mp4
+ffmpeg -i original.mp4 -vf "scale=1280:720:flags=lanczos" -r 30 -c:v libx264 -crf 22 -preset slow -profile:v high -level 4.0 -pix_fmt yuv420p -an -movflags +faststart 720p.mp4
 
 Para convertir a WebM:
-ffmpeg -i mujer-trabajando-en-tablet_original.mp4 -vf "scale=1280:720:flags=lanczos" -r 30 -c:v libvpx-vp9 -crf 28 -b:v 0 -pix_fmt yuv420p -row-mt 1 -an mujer-trabajando-en-tablet_720p.webm
+ffmpeg -i original.mp4 -vf "scale=1280:720:flags=lanczos" -r 30 -c:v libvpx-vp9 -crf 28 -b:v 0 -pix_fmt yuv420p -row-mt 1 -an 720p.webm
 
 Para sacar primer frame:
-ffmpeg -i mujer-trabajando-en-tablet_original.mp4 -vf "scale=1280:720:flags=lanczos" -frames:v 1 -c:v libwebp -quality 90 -compression_level 6 mujer-trabajando-en-tablet.webp
+ffmpeg -i original.mp4 -vf "scale=1280:720:flags=lanczos" -frames:v 1 -c:v libwebp -quality 90 -compression_level 6 poster.webp
