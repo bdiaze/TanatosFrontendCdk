@@ -6,7 +6,7 @@ import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -74,6 +74,7 @@ import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 })
 export class Vencimiento implements OnInit {
     private route = inject(ActivatedRoute);
+    private router = inject(Router);
     negocioStore = inject(NegocioStore);
 
     idNormaSuscrita = signal<number | null>(null);
@@ -110,7 +111,11 @@ export class Vencimiento implements OnInit {
 
     constructor() {
         effect(() => {
-            if (this.idNormaSuscrita() && this.idHistorialNormaSuscrita()) {
+            if (
+                this.idNormaSuscrita() &&
+                this.idHistorialNormaSuscrita() &&
+                this.negocioStore.negocioSeleccionado()
+            ) {
                 this.error.set('');
                 this.showModalEliminar.set(false);
                 this.itemSeleccionado.set(null);
@@ -128,6 +133,13 @@ export class Vencimiento implements OnInit {
             .obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)
             .subscribe({
                 next: (cargandoNormaSuscritaConVencimiento) => {
+                    if (
+                        cargandoNormaSuscritaConVencimiento.idNegocio !==
+                        this.negocioStore.negocioSeleccionado()?.id
+                    ) {
+                        this.router.navigateByUrl('/mi-calendario');
+                    }
+
                     cargandoNormaSuscritaConVencimiento.documentosAdjuntos =
                         cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.sort((a, b) => {
                             const fechaA = a.fechaSubida ? new Date(a.fechaSubida) : new Date();
