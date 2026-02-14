@@ -1,18 +1,16 @@
 <section id="nuestros-planes" class="w-full flex flex-col gap-4 fade-in">
-    <div
-        class="text-(--azul) flex flex-row justify-center items-center col-span-1 md:col-span-3 gap-4"
-    >
+    <div class="text-(--azul) flex flex-row justify-center items-center gap-4 mt-6">
         <ng-icon hlm size="base" name="lucideGem" />
-        <h3 hlmH3>Nuestros Planes</h3>
+        <h3 hlmH3 class="font-serif text-3xl">Nuestros Planes</h3>
     </div>
-    <div class="text-(--azul) flex justify-center items-center col-span-1 md:col-span-3 pb-3 px-4">
+    <div class="text-(--azul) flex justify-center items-center col-span-1 md:col-span-2 pb-3 px-4">
         <p hlmP class="text-center">
             Planes diseñados para acompañar el crecimiento de tu negocio.
         </p>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3">
+    <div class="grid grid-cols-1 md:grid-cols-2">
         <div
-            class="flex flex-col items-center justify-center bg-(--celeste) text-(--blanco) [a]:hover:bg-(--celeste)/90 px-4 py-4"
+            class="flex flex-col items-center justify-center bg-(--primary) text-(--blanco) px-4 py-4"
         >
             <div class="justify-center">
                 <h4 hlmH4 class="py-4">Plan Emprendedor</h4>
@@ -31,10 +29,7 @@
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="base" name="lucideDot" />
-                            <p hlmP>
-                                Creación de obligaciones<br />
-                                personalizadas
-                            </p>
+                            <p hlmP>Creación de obligaciones personalizadas limitadas</p>
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="base" name="lucideDot" />
@@ -42,14 +37,11 @@
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="base" name="lucideDot" />
-                            <p hlmP>
-                                Un solo destinatario<br />
-                                de notificaciones
-                            </p>
+                            <p hlmP>Un solo destinatario de notificaciones</p>
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="base" name="lucideDot" />
-                            <p hlmP>Solo notificaciones por <br />correo electrónico</p>
+                            <p hlmP>Solo notificaciones por correo electrónico</p>
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="base" name="lucideDot" />
@@ -74,10 +66,10 @@
         </div>
 
         <div
-            class="flex flex-col items-center justify-center bg-(--primary) text-(--blanco) [a]:hover:bg-(--primary)/90 px-4 py-4"
+            class="flex flex-col items-center justify-center bg-(--azul) text-(--blanco) px-4 py-4"
         >
             <div class="justify-center">
-                <h4 hlmH4 class="py-4">Plan Profesional</h4>
+                <h4 hlmH4 class="py-4">Plan Empresa</h4>
             </div>
             <div class="flex-1">
                 <div
@@ -89,32 +81,27 @@
                     <div class="flex flex-col items-center justify-center gap-2">
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="sm" name="lucideStar" />
-                            <p hlmP>Hasta tres negocios</p>
+                            <p hlmP>Todo lo que incluye el Plan Emprendedor</p>
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="sm" name="lucideStar" />
-                            <p hlmP>
-                                Acceso completo a<br />
-                                plantillas normativas
-                            </p>
+                            <p hlmP>Además de negocios ilimitados</p>
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="sm" name="lucideStar" />
-                            <p hlmP>
-                                Múltiples destinatarios<br />
-                                de notificaciones
-                            </p>
+                            <p hlmP>Acceso completo a plantillas normativas</p>
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="sm" name="lucideStar" />
-                            <p hlmP>Notificaciones por <br />Whatsapp</p>
+                            <p hlmP>Múltiples destinatarios de notificaciones</p>
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="sm" name="lucideStar" />
-                            <p hlmP>
-                                Documentos adjuntos<br />
-                                ilimitados
-                            </p>
+                            <p hlmP>Notificaciones por Whatsapp</p>
+                        </div>
+                        <div class="flex flex-row items-center justify-center gap-2">
+                            <ng-icon hlm size="sm" name="lucideStar" />
+                            <p hlmP>Documentos adjuntos ilimitados</p>
                         </div>
                         <div class="flex flex-row items-center justify-center gap-2">
                             <ng-icon hlm size="sm" name="lucideStar" />
@@ -133,60 +120,72 @@
                     size="lg"
                     class="text-base bg-transparent border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
                 >
-                    $9.990 mensuales
-                </button>
-            </div>
-        </div>
-
-        <div
-            class="flex flex-col items-center justify-center bg-(--azul) text-(--blanco) [a]:hover:bg-(--azul)/90 px-4 py-4"
-        >
-            <div class="justify-center"><h4 hlmH4 class="py-4">Plan Empresa</h4></div>
-            <div class="flex-1">
-                <div
-                    class="h-full text-(--blanco) text-center flex flex-col items-center justify-evenly gap-4"
-                >
-                    <p hlmP class="text-base pb-4 text-balance">
-                        Para empresas que necesitan mayor control y estructura.
-                    </p>
-                    <div class="flex flex-col items-center justify-center gap-2">
-                        <div class="flex flex-row items-center justify-center gap-2">
-                            <ng-icon hlm size="sm" name="lucideGem" />
-                            <p hlmP>Negocios ilimitados</p>
-                        </div>
-                        <div class="flex flex-row items-center justify-center gap-2">
-                            <ng-icon hlm size="sm" name="lucideGem" />
-                            <p hlmP>
-                                Gestión avanzada<br />
-                                de obligaciones
-                            </p>
-                        </div>
-                        <div class="flex flex-row items-center justify-center gap-2">
-                            <ng-icon hlm size="sm" name="lucideGem" />
-                            <p hlmP>Reportes descargables</p>
-                        </div>
-                        <div class="flex flex-row items-center justify-center gap-2">
-                            <ng-icon hlm size="sm" name="lucideGem" />
-                            <p hlmP>Soporte dedicado</p>
-                        </div>
-                    </div>
-                    <p hlmP class="text-base pt-4 text-balance">
-                        Una solución robusta para una operación más compleja.
-                    </p>
-                </div>
-            </div>
-            <div class="justify-center py-4">
-                <button
-                    hlmBtn
-                    variant="outline"
-                    size="lg"
-                    class="text-base bg-transparent border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
-                >
-                    $14.990 mensuales
+                    ${{ valorMensualPlanEmpresa() | number: '1.0-0' }} mensuales
                 </button>
             </div>
         </div>
     </div>
 </section>
 
-<section id="ofertas-y-promociones" class="fade-in"></section>
+<section
+    id="ofertas-y-promociones"
+    class="text-(--azul) relative w-full flex flex-col items-center justify-center gap-8 px-8 pt-10 pb-12 max-w-dvw fade-in"
+>
+    <div class="flex flex-row justify-center items-center gap-4">
+        <ng-icon hlm size="base" name="lucideGem" />
+        <h3 hlmH3 class="text-(--azul)" class="text-3xl">Ofertas y Promociones</h3>
+    </div>
+    <div class="flex flex-col md:flex-row justify-center w-full gap-8 md:gap-8">
+        <div class="flex flex-col items-center justify-between gap-2 w-full md:w-1/2">
+            <ng-icon hlm size="xl" name="lucideRocket" />
+            <h4 hlmH4 class="text-2xl">Lanzamiento</h4>
+            <p hlmP class="text-center text-lg text-balance">
+                Obtén un mes gratis al crear tu cuenta por ser parte de nuestra etapa inicial.
+            </p>
+        </div>
+    </div>
+</section>
+<section
+    id="nuestro-equipo"
+    class="text-(--blanco) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw fade-in"
+>
+    <div
+        class="flex flex-col items-center justify-center gap-4 lg:gap-6 w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8 order-2 md:order-1"
+    >
+        <ng-icon hlm size="xl" name="lucideCalendarHeart" />
+        <p hlmP class="font-serif text-center text-2xl font-semibold text-balance">Plan Anual</p>
+        <p hlmP class="text-center text-lg text-balance">
+            Paga el año completo y obtén 2 meses gratis.
+        </p>
+        <p hlmP class="font-serif text-center text-xl font-semibold text-balance mt-6">
+            Plan Empresa
+        </p>
+        <p hlmP class="text-center text-lg text-balance mb-2">
+            Precio Anual:
+            <span class="line-through"
+                >${{ valorMensualPlanEmpresa() * 12 | number: '1.0-0' }}</span
+            >
+        </p>
+        <button
+            hlmBtn
+            variant="outline"
+            size="lg"
+            class="text-base bg-transparent border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
+        >
+            ¡${{ valorMensualPlanEmpresa() * (12 - 2) | number: '1.0-0' }}! anuales
+        </button>
+    </div>
+    <div
+        class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(20rem,55vw,35rem)] overflow-hidden object-top-right order-1 md:order-2"
+    >
+        <img
+            [src]="urlFondo1_1280"
+            [srcset]="
+                `${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w`
+            "
+            sizes="(max-width: 767px) 100vw, 50vw"
+            alt="Empleado sirviendo café"
+            class="absolute inset-0 h-full w-full object-cover"
+        />
+    </div>
+</section>
