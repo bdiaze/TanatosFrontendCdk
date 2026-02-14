@@ -140,7 +140,7 @@
                 }
                 @if (item.tipo === 'item' && item.items && item.items.length > 0) {
                     <ul>
-                        <hlm-collapsible>
+                        <hlm-collapsible class="group/collapsible">
                             <button hlmCollapsibleTrigger>
                                 @if (item.icon) {
                                     <ng-icon hlm [name]="item.icon" />
@@ -212,7 +212,11 @@
                             groupItem.items.length > 0
                         ) {
                             <ul>
-                                <hlm-collapsible class="group/collapsible">
+                                <hlm-collapsible
+                                    class="group/collapsible"
+                                    [expanded]="estaAbierto(groupItem.id)"
+                                    (expandedChange)="itemCollapsibleChange(groupItem.id, $event)"
+                                >
                                     <div class="pl-2">
                                         <button
                                             hlmBtn
