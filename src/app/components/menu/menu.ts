@@ -72,6 +72,7 @@ export class Menu {
     @Output() onClick = new EventEmitter<void>();
 
     @Input() withClose = false;
+    @Input() estatico = false;
     @Output() onClose = new EventEmitter<void>();
 
     authStore = inject(AuthStore);

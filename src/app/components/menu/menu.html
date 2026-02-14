@@ -1,17 +1,32 @@
 <section
-    class="relative z-50 h-lvh bg-(--gris) text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden pb-4"
+    class="relative bg-(--gris) text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden pb-4"
+    [class.h-lvh]="!estatico"
+    [class.h-full]="estatico"
+    [class.z-50]="!estatico"
+    [class.z-10]="estatico"
 >
-    @if (withClose) {
-        <div class="sticky flex flex-row w-full items-center justify-between">
-            @if (sesionIniciada()) {
-                <button
-                    hlmBtn
-                    variant="outline"
-                    [hlmDropdownMenuTrigger]="menuNegocios"
-                    class="h-full border-none border-0 rounded-xs hover:text-(--negro)/80 pl-4 pr-8 shadow-none"
-                    [disabled]="cargandoNegocios()"
-                >
-                    <div class="flex flex-row justify-center items-center gap-4 w-full">
+    <div class="sticky flex flex-row w-full items-center justify-between">
+        @if (sesionIniciada()) {
+            <button
+                hlmBtn
+                variant="outline"
+                [hlmDropdownMenuTrigger]="menuNegocios"
+                class="h-full border-none border-0 rounded-xs hover:text-(--negro)/80 shadow-none p-0"
+                [class.pl-4]="!estatico"
+                [class.pr-8]="!estatico"
+                [class.px-4]="estatico"
+                [class.py-4]="estatico"
+                [class.w-full]="estatico"
+                [disabled]="cargandoNegocios()"
+            >
+                <div class="flex flex-row justify-center items-center gap-4 w-full">
+                    @if (!withClose) {
+                        <div
+                            class="text-(--negro)/80 flex aspect-square size-6 items-center justify-center rounded-lg"
+                        >
+                            <ng-icon name="lucideStore" class="text-2xl" />
+                        </div>
+                    } @else {
                         @if (negociosUsuario().length > 1) {
                             <div class="size-6">
                                 <ng-icon
@@ -22,57 +37,68 @@
                                 />
                             </div>
                         }
-                        <div class="grid flex-1 text-left text-sm leading-tight">
-                            <span class="truncate font-semibold opacity-90 text-base">
-                                @if (cargandoNegocios()) {
-                                    <hlm-skeleton class="h-7 w-32 rounded-xl" />
-                                } @else {
-                                    {{
-                                        cargandoNegocios()
-                                            ? 'Cargando negocios...'
-                                            : (negocioSeleccionado()?.nombre ??
-                                              'Seleccionar negocio...')
-                                    }}
-                                }
-                            </span>
-                            <span
-                                class="truncate text-sm flex items-center gap-1 font-normal font-serif"
-                            >
-                                @if (cargandoInformacionUsuario()) {
-                                    <hlm-skeleton class="h-5 w-36 rounded-xl" />
-                                } @else {
-                                    {{
-                                        cargandoInformacionUsuario()
-                                            ? 'Cargando nombre...'
-                                            : `${informacionUsuario()?.nombre ?? ''} ${informacionUsuario()?.apellido ?? ''}`
-                                    }}
-                                }
-                            </span>
-                        </div>
+                    }
+                    <div class="grid flex-1 text-left text-sm leading-tight">
+                        <span class="truncate font-semibold opacity-90 text-base">
+                            @if (cargandoNegocios()) {
+                                <hlm-skeleton class="h-7 w-32 rounded-xl" />
+                            } @else {
+                                {{
+                                    cargandoNegocios()
+                                        ? 'Cargando negocios...'
+                                        : (negocioSeleccionado()?.nombre ??
+                                          'Seleccionar negocio...')
+                                }}
+                            }
+                        </span>
+                        <span
+                            class="truncate text-sm flex items-center gap-1 font-normal font-serif"
+                        >
+                            @if (cargandoInformacionUsuario()) {
+                                <hlm-skeleton class="h-5 w-36 rounded-xl" />
+                            } @else {
+                                {{
+                                    cargandoInformacionUsuario()
+                                        ? 'Cargando nombre...'
+                                        : `${informacionUsuario()?.nombre ?? ''} ${informacionUsuario()?.apellido ?? ''}`
+                                }}
+                            }
+                        </span>
                     </div>
-                </button>
-                <ng-template #menuNegocios>
-                    <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
-                        @for (negocio of negociosUsuario(); track negocio.id) {
-                            <button
-                                hlmDropdownMenuCheckbox
-                                [checked]="negocioSeleccionado()?.id === negocio.id"
-                                (triggered)="cambiarNegocio(negocio)"
-                            >
-                                <hlm-dropdown-menu-checkbox-indicator />
-                                <span class="pr-8">{{ negocio.nombre }}</span>
-                                <hlm-dropdown-menu-shortcut>
-                                    <ng-icon
-                                        name="lucideStore"
-                                        class="text-sm translate-y-0.5 mr-1"
-                                    />
-                                </hlm-dropdown-menu-shortcut>
-                            </button>
+                    @if (estatico) {
+                        @if (negociosUsuario().length > 1) {
+                            <div class="size-6">
+                                <ng-icon
+                                    hlm
+                                    name="lucideChevronsUpDown"
+                                    class="ml-auto opacity-80"
+                                    size="sm"
+                                />
+                            </div>
                         }
-                    </hlm-dropdown-menu>
-                </ng-template>
-            }
-            <div class="flex-1"></div>
+                    }
+                </div>
+            </button>
+            <ng-template #menuNegocios>
+                <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
+                    @for (negocio of negociosUsuario(); track negocio.id) {
+                        <button
+                            hlmDropdownMenuCheckbox
+                            [checked]="negocioSeleccionado()?.id === negocio.id"
+                            (triggered)="cambiarNegocio(negocio)"
+                        >
+                            <hlm-dropdown-menu-checkbox-indicator />
+                            <span class="pr-8">{{ negocio.nombre }}</span>
+                            <hlm-dropdown-menu-shortcut>
+                                <ng-icon name="lucideStore" class="text-sm translate-y-0.5 mr-1" />
+                            </hlm-dropdown-menu-shortcut>
+                        </button>
+                    }
+                </hlm-dropdown-menu>
+            </ng-template>
+        }
+        <div class="flex-1"></div>
+        @if (withClose) {
             <div
                 class="flex items-center justify-center h-19 md:h-[clamp(3rem,10vw,7rem)] min-h-19 md:min-h-[clamp(3rem,10vw,7rem)] pr-2"
             >
@@ -86,78 +112,10 @@
                     <ng-icon hlm name="lucideX" size="base" class="text-(--negro)/70 scale-100" />
                 </button>
             </div>
-        </div>
-        <hlm-separator />
-    }
-    @if (sesionIniciada()) {
-        @if (!withClose) {
-            <div class="sticky">
-                <button
-                    hlmBtn
-                    variant="outline"
-                    [hlmDropdownMenuTrigger]="menuNegocios"
-                    class="h-18 border-none border-0 rounded-xs px-4 hover:text-(--negro)/80 w-full"
-                    [disabled]="cargandoNegocios()"
-                >
-                    <div class="flex justify-center items-center w-full gap-3">
-                        <div
-                            class="text-(--negro)/80 flex aspect-square size-8 items-center justify-center rounded-lg"
-                        >
-                            <ng-icon name="lucideStore" class="text-2xl" />
-                        </div>
-                        <div class="grid flex-1 text-left text-sm leading-tight">
-                            <span class="truncate font-semibold">
-                                @if (cargandoNegocios()) {
-                                    <hlm-spinner class="text-xs" />
-                                    Cargando negocios...
-                                } @else {
-                                    {{
-                                        cargandoNegocios()
-                                            ? 'Cargando negocios...'
-                                            : (negocioSeleccionado()?.nombre ??
-                                              'Seleccionar negocio...')
-                                    }}
-                                }
-                            </span>
-                            <span
-                                class="truncate text-xs flex items-center gap-1 font-normal font-serif"
-                            >
-                            </span>
-                        </div>
-                        @if (negociosUsuario().length > 1) {
-                            <div class="size-4">
-                                <ng-icon
-                                    hlm
-                                    name="lucideChevronsUpDown"
-                                    class="ml-auto"
-                                    size="sm"
-                                />
-                            </div>
-                        }
-                    </div>
-                </button>
-                <ng-template #menuNegocios>
-                    <hlm-dropdown-menu sidebar-dropdown-menu class="mx-2">
-                        @for (negocio of negociosUsuario(); track negocio.id) {
-                            <button
-                                hlmDropdownMenuCheckbox
-                                [checked]="negocioSeleccionado()?.id === negocio.id"
-                                (triggered)="cambiarNegocio(negocio)"
-                            >
-                                <hlm-dropdown-menu-checkbox-indicator />
-                                <span class="pr-5">{{ negocio.nombre }}</span>
-                                <hlm-dropdown-menu-shortcut>
-                                    <ng-icon
-                                        name="lucideStore"
-                                        class="text-sm translate-y-0.5 mr-1"
-                                    />
-                                </hlm-dropdown-menu-shortcut>
-                            </button>
-                        }
-                    </hlm-dropdown-menu>
-                </ng-template>
-            </div>
         }
+    </div>
+    <hlm-separator />
+    @if (sesionIniciada()) {
         <div class="overflow-y-auto overflow-x-hidden pb-4">
             @for (item of opcionesMenu(); track item.id; let first = $first) {
                 @if (item.tipo === 'item' && item.url) {
@@ -312,6 +270,8 @@
             }
         </div>
     }
-    <hlm-separator />
+    @if (!estatico) {
+        <hlm-separator />
+    }
     <ng-content></ng-content>
 </section>

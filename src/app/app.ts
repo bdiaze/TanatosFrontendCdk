@@ -3,9 +3,11 @@ import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/ro
 import { Header } from '@components/header/header';
 import { Footer } from '@components/footer/footer';
 import { filter } from 'rxjs';
+import { Menu } from './components/menu/menu';
+import { AuthStore } from './services/auth-store';
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, Footer],
+    imports: [RouterOutlet, Header, Footer, Menu],
     templateUrl: './app.html',
     styleUrl: './app.scss',
 })
@@ -16,6 +18,10 @@ export class App implements AfterViewInit {
 
     private router = inject(Router);
     private route = inject(ActivatedRoute);
+
+    private authStore = inject(AuthStore);
+    sesionIniciada = this.authStore.sesionIniciada;
+    logoutRunning = this.authStore.logoutRunning;
 
     ngAfterViewInit(): void {
         this.router.events.pipe(filter((e) => e instanceof NavigationEnd)).subscribe(() => {

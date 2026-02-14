@@ -49,14 +49,11 @@
         <div class="hidden md:inline-flex">
             @if (!sesionIniciada() && !logoutRunning()) {
                 <app-login></app-login>
+            } @else {
+                <app-logout></app-logout>
             }
         </div>
-        <div
-            class="flex items-center justify-center"
-            [ngClass]="{
-                'md:hidden': !sesionIniciada() && !logoutRunning(),
-            }"
-        >
+        <div class="flex items-center justify-center md:hidden">
             <button
                 hlmBtn
                 hlmsidebartrigger
