@@ -25,7 +25,7 @@
                 @if (cargando()) {
                     <hlm-skeleton class="h-50 rounded-xl" />
                 } @else {
-                    @for (vencido of normasVencidas(); track vencido.idNormaSuscrita) {
+                    @for (vencido of normasVencidas(); track vencido.idHistorialNormaSuscrita) {
                         <a
                             hlmItem
                             variant="outline"
@@ -37,7 +37,7 @@
                             class="flex flex-row items-start justify-start px-5 fade-in"
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
-                                <div class="w-full text-right">
+                                <div class="w-full text-center">
                                     <span hlmBadge variant="destructive">{{
                                         haceCuanto(vencido.fechaVencimiento)
                                     }}</span>
@@ -112,7 +112,7 @@
                     <hlm-skeleton class="h-50 rounded-xl" />
                     <hlm-skeleton class="h-50 rounded-xl" />
                 } @else {
-                    @for (futuro of normasFuturas(); track futuro.idNormaSuscrita) {
+                    @for (futuro of normasFuturas(); track futuro.idHistorialNormaSuscrita) {
                         <a
                             hlmItem
                             variant="outline"
@@ -124,7 +124,7 @@
                             class="flex flex-row items-start justify-start px-5 fade-in"
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
-                                <div class="text-right">
+                                <div class="text-center">
                                     <span hlmBadge>{{ enCuanto(futuro.fechaVencimiento) }}</span>
                                 </div>
                                 <p hlmItemDescription class="text-center mt-1">
@@ -215,16 +215,16 @@
                     <hlm-skeleton class="h-50 rounded-xl" />
                 } @else {
                     @for (
-                        futuro of normasCompletadasFiltradasPaginadas();
-                        track futuro.idNormaSuscrita
+                        completada of normasCompletadasFiltradasPaginadas();
+                        track completada.idHistorialNormaSuscrita
                     ) {
                         <a
                             hlmItem
                             variant="outline"
                             [routerLink]="[
                                 '/obligacion',
-                                futuro.idNormaSuscrita,
-                                futuro.idHistorialNormaSuscrita,
+                                completada.idNormaSuscrita,
+                                completada.idHistorialNormaSuscrita,
                             ]"
                             class="flex flex-row items-start justify-start px-5 fade-in"
                         >
@@ -238,10 +238,10 @@
                                     >
                                 </div>
                                 <p hlmItemDescription class="text-center mt-1">
-                                    {{ futuro.fechaVencimiento | date: 'd MMM yyyy' }}
+                                    {{ completada.fechaVencimiento | date: 'd MMM yyyy' }}
                                 </p>
                                 <p hlmItemDescription class="text-center text-xs">
-                                    {{ futuro.fechaVencimiento | date: 'HH:mm' }}
+                                    {{ completada.fechaVencimiento | date: 'HH:mm' }}
                                 </p>
                             </div>
                             <div
@@ -249,12 +249,12 @@
                                 class="flex-1 flex flex-col items-start justify-start mb-2"
                             >
                                 <div hlmItemTitle class="w-full justify-center text-center">
-                                    {{ futuro.nombreNorma }}
+                                    {{ completada.nombreNorma }}
                                 </div>
                                 <p hlmItemDescription class="whitespace-pre-line">
-                                    {{ futuro.descripcionNorma }}
+                                    {{ completada.descripcionNorma }}
                                 </p>
-                                @if (futuro.multaNorma) {
+                                @if (completada.multaNorma) {
                                     <hlm-tooltip>
                                         <p
                                             hlmTooltipTrigger
@@ -263,10 +263,10 @@
                                             class="opacity-90 text-xs mt-1"
                                         >
                                             <b>Multa:</b><br />
-                                            {{ futuro.multaNorma }}
+                                            {{ completada.multaNorma }}
                                         </p>
                                         <span *brnTooltipContent class="flex items-center">
-                                            {{ futuro.multaNorma }}
+                                            {{ completada.multaNorma }}
                                             <span
                                                 class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
                                             >
