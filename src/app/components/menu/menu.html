@@ -116,7 +116,7 @@
     </div>
     <hlm-separator />
     @if (sesionIniciada()) {
-        <div class="overflow-y-auto overflow-x-hidden pb-4">
+        <div id="scrollContainer" class="scrollContainer overflow-y-auto overflow-x-hidden pb-4">
             @for (item of opcionesMenu(); track item.id; let first = $first) {
                 @if (item.tipo === 'item' && item.url) {
                     <ul>
