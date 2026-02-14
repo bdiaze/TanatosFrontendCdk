@@ -23,7 +23,7 @@ import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import { HlmH2, HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { SalFiscalizadorNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HttpEventType } from '@angular/common/http';
@@ -42,7 +42,6 @@ import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
         ModalEdicion,
         NgIcon,
         HlmIcon,
-        HlmH2,
         HlmH3,
         HlmH4,
         HlmP,

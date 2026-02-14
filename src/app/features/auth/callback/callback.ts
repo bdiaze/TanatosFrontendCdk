@@ -5,13 +5,12 @@ import { AuthStore } from '@services/auth-store';
 import { EntAuthObtenerAccessToken } from '@/app/entities/others/ent-auth-obtener-access-token';
 import { AuthDao } from '@/app/daos/auth-dao';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import { HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmProgressImports } from '@spartan-ng/helm/progress';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 
 @Component({
     selector: 'app-callback',
-    imports: [HlmSpinnerImports, HlmH4, HlmProgressImports, HlmSkeletonImports],
+    imports: [HlmSpinnerImports, HlmProgressImports, HlmSkeletonImports],
     templateUrl: './callback.html',
     styleUrl: './callback.scss',
     host: {

@@ -6,7 +6,6 @@ import { Logout } from '@/app/features/auth/logout/logout';
 import { Router, RouterLink } from '@angular/router';
 import { environment } from '@/environments/environment';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
-import { HlmP } from '@spartan-ng/helm/typography';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMenu } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -22,7 +21,6 @@ import { CommonModule } from '@angular/common';
         Logout,
         RouterLink,
         HlmSeparatorImports,
-        HlmP,
         NgIcon,
         HlmIcon,
         Menu,

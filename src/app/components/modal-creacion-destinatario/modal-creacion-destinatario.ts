@@ -1,6 +1,5 @@
 import { DestinatarioNotificacionDao } from '@/app/daos/destinatario-notificacion-dao';
 import { TipoReceptorNotificacionDao } from '@/app/daos/tipo-receptor-notificacion-dao';
-import { DestinatarioNotificacion } from '@/app/entities/models/destinatario-notificacion';
 import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
 import { EntDestinatarioNotificacionCrear } from '@/app/entities/others/ent-destinatario-notificacion-crear';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
@@ -20,7 +19,6 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmRadioGroupImports } from '@spartan-ng/helm/radio-group';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import { HlmP } from '@spartan-ng/helm/typography';
 import { FormatoTelefono } from '@/app/directives/formato-telefono';
 import { FormatoCorreo } from '@/app/directives/formato-correo';
 import { NegocioStore } from '@/app/services/negocio-store';
@@ -44,7 +42,6 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         HlmRadioGroupImports,
         HlmAlertImports,
         HlmSpinnerImports,
-        HlmP,
         FormatoTelefono,
         FormatoCorreo,
         HlmSkeletonImports,

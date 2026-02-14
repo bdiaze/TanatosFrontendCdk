@@ -14,7 +14,7 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3 } from '@spartan-ng/helm/typography';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { RouterLink } from '@angular/router';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
@@ -25,9 +25,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         ModalEliminacion,
         HlmButtonImports,
         HlmTableImports,
-        HlmP,
         HlmH3,
-        HlmH4,
         HlmAlertImports,
         NgIcon,
         HlmIcon,
