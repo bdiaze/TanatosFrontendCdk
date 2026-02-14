@@ -1,7 +1,7 @@
 <section id="nuestros-planes" class="w-full flex flex-col gap-4 fade-in">
     <div class="text-(--azul) flex flex-row justify-center items-center gap-4 mt-6">
         <ng-icon hlm size="base" name="lucideGem" />
-        <h3 hlmH3 class="font-serif text-3xl">Nuestros Planes</h3>
+        <h3 hlmH3 class="font-serif text-2xl md:text-3xl">Nuestros Planes</h3>
     </div>
     <div class="text-(--azul) flex justify-center items-center col-span-1 md:col-span-2 pb-3 px-4">
         <p hlmP class="text-center">
@@ -133,13 +133,13 @@
 >
     <div class="flex flex-row justify-center items-center gap-4">
         <ng-icon hlm size="base" name="lucideGem" />
-        <h3 hlmH3 class="text-(--azul)" class="text-3xl">Ofertas y Promociones</h3>
+        <h3 hlmH3 class="text-(--azul)" class="text-2xl md:text-3xl">Ofertas y Promociones</h3>
     </div>
     <div class="flex flex-col md:flex-row justify-center w-full gap-8 md:gap-8">
         <div class="flex flex-col items-center justify-between gap-2 w-full md:w-1/2">
             <ng-icon hlm size="xl" name="lucideRocket" />
-            <h4 hlmH4 class="text-2xl">Lanzamiento</h4>
-            <p hlmP class="text-center text-lg text-balance">
+            <h4 hlmH4 class="text-xl md:text-2xl">Lanzamiento</h4>
+            <p hlmP class="text-center text-base md:text-lg text-balance">
                 Obtén un mes gratis al crear tu cuenta por ser parte de nuestra etapa inicial.
             </p>
         </div>
@@ -153,14 +153,16 @@
         class="flex flex-col items-center justify-center gap-4 lg:gap-6 w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8 order-2 md:order-1"
     >
         <ng-icon hlm size="xl" name="lucideCalendarHeart" />
-        <p hlmP class="font-serif text-center text-2xl font-semibold text-balance">Plan Anual</p>
-        <p hlmP class="text-center text-lg text-balance">
+        <p hlmP class="font-serif text-center text-xl md:text-2xl font-semibold text-balance">
+            Plan Anual
+        </p>
+        <p hlmP class="text-center text-base md:text-lg text-balance">
             Paga el año completo y obtén 2 meses gratis.
         </p>
-        <p hlmP class="font-serif text-center text-xl font-semibold text-balance mt-6">
+        <p hlmP class="font-serif text-center text-lg md:text-xl font-semibold text-balance mt-6">
             Plan Empresa
         </p>
-        <p hlmP class="text-center text-lg text-balance mb-2">
+        <p hlmP class="text-center text-base md:text-lg text-balance mb-2">
             Precio Anual:
             <span class="line-through"
                 >${{ valorMensualPlanEmpresa() * 12 | number: '1.0-0' }}</span
