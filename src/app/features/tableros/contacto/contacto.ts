@@ -4,10 +4,11 @@ import { environment } from '@/environments/environment';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMailbox } from '@ng-icons/lucide';
+import { HlmH3 } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-contacto',
-    imports: [FormularioContacto, HlmIcon, NgIcon],
+    imports: [FormularioContacto, HlmIcon, NgIcon, HlmH3],
     templateUrl: './contacto.html',
     styleUrl: './contacto.scss',
     providers: [

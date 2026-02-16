@@ -1,95 +1,88 @@
 <section
     class="max-w-screen md:max-w-2xl mx-auto px-4 py-4 flex flex-col items-center justify-center gap-3"
 >
-    <div hlmField class="flex justify-center items-center gap-1">
-        <label
-            for="nombre"
-            hlmLabel
-            class="text-xs md:text-sm font-semibold whitespace-nowrap px-2 pb-1 text-(--azul)"
-            >Nombre</label
-        >
-        <input
-            hlmInput
-            id="nombre"
-            [formControl]="form.controls['nombre']"
-            class="focus-visible:border-(--azul) focus-visible:ring-(--azul)/60 selection:bg-(--azul)/60"
-        />
-        <hlm-field-error
-            class="transition-all duration-500 ease-out text-xs px-1"
-            [class.opacity-100]="invalid('nombre')"
-            [class.opacity-0]="!invalid('nombre')"
-            [class.max-h-10]="invalid('nombre')"
-            [class.max-h-0]="!invalid('nombre')"
-            >Debes ingresar tu nombre</hlm-field-error
-        >
-    </div>
-    <div hlmField class="flex justify-center items-center gap-1">
-        <label
-            for="correo"
-            hlmLabel
-            class="text-xs md:text-sm font-semibold whitespace-nowrap px-2 pb-1 text-(--azul)"
-            >Correo Electrónico</label
-        >
-        <input
-            hlmInput
-            id="correo"
-            type="email"
-            [formControl]="form.controls['correo']"
-            class="focus-visible:border-(--azul) focus-visible:ring-(--azul)/60 selection:bg-(--azul)/60"
-        />
-        <hlm-field-error
-            class="transition-all duration-500 ease-out text-xs px-1"
-            [class.opacity-100]="invalid('correo')"
-            [class.opacity-0]="!invalid('correo')"
-            [class.max-h-10]="invalid('correo')"
-            [class.max-h-0]="!invalid('correo')"
-        >
-            @if (form.controls['correo'].errors?.['required']) {
-                Debes ingresar tu correo electrónico
-            }
-            @if (form.controls['correo'].errors?.['email']) {
-                Debes ingresar un correo electrónico válido.
-            }
-        </hlm-field-error>
-    </div>
-    <div hlmField class="flex justify-center items-center gap-1">
-        <label
-            for="contenido"
-            hlmLabel
-            class="text-xs md:text-sm font-semibold whitespace-nowrap px-2 pb-1 text-(--azul)"
-            >Mensaje</label
-        >
-        <textarea
-            hlmTextarea
-            type="text"
-            id="contenido"
-            [formControl]="form.controls['contenido']"
-            class="focus-visible:border-(--azul) focus-visible:ring-(--azul)/60 selection:bg-(--azul)/60"
-        ></textarea>
-        <hlm-field-error
-            class="transition-all duration-500 ease-out text-xs px-1"
-            [class.opacity-100]="invalid('contenido')"
-            [class.opacity-0]="!invalid('contenido')"
-            [class.max-h-10]="invalid('contenido')"
-            [class.max-h-0]="!invalid('contenido')"
-            >Debes ingresar un mensaje</hlm-field-error
-        >
-    </div>
-    <div class="w-full flex flex-row items-center justify-end">
-        <button
-            hlmBtn
-            (click)="ingresarMensaje()"
-            [disabled]="form.invalid || procesando()"
-            class="py-4 bg-(--azul) text-(--blanco) hover:bg-(--azul)/80"
-            [class.pr-10]="procesando()"
-        >
-            @if (procesando()) {
-                <hlm-spinner class="text-base" />
-            }
-            Enviar Mensaje
-        </button>
-    </div>
-    @if (ingresado()) {
+    @if (!ingresado()) {
+        <p hlmP class="text-center lg:text-xl font-semibold text-(--azul)">
+            ¿Tienes algún inconveniente? <br />Escríbenos y te ayudamos.
+        </p>
+        <div hlmField class="flex justify-center items-center gap-1">
+            <label
+                for="nombre"
+                hlmLabel
+                class="text-xs md:text-sm font-semibold whitespace-nowrap px-2 pb-1 text-(--azul)"
+                >Nombre</label
+            >
+            <input hlmInput id="nombre" [formControl]="form.controls['nombre']" />
+            <hlm-field-error
+                class="transition-all duration-500 ease-out text-xs px-1"
+                [class.opacity-100]="invalid('nombre')"
+                [class.opacity-0]="!invalid('nombre')"
+                [class.max-h-10]="invalid('nombre')"
+                [class.max-h-0]="!invalid('nombre')"
+                >Debes ingresar tu nombre</hlm-field-error
+            >
+        </div>
+        <div hlmField class="flex justify-center items-center gap-1">
+            <label
+                for="correo"
+                hlmLabel
+                class="text-xs md:text-sm font-semibold whitespace-nowrap px-2 pb-1 text-(--azul)"
+                >Correo Electrónico</label
+            >
+            <input hlmInput id="correo" type="email" [formControl]="form.controls['correo']" />
+            <hlm-field-error
+                class="transition-all duration-500 ease-out text-xs px-1"
+                [class.opacity-100]="invalid('correo')"
+                [class.opacity-0]="!invalid('correo')"
+                [class.max-h-10]="invalid('correo')"
+                [class.max-h-0]="!invalid('correo')"
+            >
+                @if (form.controls['correo'].errors?.['required']) {
+                    Debes ingresar tu correo electrónico
+                }
+                @if (form.controls['correo'].errors?.['email']) {
+                    Debes ingresar un correo electrónico válido.
+                }
+            </hlm-field-error>
+        </div>
+        <div hlmField class="flex justify-center items-center gap-1">
+            <label
+                for="contenido"
+                hlmLabel
+                class="text-xs md:text-sm font-semibold whitespace-nowrap px-2 pb-1 text-(--azul)"
+                >Mensaje</label
+            >
+            <textarea
+                hlmTextarea
+                type="text"
+                id="contenido"
+                [formControl]="form.controls['contenido']"
+                class="h-26"
+            ></textarea>
+            <hlm-field-error
+                class="transition-all duration-500 ease-out text-xs px-1"
+                [class.opacity-100]="invalid('contenido')"
+                [class.opacity-0]="!invalid('contenido')"
+                [class.max-h-10]="invalid('contenido')"
+                [class.max-h-0]="!invalid('contenido')"
+                >Debes ingresar un mensaje</hlm-field-error
+            >
+        </div>
+        <div class="w-full flex flex-row items-center justify-end">
+            <button
+                hlmBtn
+                (click)="ingresarMensaje()"
+                [disabled]="form.invalid || procesando()"
+                class="py-4"
+                [class.pr-10]="procesando()"
+            >
+                @if (procesando()) {
+                    <hlm-spinner class="text-base" />
+                }
+                Enviar Mensaje
+            </button>
+        </div>
+    } @else {
         <div hlmAlert class="border-(--primary) bg-(--primary) text-(--blanco)">
             <ng-icon hlm hlmAlertIcon name="lucideMailCheck" />
             <h4 hlmAlertTitle class="font-semibold">Mensaje ingresado exitosamente</h4>
@@ -103,7 +96,9 @@
         <div hlmAlert variant="destructive">
             <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
             <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-            <p hlmAlertDescription>{{ error() }}</p>
+            <p hlmAlertDescription>
+                {{ error() }}
+            </p>
         </div>
     }
 </section>

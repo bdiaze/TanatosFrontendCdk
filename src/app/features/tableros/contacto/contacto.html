@@ -1,22 +1,27 @@
 <section
     id="formulario-de-contacto"
+    class="w-full flex flex-col gap-4 lg:gap-6 bg-(--primary) fade-in py-6"
+>
+    <div class="text-(--blanco) flex flex-row justify-center items-center gap-4 pt-2">
+        <ng-icon hlm size="base" name="lucideMailbox" />
+        <h3 hlmH3 class="font-serif text-2xl md:text-3xl lg:text-4xl">Formulario de Contacto</h3>
+    </div>
+    <div
+        class="text-(--blanco) flex justify-center items-center col-span-1 md:col-span-2 pb-3 px-4"
+    >
+        <p hlmP class="text-center lg:text-xl text-balance">
+            Estamos aquí para ayudarte a mantener tu negocio en orden.
+        </p>
+    </div>
+</section>
+<section
     class="relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center p-0 max-w-dvw fade-in"
 >
-    <div
-        class="flex-1 flex flex-col items-center justify-center px-8 py-10 md:py-8 order-2 md:order-1 gap-4"
-    >
-        <p
-            hlmP
-            class="text-(--azul) font-serif text-center text-xl md:text-3xl lg:text-5xl font-semibold text-balance flex flex-row items-center justify-center gap-4"
-        >
-            <ng-icon hlm size="lg" name="lucideMailbox" />
-            Formulario de Contacto
-        </p>
-
+    <div class="flex-1 flex flex-col items-center justify-center p-4 order-2 md:order-1 gap-4">
         <app-formulario-contacto class="w-full"></app-formulario-contacto>
     </div>
     <div
-        class="relative w-full md:w-1/2 h-[clamp(16rem,80vw,35rem)] md:h-[clamp(35rem,50vw,35rem)] overflow-hidden object-top-right order-1 md:order-2"
+        class="relative w-full md:w-1/2 h-[clamp(16rem,80vw,50rem)] md:h-[clamp(35rem,max(60vh,50vw),50rem)] overflow-hidden object-top-right order-1 md:order-2"
     >
         <img
             [src]="urlFondo1_1280"
