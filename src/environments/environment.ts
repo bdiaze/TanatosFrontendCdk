@@ -10,4 +10,9 @@ export const environment = {
         apiUrl: '',
     },
     urlImages: '',
+    google: {
+        recaptcha: {
+            siteKey: '',
+        },
+    },
 };
