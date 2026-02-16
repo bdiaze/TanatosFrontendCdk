@@ -1,1 +1,31 @@
-<p>contacto works!</p>
+<section
+    id="formulario-de-contacto"
+    class="relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center p-0 max-w-dvw fade-in"
+>
+    <div
+        class="flex-1 flex flex-col items-center justify-center px-8 py-10 md:py-8 order-2 md:order-1 gap-4"
+    >
+        <p
+            hlmP
+            class="text-(--azul) font-serif text-center text-xl md:text-3xl lg:text-5xl font-semibold text-balance flex flex-row items-center justify-center gap-4"
+        >
+            <ng-icon hlm size="lg" name="lucideMailbox" />
+            Formulario de Contacto
+        </p>
+
+        <app-formulario-contacto class="w-full"></app-formulario-contacto>
+    </div>
+    <div
+        class="relative w-full md:w-1/2 h-[clamp(16rem,80vw,35rem)] md:h-[clamp(35rem,50vw,35rem)] overflow-hidden object-top-right order-1 md:order-2"
+    >
+        <img
+            [src]="urlFondo1_1280"
+            [srcset]="
+                `${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w`
+            "
+            sizes="(max-width: 767px) 100vw, 50vw"
+            alt="Empleado sirviendo café"
+            class="absolute inset-0 h-full w-full object-cover"
+        />
+    </div>
+</section>
