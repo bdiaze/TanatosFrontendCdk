@@ -117,7 +117,7 @@
     <hlm-separator />
     @if (sesionIniciada()) {
         <div
-            class="[direction:rtl] md:scrollContainer overflow-y-auto overflow-x-hidden overscroll-contain pb-4"
+            class="[direction:rtl] md:scrollContainer overflow-y-auto overflow-x-hidden overscroll-contain md:overscroll-auto pb-4"
         >
             <div class="[direction:ltr]">
                 @for (item of opcionesMenu(); track item.id; let first = $first) {
