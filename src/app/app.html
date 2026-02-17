@@ -1,22 +1,14 @@
-<div
-    #scrollContainer
-    id="scrollContainer"
-    class="scrollContainer flex flex-col min-h-screen overflow-y-auto [direction:rtl] md:[direction:ltr] h-screen"
->
-    <app-header class="sticky top-0 z-40 bg-(--blanco) [direction:ltr]" />
-    <div class="flex-1 flex flex-col [direction:ltr]">
-        <div class="flex-1 flex flex-row">
-            @if (sesionIniciada()) {
-                <div
-                    class="hidden md:inline-flex md:min-w-1/4 lg:min-w-1/4 xl:min-w-1/5 2xl:min-w-1/6"
-                >
-                    <app-menu [estatico]="true" class="w-full"> </app-menu>
-                </div>
-            }
-            <div class="flex-1">
-                <router-outlet />
+<app-header class="sticky top-0 z-40" />
+<div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-row">
+        @if (sesionIniciada()) {
+            <div class="hidden md:inline-flex md:min-w-1/4 lg:min-w-1/4 xl:min-w-1/5 2xl:min-w-1/6">
+                <app-menu [estatico]="true" class="w-full"> </app-menu>
             </div>
+        }
+        <div class="flex-1 z-0">
+            <router-outlet />
         </div>
-        <app-footer />
     </div>
+    <app-footer />
 </div>

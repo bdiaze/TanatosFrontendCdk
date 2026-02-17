@@ -1,5 +1,5 @@
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import {
@@ -18,7 +18,13 @@ import { provideBrnCalendarI18n } from '@spartan-ng/brain/calendar';
 export const appConfig: ApplicationConfig = {
     providers: [
         provideBrowserGlobalErrorListeners(),
-        provideRouter(routes),
+        provideRouter(
+            routes,
+            withInMemoryScrolling({
+                scrollPositionRestoration: 'top',
+                anchorScrolling: 'enabled',
+            }),
+        ),
         provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
         { provide: HttpBackend, useClass: HttpXhrBackend },
         { provide: LOCALE_ID, useValue: 'es-CL' },

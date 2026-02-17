@@ -139,7 +139,7 @@ app-root.app-ready {
 }
 
 .scrollContainer::-webkit-scrollbar-thumb {
-    background: color-mix(in oklch, var(--negro) 80%, transparent);
+    background: var(--azul);
     border-radius: 999px;
     background-clip: content-box;
 }

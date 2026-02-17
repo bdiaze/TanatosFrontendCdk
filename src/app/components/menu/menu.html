@@ -116,162 +116,173 @@
     </div>
     <hlm-separator />
     @if (sesionIniciada()) {
-        <div id="scrollContainer" class="scrollContainer overflow-y-auto overflow-x-hidden pb-4">
-            @for (item of opcionesMenu(); track item.id; let first = $first) {
-                @if (item.tipo === 'item' && item.url) {
-                    <ul>
-                        <li>
-                            <a
-                                hlmBtn
-                                variant="link"
-                                [routerLink]="item.url"
-                                routerLinkActive="active"
-                                [routerLinkActiveOptions]="{ exact: true }"
-                                class="w-full"
-                                (click)="click()"
-                            >
-                                @if (item.icon) {
-                                    <ng-icon hlm [name]="item.icon" />
-                                }
-                                <span>{{ item.titulo }}</span></a
-                            >
-                        </li>
-                    </ul>
-                }
-                @if (item.tipo === 'item' && item.items && item.items.length > 0) {
-                    <ul>
-                        <hlm-collapsible class="group/collapsible">
-                            <button hlmCollapsibleTrigger>
-                                @if (item.icon) {
-                                    <ng-icon hlm [name]="item.icon" />
-                                }
-                                <span>{{ item.titulo }}</span>
-                                <ng-icon
-                                    name="lucideChevronRight"
-                                    class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
-                                    hlm
-                                />
-                            </button>
-                            <hlm-collapsible-content>
-                                @for (subItem of item.items; track subItem.id) {
+        <div class="[direction:rtl] md:scrollContainer overflow-y-auto overflow-x-hidden pb-4">
+            <div class="[direction:ltr]">
+                @for (item of opcionesMenu(); track item.id; let first = $first) {
+                    @if (item.tipo === 'item' && item.url) {
+                        <ul>
+                            <li>
+                                <a
+                                    hlmBtn
+                                    variant="link"
+                                    [routerLink]="item.url"
+                                    routerLinkActive="active"
+                                    [routerLinkActiveOptions]="{ exact: true }"
+                                    class="w-full"
+                                    (click)="click()"
+                                >
+                                    @if (item.icon) {
+                                        <ng-icon hlm [name]="item.icon" />
+                                    }
+                                    <span>{{ item.titulo }}</span></a
+                                >
+                            </li>
+                        </ul>
+                    }
+                    @if (item.tipo === 'item' && item.items && item.items.length > 0) {
+                        <ul>
+                            <hlm-collapsible class="group/collapsible">
+                                <button hlmCollapsibleTrigger>
+                                    @if (item.icon) {
+                                        <ng-icon hlm [name]="item.icon" />
+                                    }
+                                    <span>{{ item.titulo }}</span>
+                                    <ng-icon
+                                        name="lucideChevronRight"
+                                        class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
+                                        hlm
+                                    />
+                                </button>
+                                <hlm-collapsible-content>
+                                    @for (subItem of item.items; track subItem.id) {
+                                        <li>
+                                            <a
+                                                hlmBtn
+                                                variant="link"
+                                                [routerLink]="subItem.url"
+                                                routerLinkActive="active"
+                                                [routerLinkActiveOptions]="{ exact: true }"
+                                                class="w-full"
+                                                (click)="click()"
+                                            >
+                                                @if (subItem.icon) {
+                                                    <ng-icon hlm [name]="subItem.icon" />
+                                                }
+                                                <span>{{ subItem.titulo }}</span></a
+                                            >
+                                        </li>
+                                    }
+                                </hlm-collapsible-content>
+                            </hlm-collapsible>
+                        </ul>
+                    }
+                    @if (item.tipo === 'group') {
+                        @if (!first) {
+                            <hlm-separator />
+                        }
+                        <div class="text-xs px-5 pb-2 pt-2 font-semibold" [class.pt-4]="first">
+                            @if (item.icon) {
+                                <ng-icon hlm [name]="item.icon" />
+                            }
+                            <span>{{ item.titulo }}</span>
+                        </div>
+                        @for (groupItem of item.items; track groupItem.id) {
+                            @if (groupItem.tipo === 'item' && groupItem.url) {
+                                <ul>
                                     <li>
                                         <a
                                             hlmBtn
                                             variant="link"
-                                            [routerLink]="subItem.url"
+                                            [routerLink]="groupItem.url"
                                             routerLinkActive="active"
                                             [routerLinkActiveOptions]="{ exact: true }"
-                                            class="w-full"
+                                            class="w-full items-center justify-start text-(--negro)/80 font-normal ml-2 my-0.5"
                                             (click)="click()"
-                                        >
-                                            @if (subItem.icon) {
-                                                <ng-icon hlm [name]="subItem.icon" />
-                                            }
-                                            <span>{{ subItem.titulo }}</span></a
-                                        >
-                                    </li>
-                                }
-                            </hlm-collapsible-content>
-                        </hlm-collapsible>
-                    </ul>
-                }
-                @if (item.tipo === 'group') {
-                    @if (!first) {
-                        <hlm-separator />
-                    }
-                    <div class="text-xs px-5 pb-2 pt-2 font-semibold" [class.pt-4]="first">
-                        @if (item.icon) {
-                            <ng-icon hlm [name]="item.icon" />
-                        }
-                        <span>{{ item.titulo }}</span>
-                    </div>
-                    @for (groupItem of item.items; track groupItem.id) {
-                        @if (groupItem.tipo === 'item' && groupItem.url) {
-                            <ul>
-                                <li>
-                                    <a
-                                        hlmBtn
-                                        variant="link"
-                                        [routerLink]="groupItem.url"
-                                        routerLinkActive="active"
-                                        [routerLinkActiveOptions]="{ exact: true }"
-                                        class="w-full items-center justify-start text-(--negro)/80 font-normal ml-2 my-0.5"
-                                        (click)="click()"
-                                    >
-                                        @if (groupItem.icon) {
-                                            <ng-icon hlm [name]="groupItem.icon" size="sm" />
-                                        }
-                                        <span>{{ groupItem.titulo }}</span></a
-                                    >
-                                </li>
-                            </ul>
-                        }
-                        @if (
-                            groupItem.tipo === 'item' &&
-                            groupItem.items &&
-                            groupItem.items.length > 0
-                        ) {
-                            <ul>
-                                <hlm-collapsible
-                                    class="group/collapsible"
-                                    [expanded]="estaAbierto(groupItem.id)"
-                                    (expandedChange)="itemCollapsibleChange(groupItem.id, $event)"
-                                >
-                                    <div class="pl-2">
-                                        <button
-                                            hlmBtn
-                                            variant="link"
-                                            hlmCollapsibleTrigger
-                                            class="w-full flex items-center justify-start gap-2 text-(--negro)/80 py- text-sm font-normal my-0.5"
                                         >
                                             @if (groupItem.icon) {
                                                 <ng-icon hlm [name]="groupItem.icon" size="sm" />
                                             }
-                                            <span>{{ groupItem.titulo }}</span>
-                                            <ng-icon
-                                                hlm
-                                                name="lucideChevronRight"
-                                                class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
-                                                size="sm"
-                                            />
-                                        </button>
-                                    </div>
-                                    <hlm-collapsible-content
-                                        class="transition-all ease-out data-[state=closed]:opacity-0"
+                                            <span>{{ groupItem.titulo }}</span></a
+                                        >
+                                    </li>
+                                </ul>
+                            }
+                            @if (
+                                groupItem.tipo === 'item' &&
+                                groupItem.items &&
+                                groupItem.items.length > 0
+                            ) {
+                                <ul>
+                                    <hlm-collapsible
+                                        class="group/collapsible"
+                                        [expanded]="estaAbierto(groupItem.id)"
+                                        (expandedChange)="
+                                            itemCollapsibleChange(groupItem.id, $event)
+                                        "
                                     >
-                                        <div class="border-l ml-6.5 mr-3">
-                                            @for (subItem of groupItem.items; track subItem.id) {
-                                                <li>
-                                                    <a
-                                                        hlmBtn
-                                                        variant="link"
-                                                        [routerLink]="subItem.url"
-                                                        routerLinkActive="active"
-                                                        [routerLinkActiveOptions]="{
-                                                            exact: true,
-                                                        }"
-                                                        class="w-full items-center justify-start text-(--negro)/80 font-normal my-0.5"
-                                                        (click)="click()"
-                                                    >
-                                                        @if (subItem.icon) {
-                                                            <ng-icon
-                                                                hlm
-                                                                [name]="subItem.icon"
-                                                                size="sm"
-                                                            />
-                                                        }
-                                                        <span>{{ subItem.titulo }}</span></a
-                                                    >
-                                                </li>
-                                            }
+                                        <div class="pl-2">
+                                            <button
+                                                hlmBtn
+                                                variant="link"
+                                                hlmCollapsibleTrigger
+                                                class="w-full flex items-center justify-start gap-2 text-(--negro)/80 py- text-sm font-normal my-0.5"
+                                            >
+                                                @if (groupItem.icon) {
+                                                    <ng-icon
+                                                        hlm
+                                                        [name]="groupItem.icon"
+                                                        size="sm"
+                                                    />
+                                                }
+                                                <span>{{ groupItem.titulo }}</span>
+                                                <ng-icon
+                                                    hlm
+                                                    name="lucideChevronRight"
+                                                    class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
+                                                    size="sm"
+                                                />
+                                            </button>
                                         </div>
-                                    </hlm-collapsible-content>
-                                </hlm-collapsible>
-                            </ul>
+                                        <hlm-collapsible-content
+                                            class="transition-all ease-out data-[state=closed]:opacity-0"
+                                        >
+                                            <div class="border-l ml-6.5 mr-3">
+                                                @for (
+                                                    subItem of groupItem.items;
+                                                    track subItem.id
+                                                ) {
+                                                    <li>
+                                                        <a
+                                                            hlmBtn
+                                                            variant="link"
+                                                            [routerLink]="subItem.url"
+                                                            routerLinkActive="active"
+                                                            [routerLinkActiveOptions]="{
+                                                                exact: true,
+                                                            }"
+                                                            class="w-full items-center justify-start text-(--negro)/80 font-normal my-0.5"
+                                                            (click)="click()"
+                                                        >
+                                                            @if (subItem.icon) {
+                                                                <ng-icon
+                                                                    hlm
+                                                                    [name]="subItem.icon"
+                                                                    size="sm"
+                                                                />
+                                                            }
+                                                            <span>{{ subItem.titulo }}</span></a
+                                                        >
+                                                    </li>
+                                                }
+                                            </div>
+                                        </hlm-collapsible-content>
+                                    </hlm-collapsible>
+                                </ul>
+                            }
                         }
                     }
                 }
-            }
+            </div>
         </div>
     }
     @if (!estatico) {
