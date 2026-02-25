@@ -49,17 +49,27 @@
                             <td hlmTd class="text-xs md:text-sm">
                                 <hlm-tooltip>
                                     <p hlmTooltipTrigger class="w-42 md:w-auto truncate">
+                                        @if (item.alias) {
+                                            <span class="text-[0.6rem] md:text-xs"
+                                                >{{ item.alias }}<br
+                                            /></span>
+                                        }
                                         {{
                                             item.idTipoReceptor === 2
                                                 ? (item.destino | formatearTelefono)
                                                 : item.destino
                                         }}
                                     </p>
-                                    <span *brnTooltipContent>{{
-                                        item.idTipoReceptor === 2
-                                            ? (item.destino | formatearTelefono)
-                                            : item.destino
-                                    }}</span>
+                                    <span *brnTooltipContent>
+                                        @if (item.alias) {
+                                            {{ item.alias }} <br />
+                                        }
+                                        {{
+                                            item.idTipoReceptor === 2
+                                                ? (item.destino | formatearTelefono)
+                                                : item.destino
+                                        }}</span
+                                    >
                                 </hlm-tooltip>
                             </td>
                             <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">

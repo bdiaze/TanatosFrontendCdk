@@ -46,11 +46,42 @@
                         </div>
                         <div hlmField class="gap-1">
                             <label
+                                for="alias"
+                                hlmLabel
+                                class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm px-2 pb-1"
+                                >Alias</label
+                            >
+                            <div hlmInputGroup>
+                                <input
+                                    hlmInputGroupInput
+                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                    id="alias"
+                                    formControlName="alias"
+                                />
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out"
+                                [class.opacity-100]="invalid('alias')"
+                                [class.opacity-0]="!invalid('alias')"
+                                [class.max-h-10]="invalid('alias')"
+                                [class.max-h-0]="!invalid('alias')"
+                                >Debes ingresar un alias</hlm-field-error
+                            >
+                        </div>
+                        <div hlmField class="gap-1">
+                            <label
                                 for="destino"
                                 hlmLabel
                                 class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm px-2 pb-1"
-                                >Destinatario</label
                             >
+                                {{
+                                    form.controls['idTipoReceptor'].value === 1
+                                        ? 'Correo Electrónico'
+                                        : form.controls['idTipoReceptor'].value === 2
+                                          ? 'Whatsapp'
+                                          : 'Destinatario'
+                                }}
+                            </label>
                             <div hlmInputGroup>
                                 <input
                                     [formatoTelefono]="form.controls['idTipoReceptor'].value === 2"
@@ -72,8 +103,21 @@
                                 [class.opacity-0]="!invalid('destino')"
                                 [class.max-h-10]="invalid('destino')"
                                 [class.max-h-0]="!invalid('destino')"
-                                >Debes ingresar el destinatario</hlm-field-error
                             >
+                                @if (form.controls['destino'].errors?.['required']) {
+                                    Debes ingresar un
+                                    {{
+                                        form.controls['idTipoReceptor'].value === 1
+                                            ? 'correo electrónico'
+                                            : form.controls['idTipoReceptor'].value === 2
+                                              ? 'número de Whatsapp'
+                                              : 'destinatario'
+                                    }}
+                                }
+                                @if (form.controls['destino'].errors?.['email']) {
+                                    El correo electrónico ingresado no es válido.
+                                }
+                            </hlm-field-error>
                         </div>
                     </div>
                 </fieldset>

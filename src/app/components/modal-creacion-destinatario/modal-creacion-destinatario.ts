@@ -59,9 +59,17 @@ export class ModalCreacionDestinatario implements OnInit {
     negocioStore = inject(NegocioStore);
 
     form: FormGroup<{
+        alias: FormControl<string | null>;
         destino: FormControl<string | null>;
         idTipoReceptor: FormControl<number | null>;
     }> = new FormGroup({
+        alias: new FormControl<string | null>(
+            { value: null, disabled: false },
+            {
+                validators: [Validators.required],
+                nonNullable: true,
+            },
+        ),
         destino: new FormControl<string | null>(
             { value: null, disabled: false },
             {
@@ -94,6 +102,12 @@ export class ModalCreacionDestinatario implements OnInit {
             this.form.get('destino')!.markAsUntouched();
             this.form.get('destino')!.setValue('', { emitEvent: false });
             this.error.set('');
+
+            if (this.form.controls['idTipoReceptor'].value === 1) {
+                this.form.get('destino')?.addValidators(Validators.email);
+            } else {
+                this.form.get('destino')?.removeValidators(Validators.email);
+            }
         });
 
         this.cargandoTipoReceptores.set(true);
@@ -119,6 +133,7 @@ export class ModalCreacionDestinatario implements OnInit {
     clickConfirmar() {
         const item: EntDestinatarioNotificacionCrear = {
             idNegocio: this.negocioStore.negocioSeleccionado()?.id!,
+            alias: this.form.controls['alias'].value,
             destino: this.form.controls['destino'].value!.replaceAll(' ', ''),
             idTipoReceptor: this.form.controls['idTipoReceptor'].value!,
         };
