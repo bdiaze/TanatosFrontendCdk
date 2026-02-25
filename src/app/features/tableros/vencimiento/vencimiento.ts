@@ -111,11 +111,7 @@ export class Vencimiento implements OnInit {
 
     constructor() {
         effect(() => {
-            if (
-                this.idNormaSuscrita() &&
-                this.idHistorialNormaSuscrita() &&
-                this.negocioStore.negocioSeleccionado()
-            ) {
+            if (this.idNormaSuscrita() && this.idHistorialNormaSuscrita()) {
                 this.error.set('');
                 this.showModalEliminar.set(false);
                 this.itemSeleccionado.set(null);
@@ -133,13 +129,6 @@ export class Vencimiento implements OnInit {
             .obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)
             .subscribe({
                 next: (cargandoNormaSuscritaConVencimiento) => {
-                    if (
-                        cargandoNormaSuscritaConVencimiento.idNegocio !==
-                        this.negocioStore.negocioSeleccionado()?.id
-                    ) {
-                        this.router.navigateByUrl('/mi-calendario');
-                    }
-
                     cargandoNormaSuscritaConVencimiento.documentosAdjuntos =
                         cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.sort((a, b) => {
                             const fechaA = a.fechaSubida ? new Date(a.fechaSubida) : new Date();

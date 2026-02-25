@@ -21,12 +21,10 @@
         </ol>
     </nav>
 
-    <h4 hlmH4 class="text-center">
-        {{ negocioStore.negocioSeleccionado()?.nombre }}
-    </h4>
     @if (cargandoNormaSuscritaConVencimiento()) {
         <div class="flex flex-col gap-4 justify-center-safe items-start fade-in w-full">
             <div class="flex flex-col items-center justify-center w-full pt-3 gap-2">
+                <hlm-skeleton class="h-7 w-42 rounded-xl" />
                 <hlm-skeleton class="h-9 w-52 rounded-xl" />
                 <hlm-skeleton class="h-7 w-64 rounded-xl" />
                 <div class="flex flex-row gap-2">
@@ -47,6 +45,9 @@
         </div>
     } @else {
         <div class="fade-in">
+            <h4 hlmH4 class="text-center">
+                {{ item()?.nombreNegocio }}
+            </h4>
             <div class="flex justify-center-safe items-center gap-3 pt-1 pb-2">
                 <ng-icon hlm name="lucideCalendarCheck" />
                 <h3 hlmH3>{{ item()?.nombre ?? item()?.templateNorma?.nombre }}</h3>
@@ -89,7 +90,11 @@
                         <div hlmItemContent>
                             <div hlmItemTitle>Multa</div>
                             <div hlmItemDescription>
-                                {{ item()?.multa ?? item()?.templateNorma?.multa }}
+                                {{
+                                    item()?.multa ??
+                                        item()?.templateNorma?.multa ??
+                                        'Sin multa registrada'
+                                }}
                             </div>
                         </div>
                     </div>

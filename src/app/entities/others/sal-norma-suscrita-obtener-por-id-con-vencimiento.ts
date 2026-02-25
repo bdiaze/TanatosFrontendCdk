@@ -2,7 +2,8 @@ import { SalDocumentoAdjunto } from './sal-documento-adjunto';
 import { SalFiscalizadorNormaSuscrita } from './sal-norma-suscrita';
 
 export interface SalNormaSuscritaObtenerPorIdConVencimiento {
-    idNegocio: number;
+    idNegocio: number | null;
+    nombreNegocio: string | null;
     id: number;
     nombre: string | null;
     descripcion: string | null;
