@@ -17,6 +17,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
+    lucideBlocks,
     lucideCalendarCog,
     lucideCalendarRange,
     lucideChevronRight,
@@ -67,6 +68,7 @@ import { filter, map } from 'rxjs';
             lucideCalendarCog,
             lucideClipboardPaste,
             lucideCalendarRange,
+            lucideBlocks,
         }),
     ],
 })
@@ -106,6 +108,13 @@ export class Menu {
                 titulo: this.negocioSeleccionado()?.nombre!,
                 items: [
                     {
+                        id: 'group-negocio-seleccionado-item-inicio',
+                        tipo: 'item',
+                        icon: 'lucideBlocks',
+                        titulo: 'Inicio',
+                        url: '/inicio',
+                    },
+                    {
                         id: 'group-negocio-seleccionado-item-mi-calendario',
                         tipo: 'item',
                         icon: 'lucideCalendarRange',
@@ -113,33 +122,25 @@ export class Menu {
                         url: '/mi-calendario',
                     },
                     {
-                        id: 'group-negocio-seleccionado-item-configuracion',
+                        id: 'group-negocio-seleccionado-item-mis-obligaciones',
                         tipo: 'item',
-                        icon: 'lucideSettings',
-                        titulo: 'Configuración',
-                        items: [
-                            {
-                                id: 'group-negocio-seleccionado-item-configuracion-subitem-mis-obligaciones',
-                                tipo: 'item',
-                                icon: 'lucideCalendarCog',
-                                titulo: 'Mis Obligaciones',
-                                url: '/mis-obligaciones',
-                            },
-                            {
-                                id: 'group-negocio-seleccionado-item-configuracion-subitem-plantillas-inscritas',
-                                tipo: 'subitem',
-                                titulo: 'Plantillas Inscritas',
-                                icon: 'lucideClipboardPaste',
-                                url: '/plantillas-inscritas',
-                            },
-                            {
-                                id: 'group-negocio-seleccionado-item-configuracion-subitem-mis-destinatarios',
-                                tipo: 'item',
-                                icon: 'lucideSend',
-                                titulo: 'Mis Destinatarios',
-                                url: '/mis-destinatario',
-                            },
-                        ],
+                        icon: 'lucideCalendarCog',
+                        titulo: 'Mis Obligaciones',
+                        url: '/mis-obligaciones',
+                    },
+                    {
+                        id: 'group-negocio-seleccionado-item-plantillas-inscritas',
+                        tipo: 'item',
+                        titulo: 'Plantillas Inscritas',
+                        icon: 'lucideClipboardPaste',
+                        url: '/plantillas-inscritas',
+                    },
+                    {
+                        id: 'group-negocio-seleccionado-item-mis-destinatarios',
+                        tipo: 'item',
+                        icon: 'lucideSend',
+                        titulo: 'Mis Destinatarios',
+                        url: '/mis-destinatario',
                     },
                 ],
             });
@@ -151,19 +152,11 @@ export class Menu {
             titulo: 'General',
             items: [
                 {
-                    id: 'group-general-item-configuracion',
+                    id: 'group-general-item-mis-negocios',
                     tipo: 'item',
-                    titulo: 'Configuración',
-                    icon: 'lucideSettings',
-                    items: [
-                        {
-                            id: 'group-general-item-configuracion-subitem-mis-negocios',
-                            tipo: 'subitem',
-                            titulo: 'Mis Negocios',
-                            icon: 'lucideStore',
-                            url: '/mis-negocios',
-                        },
-                    ],
+                    titulo: 'Mis Negocios',
+                    icon: 'lucideStore',
+                    url: '/mis-negocios',
                 },
             ],
         });

@@ -38,9 +38,11 @@ import { CommonModule } from '@angular/common';
 export class Header implements OnInit {
     urlLogo = `${environment.urlImages}/images/logo.svg`;
     logoRedirect = computed(() => {
+        /*
         if (this.sesionIniciada() || this.logoutRunning()) {
             return '/inicio';
         }
+        */
         return '/';
     });
 
