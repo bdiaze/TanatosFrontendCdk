@@ -3,15 +3,18 @@ import { SalWhatsappConversacion } from '@/app/entities/others/sal-whatsapp-conv
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { DatePipe } from '@angular/common';
-import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
+import { Component, effect, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideMessageCircleMore, lucideTag } from '@ng-icons/lucide';
+import { lucideMessageCircleMore, lucideTag, lucideTriangleAlert } from '@ng-icons/lucide';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { interval, switchMap } from 'rxjs';
 
 @Component({
     selector: 'app-whatsapp-conversaciones',
@@ -25,10 +28,11 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
         BrnTooltipImports,
         HlmTooltipImports,
         HlmSkeletonImports,
+        HlmAlertImports,
     ],
     templateUrl: './whatsapp-conversaciones.html',
     styleUrl: './whatsapp-conversaciones.scss',
-    providers: [provideIcons({ lucideMessageCircleMore, lucideTag })],
+    providers: [provideIcons({ lucideMessageCircleMore, lucideTag, lucideTriangleAlert })],
 })
 export class WhatsappConversaciones implements OnInit {
     @Output() selectionChanged = new EventEmitter<string>();
@@ -42,6 +46,30 @@ export class WhatsappConversaciones implements OnInit {
     error = signal('');
 
     numeroAbierto = signal('');
+
+    constructor() {
+        interval(10 * 1000)
+            .pipe(
+                switchMap(() => this.whatsappDao.obtenerConversaciones()),
+                takeUntilDestroyed(),
+            )
+            .subscribe({
+                next: (res) => {
+                    this.conversaciones.set(res);
+
+                    const existente = res.find((x) => x.numeroTelefono == this.numeroAbierto());
+                    if (!existente && res.length > 0) {
+                        this.seleccionarConversacion(res[0].numeroTelefono);
+                    }
+                },
+                error: (err) => {
+                    console.error('Error al obtener conversaciones de Whatsapp', err);
+                    this.error.set(
+                        getErrorMessage(err) ?? 'Error al obtener conversaciones de Whatsapp',
+                    );
+                },
+            });
+    }
 
     ngOnInit(): void {
         this.obtenerConversaciones();
@@ -94,9 +122,9 @@ export class WhatsappConversaciones implements OnInit {
         const fecha = new Date(strFecha);
 
         return (
-            fecha.getFullYear() === ayer.getFullYear() &&
-            fecha.getMonth() === ayer.getMonth() &&
-            fecha.getDate() === ayer.getDate()
+            fecha.getUTCFullYear() === ayer.getUTCFullYear() &&
+            fecha.getUTCMonth() === ayer.getUTCMonth() &&
+            fecha.getUTCDate() === ayer.getUTCDate()
         );
     }
 
@@ -106,9 +134,9 @@ export class WhatsappConversaciones implements OnInit {
         const fecha = new Date(strFecha);
 
         return (
-            fecha.getFullYear() === mannana.getFullYear() &&
-            fecha.getMonth() === mannana.getMonth() &&
-            fecha.getDate() === mannana.getDate()
+            fecha.getUTCFullYear() === mannana.getUTCFullYear() &&
+            fecha.getUTCMonth() === mannana.getUTCMonth() &&
+            fecha.getUTCDate() === mannana.getUTCDate()
         );
     }
 

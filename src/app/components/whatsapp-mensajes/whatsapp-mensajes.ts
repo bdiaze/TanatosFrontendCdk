@@ -6,6 +6,8 @@ import { DatePipe } from '@angular/common';
 import {
     AfterViewChecked,
     Component,
+    computed,
+    DestroyRef,
     effect,
     ElementRef,
     inject,
@@ -22,9 +24,28 @@ import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmInput } from '@spartan-ng/helm/input';
-import { lucideDownload, lucideSendHorizonal } from '@ng-icons/lucide';
+import {
+    lucideCheck,
+    lucideCheckCheck,
+    lucideClock3,
+    lucideDownload,
+    lucideSendHorizonal,
+    lucideTriangleAlert,
+} from '@ng-icons/lucide';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
+import { HlmButton } from '@spartan-ng/helm/button';
+import {
+    FormControl,
+    FormGroup,
+    Validators,
+    ɵInternalFormsSharedModule,
+    ReactiveFormsModule,
+} from '@angular/forms';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { EMPTY, filter, interval, switchMap } from 'rxjs';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-whatsapp-mensajes',
@@ -42,17 +63,37 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
         HlmInputGroupImports,
         HlmIconImports,
         HlmPopoverImports,
+        HlmButton,
+        HlmSpinnerImports,
+        ɵInternalFormsSharedModule,
+        ReactiveFormsModule,
+        HlmAlertImports,
     ],
     templateUrl: './whatsapp-mensajes.html',
     styleUrl: './whatsapp-mensajes.scss',
-    providers: [provideIcons({ lucideDownload, lucideSendHorizonal })],
+    providers: [
+        provideIcons({
+            lucideDownload,
+            lucideSendHorizonal,
+            lucideTriangleAlert,
+            lucideCheck,
+            lucideCheckCheck,
+            lucideClock3,
+        }),
+    ],
 })
 export class WhatsappMensajes {
     numeroTelefono = input<string | null>();
 
     whatsappDao: WhatsappDao = inject(WhatsappDao);
 
-    mensajes = signal([] as SalWhatsappMensaje[]);
+    mensajesObtenidos = signal([] as SalWhatsappMensaje[]);
+    mensajesPendientes = signal([] as SalWhatsappMensaje[]);
+    mensajes = computed(() => {
+        const pendientesInvertidos = this.mensajesPendientes().reverse();
+        return pendientesInvertidos.concat(this.mensajesObtenidos());
+    });
+
     cargando = signal(true);
     error = signal('');
 
@@ -66,6 +107,31 @@ export class WhatsappMensajes {
                 this.obtenerMensajes();
             }
         });
+
+        toObservable(this.numeroTelefono)
+            .pipe(
+                switchMap((numeroTelefono) =>
+                    numeroTelefono && numeroTelefono.length > 0
+                        ? interval(10 * 1000).pipe(
+                              switchMap(() => this.whatsappDao.obtenerMensajes(numeroTelefono)),
+                          )
+                        : EMPTY,
+                ),
+                takeUntilDestroyed(),
+            )
+            .subscribe({
+                next: (res) => {
+                    const idsAEliminar = new Set(res.map((e) => e.idMensaje));
+                    this.mensajesObtenidos.set(res);
+                    this.mensajesPendientes.update((actual) => {
+                        return actual.filter((m) => !idsAEliminar.has(m.idMensaje));
+                    });
+                },
+                error: (err) => {
+                    console.error('Error al obtener mensajes de Whatsapp', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener mensajes de Whatsapp');
+                },
+            });
     }
 
     generarRandomSkeleton() {
@@ -82,7 +148,7 @@ export class WhatsappMensajes {
             .obtenerMensajes(this.numeroTelefono()!)
             .subscribe({
                 next: (res) => {
-                    this.mensajes.set(res);
+                    this.mensajesObtenidos.set(res);
                 },
                 error: (err) => {
                     console.error('Error al obtener mensajes de Whatsapp', err);
@@ -111,13 +177,64 @@ export class WhatsappMensajes {
         const fecha = new Date(strFecha);
 
         return (
-            fecha.getFullYear() === ayer.getFullYear() &&
-            fecha.getMonth() === ayer.getMonth() &&
-            fecha.getDate() === ayer.getDate()
+            fecha.getUTCFullYear() === ayer.getUTCFullYear() &&
+            fecha.getUTCMonth() === ayer.getUTCMonth() &&
+            fecha.getUTCDate() === ayer.getUTCDate()
         );
     }
 
     randomEntre(min: number, max: number): number {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    form: FormGroup<{
+        mensaje: FormControl<string>;
+    }> = new FormGroup({
+        mensaje: new FormControl<string>({ value: '', disabled: false }, { nonNullable: true }),
+    });
+
+    procesando = signal(false);
+
+    enviarMensaje() {
+        if (this.numeroTelefono()) {
+            const mensaje = this.form.controls['mensaje'].value.trim();
+
+            this.procesando.set(true);
+            this.form.controls['mensaje'].disable();
+
+            this.whatsappDao
+                .enviar(this.numeroTelefono()!, mensaje)
+                .subscribe({
+                    next: (res) => {
+                        this.mensajesPendientes.update((actual) => [
+                            ...actual,
+                            {
+                                tenantId: '',
+                                numeroTelefono: this.numeroTelefono()!,
+                                idMensaje: res.idMensaje,
+                                whatsappMessageId: '',
+                                direccion: 'Salida',
+                                tipo: 'Texto',
+                                cuerpo: mensaje,
+                                nombreTemplate: null,
+                                estado: 'Enviado',
+                                fechaCreacion: new Date().toISOString(),
+                                rawPayload: null,
+                            } as SalWhatsappMensaje,
+                        ]);
+                    },
+                    error: (err) => {
+                        console.error('Error al enviar el mensaje de Whatsapp', err);
+                        this.error.set(
+                            getErrorMessage(err) ?? 'Error al enviar el mensaje de Whatsapp',
+                        );
+                    },
+                })
+                .add(() => {
+                    this.procesando.set(false);
+                    this.form.controls['mensaje'].enable();
+                    this.form.setValue({ mensaje: '' });
+                });
+        }
     }
 }

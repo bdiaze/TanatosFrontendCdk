@@ -1,23 +1,43 @@
 <div class="px-1 mb-3">
-    <div hlmInputGroup>
-        <input hlmInputGroupInput placeholder="Mensaje" />
-        <div hlmInputGroupAddon align="inline-end">
-            <button
-                hlmInputGroupButton
-                aria-label="Enviar"
-                title="Enviar"
-                size="icon-xs"
-                class="hover:text-(--blanco) hover:bg-(--primary) rounded-md"
-            >
-                <ng-icon name="lucideSendHorizonal" />
-            </button>
+    <form [formGroup]="form" (ngSubmit)="enviarMensaje()">
+        <div hlmInputGroup class="flex flex-row items-stretch">
+            <textarea
+                #textarea
+                hlmInputGroupTextarea
+                placeholder="Enviar mensajes..."
+                formControlName="mensaje"
+                class="resize-none overflow-hidden field-sizing-content min-h-0 py-[0.88rem]"
+            ></textarea>
+            <div class="flex flex-col items-center justify-end">
+                <button
+                    hlmBtn
+                    type="submit"
+                    aria-label="Enviar"
+                    title="Enviar"
+                    size="icon-sm"
+                    class="rounded-md m-2"
+                    [disabled]="!form.controls['mensaje'].value.trim() || procesando()"
+                >
+                    @if (procesando()) {
+                        <hlm-spinner />
+                    } @else {
+                        <ng-icon name="lucideSendHorizonal" />
+                    }
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+@if (error()) {
+    <div class="w-full px-1 pt-1 pb-4">
+        <div hlmAlert variant="destructive">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
         </div>
     </div>
-</div>
-<div
-    #scrollContainer
-    class="flex flex-col w-full max-h-[48vh] overflow-y-auto gap-1 scrollContainer px-2"
->
+}
+<div #scrollContainer class="flex flex-col w-full gap-1.5 px-2">
     @if (cargando()) {
         @for (i of random(); track $index; let index = $index) {
             <div
@@ -39,7 +59,7 @@
             </div>
         }
     } @else {
-        @for (mensaje of mensajes(); track mensaje.whatsappMessageId) {
+        @for (mensaje of mensajes(); track $index) {
             <div
                 class="w-full flex flex-row"
                 [class.justify-start]="mensaje.direccion == 'Entrada'"
@@ -47,10 +67,8 @@
             >
                 <div
                     hlmItem
-                    class="bg-(--primary) text-(--blanco) fade-in border-(--primary) w-max items-stretch py-1 px-2"
-                    [class.border-(--azul)]="mensaje.direccion == 'Salida'"
-                    [class.bg-(--azul)]="mensaje.direccion == 'Salida'"
-                    [class.text-(--blanco)]="mensaje.direccion == 'Salida'"
+                    class="mensajeRecibido w-max items-stretch py-1 px-2"
+                    [class.mensajeEnviado]="mensaje.direccion == 'Salida'"
                 >
                     <div hlmItemContent>
                         <p
@@ -72,21 +90,46 @@
                         </p>
                     </div>
                     <div hlmItemContent class="flex-none text-center items-center justify-end">
-                        @if (fueHoy(mensaje.fechaCreacion)) {
-                            <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
-                                {{ mensaje.fechaCreacion | date: 'HH:mm' }}
-                            </p>
-                        } @else {
-                            @if (fueAyer(mensaje.fechaCreacion)) {
+                        <div class="flex flex-row items-center justify-end gap-1">
+                            @if (fueHoy(mensaje.fechaCreacion)) {
                                 <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
-                                    Ayer<br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}
+                                    {{ mensaje.fechaCreacion | date: 'HH:mm' }}
                                 </p>
                             } @else {
-                                <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
-                                    {{ mensaje.fechaCreacion | date: 'dd/MM/yyyy' }}
-                                </p>
+                                @if (fueAyer(mensaje.fechaCreacion)) {
+                                    <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
+                                        Ayer<br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}
+                                    </p>
+                                } @else {
+                                    <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
+                                        {{ mensaje.fechaCreacion | date: 'dd/MM/yyyy' }}
+                                        <br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}
+                                    </p>
+                                }
                             }
-                        }
+                            @if (mensaje.estado === 'Leido') {
+                                <ng-icon
+                                    hlm
+                                    size="xs"
+                                    name="lucideCheckCheck"
+                                    class="text-(--blanco)"
+                                />
+                            }
+                            @if (mensaje.estado === 'Entregado') {
+                                <ng-icon hlm size="xs" name="lucideCheck" class="text-(--blanco)" />
+                            }
+                            @if (
+                                mensaje.estado === 'Enviado' ||
+                                mensaje.estado === 'ConfirmacionEnvio'
+                            ) {
+                                <ng-icon
+                                    hlm
+                                    size="xs"
+                                    name="lucideClock3"
+                                    class="text-(--blanco)"
+                                />
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

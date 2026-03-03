@@ -26,15 +26,19 @@
         @for (
             conversacion of conversaciones();
             track conversacion.numeroTelefono;
-            let first = $first
+            let first = $first;
+            let last = $last
         ) {
             <div
                 hlmItem
-                class="bg-(--blanco) text-(--negro) w-52 min-h-32 fade-in transition-all cursor-pointer"
+                class="bg-(--blanco) text-(--negro) w-52 min-h-32 fade-in transition-all"
                 [class.-ml-px]="!first"
                 [class.border-(--gris)]="numeroAbierto() != conversacion.numeroTelefono"
+                [class.cursor-pointer]="numeroAbierto() != conversacion.numeroTelefono"
                 [class.border-(--primary)]="numeroAbierto() == conversacion.numeroTelefono"
                 [class.z-10]="numeroAbierto() == conversacion.numeroTelefono"
+                [class.ml-3]="first"
+                [class.mr-3]="last"
                 (click)="seleccionarConversacion(conversacion.numeroTelefono)"
             >
                 <div hlmItemHeader>
@@ -121,3 +125,12 @@
         }
     }
 </div>
+@if (error()) {
+    <div class="w-full px-3 pt-3">
+        <div hlmAlert variant="destructive">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
+    </div>
+}

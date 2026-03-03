@@ -5,15 +5,12 @@
             <h3 hlmH3>Chats de Whatsapp</h3>
         </div>
     </div>
-    <div class="w-full overflow-x-auto scrollContainerHorizontal">
+    <div class="w-full overflow-x-auto scrollContainerHorizontal pb-2">
         <app-whatsapp-conversaciones
             (selectionChanged)="numeroTelefonoCambiado($event)"
         ></app-whatsapp-conversaciones>
     </div>
-    <div class="w-full px-2 py-4 h-full">
-        <app-whatsapp-mensajes
-            [numeroTelefono]="chatAbierto()"
-            class="h-full"
-        ></app-whatsapp-mensajes>
+    <div class="w-full px-2 py-2">
+        <app-whatsapp-mensajes [numeroTelefono]="chatAbierto()"></app-whatsapp-mensajes>
     </div>
 </section>

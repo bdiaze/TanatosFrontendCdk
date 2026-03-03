@@ -1,6 +1,7 @@
 export interface SalWhatsappMensaje {
     tenantId: string;
     numeroTelefono: string;
+    idMensaje: string | null;
     whatsappMessageId: string;
     direccion: string;
     tipo: string;
