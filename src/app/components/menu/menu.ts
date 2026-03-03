@@ -24,9 +24,12 @@ import {
     lucideChevronsUpDown,
     lucideClipboardPaste,
     lucideHouse,
+    lucideMessageCircleMore,
     lucideSend,
     lucideSettings,
     lucideStore,
+    lucideUser,
+    lucideUserStar,
     lucideX,
 } from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -69,6 +72,8 @@ import { filter, map } from 'rxjs';
             lucideClipboardPaste,
             lucideCalendarRange,
             lucideBlocks,
+            lucideUser,
+            lucideMessageCircleMore,
         }),
     ],
 })
@@ -167,6 +172,21 @@ export class Menu {
                 tipo: 'group',
                 titulo: 'Administración',
                 items: [
+                    {
+                        id: 'group-administracion-item-servicio-cliente',
+                        tipo: 'item',
+                        titulo: 'Servicio Cliente',
+                        icon: 'lucideUser',
+                        items: [
+                            {
+                                id: 'group-administracion-item-servicio-cliente-subitem-chats-whatsapp',
+                                tipo: 'subitem',
+                                titulo: 'Whatsapp',
+                                icon: 'lucideMessageCircleMore',
+                                url: '/administracion/servicio-cliente/chats-whatsapp',
+                            },
+                        ],
+                    },
                     {
                         id: 'group-administracion-item-mantenedores',
                         tipo: 'item',

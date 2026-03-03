@@ -29,6 +29,7 @@ import { Contacto } from './features/tableros/contacto/contacto';
 import { Privacidad } from './features/tableros/privacidad/privacidad';
 import { AvisoLegal } from './features/tableros/aviso-legal/aviso-legal';
 import { PoliticaDeCookies } from './features/tableros/politica-de-cookies/politica-de-cookies';
+import { ChatsWhatsapp } from './features/tableros/chats-whatsapp/chats-whatsapp';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -74,6 +75,10 @@ export const routes: Routes = [
     {
         path: 'obligacion/:idNormaSuscrita/:idHistorialNormaSuscrita',
         component: Vencimiento,
+    },
+    {
+        path: 'administracion/servicio-cliente/chats-whatsapp',
+        component: ChatsWhatsapp,
     },
     {
         path: 'administracion/mantenedores/tipo-receptor-notificacion',

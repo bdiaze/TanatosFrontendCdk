@@ -1,0 +1,95 @@
+<div class="px-1 mb-3">
+    <div hlmInputGroup>
+        <input hlmInputGroupInput placeholder="Mensaje" />
+        <div hlmInputGroupAddon align="inline-end">
+            <button
+                hlmInputGroupButton
+                aria-label="Enviar"
+                title="Enviar"
+                size="icon-xs"
+                class="hover:text-(--blanco) hover:bg-(--primary) rounded-md"
+            >
+                <ng-icon name="lucideSendHorizonal" />
+            </button>
+        </div>
+    </div>
+</div>
+<div
+    #scrollContainer
+    class="flex flex-col w-full max-h-[48vh] overflow-y-auto gap-1 scrollContainer px-2"
+>
+    @if (cargando()) {
+        @for (i of random(); track $index; let index = $index) {
+            <div
+                class="w-full flex flex-row"
+                [class.justify-start]="$index % 2 === 0"
+                [class.justify-end]="$index % 2 !== 0"
+            >
+                <hlm-skeleton
+                    class="rounded-none"
+                    [class.h-10]="i === 1"
+                    [class.h-12]="i === 2"
+                    [class.h-14]="i === 3"
+                    [class.h-16]="i === 4"
+                    [class.w-48]="i === 1"
+                    [class.w-56]="i === 2"
+                    [class.w-64]="i === 3"
+                    [class.w-72]="i === 4"
+                />
+            </div>
+        }
+    } @else {
+        @for (mensaje of mensajes(); track mensaje.whatsappMessageId) {
+            <div
+                class="w-full flex flex-row"
+                [class.justify-start]="mensaje.direccion == 'Entrada'"
+                [class.justify-end]="mensaje.direccion == 'Salida'"
+            >
+                <div
+                    hlmItem
+                    class="bg-(--primary) text-(--blanco) fade-in border-(--primary) w-max items-stretch py-1 px-2"
+                    [class.border-(--azul)]="mensaje.direccion == 'Salida'"
+                    [class.bg-(--azul)]="mensaje.direccion == 'Salida'"
+                    [class.text-(--blanco)]="mensaje.direccion == 'Salida'"
+                >
+                    <div hlmItemContent>
+                        <p
+                            hlmItemDescription
+                            class="text-(--blanco) py-1 px-2 flex flex-row items-center gap-2"
+                        >
+                            @if (tiposDescarga().includes(mensaje.tipo)) {
+                                <ng-icon
+                                    hlm
+                                    size="1.3rem"
+                                    name="lucideDownload"
+                                    class="text-(--blanco) cursor-pointer"
+                                />
+                            }
+                            {{
+                                mensaje.cuerpo ??
+                                    `${mensaje.tipo} recibid${tiposFemeninos().includes(mensaje.tipo) ? 'a' : 'o'}`
+                            }}
+                        </p>
+                    </div>
+                    <div hlmItemContent class="flex-none text-center items-center justify-end">
+                        @if (fueHoy(mensaje.fechaCreacion)) {
+                            <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
+                                {{ mensaje.fechaCreacion | date: 'HH:mm' }}
+                            </p>
+                        } @else {
+                            @if (fueAyer(mensaje.fechaCreacion)) {
+                                <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
+                                    Ayer<br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}
+                                </p>
+                            } @else {
+                                <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
+                                    {{ mensaje.fechaCreacion | date: 'dd/MM/yyyy' }}
+                                </p>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
