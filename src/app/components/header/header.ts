@@ -54,8 +54,14 @@ export class Header implements OnInit {
 
     menuAbierto = signal<boolean>(false);
 
+    mostrarMovil = signal(false);
+
     ngOnInit() {
         this.authStore.backgroundRefresh();
+
+        const mqMovil = window.matchMedia('(max-width: 767px)');
+        this.mostrarMovil.set(mqMovil.matches);
+        mqMovil.addEventListener('change', (e) => this.mostrarMovil.set(e.matches));
     }
 
     toggleMenu() {

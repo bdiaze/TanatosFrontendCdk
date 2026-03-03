@@ -67,7 +67,7 @@ export class AuthStore {
                         error: (err) => {
                             console.warn(
                                 'No se logra hacer refresh inicial del access token...',
-                                err
+                                err,
                             );
                         },
                     })

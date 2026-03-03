@@ -44,7 +44,9 @@ export class NegocioDao {
                     v = v.sort((a, b) =>
                         a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
                     );
-                    this.negocioStore.negociosUsuario.set(v);
+                    if (!this.arraysIguales(v, this.negocioStore.negociosUsuario())) {
+                        this.negocioStore.negociosUsuario.set(v);
+                    }
 
                     const cookieSeleccionado = getCookie('NegocioSeleccionado');
                     if (cookieSeleccionado) {
@@ -87,5 +89,21 @@ export class NegocioDao {
 
     eliminar(id: number): Observable<void> {
         return this.http.delete<void>(environment.tanatosService.apiUrl + `/Negocio/${id}`);
+    }
+
+    arraysIguales(a: SalNegocio[], b: SalNegocio[]): boolean {
+        if (a.length !== b.length) return false;
+
+        const mapA = new Map(a.map((x) => [x.id, x]));
+        return b.every((x) => {
+            const original = mapA.get(x.id);
+            if (!original) return false;
+
+            return (
+                original.nombre === x.nombre &&
+                original.direccion === x.direccion &&
+                original.idTipoActividad === x.idTipoActividad
+            );
+        });
     }
 }

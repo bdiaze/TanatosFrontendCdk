@@ -31,7 +31,13 @@ export class App implements OnInit {
     sesionIniciada = this.authStore.sesionIniciada;
     logoutRunning = this.authStore.logoutRunning;
 
+    mostrarDesktop = signal(false);
+
     ngOnInit(): void {
         this.recaptchHelper.load();
+
+        const mqDesktop = window.matchMedia('(min-width: 768px)');
+        this.mostrarDesktop.set(mqDesktop.matches);
+        mqDesktop.addEventListener('change', (e) => this.mostrarDesktop.set(e.matches));
     }
 }
