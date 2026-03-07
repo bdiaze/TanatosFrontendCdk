@@ -34,6 +34,7 @@ import { debounceTime, Subject, switchMap } from 'rxjs';
 import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-suscrita-completar-norma';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
+import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
 
 @Component({
     selector: 'app-vencimiento',
@@ -58,6 +59,7 @@ import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
         CommonModule,
         HlmBreadCrumbImports,
         RouterLink,
+        EditorTexto,
     ],
     templateUrl: './vencimiento.html',
     styleUrl: './vencimiento.scss',
@@ -108,6 +110,8 @@ export class Vencimiento implements OnInit {
     documentosEnProgreso = signal<DocumentoEnProgreso[]>([]);
 
     cargandoNormaSuscritaConVencimiento = signal<boolean>(true);
+
+    expandido = signal<boolean>(false);
 
     constructor() {
         effect(() => {

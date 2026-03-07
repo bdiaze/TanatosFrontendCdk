@@ -99,9 +99,35 @@
                         </div>
                     </div>
                 </div>
-                <p HlmP class="text-justify mx-4 whitespace-pre-line">
-                    {{ item()?.descripcion ?? item()?.templateNorma?.descripcion }}
-                </p>
+                <div class="mx-4 flex flex-col items-center justify-center">
+                    <div class="relative">
+                        <div
+                            class="scrollContainer"
+                            [class.max-h-60]="!expandido()"
+                            [class.overflow-y-clip]="!expandido()"
+                        >
+                            <app-editor-texto
+                                [content]="
+                                    item()?.descripcion ?? item()?.templateNorma?.descripcion
+                                "
+                            ></app-editor-texto>
+                        </div>
+                        @if (!expandido()) {
+                            <div
+                                class="absolute bottom-0 left-0 right-0 h-18 bg-linear-to-t from-white to-transparent pointer-events-none"
+                            ></div>
+                        }
+                    </div>
+                    @if (!expandido()) {
+                        <button hlmBtn variant="link" (click)="expandido.set(true)" class="mt-2">
+                            Mostrar más...
+                        </button>
+                    } @else {
+                        <button hlmBtn variant="link" (click)="expandido.set(false)" class="mt-2">
+                            Mostrar menos...
+                        </button>
+                    }
+                </div>
                 @if (
                     !item()?.fechaCompletitud ||
                     (documentosAdjuntos() && documentosAdjuntos().length > 0)
