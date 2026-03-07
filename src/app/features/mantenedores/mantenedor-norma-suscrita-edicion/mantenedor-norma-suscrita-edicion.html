@@ -84,13 +84,9 @@
                             class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
                             >Descripción</label
                         >
-                        <textarea
-                            hlmTextarea
-                            type="text"
-                            class="text-xs md:text-sm transition-all duration-500 ease-out"
-                            id="descripcion"
+                        <app-editor-texto
                             [formControl]="form.controls['descripcion']"
-                        ></textarea>
+                        ></app-editor-texto>
                         <hlm-field-error
                             class="transition-all duration-500 ease-out text-xs"
                             [class.opacity-100]="invalid('descripcion')"

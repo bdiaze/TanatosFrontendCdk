@@ -63,6 +63,7 @@ import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
 
 @Component({
     selector: 'app-mantenedor-template-edicion',
@@ -96,6 +97,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         BrnPopoverContent,
         HlmAutocompleteImports,
         HlmSkeletonImports,
+        EditorTexto,
     ],
     templateUrl: './mantenedor-template-edicion.html',
     styleUrl: './mantenedor-template-edicion.scss',
