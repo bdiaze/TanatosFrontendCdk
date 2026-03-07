@@ -28,6 +28,7 @@ import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita',
@@ -61,6 +62,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
             lucideClipboardList,
             lucideClipboardPaste,
         }),
+        PlainTextPipe,
     ],
 })
 export class MantenedorNormaSuscrita {
@@ -78,7 +80,7 @@ export class MantenedorNormaSuscrita {
 
     itemSeleccionado = signal<SalNormaSuscrita | null>(null);
 
-    constructor() {
+    constructor(private plainTextPipe: PlainTextPipe) {
         effect(() => {
             if (this.negocioStore.negocioSeleccionado()) {
                 this.obtenerTodos();
@@ -167,6 +169,10 @@ export class MantenedorNormaSuscrita {
     truncarDescripcion(texto: string | null | undefined, max: number = 90): string {
         if (!texto) return '';
 
+        // Se quitan elementos HTML del texto...
+        texto = this.plainTextPipe.transform(texto);
+
+        // Se limita el largo de la descripción...
         if (texto.length <= max) {
             return texto;
         }
