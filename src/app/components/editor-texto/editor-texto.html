@@ -1,0 +1,5 @@
+@if (!content) {
+    <div #editor class="max-h-[50vh] overflow-y-auto scrollContainer"></div>
+} @else {
+    <div [innerHTML]="content"></div>
+}

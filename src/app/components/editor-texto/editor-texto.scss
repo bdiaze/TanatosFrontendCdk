@@ -1,0 +1,92 @@
+:host ::ng-deep .ql-toolbar {
+    border-color: var(--input);
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    border-top-left-radius: calc(var(--radius) - 2px);
+    border-top-right-radius: calc(var(--radius) - 2px);
+}
+
+:host ::ng-deep .ql-container {
+    border-color: var(--input);
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+    border-bottom-left-radius: calc(var(--radius) - 2px);
+    border-bottom-right-radius: calc(var(--radius) - 2px);
+    border-top: none;
+}
+
+:host ::ng-deep .ql-toolbar .ql-formats button {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+
+:host ::ng-deep .ql-toolbar button.ql-active,
+:host ::ng-deep .ql-toolbar button:hover {
+    background-color: var(--azul);
+    border-radius: 6px;
+}
+
+:host ::ng-deep .ql-toolbar button.ql-active .ql-stroke,
+:host ::ng-deep .ql-toolbar button:hover .ql-stroke {
+    stroke: var(--blanco);
+}
+
+:host ::ng-deep .ql-toolbar button.ql-active .ql-fill,
+:host ::ng-deep .ql-toolbar button:hover .ql-fill {
+    fill: var(--blanco);
+}
+
+:host ::ng-deep .ql-picker.ql-expanded .ql-picker-options {
+    z-index: 50;
+}
+
+:host ::ng-deep .ql-toolbar .ql-picker-label.ql-active,
+:host ::ng-deep .ql-toolbar .ql-picker-label:hover {
+    color: var(--azul);
+}
+
+:host ::ng-deep h1 {
+    font-family: var(--font-serif);
+    font-size: var(--text-3xl);
+    line-height: var(--text-3xl--line-height);
+    margin-top: 0.6rem;
+    margin-bottom: 0.6rem;
+}
+
+:host ::ng-deep h2 {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+:host ::ng-deep h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    font-weight: 500;
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+}
+
+:host ::ng-deep p {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+}
+
+:host ::ng-deep strong {
+    font-weight: 600;
+}
+
+:host ::ng-deep ul,
+:host ::ng-deep ol {
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+
+:host ::ng-deep li {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
