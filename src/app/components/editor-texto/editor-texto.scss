@@ -89,4 +89,7 @@
 :host ::ng-deep li {
     margin-top: 2px;
     margin-bottom: 2px;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
 }
