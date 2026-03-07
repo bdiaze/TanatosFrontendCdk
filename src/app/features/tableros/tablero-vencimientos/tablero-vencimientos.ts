@@ -29,6 +29,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { normalize } from '@/app/helpers/string-comparator';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmInputImports } from '@spartan-ng/helm/input';
+import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -51,6 +52,7 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
         HlmTooltipImports,
         HlmSkeletonImports,
         HlmBreadCrumbImports,
+        PlainTextPipe,
     ],
     templateUrl: './tablero-vencimientos.html',
     styleUrl: './tablero-vencimientos.scss',
