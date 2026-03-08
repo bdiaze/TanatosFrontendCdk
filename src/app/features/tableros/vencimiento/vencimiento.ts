@@ -146,6 +146,10 @@ export class Vencimiento implements OnInit {
         }
     }
 
+    mostrarMasMenos(masMenos: boolean) {
+        this.expandido.set(masMenos);
+    }
+
     obtenerNormaConVencimiento() {
         this.normaSuscritaDao
             .obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)
