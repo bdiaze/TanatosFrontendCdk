@@ -47,6 +47,8 @@ export class WhatsappConversaciones implements OnInit {
 
     numeroAbierto = signal('');
 
+    formatoFechaRespuestaGratuita = "EEEE d 'a las' HH:mm";
+
     constructor() {
         interval(10 * 1000)
             .pipe(

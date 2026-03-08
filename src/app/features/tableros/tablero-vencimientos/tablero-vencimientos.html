@@ -60,33 +60,15 @@
                                     {{ vencido.descripcionNorma | plainText }}
                                 </p>
                                 @if (vencido.multaNorma) {
-                                    <hlm-tooltip>
-                                        <p
-                                            hlmTooltipTrigger
-                                            position="below"
-                                            hlmItemDescription
-                                            class="text-destructive opacity-90 text-xs mt-1"
-                                        >
-                                            <b>Multa:</b><br />
-                                            {{ vencido.multaNorma }}
-                                        </p>
-                                        <span *brnTooltipContent class="flex items-center">
-                                            {{ vencido.multaNorma }}
-                                            <span
-                                                class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
-                                            >
-                                                <svg
-                                                    class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
-                                                    width="10"
-                                                    height="5"
-                                                    viewBox="0 0 30 10"
-                                                    preserveAspectRatio="none"
-                                                >
-                                                    <polygon points="0,0 30,0 15,10"></polygon>
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </hlm-tooltip>
+                                    <p
+                                        [hlmTooltip]="vencido.multaNorma"
+                                        position="bottom"
+                                        hlmItemDescription
+                                        class="text-destructive opacity-90 text-xs mt-1"
+                                    >
+                                        <b>Multa:</b><br />
+                                        {{ vencido.multaNorma }}
+                                    </p>
                                 }
                             </div>
                         </a>
@@ -145,33 +127,15 @@
                                     {{ futuro.descripcionNorma | plainText }}
                                 </p>
                                 @if (futuro.multaNorma) {
-                                    <hlm-tooltip>
-                                        <p
-                                            hlmTooltipTrigger
-                                            position="below"
-                                            hlmItemDescription
-                                            class="opacity-90 text-xs mt-1"
-                                        >
-                                            <b>Multa:</b><br />
-                                            {{ futuro.multaNorma }}
-                                        </p>
-                                        <span *brnTooltipContent class="flex items-center">
-                                            {{ futuro.multaNorma }}
-                                            <span
-                                                class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
-                                            >
-                                                <svg
-                                                    class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
-                                                    width="10"
-                                                    height="5"
-                                                    viewBox="0 0 30 10"
-                                                    preserveAspectRatio="none"
-                                                >
-                                                    <polygon points="0,0 30,0 15,10"></polygon>
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </hlm-tooltip>
+                                    <p
+                                        [hlmTooltip]="futuro.multaNorma"
+                                        position="bottom"
+                                        hlmItemDescription
+                                        class="opacity-90 text-xs mt-1"
+                                    >
+                                        <b>Multa:</b><br />
+                                        {{ futuro.multaNorma }}
+                                    </p>
                                 }
                             </div>
                         </a>
@@ -250,33 +214,15 @@
                                     {{ completada.descripcionNorma | plainText }}
                                 </p>
                                 @if (completada.multaNorma) {
-                                    <hlm-tooltip>
-                                        <p
-                                            hlmTooltipTrigger
-                                            position="below"
-                                            hlmItemDescription
-                                            class="opacity-90 text-xs mt-1"
-                                        >
-                                            <b>Multa:</b><br />
-                                            {{ completada.multaNorma }}
-                                        </p>
-                                        <span *brnTooltipContent class="flex items-center">
-                                            {{ completada.multaNorma }}
-                                            <span
-                                                class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
-                                            >
-                                                <svg
-                                                    class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
-                                                    width="10"
-                                                    height="5"
-                                                    viewBox="0 0 30 10"
-                                                    preserveAspectRatio="none"
-                                                >
-                                                    <polygon points="0,0 30,0 15,10"></polygon>
-                                                </svg>
-                                            </span>
-                                        </span>
-                                    </hlm-tooltip>
+                                    <p
+                                        [hlmTooltip]="completada.multaNorma"
+                                        position="bottom"
+                                        hlmItemDescription
+                                        class="opacity-90 text-xs mt-1"
+                                    >
+                                        <b>Multa:</b><br />
+                                        {{ completada.multaNorma }}
+                                    </p>
                                 }
                             </div>
                         </a>

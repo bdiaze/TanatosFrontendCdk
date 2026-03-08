@@ -64,19 +64,14 @@
                                 <div class="flex justify-start items-center gap-2">
                                     @if (item.recomendado) {
                                         <div class="w-4 flex items-center">
-                                            <hlm-tooltip>
-                                                <ng-icon
-                                                    hlm
-                                                    size="sm"
-                                                    name="lucideStar"
-                                                    hlmTooltipTrigger
-                                                    position="right"
-                                                    class="text-yellow-600"
-                                                />
-                                                <span *brnTooltipContent>
-                                                    ¡Plantilla perfecta para tu negocio!
-                                                </span>
-                                            </hlm-tooltip>
+                                            <ng-icon
+                                                hlm
+                                                size="sm"
+                                                name="lucideStar"
+                                                hlmTooltip="¡Plantilla perfecta para tu negocio!"
+                                                position="right"
+                                                class="text-yellow-600"
+                                            />
                                         </div>
                                     }
                                     {{ item.nombreTemplate }}
@@ -89,37 +84,17 @@
                                         track norma.idNorma
                                     ) {
                                         @if (norma.nombreNorma.length > 20) {
-                                            <hlm-tooltip>
-                                                <span
-                                                    hlmBadge
-                                                    variant="azul"
-                                                    hlmTooltipTrigger
-                                                    position="below"
-                                                    class="text-[0.65rem] md:text-xs"
-                                                    >{{
-                                                        norma.nombreNorma.substring(0, 17).trim() +
-                                                            '...'
-                                                    }}</span
-                                                >
-                                                <span *brnTooltipContent>
-                                                    {{ norma.nombreNorma }}
-                                                    <span
-                                                        class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
-                                                    >
-                                                        <svg
-                                                            class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
-                                                            width="10"
-                                                            height="5"
-                                                            viewBox="0 0 30 10"
-                                                            preserveAspectRatio="none"
-                                                        >
-                                                            <polygon
-                                                                points="0,0 30,0 15,10"
-                                                            ></polygon>
-                                                        </svg>
-                                                    </span>
-                                                </span>
-                                            </hlm-tooltip>
+                                            <span
+                                                hlmBadge
+                                                variant="azul"
+                                                [hlmTooltip]="norma.nombreNorma"
+                                                position="bottom"
+                                                class="text-[0.65rem] md:text-xs"
+                                                >{{
+                                                    norma.nombreNorma.substring(0, 17).trim() +
+                                                        '...'
+                                                }}</span
+                                            >
                                         } @else {
                                             <span
                                                 hlmBadge
@@ -130,37 +105,24 @@
                                         }
                                     }
                                     @if (item.templateNormas.length > 3) {
-                                        <hlm-tooltip>
-                                            <span
-                                                hlmBadge
-                                                variant="azul"
-                                                hlmTooltipTrigger
-                                                position="below"
-                                                class="text-[0.65rem] md:text-xs"
-                                                >...</span
-                                            >
-                                            <span *brnTooltipContent>
+                                        <span
+                                            hlmBadge
+                                            variant="azul"
+                                            [hlmTooltip]="tooltip"
+                                            position="bottom"
+                                            class="text-[0.65rem] md:text-xs"
+                                            >...</span
+                                        >
+                                        <ng-template #tooltip>
+                                            <span>
                                                 @for (
                                                     norma of item.templateNormas.slice(3);
                                                     track norma.idNorma
                                                 ) {
                                                     {{ '· ' + norma.nombreNorma }} <br />
                                                 }
-                                                <span
-                                                    class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
-                                                >
-                                                    <svg
-                                                        class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
-                                                        width="10"
-                                                        height="5"
-                                                        viewBox="0 0 30 10"
-                                                        preserveAspectRatio="none"
-                                                    >
-                                                        <polygon points="0,0 30,0 15,10"></polygon>
-                                                    </svg>
-                                                </span>
                                             </span>
-                                        </hlm-tooltip>
+                                        </ng-template>
                                     }
                                 </div>
                             </td>

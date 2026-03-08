@@ -56,10 +56,10 @@ export class HlmRadio<T = unknown> {
     public readonly userClass = input<ClassValue>('', { alias: 'class' });
     protected readonly _computedClass = computed(() =>
         hlm(
-            'group flex items-center ',
+            'group relative flex items-center gap-x-3',
             'data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50',
-            this.userClass()
-        )
+            this.userClass(),
+        ),
     );
 
     /** Used to set the id on the underlying brn element. */
@@ -109,7 +109,7 @@ export class HlmRadio<T = unknown> {
             this._renderer.setAttribute(
                 labelElement,
                 'data-disabled',
-                isDisabled ? 'true' : 'false'
+                isDisabled ? 'true' : 'false',
             );
         });
     }

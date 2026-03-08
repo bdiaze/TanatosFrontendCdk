@@ -35,7 +35,7 @@
                 [class.-ml-px]="!first"
                 [class.border-(--gris)]="numeroAbierto() != conversacion.numeroTelefono"
                 [class.cursor-pointer]="numeroAbierto() != conversacion.numeroTelefono"
-                [class.border-(--primary)]="numeroAbierto() == conversacion.numeroTelefono"
+                [class.border-(--azul)]="numeroAbierto() == conversacion.numeroTelefono"
                 [class.z-10]="numeroAbierto() == conversacion.numeroTelefono"
                 [class.ml-3]="first"
                 [class.mr-3]="last"
@@ -74,51 +74,32 @@
                     fechaFutura(conversacion.puedeResponderGratuitoHasta)
                 ) {
                     <div hlmItemFooter>
-                        <hlm-tooltip>
-                            <span
-                                hlmTooltipTrigger
-                                position="below"
-                                hlmBadge
-                                class="mx-auto flex flex-row items-center justify-end pr-3 text-xs"
-                            >
-                                <ng-icon hlm name="lucideTag" />
-                                @if (fueHoy(conversacion.puedeResponderGratuitoHasta)) {
+                        <span
+                            hlmBadge
+                            variant="azul"
+                            [hlmTooltip]="
+                                'Responde gratuitamente hasta el ' +
+                                (conversacion.puedeResponderGratuitoHasta
+                                    | date: formatoFechaRespuestaGratuita)
+                            "
+                            position="bottom"
+                            class="mx-auto flex flex-row items-center justify-end pr-3 text-xs"
+                        >
+                            <ng-icon hlm name="lucideTag" />
+                            @if (fueHoy(conversacion.puedeResponderGratuitoHasta)) {
+                                {{ conversacion.puedeResponderGratuitoHasta | date: 'HH:mm' }}
+                            } @else {
+                                @if (esMannana(conversacion.puedeResponderGratuitoHasta)) {
+                                    Mañana a las
                                     {{ conversacion.puedeResponderGratuitoHasta | date: 'HH:mm' }}
                                 } @else {
-                                    @if (esMannana(conversacion.puedeResponderGratuitoHasta)) {
-                                        Mañana a las
-                                        {{
-                                            conversacion.puedeResponderGratuitoHasta | date: 'HH:mm'
-                                        }}
-                                    } @else {
-                                        {{
-                                            conversacion.puedeResponderGratuitoHasta
-                                                | date: 'dd/MM/yyyy HH:mm'
-                                        }}
-                                    }
+                                    {{
+                                        conversacion.puedeResponderGratuitoHasta
+                                            | date: 'dd/MM/yyyy HH:mm'
+                                    }}
                                 }
-                            </span>
-                            <span *brnTooltipContent class="flex items-center">
-                                Responde gratuitamente hasta el
-                                {{
-                                    conversacion.puedeResponderGratuitoHasta
-                                        | date: "EEEE d 'a las' HH:mm"
-                                }}
-                                <span
-                                    class="absolute -top-3.5 left-1/2 -translate-x-1/2 translate-y-full"
-                                >
-                                    <svg
-                                        class="bg-(--negro) fill-(--negro) z-50 block size-2.5 rotate-45"
-                                        width="10"
-                                        height="5"
-                                        viewBox="0 0 30 10"
-                                        preserveAspectRatio="none"
-                                    >
-                                        <polygon points="0,0 30,0 15,10"></polygon>
-                                    </svg>
-                                </span>
-                            </span>
-                        </hlm-tooltip>
+                            }
+                        </span>
                     </div>
                 }
             </div>

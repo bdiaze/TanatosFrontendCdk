@@ -47,20 +47,20 @@
                     @for (item of listado(); track item.id) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="text-xs md:text-sm">
-                                <hlm-tooltip>
-                                    <p hlmTooltipTrigger class="w-42 md:w-auto truncate">
-                                        @if (item.alias) {
-                                            <span class="text-[0.6rem] md:text-xs"
-                                                >{{ item.alias }}<br
-                                            /></span>
-                                        }
-                                        {{
-                                            item.idTipoReceptor === 2
-                                                ? (item.destino | formatearTelefono)
-                                                : item.destino
-                                        }}
-                                    </p>
-                                    <span *brnTooltipContent>
+                                <p [hlmTooltip]="tooltip" class="w-42 md:w-auto truncate">
+                                    @if (item.alias) {
+                                        <span class="text-[0.6rem] md:text-xs"
+                                            >{{ item.alias }}<br
+                                        /></span>
+                                    }
+                                    {{
+                                        item.idTipoReceptor === 2
+                                            ? (item.destino | formatearTelefono)
+                                            : item.destino
+                                    }}
+                                </p>
+                                <ng-template #tooltip>
+                                    <span>
                                         @if (item.alias) {
                                             {{ item.alias }} <br />
                                         }
@@ -70,7 +70,7 @@
                                                 : item.destino
                                         }}</span
                                     >
-                                </hlm-tooltip>
+                                </ng-template>
                             </td>
                             <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">
                                 {{ item.nombreTipoReceptor }}
@@ -84,17 +84,12 @@
                                             class="text-green-700"
                                         />
                                     } @else {
-                                        <hlm-tooltip>
-                                            <ng-icon
-                                                hlmTooltipTrigger
-                                                hlm
-                                                name="lucideClockAlert"
-                                                class="opacity-65"
-                                            />
-                                            <span *brnTooltipContent
-                                                >Pendiente confirmación del destinatario...</span
-                                            >
-                                        </hlm-tooltip>
+                                        <ng-icon
+                                            hlm
+                                            hlmTooltip="Pendiente confirmación del destinatario..."
+                                            name="lucideClockAlert"
+                                            class="opacity-65"
+                                        />
                                     }
                                 </div>
                             </td>
