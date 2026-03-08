@@ -21,7 +21,7 @@ export const buttonVariants = cva(
                 link: 'text-primary underline-offset-4 hover:underline',
             },
             size: {
-                default: 'h-7 px-6 py-2 has-[>ng-icon]:px-3',
+                default: 'h-8 px-6 py-2 has-[>ng-icon]:px-3',
                 sm: 'h-8 gap-1.5 rounded-full px-3 has-[>ng-icon]:px-2.5',
                 lg: 'h-10 rounded-full px-10 has-[>ng-icon]:px-4',
                 icon: 'size-9',
