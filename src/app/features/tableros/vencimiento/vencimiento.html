@@ -65,7 +65,7 @@
                     <div class="flex flex-row items-center justify-center gap-3 pt-2">
                         <div class="flex flex-wrap justify-center items-center gap-1 pt-1">
                             @for (fiscalizador of fiscalizadores(); track fiscalizador.id) {
-                                <span hlmBadge>
+                                <span hlmBadge variant="azul">
                                     {{ fiscalizador.nombreTipoFiscalizador }}
                                 </span>
                             }
@@ -216,7 +216,7 @@
                                                             <button
                                                                 hlmBtn
                                                                 size="icon"
-                                                                variant="secondary"
+                                                                variant="outlineAzul"
                                                                 class="size-8"
                                                                 (click)="
                                                                     descargaArchivo(documento.id)
@@ -285,7 +285,7 @@
                                                     <td
                                                         hlmTd
                                                         colspan="3"
-                                                        class="text-center p-0 border-dashed border-(--negro) border-2 transition-colors duration-200"
+                                                        class="text-center p-0 border-dashed border-(--negro)/80 border-2 transition-colors duration-200"
                                                         [ngClass]="{
                                                             'bg-(--negro)/10': draggingFile(),
                                                         }"
@@ -300,7 +300,7 @@
                                                                 hlmBtn
                                                                 size="icon"
                                                                 variant="link"
-                                                                class="size-8 text-(--negro)"
+                                                                class="size-8"
                                                                 (click)="fileInput.click()"
                                                             >
                                                                 <ng-icon
@@ -395,6 +395,7 @@
                                     >
                                         <button
                                             hlmBtn
+                                            variant="outlineAzul"
                                             class="w-full py-7 gap-4 text-lg"
                                             (click)="openModalConfirmar()"
                                             [disabled]="

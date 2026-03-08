@@ -5,8 +5,8 @@
     <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
         <div hlmCard (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md gap-3">
             <div hlmCardHeader class="faster-fade-in">
-                <div class="flex items-center gap-4">
-                    <ng-icon hlm name="lucideSend" class="text-green-700" />
+                <div class="flex items-center gap-4 pt-1 pb-2">
+                    <ng-icon hlm name="lucideSend" />
                     <h3 hlmCardTitle>Nuevo Destinatario:</h3>
                 </div>
 
@@ -30,7 +30,7 @@
                                     ) {
                                         <label
                                             hlmLabel
-                                            class="text-center relative space-x-0 border-border flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-primary [&:has([data-checked=true])]:border-2 text-border [&:has([data-checked=true])]:text-primary"
+                                            class="text-center relative space-x-0 border-border flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-(--azul) [&:has([data-checked=true])]:border-2 text-border [&:has([data-checked=true])]:text-(--azul)"
                                         >
                                             <hlm-radio [value]="tipoReceptor.id">
                                                 <ng-icon
@@ -45,13 +45,23 @@
                             }
                         </div>
                         <div hlmField class="gap-1">
-                            <label
-                                for="alias"
-                                hlmLabel
-                                class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm px-2 pb-1"
-                                >Alias</label
-                            >
                             <div hlmInputGroup>
+                                <div hlmInputGroupAddon align="block-start">
+                                    <label
+                                        for="alias"
+                                        hlmLabel
+                                        class="text-xs opacity-80 font-semibold whitespace-nowrap"
+                                        >Alias</label
+                                    >
+                                    <hlm-field-error
+                                        class="transition-all duration-500 ease-out text-xs ml-auto"
+                                        [class.opacity-100]="invalid('alias')"
+                                        [class.opacity-0]="!invalid('alias')"
+                                        [class.max-h-10]="invalid('alias')"
+                                        [class.max-h-0]="!invalid('alias')"
+                                        >Debes ingresar un alias</hlm-field-error
+                                    >
+                                </div>
                                 <input
                                     hlmInputGroupInput
                                     class="transition-all duration-500 ease-out text-xs md:text-sm"
@@ -59,30 +69,45 @@
                                     formControlName="alias"
                                 />
                             </div>
-                            <hlm-field-error
-                                class="transition-all duration-500 ease-out"
-                                [class.opacity-100]="invalid('alias')"
-                                [class.opacity-0]="!invalid('alias')"
-                                [class.max-h-10]="invalid('alias')"
-                                [class.max-h-0]="!invalid('alias')"
-                                >Debes ingresar un alias</hlm-field-error
-                            >
                         </div>
                         <div hlmField class="gap-1">
-                            <label
-                                for="destino"
-                                hlmLabel
-                                class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm px-2 pb-1"
-                            >
-                                {{
-                                    form.controls['idTipoReceptor'].value === 1
-                                        ? 'Correo Electrónico'
-                                        : form.controls['idTipoReceptor'].value === 2
-                                          ? 'Whatsapp'
-                                          : 'Destinatario'
-                                }}
-                            </label>
                             <div hlmInputGroup>
+                                <div hlmInputGroupAddon align="block-start">
+                                    <label
+                                        for="destino"
+                                        hlmLabel
+                                        class="text-xs opacity-80 font-semibold whitespace-nowrap"
+                                    >
+                                        {{
+                                            form.controls['idTipoReceptor'].value === 1
+                                                ? 'Correo Electrónico'
+                                                : form.controls['idTipoReceptor'].value === 2
+                                                  ? 'Whatsapp'
+                                                  : 'Destinatario'
+                                        }}
+                                    </label>
+                                    <hlm-field-error
+                                        class="transition-all duration-500 ease-out text-xs ml-auto"
+                                        [class.opacity-100]="invalid('destino')"
+                                        [class.opacity-0]="!invalid('destino')"
+                                        [class.max-h-10]="invalid('destino')"
+                                        [class.max-h-0]="!invalid('destino')"
+                                    >
+                                        @if (form.controls['destino'].errors?.['required']) {
+                                            Debes ingresar un
+                                            {{
+                                                form.controls['idTipoReceptor'].value === 1
+                                                    ? 'correo electrónico'
+                                                    : form.controls['idTipoReceptor'].value === 2
+                                                      ? 'número de Whatsapp'
+                                                      : 'destinatario'
+                                            }}
+                                        }
+                                        @if (form.controls['destino'].errors?.['email']) {
+                                            El correo electrónico ingresado no es válido.
+                                        }
+                                    </hlm-field-error>
+                                </div>
                                 <input
                                     [formatoTelefono]="form.controls['idTipoReceptor'].value === 2"
                                     [formatoCorreo]="form.controls['idTipoReceptor'].value === 1"
@@ -97,27 +122,6 @@
                                     formControlName="destino"
                                 />
                             </div>
-                            <hlm-field-error
-                                class="transition-all duration-500 ease-out"
-                                [class.opacity-100]="invalid('destino')"
-                                [class.opacity-0]="!invalid('destino')"
-                                [class.max-h-10]="invalid('destino')"
-                                [class.max-h-0]="!invalid('destino')"
-                            >
-                                @if (form.controls['destino'].errors?.['required']) {
-                                    Debes ingresar un
-                                    {{
-                                        form.controls['idTipoReceptor'].value === 1
-                                            ? 'correo electrónico'
-                                            : form.controls['idTipoReceptor'].value === 2
-                                              ? 'número de Whatsapp'
-                                              : 'destinatario'
-                                    }}
-                                }
-                                @if (form.controls['destino'].errors?.['email']) {
-                                    El correo electrónico ingresado no es válido.
-                                }
-                            </hlm-field-error>
                         </div>
                     </div>
                 </fieldset>
@@ -131,8 +135,13 @@
                     </div>
                 }
                 <div class="w-full flex items-center justify-end gap-6">
-                    <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
-                    <button hlmBtn type="submit" [disabled]="form.invalid || procesando()">
+                    <button hlmBtn variant="outlineAzul" (click)="cerrar.emit()">Cancelar</button>
+                    <button
+                        hlmBtn
+                        variant="azul"
+                        type="submit"
+                        [disabled]="form.invalid || procesando()"
+                    >
                         @if (procesando()) {
                             <hlm-spinner />
                         }

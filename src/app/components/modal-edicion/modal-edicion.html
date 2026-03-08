@@ -19,13 +19,25 @@
                         @if (campo.tipo !== 'oculto') {
                             <div hlmField class="gap-1">
                                 @if (campo.tipo === 'string' || campo.tipo === 'number') {
-                                    <label
-                                        [for]="campo.llave"
-                                        hlmLabel
-                                        class="opacity-80 font-semibold whitespace-nowrap text-xs md:text-sm px-2"
-                                        >{{ campo.nombre ?? campo.llave }}</label
-                                    >
                                     <div hlmInputGroup>
+                                        <div hlmInputGroupAddon align="block-start">
+                                            <label
+                                                [for]="campo.llave"
+                                                hlmLabel
+                                                class="text-xs opacity-80 font-semibold whitespace-nowrap"
+                                                >{{ campo.nombre ?? campo.llave }}</label
+                                            >
+                                            <hlm-field-error
+                                                class="transition-all duration-500 ease-out text-xs ml-auto"
+                                                [class.opacity-100]="invalid(campo.llave)"
+                                                [class.opacity-0]="!invalid(campo.llave)"
+                                                [class.max-h-10]="invalid(campo.llave)"
+                                                [class.max-h-0]="!invalid(campo.llave)"
+                                                >Debes ingresar el "{{
+                                                    campo.nombre ?? campo.llave
+                                                }}"</hlm-field-error
+                                            >
+                                        </div>
                                         @if (campo.tipo === 'string') {
                                             <input
                                                 hlmInputGroupInput
@@ -76,6 +88,16 @@
                                             />
                                         }
                                     </div>
+                                    <hlm-field-error
+                                        class="transition-all duration-500 ease-out"
+                                        [class.opacity-100]="invalid(campo.llave)"
+                                        [class.opacity-0]="!invalid(campo.llave)"
+                                        [class.max-h-10]="invalid(campo.llave)"
+                                        [class.max-h-0]="!invalid(campo.llave)"
+                                        >Debes ingresar el "{{
+                                            campo.nombre ?? campo.llave
+                                        }}"</hlm-field-error
+                                    >
                                 }
                                 @if (campo.tipo === 'select') {
                                     <div class="flex justify-start items-center gap-4">
@@ -111,15 +133,29 @@
                                             </hlm-select-content>
                                         </brn-select>
                                     </div>
+                                    <hlm-field-error
+                                        class="transition-all duration-500 ease-out"
+                                        [class.opacity-100]="invalid(campo.llave)"
+                                        [class.opacity-0]="!invalid(campo.llave)"
+                                        [class.max-h-10]="invalid(campo.llave)"
+                                        [class.max-h-0]="!invalid(campo.llave)"
+                                        >Debes ingresar el "{{
+                                            campo.nombre ?? campo.llave
+                                        }}"</hlm-field-error
+                                    >
                                 }
                                 @if (campo.tipo === 'autocomplete') {
-                                    <div class="flex justify-start items-center gap-4">
-                                        <label
-                                            [for]="campo.llave"
-                                            hlmLabel
-                                            class="opacity-80 font-semibold text-xs md:text-sm pl-2 whitespace-nowrap"
-                                            >{{ campo.nombre ?? campo.llave }}</label
+                                    <div class="flex flex-col justify-start items-center">
+                                        <div
+                                            class="flex flex-row items-center justify-start w-full px-3 pb-1"
                                         >
+                                            <label
+                                                [for]="campo.llave"
+                                                hlmLabel
+                                                class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground"
+                                                >{{ campo.nombre ?? campo.llave }}</label
+                                            >
+                                        </div>
                                         <hlm-autocomplete
                                             [(search)]="campo.autocompleteSearch!"
                                             [itemToString]="campo.autocompleteItemToString!"
@@ -171,17 +207,17 @@
                                             </div>
                                         </hlm-autocomplete>
                                     </div>
+                                    <hlm-field-error
+                                        class="transition-all duration-500 ease-out"
+                                        [class.opacity-100]="invalid(campo.llave)"
+                                        [class.opacity-0]="!invalid(campo.llave)"
+                                        [class.max-h-10]="invalid(campo.llave)"
+                                        [class.max-h-0]="!invalid(campo.llave)"
+                                        >Debes ingresar el "{{
+                                            campo.nombre ?? campo.llave
+                                        }}"</hlm-field-error
+                                    >
                                 }
-                                <hlm-field-error
-                                    class="transition-all duration-500 ease-out"
-                                    [class.opacity-100]="invalid(campo.llave)"
-                                    [class.opacity-0]="!invalid(campo.llave)"
-                                    [class.max-h-10]="invalid(campo.llave)"
-                                    [class.max-h-0]="!invalid(campo.llave)"
-                                    >Debes ingresar el "{{
-                                        campo.nombre ?? campo.llave
-                                    }}"</hlm-field-error
-                                >
                             </div>
                         }
                     }
@@ -189,8 +225,8 @@
             </fieldset>
         </div>
         <div hlmCardFooter class="flex items-center justify-end gap-6 faster-fade-in">
-            <button hlmBtn variant="secondary" (click)="cerrar.emit()">Cancelar</button>
-            <button hlmBtn (click)="confirmar()" [disabled]="form.invalid">
+            <button hlmBtn variant="outlineAzul" (click)="cerrar.emit()">Cancelar</button>
+            <button hlmBtn variant="azul" (click)="confirmar()" [disabled]="form.invalid">
                 {{ textoBotonGuardar }}
             </button>
         </div>
@@ -208,6 +244,7 @@
             <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-4 faster-fade-in">
                 <button
                     hlmBtn
+                    variant="azul"
                     (click)="funcionSecundaria.emit(this.form.getRawValue())"
                     [disabled]="form.invalid"
                 >

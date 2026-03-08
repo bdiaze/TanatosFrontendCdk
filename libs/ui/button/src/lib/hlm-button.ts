@@ -11,14 +11,17 @@ export const buttonVariants = cva(
         variants: {
             variant: {
                 default: 'bg-primary text-primary-foreground hover:bg-primary/80 rounded-full',
+                azul: 'bg-(--azul) text-(--blanco) hover:bg-(--azul)/80 rounded-full',
                 destructive:
-                    'bg-destructive hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 text-white rounded-full',
+                    'bg-destructive hover:bg-destructive/80 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60 text-white rounded-full',
                 outline:
-                    'bg-transparent hover:bg-transparent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 border shadow-xs rounded-full',
+                    'bg-transparent hover:bg-transparent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 border rounded-full',
+                outlineAzul:
+                    'bg-transparent hover:bg-transparent border-(--azul) hover:border-(--azul)/80 text-(--azul) hover:text-(--azul)/80 border-2 rounded-full',
                 secondary:
                     'bg-secondary text-secondary-foreground rounded-full border-2 border-primary hover:border-primary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
-                link: 'text-primary underline-offset-4 hover:underline',
+                link: 'underline-offset-4 hover:underline text-(--negro)/80 decoration-(--azul)',
             },
             size: {
                 default: 'h-8 px-6 py-2 has-[>ng-icon]:px-3',

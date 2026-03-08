@@ -122,7 +122,9 @@
                 }
             </tbody>
         </table>
-        <a hlmBtn [routerLink]="['/crear-obligacion']" class="m-4">Nueva Obligación</a>
+        <a hlmBtn variant="azul" [routerLink]="['/crear-obligacion']" class="m-4"
+            >Nueva Obligación</a
+        >
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
@@ -148,7 +150,7 @@
             >
                 <a
                     hlmBtn
-                    variant="secondary"
+                    variant="outlineAzul"
                     routerLink="/plantillas-inscritas"
                     class="text-xs md:text-sm md:absolute md:-top-1 md:right-0"
                 >

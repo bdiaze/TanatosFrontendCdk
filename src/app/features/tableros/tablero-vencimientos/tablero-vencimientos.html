@@ -230,12 +230,7 @@
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
                                 <div class="text-center">
-                                    <span
-                                        hlmBadge
-                                        variant="secondary"
-                                        class="bg-(--azul) text-(--blanco)"
-                                        >Completada</span
-                                    >
+                                    <span hlmBadge variant="azul">Completada</span>
                                 </div>
                                 <p hlmItemDescription class="text-center mt-1">
                                     {{ completada.fechaVencimiento | date: 'd MMM yyyy' }}
@@ -312,12 +307,7 @@
                     normasCompletadasFiltradas().length
                 ) {
                     <div class="w-full flex items-center justify-center md:col-span-3">
-                        <button
-                            hlmBtn
-                            variant="link"
-                            class="text-(--negro)/80 decoration-(--primary)"
-                            (click)="mostrarMasCompletadas()"
-                        >
+                        <button hlmBtn variant="link" (click)="mostrarMasCompletadas()">
                             Mostrar más resultados
                         </button>
                     </div>
