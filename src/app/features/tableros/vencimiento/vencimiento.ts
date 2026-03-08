@@ -5,7 +5,17 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    computed,
+    effect,
+    ElementRef,
+    inject,
+    OnInit,
+    signal,
+    ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -111,8 +121,6 @@ export class Vencimiento implements OnInit {
 
     cargandoNormaSuscritaConVencimiento = signal<boolean>(true);
 
-    expandido = signal<boolean>(false);
-
     constructor() {
         effect(() => {
             if (this.idNormaSuscrita() && this.idHistorialNormaSuscrita()) {
@@ -126,6 +134,16 @@ export class Vencimiento implements OnInit {
                 this.obtenerNormaConVencimiento();
             }
         });
+    }
+
+    expandido = signal<boolean>(false);
+    mostrarBotonExpandir = signal<boolean>(true);
+
+    @ViewChild('contenedorDescripcion') set contenedorDescripcion(el: ElementRef | undefined) {
+        if (el) {
+            const mostrar = el.nativeElement.scrollHeight > el.nativeElement.clientHeight;
+            this.mostrarBotonExpandir.set(mostrar);
+        }
     }
 
     obtenerNormaConVencimiento() {
