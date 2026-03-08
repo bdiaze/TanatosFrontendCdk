@@ -45,7 +45,21 @@
     color: var(--azul);
 }
 
-:host ::ng-deep h1 {
+:host ::ng-deep .ql-picker.ql-header .ql-picker-label[data-value='1']::before,
+:host ::ng-deep .ql-picker.ql-header .ql-picker-item[data-value='1']:before {
+    content: 'Título 1';
+}
+:host ::ng-deep .ql-picker.ql-header .ql-picker-label[data-value='2']::before,
+:host ::ng-deep .ql-picker.ql-header .ql-picker-item[data-value='2']:before {
+    content: 'Título 2';
+}
+:host ::ng-deep .ql-picker.ql-header .ql-picker-label[data-value='3']::before,
+:host ::ng-deep .ql-picker.ql-header .ql-picker-item[data-value='3']:before {
+    content: 'Subtítulo';
+}
+
+:host ::ng-deep h1,
+:host ::ng-deep .ql-picker.ql-header .ql-picker-item[data-value='1']:before {
     font-family: var(--font-serif);
     font-size: var(--text-3xl);
     line-height: var(--text-3xl--line-height);
@@ -53,7 +67,8 @@
     margin-bottom: 0.6rem;
 }
 
-:host ::ng-deep h2 {
+:host ::ng-deep h2,
+:host ::ng-deep .ql-picker.ql-header .ql-picker-item[data-value='2']:before {
     font-family: var(--font-serif);
     font-size: var(--text-2xl);
     line-height: var(--text-2xl--line-height);
@@ -61,7 +76,8 @@
     margin-bottom: 0.4rem;
 }
 
-:host ::ng-deep h3 {
+:host ::ng-deep h3,
+:host ::ng-deep .ql-picker.ql-header .ql-picker-item[data-value='3']:before {
     font-family: var(--font-sans);
     font-size: var(--text-base);
     line-height: var(--text-base--line-height);
@@ -70,7 +86,8 @@
     margin-bottom: 0.2rem;
 }
 
-:host ::ng-deep p {
+:host ::ng-deep p,
+:host ::ng-deep .ql-picker.ql-header .ql-picker-item:before {
     font-family: var(--font-sans);
     font-size: var(--text-sm);
     line-height: var(--text-sm--line-height);
