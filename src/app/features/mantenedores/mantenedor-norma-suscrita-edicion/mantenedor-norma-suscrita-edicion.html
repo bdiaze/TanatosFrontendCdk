@@ -53,13 +53,23 @@
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
                     <div hlmField class="flex justify-center items-center gap-1">
-                        <label
-                            for="nombre"
-                            hlmLabel
-                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
-                            >Nombre</label
-                        >
-                        <div hlmInputGroup>
+                        <div hlmInputGroup class="px-1">
+                            <div hlmInputGroupAddon align="block-start">
+                                <label
+                                    for="nombre"
+                                    hlmLabel
+                                    class="text-xs opacity-80 font-semibold whitespace-nowrap"
+                                    >Nombre</label
+                                >
+                                <hlm-field-error
+                                    class="transition-all duration-500 ease-out text-xs ml-auto"
+                                    [class.opacity-100]="invalid('nombre')"
+                                    [class.opacity-0]="!invalid('nombre')"
+                                    [class.max-h-10]="invalid('nombre')"
+                                    [class.max-h-0]="!invalid('nombre')"
+                                    >Debes ingresar el nombre de la obligación</hlm-field-error
+                                >
+                            </div>
                             <input
                                 hlmInputGroupInput
                                 type="text"
@@ -68,22 +78,8 @@
                                 [formControl]="form.controls['nombre']"
                             />
                         </div>
-                        <hlm-field-error
-                            class="transition-all duration-500 ease-out text-xs"
-                            [class.opacity-100]="invalid('nombre')"
-                            [class.opacity-0]="!invalid('nombre')"
-                            [class.max-h-10]="invalid('nombre')"
-                            [class.max-h-0]="!invalid('nombre')"
-                            >Debes ingresar el "Nombre"</hlm-field-error
-                        >
                     </div>
-                    <div hlmField class="flex justify-center items-center gap-1">
-                        <label
-                            for="descripcion"
-                            hlmLabel
-                            class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
-                            >Descripción</label
-                        >
+                    <div hlmField class="flex justify-center items-center gap-0">
                         <app-editor-texto
                             [formControl]="form.controls['descripcion']"
                         ></app-editor-texto>
@@ -100,13 +96,23 @@
                         class="flex flex-col md:flex-row justify-stretch items-start md:items-center gap-3"
                     >
                         <div hlmField class="flex justify-center items-center gap-1">
-                            <label
-                                for="multa"
-                                hlmLabel
-                                class="text-xs md:text-sm opacity-80 font-semibold whitespace-nowrap px-2 pb-1"
-                                >Multa</label
-                            >
                             <div hlmInputGroup>
+                                <div hlmInputGroupAddon align="block-start">
+                                    <label
+                                        for="multa"
+                                        hlmLabel
+                                        class="text-xs opacity-80 font-semibold whitespace-nowrap"
+                                        >Multa</label
+                                    >
+                                    <hlm-field-error
+                                        class="transition-all duration-500 ease-out text-xs ml-auto"
+                                        [class.opacity-100]="invalid('multa')"
+                                        [class.opacity-0]="!invalid('multa')"
+                                        [class.max-h-10]="invalid('multa')"
+                                        [class.max-h-0]="!invalid('multa')"
+                                        >Debes ingresar el "Multa"</hlm-field-error
+                                    >
+                                </div>
                                 <input
                                     hlmInputGroupInput
                                     type="text"
@@ -115,34 +121,32 @@
                                     [formControl]="form.controls['multa']"
                                 />
                             </div>
-                            <hlm-field-error
-                                class="transition-all duration-500 ease-out text-xs"
-                                [class.opacity-100]="invalid('multa')"
-                                [class.opacity-0]="!invalid('multa')"
-                                [class.max-h-10]="invalid('multa')"
-                                [class.max-h-0]="!invalid('multa')"
-                                >Debes ingresar el "Multa"</hlm-field-error
-                            >
                         </div>
                         <div hlmField class="flex justify-start items-center gap-1 w-fit">
-                            <div class="flex justify-start items-center gap-4 ml-3">
+                            <div class="flex flex-col justify-start items-center gap-3 ml-3">
                                 <label
                                     for="activado"
                                     hlmLabel
-                                    class="text-xs md:text-sm opacity-80 font-semibold"
+                                    class="text-xs opacity-80 font-semibold text-muted-foreground"
                                     >¿Activada?</label
                                 >
-                                <hlm-switch
-                                    class="scale-[120%]"
-                                    id="activado"
-                                    [checked]="form.controls['activado'].value!"
-                                    (checkedChange)="form.controls['activado'].setValue($event)"
-                                />
-                                @if (form.controls['activado'].value!) {
-                                    <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                                } @else {
-                                    <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
-                                }
+                                <div class="flex flex-row items-center justify-center gap-4">
+                                    <hlm-switch
+                                        class="scale-[130%]"
+                                        id="activado"
+                                        [checked]="form.controls['activado'].value!"
+                                        (checkedChange)="form.controls['activado'].setValue($event)"
+                                    />
+                                    @if (form.controls['activado'].value!) {
+                                        <ng-icon
+                                            hlm
+                                            name="lucideBadgeCheck"
+                                            class="text-green-700"
+                                        />
+                                    } @else {
+                                        <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                                    }
+                                </div>
                             </div>
                             <hlm-field-error
                                 class="transition-all duration-500 ease-out -z-10 text-xs"
@@ -163,7 +167,7 @@
                                 <label
                                     for="categoria"
                                     hlmLabel
-                                    class="text-xs md:text-sm opacity-80 pl-2 w-full font-semibold"
+                                    class="text-xs opacity-80 pl-2 w-full font-semibold text-muted-foreground"
                                     >Categoría</label
                                 >
                                 <brn-select
@@ -225,7 +229,7 @@
                                 <label
                                     for="idTipoPeriodicidad"
                                     hlmLabel
-                                    class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
+                                    class="text-xs opacity-80 w-full pl-2 font-semibold text-muted-foreground"
                                     >Periodicidad</label
                                 >
                                 <brn-select
@@ -285,7 +289,7 @@
                             <label
                                 hlmLabel
                                 for="formFiscalizador"
-                                class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
+                                class="text-xs opacity-80 w-full pl-2 font-semibold text-muted-foreground"
                                 >Fiscalizadores</label
                             >
 
@@ -399,7 +403,7 @@
                             <label
                                 hlmLabel
                                 for="formNotifCantTiempo"
-                                class="text-xs md:text-sm opacity-80 w-full pl-2 font-semibold"
+                                class="text-xs opacity-80 w-full pl-2 font-semibold text-muted-foreground"
                                 >Notificaciones Previas</label
                             >
                             <div class="flex justify-center items-center gap-2 pl-0">

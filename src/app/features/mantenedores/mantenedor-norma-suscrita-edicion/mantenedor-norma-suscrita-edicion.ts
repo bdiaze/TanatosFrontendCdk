@@ -149,7 +149,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             Validators.required,
         ]),
         descripcion: new FormControl<string | null>({ value: null, disabled: false }),
-        idTipoPeriodicidad: new FormControl<number | null>({ value: null, disabled: false }, [
+        idTipoPeriodicidad: new FormControl<number | null>({ value: 0, disabled: false }, [
             Validators.required,
         ]),
         multa: new FormControl<string | null>({ value: null, disabled: false }),
@@ -355,7 +355,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 this.form.patchValue({
                     nombre: null,
                     descripcion: null,
-                    idTipoPeriodicidad: null,
+                    idTipoPeriodicidad: 0,
                     multa: null,
                     idCategoriaNorma: null,
                     activado: false,
