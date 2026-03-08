@@ -110,3 +110,12 @@
     font-size: var(--text-sm);
     line-height: var(--text-sm--line-height);
 }
+
+:host ::ng-deep .ql-editor.ql-blank::before {
+    font-style: normal;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    color: var(--negro);
+    opacity: 80%;
+}

@@ -17,6 +17,7 @@ import Quill from 'quill';
 })
 export class EditorTexto implements AfterViewInit, ControlValueAccessor {
     @Input() content: string | null | undefined = null;
+    @Input() placeholder: string | null = null;
     @ViewChild('editor', { static: false }) editorElement!: ElementRef;
 
     quill!: Quill;
@@ -30,6 +31,7 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor {
         if (!this.content) {
             this.quill = new Quill(this.editorElement.nativeElement, {
                 theme: 'snow',
+                placeholder: this.placeholder ?? undefined,
                 modules: {
                     toolbar: [
                         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
