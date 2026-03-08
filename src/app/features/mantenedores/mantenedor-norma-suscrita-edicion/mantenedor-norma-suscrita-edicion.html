@@ -333,7 +333,7 @@
                                     hlmBtn
                                     size="icon"
                                     variant="default"
-                                    class="size-9"
+                                    class="size-9 bg-(--azul) hover:bg-(--azul)/80"
                                     (click)="agregarFiscalizador()"
                                     [disabled]="!formFiscalizador"
                                 >
@@ -349,7 +349,7 @@
                                     <span
                                         hlmBadge
                                         variant="default"
-                                        class="text-[0.7rem] md:text-xs pr-1 flex items-center"
+                                        class="text-[0.7rem] md:text-xs pr-1 flex items-center bg-(--azul)"
                                         >{{
                                             nombreFiscalizador(
                                                 fiscalizador.controls['idTipoFiscalizador'].value!
@@ -457,7 +457,7 @@
                                     hlmBtn
                                     size="icon"
                                     variant="default"
-                                    class="size-9"
+                                    class="size-9 bg-(--azul) hover:bg-(--azul)/80"
                                     (click)="agregarNotificacionPrevia()"
                                     [disabled]="
                                         !formNotifCantTiempo ||
@@ -477,7 +477,7 @@
                                     <span
                                         hlmBadge
                                         variant="default"
-                                        class="text-[0.7rem] md:text-xs pr-1 flex items-center"
+                                        class="text-[0.7rem] md:text-xs pr-1 flex items-center bg-(--azul)"
                                         >{{
                                             nombreUnidadTiempo(
                                                 notificacion.controls[
@@ -597,8 +597,19 @@
             </div>
         }
         <div class="w-full flex items-center justify-end gap-6">
-            <a hlmBtn variant="secondary" [routerLink]="['/mis-obligaciones']">Cancelar</a>
-            <button hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()">
+            <a
+                hlmBtn
+                variant="secondary"
+                [routerLink]="['/mis-obligaciones']"
+                class="border-(--azul) hover:border-(--azul)/80 text-(--azul) hover:text-(--azul)/80"
+                >Cancelar</a
+            >
+            <button
+                hlmBtn
+                (click)="clickConfirmar()"
+                [disabled]="form.invalid || procesando()"
+                class="bg-(--azul) hover:bg-(--azul)/80"
+            >
                 @if (procesando()) {
                     <hlm-spinner />
                 }
