@@ -52,14 +52,12 @@ export class NegocioDao {
                     if (cookieSeleccionado) {
                         const encontrado = v.find((x) => x.id === Number(cookieSeleccionado));
                         if (encontrado) {
+                            const seleccionado = this.negocioStore.negocioSeleccionado();
                             if (
-                                this.negocioStore.negocioSeleccionado()?.id !== encontrado.id ||
-                                this.negocioStore.negocioSeleccionado()?.nombre !==
-                                    encontrado.nombre ||
-                                this.negocioStore.negocioSeleccionado()?.idTipoActividad !==
-                                    encontrado.idTipoActividad ||
-                                this.negocioStore.negocioSeleccionado()?.direccion !==
-                                    encontrado.direccion
+                                seleccionado?.id !== encontrado.id ||
+                                seleccionado?.nombre !== encontrado.nombre ||
+                                seleccionado?.idTipoActividad !== encontrado.idTipoActividad ||
+                                seleccionado?.direccion !== encontrado.direccion
                             ) {
                                 this.negocioStore.negocioSeleccionado.set(encontrado);
                             }

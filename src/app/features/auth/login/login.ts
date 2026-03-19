@@ -25,60 +25,68 @@ export class Login {
 
     async iniciarSesion(registrarse: boolean = false) {
         this.iniciandoSesion.set(true);
-
-        const state = this.generateRandomString(32);
-        const codeVerifier = this.generateRandomString(64);
-        const codeChallenge = await this.generateCodeChallenge(codeVerifier);
-
-        sessionStorage.setItem('pkce_state', state);
-        sessionStorage.setItem('pkce_code_verifier', codeVerifier);
-
-        const publicScopes = [
-            'api/negocios.read.self',
-            'api/negocios.write.self',
-            'api/obligaciones.read.self',
-            'api/obligaciones.write.self',
-            'api/vencimientos.read.self',
-            'api/vencimientos.write.self',
-            'api/suscripciones.read.self',
-            'api/suscripciones.write.self',
-            'api/templates.read.public',
-            'api/sistema.read.public',
-        ];
-
-        const url =
-            (!registrarse
-                ? `${environment.cognitoService.baseUrl}/login?`
-                : `${environment.cognitoService.baseUrl}/signup?`) +
-            new URLSearchParams({
-                response_type: 'code',
-                client_id: environment.cognitoService.clientId,
-                redirect_uri: environment.cognitoService.redirectUrl,
-                scope: `openid profile email ${publicScopes.join(' ')}`,
-                state: state,
-                code_challenge_method: 'S256',
-                code_challenge: codeChallenge,
-                lang: 'es',
-            });
-
-        window.location.href = url;
+        await redireccionarALogin(registrarse);
     }
+}
 
-    private generateRandomString(length: number): string {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const array = new Uint32Array(length);
-        crypto.getRandomValues(array);
-        return Array.from(array)
-            .map((x) => chars[x % chars.length])
-            .join('');
-    }
+export function generateRandomString(length: number): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const array = new Uint32Array(length);
+    crypto.getRandomValues(array);
+    return Array.from(array)
+        .map((x) => chars[x % chars.length])
+        .join('');
+}
 
-    private async generateCodeChallenge(verifier: string): Promise<string> {
-        const data = new TextEncoder().encode(verifier);
-        const digest = await crypto.subtle.digest('SHA-256', data);
-        return btoa(String.fromCharCode(...new Uint8Array(digest)))
-            .replace(/\+/g, '-')
-            .replace(/\//g, '_')
-            .replace(/=/g, '');
-    }
+export async function generateCodeChallenge(verifier: string): Promise<string> {
+    const data = new TextEncoder().encode(verifier);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return btoa(String.fromCharCode(...new Uint8Array(digest)))
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=/g, '');
+}
+
+let isRedirectingToLogin = false;
+
+export async function redireccionarALogin(registrarse: boolean = false) {
+    if (isRedirectingToLogin) return;
+    isRedirectingToLogin = true;
+
+    const state = generateRandomString(32);
+    const codeVerifier = generateRandomString(64);
+    const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+    sessionStorage.setItem('pkce_state', state);
+    sessionStorage.setItem('pkce_code_verifier', codeVerifier);
+
+    const publicScopes = [
+        'api/negocios.read.self',
+        'api/negocios.write.self',
+        'api/obligaciones.read.self',
+        'api/obligaciones.write.self',
+        'api/vencimientos.read.self',
+        'api/vencimientos.write.self',
+        'api/suscripciones.read.self',
+        'api/suscripciones.write.self',
+        'api/templates.read.public',
+        'api/sistema.read.public',
+    ];
+
+    const url =
+        (!registrarse
+            ? `${environment.cognitoService.baseUrl}/login?`
+            : `${environment.cognitoService.baseUrl}/signup?`) +
+        new URLSearchParams({
+            response_type: 'code',
+            client_id: environment.cognitoService.clientId,
+            redirect_uri: environment.cognitoService.redirectUrl,
+            scope: `openid profile email ${publicScopes.join(' ')}`,
+            state: state,
+            code_challenge_method: 'S256',
+            code_challenge: codeChallenge,
+            lang: 'es',
+        });
+
+    window.location.href = url;
 }

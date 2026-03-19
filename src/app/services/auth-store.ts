@@ -28,7 +28,7 @@ export class AuthStore {
 
         if (token) {
             sessionStorage.setItem('access_token', token);
-            if (this.sesionIniciada() !== true) {
+            if (!this.sesionIniciada()) {
                 this.sesionIniciada.set(true);
             }
         } else {
