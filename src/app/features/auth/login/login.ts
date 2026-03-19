@@ -40,6 +40,8 @@ export class Login {
             'api/obligaciones.write.self',
             'api/vencimientos.read.self',
             'api/vencimientos.write.self',
+            'api/suscripciones.read.self',
+            'api/suscripciones.write.self',
             'api/templates.read.public',
             'api/sistema.read.public',
         ];
