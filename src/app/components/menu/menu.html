@@ -6,7 +6,7 @@
     [class.z-10]="estatico"
 >
     <div class="sticky flex flex-row w-full items-center justify-between">
-        @if (sesionIniciada()) {
+        @if (authStore.sesionIniciada()) {
             <button
                 hlmBtn
                 variant="outline"
@@ -27,7 +27,7 @@
                             <ng-icon name="lucideStore" class="text-2xl" />
                         </div>
                     } @else {
-                        @if (negociosUsuario().length > 1) {
+                        @if (negocioStore.negociosUsuario().length > 1) {
                             <div class="size-6">
                                 <ng-icon
                                     hlm
@@ -46,7 +46,7 @@
                                 {{
                                     cargandoNegocios()
                                         ? 'Cargando negocios...'
-                                        : (negocioSeleccionado()?.nombre ??
+                                        : (negocioStore.negocioSeleccionado()?.nombre ??
                                           'Seleccionar negocio...')
                                 }}
                             }
@@ -60,13 +60,13 @@
                                 {{
                                     cargandoInformacionUsuario()
                                         ? 'Cargando nombre...'
-                                        : `${informacionUsuario()?.nombre ?? ''} ${informacionUsuario()?.apellido ?? ''}`
+                                        : `${negocioStore.informacionUsuario()?.nombre ?? ''} ${negocioStore.informacionUsuario()?.apellido ?? ''}`
                                 }}
                             }
                         </span>
                     </div>
                     @if (estatico) {
-                        @if (negociosUsuario().length > 1) {
+                        @if (negocioStore.negociosUsuario().length > 1) {
                             <div class="size-6">
                                 <ng-icon
                                     hlm
@@ -81,10 +81,10 @@
             </button>
             <ng-template #menuNegocios>
                 <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
-                    @for (negocio of negociosUsuario(); track negocio.id) {
+                    @for (negocio of negocioStore.negociosUsuario(); track negocio.id) {
                         <button
                             hlmDropdownMenuCheckbox
-                            [checked]="negocioSeleccionado()?.id === negocio.id"
+                            [checked]="negocioStore.negocioSeleccionado()?.id === negocio.id"
                             (triggered)="cambiarNegocio(negocio)"
                         >
                             <hlm-dropdown-menu-checkbox-indicator />
@@ -115,7 +115,7 @@
         }
     </div>
     <hlm-separator />
-    @if (sesionIniciada()) {
+    @if (authStore.sesionIniciada()) {
         <div
             class="[direction:rtl] md:scrollContainer overflow-y-auto overflow-x-hidden overscroll-contain md:overscroll-auto pb-4"
         >

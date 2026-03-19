@@ -10,6 +10,7 @@ import {
     EventEmitter,
     inject,
     Input,
+    OnInit,
     Output,
     signal,
 } from '@angular/core';
@@ -23,6 +24,7 @@ import {
     lucideChevronRight,
     lucideChevronsUpDown,
     lucideClipboardPaste,
+    lucideCreditCard,
     lucideHouse,
     lucideMessageCircleMore,
     lucideSend,
@@ -74,6 +76,7 @@ import { filter, map } from 'rxjs';
             lucideBlocks,
             lucideUser,
             lucideMessageCircleMore,
+            lucideCreditCard,
         }),
     ],
 })
@@ -90,7 +93,6 @@ export class Menu {
     negocioStore = inject(NegocioStore);
     negocioDao = inject(NegocioDao);
 
-    sesionIniciada = this.authStore.sesionIniciada;
     accesoAdmin = computed<boolean>(() => {
         const claims = this.authStore.claims();
         if (claims && claims['cognito:groups'] && claims['cognito:groups'].includes('Admin')) {
@@ -99,18 +101,14 @@ export class Menu {
         return false;
     });
 
-    negocioSeleccionado = this.negocioStore.negocioSeleccionado;
-    negociosUsuario = this.negocioStore.negociosUsuario;
-    informacionUsuario = this.negocioStore.informacionUsuario;
-
     opcionesMenu = computed<OpcionMenu[]>(() => {
         const opciones: OpcionMenu[] = [];
 
-        if (this.negocioSeleccionado()) {
+        if (this.negocioStore.negocioSeleccionado()) {
             opciones.push({
                 id: 'group-negocio-seleccionado',
                 tipo: 'group',
-                titulo: this.negocioSeleccionado()?.nombre!,
+                titulo: this.negocioStore.negocioSeleccionado()?.nombre!,
                 items: [
                     {
                         id: 'group-negocio-seleccionado-item-inicio',
@@ -162,6 +160,13 @@ export class Menu {
                     titulo: 'Mis Negocios',
                     icon: 'lucideStore',
                     url: '/mis-negocios',
+                },
+                {
+                    id: 'group-general-item-mi-suscripcion',
+                    tipo: 'item',
+                    titulo: 'Mi Suscripción',
+                    icon: 'lucideCreditCard',
+                    url: '/mi-suscripcion',
                 },
             ],
         });
@@ -268,7 +273,7 @@ export class Menu {
 
     constructor() {
         effect(() => {
-            if (this.sesionIniciada()) {
+            if (this.authStore.sesionIniciada()) {
                 this.obtenerNegocios();
                 this.obtenerInformacionUsuario();
             }
@@ -316,7 +321,7 @@ export class Menu {
     }
 
     cambiarNegocio(negocio: SalNegocio) {
-        this.negocioSeleccionado.set(negocio);
+        this.negocioStore.negocioSeleccionado.set(negocio);
         setCookie('NegocioSeleccionado', `${negocio.id}`);
     }
 
