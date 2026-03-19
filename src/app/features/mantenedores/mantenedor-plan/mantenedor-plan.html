@@ -1,0 +1,139 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <h3 hlmH3>Administrar Planes</h3>
+        </div>
+    </div>
+    <div hlmTableContainer class="fade-in">
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-xs md:text-sm">Precio</th>
+                    <th hlmTh class="text-xs md:text-sm">Duración</th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargando()) {
+                    @for (_ of [1, 2, 3]; track $index) {
+                        <tr hlmTr>
+                            @for (_ of [1, 2, 3, 4]; track $index) {
+                                <td hlmTd>
+                                    <hlm-skeleton class="h-8 rounded-xl" />
+                                </td>
+                            }
+                            <td hlmTd></td>
+                        </tr>
+                    }
+                } @else {
+                    @for (item of listado(); track item.id) {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
+                            <td hlmTd class="text-xs md:text-sm">{{ item.nombre }}</td>
+                            <td hlmTd class="text-xs md:text-sm">
+                                @if (item.precio === 0) {
+                                    Gratuito
+                                } @else {
+                                    ${{ item.precio | number: '1.0-0' }}
+                                }
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm">
+                                @if (item.duracionMeses === 1) {
+                                    Un mes
+                                } @else {
+                                    {{ item.duracionMeses }} meses
+                                }
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm text-center">
+                                @if (item.vigencia) {
+                                    <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                                } @else {
+                                    <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                                }
+                            </td>
+                            <td hlmTd>
+                                <div class="flex items-center justify-center-safe">
+                                    <button
+                                        hlmBtn
+                                        size="sm"
+                                        variant="outline"
+                                        [hlmDropdownMenuTrigger]="menu"
+                                    >
+                                        <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                    </button>
+                                    <ng-template #menu>
+                                        <hlm-dropdown-menu>
+                                            <hlm-dropdown-menu-group>
+                                                <button
+                                                    hlmDropdownMenuItem
+                                                    (click)="openModalEditar(item)"
+                                                >
+                                                    Editar
+                                                </button>
+                                                <button
+                                                    hlmDropdownMenuItem
+                                                    variant="destructive"
+                                                    (click)="openModalEliminar(item)"
+                                                >
+                                                    Eliminar
+                                                </button>
+                                            </hlm-dropdown-menu-group>
+                                        </hlm-dropdown-menu>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd colspan="6" class="text-center">
+                                No existen planes registrados
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <button hlmBtn variant="azul" (click)="openModalCrear()" class="m-4">Crear Nuevo</button>
+    </div>
+    @if (error()) {
+        <div hlmAlert variant="destructive" class="mt-6">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
+    }
+</section>
+
+@if (showModalEliminar()) {
+    <app-modal-eliminacion
+        [item]="itemSeleccionado()"
+        titulo="Eliminar un plan:"
+        [descripcion]="`¿Seguro que deseas eliminar el plan <b>${itemSeleccionado()?.nombre}</b>?`"
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    >
+    </app-modal-eliminacion>
+}
+@if (showModalEditar()) {
+    <app-modal-edicion
+        [campos]="camposEdicion()"
+        [item]="itemSeleccionado()"
+        titulo="Editar un plan:"
+        (cerrar)="closeModalEditar()"
+        (editar)="editar($event)"
+    >
+    </app-modal-edicion>
+}
+@if (showModalCrear()) {
+    <app-modal-edicion
+        [campos]="camposCreacion()"
+        [item]="itemSeleccionado()"
+        titulo="Crear un plan:"
+        (cerrar)="closeModalCrear()"
+        (editar)="crear($event)"
+    >
+    </app-modal-edicion>
+}

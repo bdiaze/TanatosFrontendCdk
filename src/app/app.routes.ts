@@ -30,6 +30,7 @@ import { Privacidad } from './features/tableros/privacidad/privacidad';
 import { AvisoLegal } from './features/tableros/aviso-legal/aviso-legal';
 import { PoliticaDeCookies } from './features/tableros/politica-de-cookies/politica-de-cookies';
 import { ChatsWhatsapp } from './features/tableros/chats-whatsapp/chats-whatsapp';
+import { MantenedorPlan } from './features/mantenedores/mantenedor-plan/mantenedor-plan';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -119,6 +120,10 @@ export const routes: Routes = [
     {
         path: 'administracion/mantenedores/template/nuevo',
         component: MantenedorTemplateEdicion,
+    },
+    {
+        path: 'administracion/mantenedores/plan',
+        component: MantenedorPlan,
     },
     {
         path: 'mis-destinatario',

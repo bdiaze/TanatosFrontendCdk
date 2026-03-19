@@ -194,6 +194,12 @@ export class Menu {
                         icon: 'lucideSettings',
                         items: [
                             {
+                                id: 'group-administracion-item-mantenedores-subitem-plan',
+                                tipo: 'subitem',
+                                titulo: 'Planes',
+                                url: '/administracion/mantenedores/plan',
+                            },
+                            {
                                 id: 'group-administracion-item-mantenedores-subitem-plantillas',
                                 tipo: 'subitem',
                                 titulo: 'Plantillas',
