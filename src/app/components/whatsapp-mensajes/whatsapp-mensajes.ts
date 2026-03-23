@@ -46,6 +46,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { EMPTY, filter, interval, switchMap } from 'rxjs';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { S3Service } from '@/app/services/s3-service';
 
 @Component({
     selector: 'app-whatsapp-mensajes',
@@ -84,6 +85,7 @@ export class WhatsappMensajes {
     numeroTelefono = input<string | null>();
 
     whatsappDao: WhatsappDao = inject(WhatsappDao);
+    s3Service: S3Service = inject(S3Service);
 
     mensajesObtenidos = signal([] as SalWhatsappMensaje[]);
     mensajesPendientes = signal([] as SalWhatsappMensaje[]);
@@ -102,6 +104,7 @@ export class WhatsappMensajes {
     constructor() {
         effect(() => {
             if (this.numeroTelefono() && this.numeroTelefono()!.length > 0) {
+                this.error.set('');
                 this.obtenerMensajes();
             }
         });
@@ -155,6 +158,37 @@ export class WhatsappMensajes {
             })
             .add(() => {
                 this.cargando.set(false);
+            });
+    }
+
+    descargandoImagen = signal<Set<string>>(new Set());
+
+    descargarImagen(whatsappMessageId: string) {
+        this.descargandoImagen.update((prev) => {
+            const nuevo = new Set(prev);
+            nuevo.add(whatsappMessageId);
+            return nuevo;
+        });
+
+        this.whatsappDao
+            .obtenerMedia(whatsappMessageId)
+            .subscribe({
+                next: (res) => {
+                    this.s3Service.bajarArchivo(res.url);
+                },
+                error: (err) => {
+                    console.error('Error al descargar media del mensaje de Whatsapp', err);
+                    this.error.set(
+                        getErrorMessage(err) ?? 'Error al descargar media del mensaje de Whatsapp',
+                    );
+                },
+            })
+            .add(() => {
+                this.descargandoImagen.update((prev) => {
+                    const nuevo = new Set(prev);
+                    nuevo.delete(whatsappMessageId);
+                    return nuevo;
+                });
             });
     }
 

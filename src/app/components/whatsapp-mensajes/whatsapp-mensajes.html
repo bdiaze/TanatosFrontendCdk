@@ -77,12 +77,19 @@
                             class="text-(--blanco) py-1 px-2 flex flex-row items-center gap-2"
                         >
                             @if (tiposDescarga().includes(mensaje.tipo)) {
-                                <ng-icon
-                                    hlm
-                                    size="1.3rem"
-                                    name="lucideDownload"
-                                    class="text-(--blanco) cursor-pointer"
-                                />
+                                <div class="w-6 flex flex-row items-center justify-center">
+                                    @if (descargandoImagen().has(mensaje.whatsappMessageId)) {
+                                        <hlm-spinner class="text-xl" />
+                                    } @else {
+                                        <ng-icon
+                                            hlm
+                                            size="1.3rem"
+                                            name="lucideDownload"
+                                            class="text-(--blanco) cursor-pointer hover:text-(--blanco)/90"
+                                            (click)="descargarImagen(mensaje.whatsappMessageId)"
+                                        />
+                                    }
+                                </div>
                             }
                             {{
                                 mensaje.cuerpo ??
