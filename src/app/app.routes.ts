@@ -135,7 +135,7 @@ export const routes: Routes = [
         component: MantenedorNegocio,
     },
     {
-        path: 'mi-suscripcion',
+        path: 'mi-plan',
         component: MantenedorSuscripcion,
     },
     {

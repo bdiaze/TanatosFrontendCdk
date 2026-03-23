@@ -1,1 +1,77 @@
-<p>mantenedor-suscripcion works!</p>
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <nav hlmBreadcrumb class="mb-4 pl-2">
+        <ol hlmBreadcrumbList>
+            <li hlmBreadcrumbItem>
+                <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+            </li>
+            <li hlmBreadcrumbSeparator></li>
+            <li hlmBreadcrumbItem>
+                <span hlmBreadcrumbPage>Mi Plan</span>
+            </li>
+        </ol>
+    </nav>
+    <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+        <ng-icon hlm name="lucideCreditCard" />
+        <h3 hlmH3>Mi Plan</h3>
+    </div>
+    @if (cargandoSuscripciones() || cargandoPlanesVigentes()) {
+    } @else {
+        @if (ultimaSuscripcion()) {
+        } @else {
+            <div
+                class="bg-(--primary) text-(--blanco) w-full py-4 px-8 flex flex-row items-center justify-between gap-8"
+            >
+                <div class="flex flex-col items-start justify-center gap-2">
+                    <h4 hlmH4>Plan Emprendedor</h4>
+                </div>
+                <div>
+                    <h4 hlmH4>Gratuito</h4>
+                </div>
+            </div>
+        }
+        @if (!esPlanEmpresa()) {
+            <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in mt-4">
+                <ng-icon hlm name="lucideGem" />
+                <h4 hlmH4>¡Contrata el Plan Empresa ahora!</h4>
+            </div>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                @for (plan of planes(); track plan.id) {
+                    <a
+                        hlmItem
+                        variant="outline"
+                        class="flex flex-row items-start justify-start px-5 fade-in bg-(--azul) [a]:hover:bg-(--azul)/90 border-none text-(--blanco)"
+                    >
+                        <div hlmItemHeader class="flex flex-col items-stretch justify-start">
+                            <p hlmItemTitle class="w-full justify-center text-center">
+                                {{ plan.nombre }}
+                            </p>
+                        </div>
+                        <div
+                            hlmItemContent
+                            class="flex-1 flex flex-col items-start justify-start w-full"
+                        >
+                            <p
+                                hlmItemDescription
+                                class="w-full justify-center text-center text-(--blanco)"
+                            >
+                                {{ plan.duracionMeses }}
+                                @if (plan.duracionMeses == 1) {
+                                    Mes
+                                } @else {
+                                    Meses
+                                }
+                            </p>
+                            <div hlmItemTitle class="w-full justify-center text-center">
+                                @if (plan.precio == 0) {
+                                    Gratuito
+                                } @else {
+                                    ${{ plan.precio | number: '1.0-0' }}
+                                }
+                            </div>
+                        </div>
+                    </a>
+                }
+            </div>
+        }
+    }
+</section>

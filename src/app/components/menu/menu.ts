@@ -162,11 +162,11 @@ export class Menu {
                     url: '/mis-negocios',
                 },
                 {
-                    id: 'group-general-item-mi-suscripcion',
+                    id: 'group-general-item-mi-plan',
                     tipo: 'item',
-                    titulo: 'Mi Suscripción',
+                    titulo: 'Mi Plan',
                     icon: 'lucideCreditCard',
-                    url: '/mi-suscripcion',
+                    url: '/mi-plan',
                 },
             ],
         });
