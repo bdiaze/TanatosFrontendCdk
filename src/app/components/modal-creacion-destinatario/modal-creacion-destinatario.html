@@ -1,9 +1,14 @@
 <div
     class="fixed left-0 top-0 bg-black/70 w-screen h-screen flex justify-center items-center z-50"
-    (click)="cerrar.emit()"
+    (pointerdown)="cerrar.emit()"
 >
     <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
-        <div hlmCard (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md gap-3">
+        <div
+            hlmCard
+            (pointerdown)="$event.stopPropagation()"
+            (click)="$event.stopPropagation()"
+            class="min-w-xs md:min-w-md gap-3"
+        >
             <div hlmCardHeader class="faster-fade-in">
                 <div class="flex items-center gap-4 pt-1 pb-2">
                     <ng-icon hlm name="lucideSend" />
