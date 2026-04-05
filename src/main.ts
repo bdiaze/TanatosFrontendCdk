@@ -12,6 +12,10 @@ if (url.pathname === '/callback') {
     const newUrl = `/#/logout${url.search}`;
     console.log(`Redirigiendo a ${newUrl}`);
     window.location.replace(newUrl);
+} else if (url.pathname === '/flow-callback') {
+    const newUrl = `/#/mi-plan?callback=1`;
+    console.log(`Redirigiendo a ${newUrl}`);
+    window.location.replace(newUrl);
 } else {
     bootstrapApplication(App, appConfig)
         .then(() => {
