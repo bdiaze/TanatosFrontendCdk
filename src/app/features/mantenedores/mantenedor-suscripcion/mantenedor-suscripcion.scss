@@ -1,0 +1,29 @@
+table tbody td,
+table tbody th {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+}
+
+table tbody th {
+    padding-right: 1rem;
+    font-weight: 500;
+    color: var(--negro);
+    opacity: 0.8;
+}
+
+table thead th {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+table th:nth-child(2),
+table td:nth-child(2) {
+    background-color: var(--primary);
+    color: var(--blanco);
+}
+
+table th:nth-child(3),
+table td:nth-child(3) {
+    background-color: var(--azul);
+    color: var(--blanco);
+}

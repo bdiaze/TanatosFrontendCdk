@@ -14,23 +14,364 @@
         <ng-icon hlm name="lucideCreditCard" />
         <h3 hlmH3>Mi Plan</h3>
     </div>
+    @if (esCallback()) {
+        <div hlmAlert class="mb-3">
+            <ng-icon hlm hlmAlertIcon name="lucideHourglass" />
+            <h4 hlmAlertTitle>¡Procesando tu suscripción!</h4>
+            <p hlmAlertDescription>
+                Ya estamos procesando el primer pago de tus suscripción, esto tomará solo unos
+                segundos.
+            </p>
+        </div>
+    }
     @if (cargandoSuscripciones() || cargandoPlanesVigentes()) {
+        <div class="w-full flex flex-col items-center justify-center gap-6">
+            <hlm-skeleton class="w-full h-29 rounded-none" />
+            <hlm-skeleton class="w-54 h-10 rounded-xl" />
+            <div class="w-full h-194 flex flex-row items-end justify-center gap-2">
+                <hlm-skeleton class="w-[30%] h-178 rounded-none" />
+                <hlm-skeleton class="w-[30%] h-194 rounded-none" />
+                <hlm-skeleton class="w-[40%] h-194 rounded-none" />
+            </div>
+            <hlm-skeleton class="w-82 h-10 rounded-xl" />
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <hlm-skeleton class="w-60 h-38 rounded-none" />
+                <hlm-skeleton class="w-60 h-38 rounded-none" />
+                <hlm-skeleton class="w-60 h-38 rounded-none" />
+            </div>
+        </div>
     } @else {
         @if (ultimaSuscripcion()) {
-        } @else {
             <div
-                class="bg-(--primary) text-(--blanco) w-full py-4 px-8 flex flex-row items-center justify-between gap-8"
+                class="bg-(--azul) text-(--blanco) w-full py-4 px-8 flex flex-col items-stretch justify-center gap-3"
+                [class.mb-6]="
+                    ultimaSuscripcion()!.precioPlan === 0 || ultimaSuscripcion()!.estado !== 1
+                "
             >
-                <div class="flex flex-col items-start justify-center gap-2">
-                    <h4 hlmH4>Plan Emprendedor</h4>
+                <div class="flex flex-row items-center justify-between">
+                    <div class="flex flex-col items-start justify-center gap-2">
+                        <h4 hlmH4>{{ ultimaSuscripcion()?.nombrePlan }}</h4>
+                    </div>
+                    <div>
+                        <h4 hlmH4>${{ ultimaSuscripcion()?.precioPlan | number: '1.0-0' }}</h4>
+                    </div>
                 </div>
-                <div>
-                    <h4 hlmH4>Gratuito</h4>
+                <div class="flex flex-row items-center justify-around gap-2">
+                    <div class="flex flex-col items-center justify-center">
+                        <p hlmP class="text-sm">Vencimiento:</p>
+                        <p hlmP class="font-semibold">
+                            {{
+                                ultimaSuscripcion()?.fechaExpiracion
+                                    | date: "EEEE d 'de' MMMM 'de' yyyy"
+                            }}
+                        </p>
+                    </div>
+                    @if (obtenerRenovacion(ultimaSuscripcion()!.idPlan)) {
+                        <div class="flex flex-col items-center justify-center">
+                            <p hlmP class="text-sm">Renovación:</p>
+                            <div class="flex flex-row items-center justify-center gap-2">
+                                @if (ultimaSuscripcion()!.estado !== 1) {
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideRefreshCwOff"
+                                        size="20px"
+                                    />
+                                    <p hlmP class="font-semibold">
+                                        {{ obtenerEstadoSuscripcion(ultimaSuscripcion()!.estado) }}
+                                    </p>
+                                } @else {
+                                    <ng-icon hlm hlmAlertIcon name="lucideRefreshCw" size="20px" />
+                                    <p hlmP class="font-semibold">
+                                        {{ obtenerRenovacion(ultimaSuscripcion()!.idPlan) }}
+                                    </p>
+                                }
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
+            @if (ultimaSuscripcion()!.precioPlan !== 0 && ultimaSuscripcion()!.estado === 1) {
+                <div class="py-2 flex flex-col items-end">
+                    <button
+                        hlmBtn
+                        variant="link"
+                        class="text-destructive decoration-destructive font-normal px-3"
+                        (click)="openModalDesuscribirse()"
+                        [disabled]="procesando()"
+                    >
+                        @if (procesando()) {
+                            <hlm-spinner class="text-sm" />
+                        } @else {
+                            <ng-icon hlm size="sm" name="lucideRefreshCwOff" />
+                        }
+                        Cancelar suscripción
+                    </button>
+                </div>
+            }
+        } @else {
+            <div
+                class="bg-(--primary) text-(--blanco) w-full py-4 px-8 flex flex-col items-center justify-center gap-2 mb-6"
+            >
+                <div class="w-full flex flex-row items-center justify-between gap-2">
+                    <h4 hlmH4>Plan Emprendedor</h4>
+                    <h4 hlmH4>Gratuito</h4>
+                </div>
+                <p hlmP class="text-center text-balance">
+                    Posees el plan más básico, te recomendamos mejorar al
+                    <b class="font-semibold">Plan Empresa</b> para que
+                    <u class="underline-offset-3">desbloquees todas las funcionalidades</u> de Todo
+                    en Orden.
+                </p>
+            </div>
         }
+        <div class="flex flex-col items-center justify-center my-2">
+            <h4 hlmH4>Comparación de Planes</h4>
+            <div hlmTableContainer class="my-4">
+                <table hlmTable class="text-center">
+                    <thead hlmTHead>
+                        <tr hlmTr>
+                            <th hlmTh></th>
+                            <th hlmTh class="text-center text-base">Plan Emprendedor</th>
+                            <th hlmTh class="text-center text-base">
+                                <div
+                                    class="flex flex-row items-center justify-center gap-3 text-lg"
+                                >
+                                    <ng-icon hlm hlmAlertIcon name="lucideGem" size="base" />Plan
+                                    Empresa
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody hlmTBody>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">
+                                Cantidad de<br />
+                                Negocios
+                            </th>
+                            <td hlmTd class="text-base">Solo un negocio</td>
+                            <td hlmTd class="text-base">Cantidad ilimitada <br />de negocios</td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">
+                                Obligaciones<br />
+                                Personalizadas
+                            </th>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">
+                                Calendario de<br />
+                                Obligaciones
+                            </th>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">
+                                Acceso a Plantillas<br />
+                                de Obligaciones
+                            </th>
+                            <td hlmTd class="text-base">Limitado a <br />plantillas básicas</td>
+                            <td hlmTd class="text-base">
+                                Acceso completo a <br />todas las plantillas
+                            </td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">Destinatarios de<br />Notificaciones</th>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideUserRound"
+                                        size="base"
+                                    />Solo uno
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideUsersRound"
+                                        size="base"
+                                    />Todos los destinatarios<br />
+                                    que desees
+                                </div>
+                            </td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">
+                                Notificaciones por <br />
+                                Correo Electrónico
+                            </th>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">
+                                Notificaciones por <br />
+                                Whatsapp
+                            </th>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="28px" />No
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">
+                                Documentos<br />
+                                Adjuntos
+                            </th>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="28px" />No
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">
+                                Soporte<br />
+                                Prioritario
+                            </th>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="28px" />No
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div
+                                    class="flex flex-row items-center justify-center gap-2 text-base"
+                                >
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideCircleCheck"
+                                        size="28px"
+                                    />Sí
+                                </div>
+                            </td>
+                        </tr>
+                        <tr hlmTr>
+                            <th hlmTh class="text-right">Precio</th>
+                            <td hlmTd class="text-base">Gratuito</td>
+                            <td hlmTd class="text-base">
+                                $9.990 Mensual<br />
+                                o <br />
+                                <del class="text-xs">$119.880 Anual</del><br />
+                                $99.900 Anual
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         @if (!esPlanEmpresa()) {
-            <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in mt-4">
+            <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in mt-3">
                 <ng-icon hlm name="lucideGem" />
                 <h4 hlmH4>¡Contrata el Plan Empresa ahora!</h4>
             </div>
@@ -39,10 +380,14 @@
                     <a
                         hlmItem
                         variant="outline"
-                        class="flex flex-row items-start justify-start px-5 fade-in bg-(--azul) [a]:hover:bg-(--azul)/90 border-none text-(--blanco)"
+                        class="w-60 h-38 flex flex-row items-start justify-start px-5 fade-in bg-(--azul) [a]:hover:bg-(--azul)/90 border-none text-(--blanco)"
+                        (click)="generarUrlPago(plan.id)"
                     >
                         <div hlmItemHeader class="flex flex-col items-stretch justify-start">
-                            <p hlmItemTitle class="w-full justify-center text-center">
+                            <p
+                                hlmItemTitle
+                                class="w-full justify-center text-center text-base underline underline-offset-3"
+                            >
                                 {{ plan.nombre }}
                             </p>
                         </div>
@@ -61,7 +406,17 @@
                                     Meses
                                 }
                             </p>
-                            <div hlmItemTitle class="w-full justify-center text-center">
+                            @if (plan.id !== 1) {
+                                <div class="w-full flex flex-row items-center justify-center gap-2">
+                                    <ng-icon
+                                        hlm
+                                        hlmAlertIcon
+                                        name="lucideRefreshCw"
+                                        size="sm"
+                                    />Renovación automática
+                                </div>
+                            }
+                            <div hlmItemTitle class="w-full justify-center text-center text-lg">
                                 @if (plan.precio == 0) {
                                     Gratuito
                                 } @else {
@@ -75,3 +430,17 @@
         }
     }
 </section>
+@if (showModalDesuscribirse()) {
+    <app-modal-eliminacion
+        [item]="ultimaSuscripcion()?.id"
+        titulo="Cancela tu suscripción:"
+        [descripcion]="
+            `¿Seguro que deseas cancelar tu suscripción <b>&quot;${ultimaSuscripcion()?.nombrePlan}&quot;</b>?<br/>Podrás seguir disfrutando de los beneficios del plan hasta <u>el ${fechaExpiracionFormateada()}</u>.`
+        "
+        textoBotonEliminar="Cancelar suscripción"
+        textoBotonCancelar="Cerrar"
+        (cerrar)="closeModalDesuscribirse()"
+        (eliminar)="desuscribirse($event)"
+    >
+    </app-modal-eliminacion>
+}
