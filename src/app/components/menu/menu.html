@@ -39,15 +39,17 @@
                         }
                     }
                     <div class="grid flex-1 text-left text-sm leading-tight">
-                        <span class="truncate font-semibold opacity-90 text-base">
+                        <span
+                            class="truncate opacity-90 text-base"
+                            [class.font-semibold]="negocioStore.negocioSeleccionado()?.nombre"
+                            [class.text-sm]="!negocioStore.negocioSeleccionado()?.nombre"
+                        >
                             @if (cargandoNegocios()) {
                                 <hlm-skeleton class="h-7 w-32 rounded-xl" />
                             } @else {
                                 {{
-                                    cargandoNegocios()
-                                        ? 'Cargando negocios...'
-                                        : (negocioStore.negocioSeleccionado()?.nombre ??
-                                          'Seleccionar negocio...')
+                                    negocioStore.negocioSeleccionado()?.nombre ??
+                                        'Seleccionar negocio...'
                                 }}
                             }
                         </span>
@@ -55,7 +57,7 @@
                             class="truncate text-sm flex items-center gap-1 font-normal font-serif"
                         >
                             @if (cargandoInformacionUsuario()) {
-                                <hlm-skeleton class="h-5 w-36 rounded-xl" />
+                                <hlm-skeleton class="h-5 w-36 rounded-xl mt-1" />
                             } @else {
                                 {{
                                     cargandoInformacionUsuario()
