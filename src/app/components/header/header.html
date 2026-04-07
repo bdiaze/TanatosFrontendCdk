@@ -79,9 +79,11 @@
                     [withClose]="true"
                     (onClose)="cerrarMenu()"
                 >
-                    <div class="flex flex-col items-start justify-start gap-2 mt-4">
+                    <div class="flex flex-col items-start justify-start gap-2 mt-4 w-full">
                         @if (!sesionIniciada() && !logoutRunning()) {
-                            <div class="flex flex-col items-start justify-start gap-2 md:hidden">
+                            <div
+                                class="flex flex-col items-start justify-start gap-2 md:hidden w-full"
+                            >
                                 <a
                                     hlmBtn
                                     variant="link"
