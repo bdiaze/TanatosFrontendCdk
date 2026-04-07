@@ -27,8 +27,9 @@ export class NegocioDao {
                     const informacionExistente = this.negocioStore.informacionUsuario();
                     if (
                         v.nombre !== informacionExistente?.nombre ||
-                        v.apellido !== informacionExistente.apellido ||
-                        v.email !== informacionExistente.email
+                        v.apellido !== informacionExistente?.apellido ||
+                        v.email !== informacionExistente?.email ||
+                        v.tienePlanEmpresa !== informacionExistente?.tienePlanEmpresa
                     ) {
                         this.negocioStore.informacionUsuario.set(v);
                     }
