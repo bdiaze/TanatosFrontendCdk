@@ -4,6 +4,7 @@ import {
     PosiblesValores,
 } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
+import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { NegocioDao } from '@/app/daos/negocio-dao';
 import { TipoActividadDao } from '@/app/daos/tipo-actividad-dao';
 import { TipoRubroDao } from '@/app/daos/tipo-rubro-dao';
@@ -13,12 +14,17 @@ import { EntNegocioActualizar } from '@/app/entities/others/ent-negocio-actualiz
 import { EntNegocioCrear } from '@/app/entities/others/ent-negocio-crear';
 import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { NegocioStore } from '@/app/services/negocio-store';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
+    lucideArrowLeft,
+    lucideArrowRight,
     lucideBadgeCheck,
     lucideBadgeX,
     lucideEllipsis,
+    lucideGem,
     lucideStore,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
@@ -27,10 +33,12 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH3 } from '@spartan-ng/helm/typography';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { HlmH3, HlmP, HlmH4 } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 
 @Component({
@@ -41,6 +49,8 @@ import { forkJoin } from 'rxjs';
         HlmButtonImports,
         HlmTableImports,
         HlmH3,
+        HlmH4,
+        HlmP,
         HlmAlertImports,
         NgIcon,
         HlmIcon,
@@ -48,6 +58,8 @@ import { forkJoin } from 'rxjs';
         HlmSpinnerImports,
         HlmSkeletonImports,
         HlmBreadCrumbImports,
+        HlmTooltipImports,
+        PopupFuncionalidadBloqueada,
     ],
     templateUrl: './mantenedor-negocio.html',
     styleUrl: './mantenedor-negocio.scss',
@@ -58,6 +70,9 @@ import { forkJoin } from 'rxjs';
             lucideBadgeCheck,
             lucideBadgeX,
             lucideStore,
+            lucideGem,
+            lucideArrowRight,
+            lucideArrowLeft,
         }),
     ],
 })
@@ -65,6 +80,7 @@ export class MantenedorNegocio implements OnInit {
     private dao: NegocioDao = inject(NegocioDao);
     private tipoRubroDao: TipoRubroDao = inject(TipoRubroDao);
     private tipoActividadDao: TipoActividadDao = inject(TipoActividadDao);
+    negocioStore: NegocioStore = inject(NegocioStore);
 
     listado = signal([] as SalNegocio[]);
     tiposRubros = signal([] as TipoRubro[]);
@@ -201,6 +217,15 @@ export class MantenedorNegocio implements OnInit {
                 this.cargando.set(false);
             });
     }
+
+    puedeCrear = computed(() => {
+        const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
+        const negocios = this.listado();
+        if (negocios.length > 0 && !tienePlanEmpresa) {
+            return false;
+        }
+        return true;
+    });
 
     obtenerNombreRubro(idTipoActividad: number | null): string {
         const tipoActividad = this.tiposActividades().find((u) => u.id === idTipoActividad);

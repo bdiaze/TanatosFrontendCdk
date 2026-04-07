@@ -101,7 +101,21 @@
                 }
             </tbody>
         </table>
-        <button hlmBtn variant="azul" (click)="openModalCrear()" class="m-4">Nuevo Negocio</button>
+        @if (puedeCrear()) {
+            <button
+                hlmBtn
+                variant="azul"
+                (click)="openModalCrear()"
+                class="m-4"
+                [disabled]="cargando()"
+            >
+                Nuevo Negocio
+            </button>
+        } @else {
+            <app-popup-funcionalidad-bloqueada class="m-4 h-fit">
+                Nuevo Negocio
+            </app-popup-funcionalidad-bloqueada>
+        }
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
