@@ -1,7 +1,7 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { DestinatarioNotificacionDao } from '@/app/daos/destinatario-notificacion-dao';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, inject, signal, effect } from '@angular/core';
+import { Component, inject, signal, effect, computed } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import {
@@ -9,7 +9,9 @@ import {
     lucideBadgeX,
     lucideClockAlert,
     lucideEllipsis,
+    lucideGem,
     lucideSend,
+    lucideTrash2,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -27,6 +29,8 @@ import { AuthStore } from '@/app/services/auth-store';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-mantenedor-destinatario-notificacion',
@@ -48,6 +52,8 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
         HlmSpinnerImports,
         HlmSkeletonImports,
         HlmBreadCrumbImports,
+        PopupFuncionalidadBloqueada,
+        RouterModule,
     ],
     templateUrl: './mantenedor-destinatario-notificacion.html',
     styleUrl: './mantenedor-destinatario-notificacion.scss',
@@ -59,6 +65,8 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
             lucideBadgeX,
             lucideSend,
             lucideClockAlert,
+            lucideGem,
+            lucideTrash2,
         }),
     ],
 })
@@ -106,6 +114,15 @@ export class MantenedorDestinatarioNotificacion {
                 this.cargando.set(false);
             });
     }
+
+    puedeCrear = computed(() => {
+        const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
+        const destinatarios = this.listado();
+        if (destinatarios.length > 0 && !tienePlanEmpresa) {
+            return false;
+        }
+        return true;
+    });
 
     openModalEliminar(item: SalDestinatarioNotificacion) {
         this.itemSeleccionado.set(item);

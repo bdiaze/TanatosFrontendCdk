@@ -111,6 +111,7 @@
                                                     variant="destructive"
                                                     (click)="openModalEliminar(item)"
                                                 >
+                                                    <ng-icon hlm size="sm" name="lucideTrash2" />
                                                     Eliminar
                                                 </button>
                                             </hlm-dropdown-menu-group>
@@ -129,7 +130,24 @@
                 }
             </tbody>
         </table>
-        <button hlmBtn variant="azul" (click)="openModalCrear()" class="m-4">Crear Nuevo</button>
+        @if (puedeCrear()) {
+            <button
+                hlmBtn
+                variant="azul"
+                (click)="openModalCrear()"
+                class="m-4"
+                [disabled]="cargando()"
+            >
+                Crear Nuevo
+            </button>
+        } @else {
+            <app-popup-funcionalidad-bloqueada class="m-4 h-fit">
+                <button hlmBtn variant="azul" class="has-[>ng-icon]:pl-3 has-[>ng-icon]:pr-5">
+                    <ng-icon hlm name="lucideGem" size="sm" />
+                    Crear Nuevo
+                </button>
+            </app-popup-funcionalidad-bloqueada>
+        }
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
