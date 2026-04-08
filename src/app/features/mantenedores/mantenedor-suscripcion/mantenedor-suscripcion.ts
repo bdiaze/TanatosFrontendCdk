@@ -208,6 +208,9 @@ export class MantenedorSuscripcion implements OnInit {
                 next: (res) => {
                     if (res.urlSuscripcion) {
                         window.location.href = res.urlSuscripcion;
+                    } else {
+                        this.esCallback.set(true);
+                        this.obtenerSuscripciones();
                     }
                 },
                 error: (err) => {

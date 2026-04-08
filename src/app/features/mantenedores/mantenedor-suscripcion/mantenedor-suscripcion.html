@@ -43,20 +43,24 @@
     } @else {
         @if (ultimaSuscripcion()) {
             <div
-                class="bg-(--azul) text-(--blanco) w-full py-4 px-8 flex flex-col items-stretch justify-center gap-3"
+                class="border-(--azul) border w-full flex flex-col items-stretch justify-center"
                 [class.mb-6]="
                     ultimaSuscripcion()!.precioPlan === 0 || ultimaSuscripcion()!.estado !== 1
                 "
             >
-                <div class="flex flex-row items-center justify-between">
+                <div
+                    class="bg-(--azul) text-(--blanco) flex flex-row items-center justify-between py-4 px-8"
+                >
                     <div class="flex flex-col items-start justify-center gap-2">
                         <h4 hlmH4>{{ ultimaSuscripcion()?.nombrePlan }}</h4>
                     </div>
-                    <div>
-                        <h4 hlmH4>${{ ultimaSuscripcion()?.precioPlan | number: '1.0-0' }}</h4>
-                    </div>
+                    @if (ultimaSuscripcion() && ultimaSuscripcion()!.precioPlan > 0) {
+                        <div>
+                            <h4 hlmH4>${{ ultimaSuscripcion()?.precioPlan | number: '1.0-0' }}</h4>
+                        </div>
+                    }
                 </div>
-                <div class="flex flex-row items-center justify-around gap-2">
+                <div class="flex flex-row items-center justify-around gap-2 py-4 px-8">
                     <div class="flex flex-col items-center justify-center">
                         <p hlmP class="text-sm">Vencimiento:</p>
                         <p hlmP class="font-semibold">
@@ -111,18 +115,22 @@
             }
         } @else {
             <div
-                class="bg-(--primary) text-(--blanco) w-full py-4 px-8 flex flex-col items-center justify-center gap-2 mb-6"
+                class="border-(--primary) border text-(--negro) w-full flex flex-col items-center justify-center mb-6"
             >
-                <div class="w-full flex flex-row items-center justify-between gap-2">
+                <div
+                    class="border-(--primary) border bg-(--primary) text-(--blanco) w-full flex flex-row items-center justify-between gap-2 p-4 px-8"
+                >
                     <h4 hlmH4>Plan Emprendedor</h4>
                     <h4 hlmH4>Gratuito</h4>
                 </div>
-                <p hlmP class="text-center text-balance">
-                    Posees el plan más básico, te recomendamos mejorar al
-                    <b class="font-semibold">Plan Empresa</b> para que
-                    <u class="underline-offset-3">desbloquees todas las funcionalidades</u> de Todo
-                    en Orden.
-                </p>
+                <div class="py-4 px-8">
+                    <p hlmP class="text-center text-balance">
+                        Posees el plan más básico, te recomendamos mejorar al
+                        <b class="font-semibold">Plan Empresa</b> para que
+                        <u class="underline-offset-3">desbloquees todas las funcionalidades</u> de
+                        Todo en Orden.
+                    </p>
+                </div>
             </div>
         }
         <div class="flex flex-col items-center justify-center my-2">
@@ -132,8 +140,8 @@
                     <thead hlmTHead>
                         <tr hlmTr>
                             <th hlmTh></th>
-                            <th hlmTh class="text-center text-base">Plan Emprendedor</th>
-                            <th hlmTh class="text-center text-base">
+                            <th hlmTh class="text-center text-base px-6">Plan Emprendedor</th>
+                            <th hlmTh class="text-center text-base px-6">
                                 <div
                                     class="flex flex-row items-center justify-center gap-3 text-lg"
                                 >
@@ -149,8 +157,10 @@
                                 Cantidad de<br />
                                 Negocios
                             </th>
-                            <td hlmTd class="text-base">Solo un negocio</td>
-                            <td hlmTd class="text-base">Cantidad ilimitada <br />de negocios</td>
+                            <td hlmTd class="text-base px-6">Solo un negocio</td>
+                            <td hlmTd class="text-base px-6">
+                                Cantidad ilimitada <br />de negocios
+                            </td>
                         </tr>
                         <tr hlmTr>
                             <th hlmTh class="text-right">
@@ -217,14 +227,16 @@
                                 Acceso a Plantillas<br />
                                 de Obligaciones
                             </th>
-                            <td hlmTd class="text-base">Limitado a <br />plantillas básicas</td>
-                            <td hlmTd class="text-base">
+                            <td hlmTd class="text-base px-6">
+                                Limitado a <br />plantillas básicas
+                            </td>
+                            <td hlmTd class="text-base px-6">
                                 Acceso completo a <br />todas las plantillas
                             </td>
                         </tr>
                         <tr hlmTr>
                             <th hlmTh class="text-right">Destinatarios de<br />Notificaciones</th>
-                            <td hlmTd>
+                            <td hlmTd class="px-6">
                                 <div
                                     class="flex flex-row items-center justify-center gap-2 text-base"
                                 >
@@ -236,7 +248,7 @@
                                     />Solo uno
                                 </div>
                             </td>
-                            <td hlmTd>
+                            <td hlmTd class="px-6">
                                 <div
                                     class="flex flex-row items-center justify-center gap-2 text-base"
                                 >
@@ -379,10 +391,13 @@
                     <a
                         hlmItem
                         variant="outline"
-                        class="w-60 h-38 flex flex-row items-start justify-start px-5 fade-in bg-(--azul) [a]:hover:bg-(--azul)/90 border-none text-(--blanco)"
+                        class="w-60 h-42 flex flex-row items-start justify-start p-0 fade-in group border border-(--azul) hover:border-(--azul)/90 gap-0"
                         (click)="generarUrlPago(plan.id)"
                     >
-                        <div hlmItemHeader class="flex flex-col items-stretch justify-start">
+                        <div
+                            hlmItemHeader
+                            class="flex flex-col items-stretch justify-start border border-(--azul) group-hover:border-(--azul) bg-(--azul) group-hover:bg-(--azul)/90 text-(--blanco) p-4"
+                        >
                             <p
                                 hlmItemTitle
                                 class="w-full justify-center text-center text-base underline underline-offset-3"
@@ -390,14 +405,8 @@
                                 {{ plan.nombre }}
                             </p>
                         </div>
-                        <div
-                            hlmItemContent
-                            class="flex-1 flex flex-col items-start justify-start w-full"
-                        >
-                            <p
-                                hlmItemDescription
-                                class="w-full justify-center text-center text-(--blanco)"
-                            >
+                        <div hlmItemContent class="flex-1 flex flex-col items-start justify-start">
+                            <p hlmItemDescription class="w-full justify-center text-center">
                                 {{ plan.duracionMeses }}
                                 @if (plan.duracionMeses == 1) {
                                     Mes
