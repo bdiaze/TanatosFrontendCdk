@@ -16,7 +16,11 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
     lucideBadgeX,
+    lucideClipboardCheck,
+    lucideClipboardMinus,
     lucideClipboardPaste,
+    lucideClipboardPlus,
+    lucideClipboardX,
     lucideEllipsis,
     lucideStar,
     lucideTriangleAlert,
@@ -65,6 +69,10 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
             lucideBadgeX,
             lucideClipboardPaste,
             lucideStar,
+            lucideClipboardPlus,
+            lucideClipboardMinus,
+            lucideClipboardX,
+            lucideClipboardCheck,
         }),
     ],
 })
