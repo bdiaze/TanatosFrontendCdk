@@ -41,10 +41,22 @@
                         <td hlmTd></td>
                     </tr>
                 } @else {
-                    @for (item of listado(); track item.id) {
+                    @for (item of listado(); track item.id; let first = $first) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                                {{ item.nombre }}
+                                <div class="flex flex-row items-center justify-start gap-2">
+                                    @if (!puedeCrear() && !first) {
+                                        <ng-icon
+                                            hlm
+                                            name="lucideGem"
+                                            size="sm"
+                                            hlmTooltip="Tu plan restringe el uso de este negocio"
+                                            routerLink="/mi-plan"
+                                            class="cursor-pointer text-(--negro)/85"
+                                        />
+                                    }
+                                    {{ item.nombre }}
+                                </div>
                             </td>
                             <td hlmTd class="whitespace-normal text-xs md:text-sm">
                                 {{ item.direccion }}
@@ -72,17 +84,46 @@
                                     <ng-template #menu>
                                         <hlm-dropdown-menu>
                                             <hlm-dropdown-menu-group>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    (click)="openModalEditar(item)"
-                                                >
-                                                    Editar
-                                                </button>
+                                                @if (puedeCrear() || first) {
+                                                    <button
+                                                        hlmDropdownMenuItem
+                                                        (click)="openModalEditar(item)"
+                                                    >
+                                                        <ng-icon
+                                                            hlm
+                                                            size="sm"
+                                                            name="lucideSquarePen"
+                                                            class="text-(--negro)/80"
+                                                        />
+                                                        Editar
+                                                    </button>
+                                                } @else {
+                                                    <div
+                                                        hlmTooltip="Restringido debido a tu plan"
+                                                        position="left"
+                                                        routerLink="/mi-plan"
+                                                    >
+                                                        <button
+                                                            hlmDropdownMenuItem
+                                                            (click)="openModalEditar(item)"
+                                                            disabled
+                                                        >
+                                                            <ng-icon
+                                                                hlm
+                                                                name="lucideGem"
+                                                                size="sm"
+                                                                class="text-(--negro)/80"
+                                                            />
+                                                            Editar
+                                                        </button>
+                                                    </div>
+                                                }
                                                 <button
                                                     hlmDropdownMenuItem
                                                     variant="destructive"
                                                     (click)="openModalEliminar(item)"
                                                 >
+                                                    <ng-icon hlm size="sm" name="lucideTrash2" />
                                                     Eliminar
                                                 </button>
                                             </hlm-dropdown-menu-group>
@@ -113,7 +154,10 @@
             </button>
         } @else {
             <app-popup-funcionalidad-bloqueada class="m-4 h-fit">
-                Nuevo Negocio
+                <button hlmBtn variant="azul" class="has-[>ng-icon]:pl-3 has-[>ng-icon]:pr-5">
+                    <ng-icon hlm name="lucideGem" size="sm" />
+                    Nuevo Negocio
+                </button>
             </app-popup-funcionalidad-bloqueada>
         }
     </div>

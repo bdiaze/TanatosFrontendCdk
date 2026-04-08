@@ -25,7 +25,9 @@ import {
     lucideBadgeX,
     lucideEllipsis,
     lucideGem,
+    lucideSquarePen,
     lucideStore,
+    lucideTrash2,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -60,6 +62,7 @@ import { forkJoin } from 'rxjs';
         HlmBreadCrumbImports,
         HlmTooltipImports,
         PopupFuncionalidadBloqueada,
+        RouterModule,
     ],
     templateUrl: './mantenedor-negocio.html',
     styleUrl: './mantenedor-negocio.scss',
@@ -71,8 +74,8 @@ import { forkJoin } from 'rxjs';
             lucideBadgeX,
             lucideStore,
             lucideGem,
-            lucideArrowRight,
-            lucideArrowLeft,
+            lucideTrash2,
+            lucideSquarePen,
         }),
     ],
 })
@@ -169,8 +172,10 @@ export class MantenedorNegocio implements OnInit {
                     this.tiposRubros.set(tiposRubros);
                     this.tiposActividades.set(tiposActividades);
 
-                    const sorted = negocios.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
+                    const sorted = negocios.sort(
+                        (a, b) =>
+                            new Date(a.fechaCreacion).getTime() -
+                            new Date(b.fechaCreacion).getTime(),
                     );
                     this.listado.set(sorted);
 

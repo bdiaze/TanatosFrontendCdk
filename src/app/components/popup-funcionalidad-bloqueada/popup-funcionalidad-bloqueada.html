@@ -1,11 +1,10 @@
 <hlm-popover sideOffset="5">
-    <button hlmPopoverTrigger hlmBtn variant="azul" class="has-[>ng-icon]:pl-3 has-[>ng-icon]:pr-5">
-        <ng-icon hlm name="lucideGem" size="sm" />
+    <span hlmPopoverTrigger class="inline-block">
         <ng-content></ng-content>
-    </button>
+    </span>
     <hlm-popover-content *hlmPopoverPortal="let ctx" class="rounded-none w-80 shadow-none">
         <div class="flex flex-col items-center justify-center gap-1.5">
-            <h4 hlmH4 class="text-lg text-center">Funcionalidad Bloqueada 😦</h4>
+            <h4 hlmH4 class="text-lg text-center">Funcionalidad Restringida 😦</h4>
             <p hlmP class="text-sm text-center text-balance">
                 ¡Ups! parece que tu plan actual no te permite hacer esto.
             </p>
