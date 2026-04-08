@@ -51,8 +51,6 @@ import { forkJoin } from 'rxjs';
         HlmButtonImports,
         HlmTableImports,
         HlmH3,
-        HlmH4,
-        HlmP,
         HlmAlertImports,
         NgIcon,
         HlmIcon,

@@ -159,20 +159,14 @@ export class MantenedorPlantillasInscritas {
                 next: ({ inscripciones, templates }) => {
                     this.inscripciones.set(inscripciones);
 
-                    const templatesSorted = templates.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
-                    );
+                    const templatesSorted = templates.sort((a, b) => a.id - b.id);
 
                     this.templatesVigentes.set(templatesSorted);
 
                     const templatesConInscripciones: TemplateConInscripcion[] = [];
                     templatesSorted.forEach((template) => {
                         const normasSorted =
-                            template.templateNormas?.sort((a, b) =>
-                                a.nombre
-                                    .toLocaleLowerCase()
-                                    .localeCompare(b.nombre.toLocaleLowerCase()),
-                            ) ?? [];
+                            template.templateNormas?.sort((a, b) => a.idNorma - b.idNorma) ?? [];
 
                         const templatesNormasConInscripciones: TemplateNormasConInscripcion[] = [];
                         normasSorted.forEach((norma) => {
