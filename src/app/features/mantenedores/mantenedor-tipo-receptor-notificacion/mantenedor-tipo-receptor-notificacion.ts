@@ -69,6 +69,13 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             deshabilitado: false,
         },
         {
+            llave: 'requierePlanEmpresa',
+            nombre: 'Requiere Plan Empresa',
+            tipo: 'boolean',
+            requerido: true,
+            deshabilitado: false,
+        },
+        {
             llave: 'vigencia',
             nombre: 'Vigencia',
             tipo: 'boolean',
@@ -91,6 +98,13 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             nombre: 'Regex',
             tipo: 'string',
             requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'requierePlanEmpresa',
+            nombre: 'Requiere Plan Empresa',
+            tipo: 'boolean',
+            requerido: true,
             deshabilitado: false,
         },
         {
