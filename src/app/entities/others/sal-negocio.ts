@@ -3,4 +3,6 @@ export interface SalNegocio {
     nombre: string;
     direccion: string | null;
     idTipoActividad: number | null;
+    nombreTipoActividad: string | null;
+    fechaCreacion: string;
 }
