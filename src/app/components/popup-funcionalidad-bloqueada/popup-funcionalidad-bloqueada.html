@@ -1,19 +1,12 @@
 <hlm-popover sideOffset="5">
-    <span hlmPopoverTrigger class="inline-block w-full">
+    <span #trigger hlmPopoverTrigger class="inline-block w-full">
         <ng-content></ng-content>
     </span>
     <hlm-popover-content *hlmPopoverPortal="let ctx" class="rounded-none w-80 shadow-none">
         <div class="flex flex-col items-center justify-center gap-1.5">
             <h4 hlmH4 class="text-lg text-center">Funcionalidad Restringida 😦</h4>
-            <p hlmP class="text-sm text-center text-balance">
-                ¡Ups! parece que tu plan actual no te permite hacer esto.
-            </p>
-            <a
-                hlmBtn
-                variant="link"
-                routerLink="/mi-plan"
-                class="mt-0 pt-0 text-popover-foreground text-center"
-            >
+            <p hlmP class="text-sm text-center text-balance">¡Ups! parece que tu plan actual no te permite hacer esto.</p>
+            <a hlmBtn variant="link" routerLink="/mi-plan" class="my-0 py-0 text-popover-foreground text-center">
                 <ng-icon hlm name="lucideArrowRight" size="sm" />
                 Actualiza tu plan aquí
                 <ng-icon hlm name="lucideArrowLeft" size="sm"

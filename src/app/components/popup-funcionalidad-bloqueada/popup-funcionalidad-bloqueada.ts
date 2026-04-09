@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideArrowLeft, lucideArrowRight } from '@ng-icons/lucide';
@@ -22,4 +22,10 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         class: 'inline-block',
     },
 })
-export class PopupFuncionalidadBloqueada {}
+export class PopupFuncionalidadBloqueada {
+    @ViewChild('trigger', { read: ElementRef }) trigger!: ElementRef;
+
+    openFromParent() {
+        this.trigger?.nativeElement?.click();
+    }
+}
