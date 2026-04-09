@@ -8,6 +8,12 @@ export class PlainTextPipe implements PipeTransform {
         if (!html) return '';
         const div = document.createElement('div');
         div.innerHTML = html;
-        return div.textContent || div.innerText || '';
+
+        // Se agregan saltos de línea a elementos de bloque
+        div.querySelectorAll('p, div, br, li').forEach((el) => {
+            el.appendChild(document.createTextNode('\n'));
+        });
+
+        return (div.textContent || '').replace(/\n+/g, '\n').trim();
     }
 }
