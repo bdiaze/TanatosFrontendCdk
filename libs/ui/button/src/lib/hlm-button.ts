@@ -18,10 +18,9 @@ export const buttonVariants = cva(
                     'bg-transparent hover:bg-transparent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 border rounded-full',
                 outlineAzul:
                     'bg-transparent hover:bg-transparent border-(--azul) hover:border-(--azul)/80 text-(--azul) hover:text-(--azul)/80 border-2 rounded-full',
-                secondary:
-                    'bg-transparent hover:bg-accent/20 text-secondary-foreground rounded-full border-2 border-primary hover:border-primary/80',
+                secondary: 'bg-transparent hover:bg-accent/20 text-secondary-foreground rounded-full border-2 border-primary hover:border-primary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
-                link: 'underline-offset-4 hover:underline text-(--negro)/80 decoration-(--azul)',
+                link: 'underline-offset-4 hover:underline text-(--negro)/80 decoration-(--azul) focus-visible:underline focus-visible:ring-0',
             },
             size: {
                 default: 'h-8 px-6 py-2 has-[>ng-icon]:px-3',
@@ -58,11 +57,7 @@ export class HlmButton {
     public readonly userClass = input<ClassValue>('', { alias: 'class' });
 
     protected readonly _computedClass = computed(() =>
-        hlm(
-            buttonVariants({ variant: this.variant(), size: this.size() }),
-            this.userClass(),
-            this._additionalClasses(),
-        ),
+        hlm(buttonVariants({ variant: this.variant(), size: this.size() }), this.userClass(), this._additionalClasses()),
     );
 
     public readonly variant = input<ButtonVariants['variant']>(this._config.variant);
