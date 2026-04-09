@@ -236,8 +236,13 @@
                                                                 />
                                                             </div>
                                                         } @else {
-                                                            <app-popup-funcionalidad-bloqueada class="w-full">
-                                                                <div class="py-6">
+                                                            <div
+                                                                class="py-6"
+                                                                (dragover)="onDragOver($event)"
+                                                                (dragleave)="onDragLeave($event)"
+                                                                (drop)="onDropRestringido($event)"
+                                                            >
+                                                                <app-popup-funcionalidad-bloqueada class="w-full" #pop>
                                                                     <button hlmBtn size="icon" variant="link" class="size-8">
                                                                         <ng-icon hlm size="sm" name="lucideGem" />
                                                                         <div>Click aquí para adjuntar tu documento</div>
@@ -254,8 +259,8 @@
                                                                         [accept]="allowedFileTypes.join(',')"
                                                                         multiple
                                                                     />
-                                                                </div>
-                                                            </app-popup-funcionalidad-bloqueada>
+                                                                </app-popup-funcionalidad-bloqueada>
+                                                            </div>
                                                         }
                                                     </td>
                                                 </tr>

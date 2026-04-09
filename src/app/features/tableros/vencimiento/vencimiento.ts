@@ -73,6 +73,8 @@ import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalida
     ],
 })
 export class Vencimiento implements OnInit {
+    @ViewChild(PopupFuncionalidadBloqueada) popupFuncionalidadBloqueada?: any;
+
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     negocioStore = inject(NegocioStore);
@@ -263,6 +265,12 @@ export class Vencimiento implements OnInit {
         }
 
         this.subirArchivos(files);
+        this.draggingFile.set(false);
+    }
+
+    onDropRestringido(event: DragEvent) {
+        event.preventDefault();
+        this.popupFuncionalidadBloqueada?.openFromParent?.();
         this.draggingFile.set(false);
     }
 
