@@ -5,26 +5,10 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
-import {
-    AfterViewInit,
-    Component,
-    computed,
-    effect,
-    ElementRef,
-    inject,
-    OnInit,
-    signal,
-    ViewChild,
-} from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { AfterViewInit, Component, computed, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideCalendarCheck,
-    lucideDownload,
-    lucidePlus,
-    lucideTrash,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideCalendarCheck, lucideDownload, lucideGem, lucidePlus, lucideTrash } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButton } from '@spartan-ng/helm/button';
@@ -45,6 +29,7 @@ import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
+import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 
 @Component({
     selector: 'app-vencimiento',
@@ -70,6 +55,8 @@ import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
         HlmBreadCrumbImports,
         RouterLink,
         EditorTexto,
+        PopupFuncionalidadBloqueada,
+        RouterModule,
     ],
     templateUrl: './vencimiento.html',
     styleUrl: './vencimiento.scss',
@@ -80,6 +67,7 @@ import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
             lucidePlus,
             lucideDownload,
             lucideTrash,
+            lucideGem,
         }),
         DatePipe,
     ],
@@ -141,7 +129,7 @@ export class Vencimiento implements OnInit {
 
     @ViewChild('contenedorDescripcion') set contenedorDescripcion(el: ElementRef | undefined) {
         if (el) {
-            const mostrar = el.nativeElement.scrollHeight > el.nativeElement.clientHeight;
+            const mostrar = el.nativeElement.scrollHeight > 240;
             this.mostrarBotonExpandir.set(mostrar);
         }
     }
@@ -178,10 +166,7 @@ export class Vencimiento implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener norma suscrita por ID con vencimiento', err);
-                    this.error.set(
-                        getErrorMessage(err) ??
-                            'Error al obtener norma suscrita por ID con vencimiento',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener norma suscrita por ID con vencimiento');
                 },
             })
             .add(() => {
@@ -210,23 +195,14 @@ export class Vencimiento implements OnInit {
         this.refrescarAdjuntos$
             .pipe(
                 debounceTime(500),
-                switchMap(() =>
-                    this.normaSuscritaDao.obtenerPorIdConVencimiento(
-                        this.idNormaSuscrita()!,
-                        this.idHistorialNormaSuscrita()!,
-                    ),
-                ),
+                switchMap(() => this.normaSuscritaDao.obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)),
             )
             .subscribe({
                 next: (cargandoNormaSuscritaConVencimiento) => {
                     // Al obtener el listado de documentos adjuntos, se limpian los documentos retornados desde el listado de documentos en progreso...
-                    cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.forEach(
-                        (documentoAdjunto) => {
-                            this.documentosEnProgreso.update((docs) =>
-                                docs.filter((d) => d.idDocumentoAdjunto !== documentoAdjunto.id),
-                            );
-                        },
-                    );
+                    cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.forEach((documentoAdjunto) => {
+                        this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idDocumentoAdjunto !== documentoAdjunto.id));
+                    });
 
                     cargandoNormaSuscritaConVencimiento.documentosAdjuntos =
                         cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.sort((a, b) => {
@@ -250,12 +226,18 @@ export class Vencimiento implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener los documentos adjuntos', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener los documentos adjuntos',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener los documentos adjuntos');
                 },
             });
     }
+
+    puedeSubirArchivos = computed(() => {
+        const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
+        if (tienePlanEmpresa) {
+            return true;
+        }
+        return false;
+    });
 
     draggingFile = signal<boolean>(false);
     allowedFileTypes = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
@@ -309,9 +291,7 @@ export class Vencimiento implements OnInit {
                 });
         }
 
-        if (
-            archivosSeleccionados.some((archivo) => !this.allowedFileTypes.includes(archivo.type))
-        ) {
+        if (archivosSeleccionados.some((archivo) => !this.allowedFileTypes.includes(archivo.type))) {
             archivosSeleccionados
                 .filter((archivo) => !this.allowedFileTypes.includes(archivo.type))
                 .forEach((archivo) => {
@@ -323,10 +303,7 @@ export class Vencimiento implements OnInit {
             this.error.set(errores);
         }
 
-        archivosSeleccionados = archivosSeleccionados.filter(
-            (archivo) =>
-                this.allowedFileTypes.includes(archivo.type) && archivo.size <= this.maxFileSize,
-        );
+        archivosSeleccionados = archivosSeleccionados.filter((archivo) => this.allowedFileTypes.includes(archivo.type) && archivo.size <= this.maxFileSize);
 
         archivosSeleccionados.forEach((archivoSeleccionado) => {
             // Se crea documento en progreso...
@@ -361,82 +338,50 @@ export class Vencimiento implements OnInit {
                             ),
                         );
 
-                        this.s3Service
-                            .subirArchivo(
-                                salidaUrlSubida.preSignedUrl,
-                                salidaUrlSubida.preSignedFields,
-                                archivoSeleccionado,
-                            )
-                            .subscribe({
-                                next: (event) => {
-                                    if (event.type === HttpEventType.UploadProgress) {
-                                        // Se actualiza el progreso de avance del documento en progreso...
-                                        const porcentaje = Math.round(
-                                            (100 * event.loaded) /
-                                                (event.total ?? archivoSeleccionado.size),
-                                        );
+                        this.s3Service.subirArchivo(salidaUrlSubida.preSignedUrl, salidaUrlSubida.preSignedFields, archivoSeleccionado).subscribe({
+                            next: (event) => {
+                                if (event.type === HttpEventType.UploadProgress) {
+                                    // Se actualiza el progreso de avance del documento en progreso...
+                                    const porcentaje = Math.round((100 * event.loaded) / (event.total ?? archivoSeleccionado.size));
 
-                                        this.documentosEnProgreso.update((docsProgreso) =>
-                                            docsProgreso.map((doc) =>
-                                                doc.idTemporal === idTemporal
-                                                    ? { ...doc, progreso: porcentaje }
-                                                    : doc,
-                                            ),
-                                        );
-                                    } else if (event.type === HttpEventType.Response) {
-                                        this.documentoAdjuntoDao
-                                            .confirmarSubida({
-                                                idDocumentoAdjunto:
-                                                    salidaUrlSubida.idDocumentoAdjunto,
-                                            })
-                                            .subscribe({
-                                                next: () => {
-                                                    // Se obtiene la información nuevamente para actualizar lista de archivos adjuntos...
-                                                    this.refrescarAdjuntos$.next();
-                                                },
-                                                error: (err) => {
-                                                    // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
-                                                    this.documentosEnProgreso.update((docs) =>
-                                                        docs.filter(
-                                                            (d) => d.idTemporal !== idTemporal,
-                                                        ),
-                                                    );
-
-                                                    console.error(
-                                                        'Error al confirmar la subida de documento',
-                                                        err,
-                                                    );
-                                                    this.error.set(
-                                                        getErrorMessage(err) ??
-                                                            'Error al confirmar la subida de documento',
-                                                    );
-                                                },
-                                            });
-                                    }
-                                },
-                                error: (err) => {
-                                    // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
-                                    this.documentosEnProgreso.update((docs) =>
-                                        docs.filter((d) => d.idTemporal !== idTemporal),
+                                    this.documentosEnProgreso.update((docsProgreso) =>
+                                        docsProgreso.map((doc) => (doc.idTemporal === idTemporal ? { ...doc, progreso: porcentaje } : doc)),
                                     );
+                                } else if (event.type === HttpEventType.Response) {
+                                    this.documentoAdjuntoDao
+                                        .confirmarSubida({
+                                            idDocumentoAdjunto: salidaUrlSubida.idDocumentoAdjunto,
+                                        })
+                                        .subscribe({
+                                            next: () => {
+                                                // Se obtiene la información nuevamente para actualizar lista de archivos adjuntos...
+                                                this.refrescarAdjuntos$.next();
+                                            },
+                                            error: (err) => {
+                                                // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
+                                                this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
 
-                                    console.error('Error en subida del documento', err);
-                                    this.error.set(
-                                        getErrorMessage(err) ?? 'Error en subida del documento',
-                                    );
-                                },
-                            });
+                                                console.error('Error al confirmar la subida de documento', err);
+                                                this.error.set(getErrorMessage(err) ?? 'Error al confirmar la subida de documento');
+                                            },
+                                        });
+                                }
+                            },
+                            error: (err) => {
+                                // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
+                                this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
+
+                                console.error('Error en subida del documento', err);
+                                this.error.set(getErrorMessage(err) ?? 'Error en subida del documento');
+                            },
+                        });
                     },
                     error: (err) => {
                         // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
-                        this.documentosEnProgreso.update((docs) =>
-                            docs.filter((d) => d.idTemporal !== idTemporal),
-                        );
+                        this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
 
                         console.error('Error al generar URL de subida de documento', err);
-                        this.error.set(
-                            getErrorMessage(err) ?? 'Error al generar URL de subida de documento',
-                        );
+                        this.error.set(getErrorMessage(err) ?? 'Error al generar URL de subida de documento');
                     },
                 });
         });
@@ -444,9 +389,7 @@ export class Vencimiento implements OnInit {
 
     descargaArchivo(idDocumento: number) {
         // Se deja documento como "descargando"...
-        this.documentosAdjuntos.update((docs) =>
-            docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: true } : doc)),
-        );
+        this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: true } : doc)));
 
         // Se obtiene URL prefirmada para descarga...
         this.documentoAdjuntoDao
@@ -460,18 +403,12 @@ export class Vencimiento implements OnInit {
 
                     // Se deja spinner corriendo mientras navegador procesa la descarga...
                     setTimeout(() => {
-                        this.documentosAdjuntos.update((docs) =>
-                            docs.map((doc) =>
-                                doc.id === idDocumento ? { ...doc, descargando: false } : doc,
-                            ),
-                        );
+                        this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: false } : doc)));
                     }, 1500);
                 },
                 error: (err) => {
                     console.error('Error al generar URL de bajada de documento', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al generar URL de bajada de documento',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al generar URL de bajada de documento');
                 },
             });
     }
@@ -488,9 +425,7 @@ export class Vencimiento implements OnInit {
 
     eliminar(item: DocumentoAdjunto) {
         // Se deja documento como "borrando"...
-        this.documentosAdjuntos.update((docs) =>
-            docs.map((doc) => (doc.id === item.id ? { ...doc, borrando: true } : doc)),
-        );
+        this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === item.id ? { ...doc, borrando: true } : doc)));
 
         this.documentoAdjuntoDao.eliminar(item.id).subscribe({
             next: () => {
@@ -512,10 +447,8 @@ export class Vencimiento implements OnInit {
         let texto = `<p class='text-center'>¿Seguro que deseas dar por completada la obligación <b>${nombre}</b>?</p>`;
 
         const vencimiento = this.item()?.fechaVencimiento;
-        let vencimientoTexto =
-            this.datePipe.transform(vencimiento, "EEEE d 'de' MMMM 'de' yyyy 'a las' HH:mm") ?? '';
-        vencimientoTexto =
-            vencimientoTexto.charAt(0).toLocaleUpperCase() + vencimientoTexto.slice(1);
+        let vencimientoTexto = this.datePipe.transform(vencimiento, "EEEE d 'de' MMMM 'de' yyyy 'a las' HH:mm") ?? '';
+        vencimientoTexto = vencimientoTexto.charAt(0).toLocaleUpperCase() + vencimientoTexto.slice(1);
         texto += `<p class='mt-2 text-left'><b>Vencimiento:</b> ${vencimientoTexto}</p>`;
 
         let listadoDocumentos = '';

@@ -55,10 +55,7 @@
             <div class="flex flex-col items-center justify-center pb-5">
                 @if (item()?.nombreCategoriaNorma || item()?.templateNorma?.nombreCategoriaNorma) {
                     <p HlmP>
-                        {{
-                            item()?.nombreCategoriaNorma ??
-                                item()?.templateNorma?.nombreCategoriaNorma
-                        }}
+                        {{ item()?.nombreCategoriaNorma ?? item()?.templateNorma?.nombreCategoriaNorma }}
                     </p>
                 }
                 @if (fiscalizadores().length > 0) {
@@ -78,11 +75,8 @@
                     <div hlmItem variant="outline" size="sm" class="md:px-8">
                         <div hlmItemContent>
                             <div hlmItemTitle>Periodicidad</div>
-                            <div hlmItemDescription>
-                                {{
-                                    item()?.nombreTipoPeriodicidad ??
-                                        item()?.templateNorma?.nombreTipoPeriodicidad
-                                }}
+                            <div hlmItemDescription class="whitespace-nowrap">
+                                {{ item()?.nombreTipoPeriodicidad ?? item()?.templateNorma?.nombreTipoPeriodicidad }}
                             </div>
                         </div>
                     </div>
@@ -90,74 +84,38 @@
                         <div hlmItemContent>
                             <div hlmItemTitle>Multa</div>
                             <div hlmItemDescription>
-                                {{
-                                    item()?.multa ??
-                                        item()?.templateNorma?.multa ??
-                                        'Sin multa registrada'
-                                }}
+                                {{ item()?.multa ?? item()?.templateNorma?.multa ?? 'Sin multa registrada' }}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="mx-4 flex flex-col items-center justify-center">
-                    <div class="relative">
-                        <div
-                            #contenedorDescripcion
-                            class="transition-all duration-500 overflow-y-hidden"
-                            [class.max-h-60]="!expandido()"
-                            [class.max-h-1000]="expandido()"
-                        >
-                            <app-editor-texto
-                                [content]="
-                                    item()?.descripcion ?? item()?.templateNorma?.descripcion
-                                "
-                            ></app-editor-texto>
+                <div class="mx-4 flex flex-col items-center justify-start">
+                    <div class="relative w-full">
+                        <div #contenedorDescripcion class="overflow-y-hidden" [class.max-h-60]="!expandido()" [class.max-h-1000]="expandido()">
+                            <app-editor-texto [content]="item()?.descripcion ?? item()?.templateNorma?.descripcion" [readonly]="true"></app-editor-texto>
                         </div>
                         @if (!expandido() && mostrarBotonExpandir()) {
-                            <div
-                                class="absolute bottom-0 left-0 right-0 h-18 bg-linear-to-t from-white to-transparent pointer-events-none"
-                            ></div>
+                            <div class="absolute bottom-0 left-0 right-0 h-60 bg-linear-to-t from-white to-transparent pointer-events-none"></div>
                         }
                     </div>
                     @if (mostrarBotonExpandir()) {
                         @if (!expandido()) {
-                            <button
-                                hlmBtn
-                                variant="link"
-                                (click)="mostrarMasMenos(true)"
-                                class="mt-2"
-                            >
-                                Mostrar más...
-                            </button>
+                            <button hlmBtn variant="link" (click)="mostrarMasMenos(true)" class="mt-2">Mostrar más...</button>
                         } @else {
-                            <button
-                                hlmBtn
-                                variant="link"
-                                (click)="mostrarMasMenos(false)"
-                                class="mt-2"
-                            >
-                                Mostrar menos...
-                            </button>
+                            <button hlmBtn variant="link" (click)="mostrarMasMenos(false)" class="mt-2">Mostrar menos...</button>
                         }
                     }
                 </div>
-                @if (
-                    !item()?.fechaCompletitud ||
-                    (documentosAdjuntos() && documentosAdjuntos().length > 0)
-                ) {
+                @if (!item()?.fechaCompletitud || (documentosAdjuntos() && documentosAdjuntos().length > 0)) {
                     <div hlmItem variant="outline" size="sm" class="w-full">
                         <div hlmItemContent>
                             <div hlmItemTitle>Documentos Adjuntos</div>
                             <div hlmItemDescription>
                                 @if (!item()?.fechaCompletitud) {
                                     <div class="mb-2">
-                                        No olvides adjuntar los documentos asociados al cumplimiento
-                                        de la obligación.
+                                        No olvides adjuntar los documentos asociados al cumplimiento de la obligación.
                                         <ul class="list-disc ml-6">
-                                            <li>
-                                                Archivos <span class="italic">PDF</span> o imagenes
-                                                <span class="italic">JPEG/PNG/WEBP</span>.
-                                            </li>
+                                            <li>Archivos <span class="italic">PDF</span> o imagenes <span class="italic">JPEG/PNG/WEBP</span>.</li>
                                             <li>
                                                 Archivos con un tamaño máximo de
                                                 <span class="italic">10 MB</span>.
@@ -168,10 +126,8 @@
                                 <div hlmTableContainer>
                                     <table hlmTable>
                                         @if (
-                                            (documentosAdjuntos() &&
-                                                documentosAdjuntos().length > 0) ||
-                                            (documentosEnProgreso() &&
-                                                documentosEnProgreso().length > 0)
+                                            (documentosAdjuntos() && documentosAdjuntos().length > 0) ||
+                                            (documentosEnProgreso() && documentosEnProgreso().length > 0)
                                         ) {
                                             <thead hlmTHead>
                                                 <tr hlmTr>
@@ -182,55 +138,35 @@
                                             </thead>
                                         }
                                         <tbody hlmTBody>
-                                            @for (
-                                                documento of documentosAdjuntos();
-                                                track documento.id
-                                            ) {
+                                            @for (documento of documentosAdjuntos(); track documento.id) {
                                                 <tr hlmTr class="fade-in">
-                                                    <td
-                                                        hlmTd
-                                                        class="whitespace-normal wrap-break-word break-all"
-                                                    >
+                                                    <td hlmTd class="whitespace-normal wrap-break-word break-all">
                                                         {{ documento.nombreArchivo }}
                                                     </td>
                                                     <td hlmTd class="text-center">
                                                         <div class="flex flex-col gap-1">
                                                             <div class="text-xs">
-                                                                {{
-                                                                    documento.fechaSubida
-                                                                        | date: 'd MMM yyyy'
-                                                                }}
+                                                                {{ documento.fechaSubida | date: 'd MMM yyyy' }}
                                                             </div>
                                                             <div class="text-xs">
-                                                                {{
-                                                                    documento.fechaSubida
-                                                                        | date: 'HH:mm:ss'
-                                                                }}
+                                                                {{ documento.fechaSubida | date: 'HH:mm:ss' }}
                                                             </div>
                                                         </div>
                                                     </td>
                                                     <td hlmTd>
-                                                        <div
-                                                            class="flex flex-row items-center justify-end gap-2"
-                                                        >
+                                                        <div class="flex flex-row items-center justify-end gap-2">
                                                             <button
                                                                 hlmBtn
                                                                 size="icon"
                                                                 variant="outlineAzul"
                                                                 class="size-8"
-                                                                (click)="
-                                                                    descargaArchivo(documento.id)
-                                                                "
+                                                                (click)="descargaArchivo(documento.id)"
                                                                 [disabled]="documento.descargando"
                                                             >
                                                                 @if (documento.descargando) {
                                                                     <hlm-spinner />
                                                                 } @else {
-                                                                    <ng-icon
-                                                                        hlm
-                                                                        size="sm"
-                                                                        name="lucideDownload"
-                                                                    />
+                                                                    <ng-icon hlm size="sm" name="lucideDownload" />
                                                                 }
                                                             </button>
                                                             @if (!item()?.fechaCompletitud) {
@@ -239,19 +175,13 @@
                                                                     size="icon"
                                                                     variant="destructive"
                                                                     class="size-8"
-                                                                    (click)="
-                                                                        openModalEliminar(documento)
-                                                                    "
+                                                                    (click)="openModalEliminar(documento)"
                                                                     [disabled]="documento.borrando"
                                                                 >
                                                                     @if (documento.borrando) {
                                                                         <hlm-spinner />
                                                                     } @else {
-                                                                        <ng-icon
-                                                                            hlm
-                                                                            size="sm"
-                                                                            name="lucideTrash"
-                                                                        />
+                                                                        <ng-icon hlm size="sm" name="lucideTrash" />
                                                                     }
                                                                 </button>
                                                             }
@@ -259,20 +189,11 @@
                                                     </td>
                                                 </tr>
                                             }
-                                            @for (
-                                                documentoEnProgreso of documentosEnProgreso();
-                                                track documentoEnProgreso.idTemporal
-                                            ) {
+                                            @for (documentoEnProgreso of documentosEnProgreso(); track documentoEnProgreso.idTemporal) {
                                                 <tr hlmTr class="fade-in">
-                                                    <td
-                                                        hlmTd
-                                                        class="whitespace-normal wrap-break-word break-all"
-                                                        colspan="3"
-                                                    >
+                                                    <td hlmTd class="whitespace-normal wrap-break-word break-all" colspan="3">
                                                         {{ documentoEnProgreso.nombre }}
-                                                        <hlm-progress
-                                                            [value]="documentoEnProgreso.progreso"
-                                                        >
+                                                        <hlm-progress [value]="documentoEnProgreso.progreso">
                                                             <hlm-progress-indicator />
                                                         </hlm-progress>
                                                     </td>
@@ -290,50 +211,52 @@
                                                             'bg-(--negro)/10': draggingFile(),
                                                         }"
                                                     >
-                                                        <div
-                                                            (dragover)="onDragOver($event)"
-                                                            (dragleave)="onDragLeave($event)"
-                                                            (drop)="onDropFile($event)"
-                                                            class="py-6"
-                                                        >
-                                                            <button
-                                                                hlmBtn
-                                                                size="icon"
-                                                                variant="link"
-                                                                class="size-8"
-                                                                (click)="fileInput.click()"
+                                                        @if (puedeSubirArchivos()) {
+                                                            <div
+                                                                (dragover)="onDragOver($event)"
+                                                                (dragleave)="onDragLeave($event)"
+                                                                (drop)="onDropFile($event)"
+                                                                class="py-6"
                                                             >
-                                                                <ng-icon
-                                                                    hlm
-                                                                    size="sm"
-                                                                    name="lucidePlus"
+                                                                <button hlmBtn size="icon" variant="link" class="size-8" (click)="fileInput.click()">
+                                                                    <ng-icon hlm size="sm" name="lucidePlus" />
+                                                                    <div>Click aquí para adjuntar tu documento</div>
+                                                                    <br />
+                                                                </button>
+                                                                <p hlmP class="text-xs mt-2 font-normal italic opacity-80">
+                                                                    (también puedes arrastrar aquí tus documentos)
+                                                                </p>
+                                                                <input
+                                                                    type="file"
+                                                                    #fileInput
+                                                                    hidden
+                                                                    [accept]="allowedFileTypes.join(',')"
+                                                                    (change)="archivosSeleccionados($event)"
+                                                                    multiple
                                                                 />
-                                                                <div>
-                                                                    Click aquí para adjuntar tu
-                                                                    documento
+                                                            </div>
+                                                        } @else {
+                                                            <app-popup-funcionalidad-bloqueada class="w-full">
+                                                                <div class="py-6">
+                                                                    <button hlmBtn size="icon" variant="link" class="size-8">
+                                                                        <ng-icon hlm size="sm" name="lucideGem" />
+                                                                        <div>Click aquí para adjuntar tu documento</div>
+                                                                        <br />
+                                                                    </button>
+                                                                    <p hlmP class="text-xs mt-2 font-normal italic opacity-80">
+                                                                        (también puedes arrastrar aquí tus documentos)
+                                                                    </p>
+                                                                    <input
+                                                                        type="file"
+                                                                        #fileInput
+                                                                        hidden
+                                                                        disabled
+                                                                        [accept]="allowedFileTypes.join(',')"
+                                                                        multiple
+                                                                    />
                                                                 </div>
-                                                                <br />
-                                                            </button>
-                                                            <p
-                                                                hlmP
-                                                                class="text-xs mt-2 font-normal italic opacity-80"
-                                                            >
-                                                                (también puedes arrastrar aquí tus
-                                                                documentos)
-                                                            </p>
-                                                            <input
-                                                                type="file"
-                                                                #fileInput
-                                                                hidden
-                                                                [accept]="
-                                                                    allowedFileTypes.join(',')
-                                                                "
-                                                                (change)="
-                                                                    archivosSeleccionados($event)
-                                                                "
-                                                                multiple
-                                                            />
-                                                        </div>
+                                                            </app-popup-funcionalidad-bloqueada>
+                                                        }
                                                     </td>
                                                 </tr>
                                             </tfoot>
@@ -362,25 +285,12 @@
                         </div>
                     </div>
                     @if (item()?.fechaCompletitud) {
-                        <div
-                            hlmItem
-                            variant="outline"
-                            size="sm"
-                            class="w-full bg-(--azul) border-(--azul) rounded-full justify-center"
-                        >
+                        <div hlmItem variant="outline" size="sm" class="w-full bg-(--azul) border-(--azul) rounded-full justify-center">
                             <div hlmItemMedia>
-                                <ng-icon
-                                    hlm
-                                    name="lucideBadgeCheck"
-                                    size="30px"
-                                    class="text-(--blanco)"
-                                />
+                                <ng-icon hlm name="lucideBadgeCheck" size="30px" class="text-(--blanco)" />
                             </div>
                             <div hlmItemContent class="flex-none max-w-full">
-                                <div
-                                    hlmItemTitle
-                                    class="text-base md:text-lg text-(--blanco) text-center"
-                                >
+                                <div hlmItemTitle class="text-base md:text-lg text-(--blanco) text-center">
                                     ¡Completada el
                                     {{ item()?.fechaCompletitud | date: "d 'de' MMMM 'de' yyyy" }}!
                                 </div>
@@ -390,19 +300,13 @@
                         <div hlmItem variant="outline" size="sm" class="w-full border-0">
                             <div hlmItemContent>
                                 <div hlmItemDescription>
-                                    <div
-                                        class="flex flex-col md:flex-row items-center gap-2 md:gap-3 w-full"
-                                    >
+                                    <div class="flex flex-col md:flex-row items-center gap-2 md:gap-3 w-full">
                                         <button
                                             hlmBtn
                                             variant="outlineAzul"
                                             class="w-full py-7 gap-4 text-lg"
                                             (click)="openModalConfirmar()"
-                                            [disabled]="
-                                                completando() ||
-                                                (documentosEnProgreso() &&
-                                                    documentosEnProgreso().length > 0)
-                                            "
+                                            [disabled]="completando() || (documentosEnProgreso() && documentosEnProgreso().length > 0)"
                                         >
                                             @if (completando()) {
                                                 <hlm-spinner />
