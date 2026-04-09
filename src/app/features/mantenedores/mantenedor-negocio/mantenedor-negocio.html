@@ -62,7 +62,7 @@
                                 {{ item.direccion }}
                             </td>
                             <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                                <div class="flex flex-col justify-start items-center">
+                                <div class="flex flex-col justify-start items-center text-center">
                                     <div
                                         class="text-[0.6rem] md:text-[0.7rem] opacity-80 text-center"
                                     >
@@ -103,11 +103,7 @@
                                                         position="left"
                                                         routerLink="/mi-plan"
                                                     >
-                                                        <button
-                                                            hlmDropdownMenuItem
-                                                            (click)="openModalEditar(item)"
-                                                            disabled
-                                                        >
+                                                        <button hlmDropdownMenuItem disabled>
                                                             <ng-icon
                                                                 hlm
                                                                 name="lucideGem"
