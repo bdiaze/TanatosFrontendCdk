@@ -43,6 +43,7 @@ import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { filter, map } from 'rxjs';
 
 @Component({
@@ -59,6 +60,7 @@ import { filter, map } from 'rxjs';
         RouterModule,
         HlmSkeletonImports,
         HlmScrollAreaImports,
+        HlmTooltipImports,
     ],
     templateUrl: './menu.html',
     styleUrl: './menu.scss',
@@ -328,6 +330,15 @@ export class Menu {
     }
 
     cargandoNegocios = signal<boolean>(true);
+
+    restringirSeleccionNegocios = computed(() => {
+        const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
+        const negocios = this.negocioStore.negociosUsuario();
+        if (negocios.length > 0 && !tienePlanEmpresa) {
+            return true;
+        }
+        return false;
+    });
 
     obtenerNegocios() {
         this.cargandoNegocios.set(true);

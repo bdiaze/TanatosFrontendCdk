@@ -13,13 +13,13 @@
                 [hlmDropdownMenuTrigger]="menuNegocios"
                 class="h-full border-none border-0 rounded-xs hover:text-(--negro)/80 shadow-none p-0"
                 [class.pl-4]="!estatico"
-                [class.pr-8]="!estatico"
+                [class.pr-0]="!estatico"
                 [class.px-4]="estatico"
                 [class.py-4]="estatico"
                 [class.w-full]="estatico"
                 [disabled]="cargandoNegocios()"
             >
-                <div class="flex flex-row justify-center items-center gap-4 w-full">
+                <div class="flex flex-row justify-center items-center gap-2 md:gap-3 w-full">
                     @if (!withClose) {
                         <div
                             class="text-(--negro)/80 flex aspect-square size-6 items-center justify-center rounded-lg"
@@ -38,9 +38,9 @@
                             </div>
                         }
                     }
-                    <div class="grid flex-1 text-left text-sm leading-tight">
+                    <div class="grid flex-1 text-left text-sm leading-tight pl-1">
                         <span
-                            class="truncate opacity-90 text-base"
+                            class="truncate opacity-90 text-base w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46"
                             [class.font-semibold]="negocioStore.negocioSeleccionado()?.nombre"
                             [class.text-sm]="!negocioStore.negocioSeleccionado()?.nombre"
                         >
@@ -54,7 +54,7 @@
                             }
                         </span>
                         <span
-                            class="truncate text-sm flex items-center gap-1 font-normal font-serif"
+                            class="truncate text-sm flex items-center gap-1 font-normal font-serif w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46"
                         >
                             @if (cargandoInformacionUsuario()) {
                                 <hlm-skeleton class="h-5 w-36 rounded-xl mt-1" />
@@ -69,11 +69,11 @@
                     </div>
                     @if (estatico) {
                         @if (negocioStore.negociosUsuario().length > 1) {
-                            <div class="size-6">
+                            <div class="flex items-center justify-end">
                                 <ng-icon
                                     hlm
                                     name="lucideChevronsUpDown"
-                                    class="ml-auto opacity-80"
+                                    class="opacity-80"
                                     size="sm"
                                 />
                             </div>
@@ -82,21 +82,64 @@
                 </div>
             </button>
             <ng-template #menuNegocios>
-                <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
-                    @for (negocio of negocioStore.negociosUsuario(); track negocio.id) {
-                        <button
-                            hlmDropdownMenuCheckbox
-                            [checked]="negocioStore.negocioSeleccionado()?.id === negocio.id"
-                            (triggered)="cambiarNegocio(negocio)"
-                        >
-                            <hlm-dropdown-menu-checkbox-indicator />
-                            <span class="pr-8">{{ negocio.nombre }}</span>
-                            <hlm-dropdown-menu-shortcut>
-                                <ng-icon name="lucideStore" class="text-sm translate-y-0.5 mr-1" />
-                            </hlm-dropdown-menu-shortcut>
-                        </button>
-                    }
-                </hlm-dropdown-menu>
+                @if (negocioStore.negociosUsuario().length > 1) {
+                    <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
+                        @for (
+                            negocio of negocioStore.negociosUsuario();
+                            track negocio.id;
+                            let first = $first
+                        ) {
+                            @if (!restringirSeleccionNegocios() || first) {
+                                <button
+                                    hlmDropdownMenuCheckbox
+                                    [checked]="
+                                        negocioStore.negocioSeleccionado()?.id === negocio.id
+                                    "
+                                    (triggered)="cambiarNegocio(negocio)"
+                                >
+                                    <hlm-dropdown-menu-checkbox-indicator />
+                                    <span class="pr-8 truncate max-w-40 md:max-w-54">{{
+                                        negocio.nombre
+                                    }}</span>
+                                    <hlm-dropdown-menu-shortcut>
+                                        <ng-icon
+                                            name="lucideStore"
+                                            class="text-sm translate-y-0.5 mr-1"
+                                        />
+                                    </hlm-dropdown-menu-shortcut>
+                                </button>
+                            } @else {
+                                <div
+                                    hlmTooltip="Tu plan restringe el uso de este negocio"
+                                    position="bottom"
+                                    routerLink="/mi-plan"
+                                >
+                                    <button
+                                        hlmDropdownMenuCheckbox
+                                        [checked]="
+                                            negocioStore.negocioSeleccionado()?.id === negocio.id
+                                        "
+                                        disabled
+                                    >
+                                        <hlm-dropdown-menu-checkbox-indicator />
+                                        <div class="flex items-center gap-1.5">
+                                            <ng-icon name="lucideGem" class="text-sm" />
+                                            <span class="pr-8 truncate max-w-40 md:max-w-54">
+                                                {{ negocio.nombre }}
+                                            </span>
+                                        </div>
+                                        <hlm-dropdown-menu-shortcut>
+                                            <ng-icon
+                                                name="lucideStore"
+                                                class="text-sm translate-y-0.5 mr-1"
+                                            />
+                                        </hlm-dropdown-menu-shortcut>
+                                    </button>
+                                </div>
+                            }
+                        }
+                    </hlm-dropdown-menu>
+                }
             </ng-template>
         }
         <div class="flex-1"></div>
@@ -188,7 +231,9 @@
                             @if (item.icon) {
                                 <ng-icon hlm [name]="item.icon" />
                             }
-                            <span>{{ item.titulo }}</span>
+                            <span class="w-46 md:w-38 lg:w-53 xl:w-53 2xl:w-54 truncate block">{{
+                                item.titulo
+                            }}</span>
                         </div>
                         @for (groupItem of item.items; track groupItem.id) {
                             @if (groupItem.tipo === 'item' && groupItem.url) {
