@@ -1,4 +1,13 @@
-import { AfterViewInit, Component, ElementRef, forwardRef, Input, ViewChild } from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    forwardRef,
+    Input,
+    OnChanges,
+    SimpleChanges,
+    ViewChild,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import Quill from 'quill';
 
@@ -15,9 +24,10 @@ import Quill from 'quill';
         },
     ],
 })
-export class EditorTexto implements AfterViewInit, ControlValueAccessor {
+export class EditorTexto implements AfterViewInit, ControlValueAccessor, OnChanges {
     @Input() content: string | null | undefined = null;
     @Input() placeholder: string | null = null;
+    @Input() readonly: boolean = false;
     @ViewChild('editor', { static: false }) editorElement!: ElementRef;
 
     quill!: Quill;
@@ -31,6 +41,7 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor {
         if (!this.content) {
             this.quill = new Quill(this.editorElement.nativeElement, {
                 theme: 'snow',
+                readOnly: this.readonly,
                 placeholder: this.placeholder ?? undefined,
                 modules: {
                     toolbar: [
@@ -87,6 +98,12 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor {
     setDisabledState?(isDisabled: boolean): void {
         if (this.quill) {
             this.quill.enable(!isDisabled);
+        }
+    }
+
+    ngOnChanges(): void {
+        if (this.quill) {
+            this.quill.enable(!this.readonly);
         }
     }
 }
