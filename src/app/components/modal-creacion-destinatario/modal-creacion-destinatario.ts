@@ -3,10 +3,10 @@ import { TipoReceptorNotificacionDao } from '@/app/daos/tipo-receptor-notificaci
 import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
 import { EntDestinatarioNotificacionCrear } from '@/app/entities/others/ent-destinatario-notificacion-crear';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
+import { Component, computed, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideMail, lucideSend, lucideSmartphone } from '@ng-icons/lucide';
+import { lucideGem, lucideMail, lucideSend, lucideSmartphone } from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -24,6 +24,9 @@ import { FormatoCorreo } from '@/app/directives/formato-correo';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { RouterModule } from '@angular/router';
+import { PopupFuncionalidadBloqueada } from '../popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 
 @Component({
     selector: 'app-modal-creacion-destinatario',
@@ -45,10 +48,13 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
         FormatoTelefono,
         FormatoCorreo,
         HlmSkeletonImports,
+        HlmTooltipImports,
+        RouterModule,
+        PopupFuncionalidadBloqueada,
     ],
     templateUrl: './modal-creacion-destinatario.html',
     styleUrl: './modal-creacion-destinatario.scss',
-    providers: [provideIcons({ lucideMail, lucideSmartphone, lucideSend })],
+    providers: [provideIcons({ lucideMail, lucideSmartphone, lucideSend, lucideGem })],
 })
 export class ModalCreacionDestinatario implements OnInit {
     @Output() cerrar = new EventEmitter<void>();
@@ -130,6 +136,14 @@ export class ModalCreacionDestinatario implements OnInit {
             });
     }
 
+    restringirTipos = computed(() => {
+        const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
+        if (!tienePlanEmpresa) {
+            return true;
+        }
+        return false;
+    });
+
     clickConfirmar() {
         const item: EntDestinatarioNotificacionCrear = {
             idNegocio: this.negocioStore.negocioSeleccionado()?.id!,
@@ -171,7 +185,7 @@ export class ModalCreacionDestinatario implements OnInit {
             case 1:
                 return 'ejemplo@ejemplo.cl';
             case 2:
-                return '+56 9 8877 6655';
+                return '+56 9 9999 9999';
             default:
                 return '';
         }

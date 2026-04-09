@@ -33,18 +33,43 @@
                                         tipoReceptor of tiposReceptoresVigentes();
                                         track tipoReceptor.id
                                     ) {
-                                        <label
-                                            hlmLabel
-                                            class="text-center relative space-x-0 border-border flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-(--azul) [&:has([data-checked=true])]:border-2 text-border [&:has([data-checked=true])]:text-(--azul)"
-                                        >
-                                            <hlm-radio [value]="tipoReceptor.id">
-                                                <ng-icon
-                                                    hlm
-                                                    [name]="obtenerIconName(tipoReceptor.id)"
-                                                />
-                                            </hlm-radio>
-                                            {{ tipoReceptor.nombre }}
-                                        </label>
+                                        @if (
+                                            !restringirTipos() || !tipoReceptor.requierePlanEmpresa
+                                        ) {
+                                            <label
+                                                hlmLabel
+                                                class="text-center relative space-x-0 border-(--negro)/30 flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-(--azul) [&:has([data-checked=true])]:border-2 text-(--negro)/30 [&:has([data-checked=true])]:text-(--azul) [&:has([data-checked=true])_ng-icon]:text-(--azul)"
+                                            >
+                                                <hlm-radio [value]="tipoReceptor.id">
+                                                    <ng-icon
+                                                        hlm
+                                                        [name]="obtenerIconName(tipoReceptor.id)"
+                                                        class="mr-3 text-(--negro)/20"
+                                                    />
+                                                </hlm-radio>
+                                                {{ tipoReceptor.nombre }}
+                                            </label>
+                                        } @else {
+                                            <app-popup-funcionalidad-bloqueada class="w-full">
+                                                <label
+                                                    hlmLabel
+                                                    class="has-[[disabled]]:cursor-default has-[[disabled]]:opacity-100 text-center relative space-x-0 border-(--negro)/30 flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-(--azul) [&:has([data-checked=true])]:border-2 text-(--negro)/30 [&:has([data-checked=true])]:text-(--azul) [&:has([data-checked=true])_ng-icon]:text-(--azul)"
+                                                >
+                                                    <hlm-radio
+                                                        [value]="tipoReceptor.id"
+                                                        disabled
+                                                        class="data-[disabled=true]:cursor-default data-[disabled=true]:opacity-100"
+                                                    >
+                                                        <ng-icon
+                                                            hlm
+                                                            name="lucideGem"
+                                                            class="mr-3 text-(--negro)/20"
+                                                        />
+                                                    </hlm-radio>
+                                                    {{ tipoReceptor.nombre }}
+                                                </label>
+                                            </app-popup-funcionalidad-bloqueada>
+                                        }
                                     }
                                 </hlm-radio-group>
                             }
