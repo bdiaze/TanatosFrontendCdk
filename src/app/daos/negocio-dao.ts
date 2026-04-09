@@ -42,13 +42,16 @@ export class NegocioDao {
             .get<SalNegocio[]>(environment.tanatosService.apiUrl + '/Negocio/Vigentes')
             .pipe(
                 tap((v) => {
-                    v = v.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
+                    v = v.sort(
+                        (a, b) =>
+                            new Date(a.fechaCreacion).getTime() -
+                            new Date(b.fechaCreacion).getTime(),
                     );
                     if (!this.arraysIguales(v, this.negocioStore.negociosUsuario())) {
                         this.negocioStore.negociosUsuario.set(v);
                     }
 
+                    // Si ya tiene un negocio seleccionado, se trata de mantener ese...
                     const cookieSeleccionado = getCookie('NegocioSeleccionado');
                     if (cookieSeleccionado) {
                         const encontrado = v.find((x) => x.id === Number(cookieSeleccionado));
@@ -68,6 +71,7 @@ export class NegocioDao {
                         }
                     }
 
+                    // Por defecto, siempre se selecciona el negocio más antiguo...
                     if (v.length > 0) {
                         if (this.negocioStore.negocioSeleccionado()?.id !== v[0].id) {
                             this.negocioStore.negocioSeleccionado.set(v[0]);
