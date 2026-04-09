@@ -62,11 +62,21 @@
                                                     >
                                                         <ng-icon
                                                             hlm
-                                                            name="lucideGem"
+                                                            [name]="
+                                                                obtenerIconName(tipoReceptor.id)
+                                                            "
                                                             class="mr-3 text-(--negro)/20"
                                                         />
                                                     </hlm-radio>
-                                                    {{ tipoReceptor.nombre }}
+                                                    <div class="flex flex-row items-center gap-1.5">
+                                                        <ng-icon
+                                                            hlm
+                                                            name="lucideGem"
+                                                            class="text-(--negro)/20"
+                                                            size="sm"
+                                                        />
+                                                        {{ tipoReceptor.nombre }}
+                                                    </div>
                                                 </label>
                                             </app-popup-funcionalidad-bloqueada>
                                         }
