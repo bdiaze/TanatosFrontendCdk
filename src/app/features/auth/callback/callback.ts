@@ -46,6 +46,7 @@ export class Callback implements OnInit {
 
             // Se valida que venga code, que state sea válido, y que se tenga code verifier almacenado...
             if (!code || !returnedState || !storedState || !codeVerifier) {
+                this.authStore.callbackRunning.set(false);
                 if (!this.authStore.sesionIniciada()) {
                     console.error(
                         !code
@@ -68,6 +69,7 @@ export class Callback implements OnInit {
             if (returnedState !== storedState) {
                 console.error('El state incluido en la URL es inválido');
                 this.error.set('¡Ups! parece que algo salió mal mientras procesabamos tu inicio de sesión, favor intenta nuevamente.');
+                this.authStore.callbackRunning.set(false);
                 return;
             }
 
