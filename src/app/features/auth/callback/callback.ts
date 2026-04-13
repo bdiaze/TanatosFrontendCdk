@@ -7,15 +7,24 @@ import { AuthDao } from '@/app/daos/auth-dao';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmProgressImports } from '@spartan-ng/helm/progress';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { HlmIcon } from '@spartan-ng/helm/icon';
+import { lucideTriangleAlert } from '@ng-icons/lucide';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
 
 @Component({
     selector: 'app-callback',
-    imports: [HlmSpinnerImports, HlmProgressImports, HlmSkeletonImports],
+    imports: [HlmAlertImports, HlmSpinnerImports, HlmProgressImports, HlmSkeletonImports, NgIcon, HlmIcon],
     templateUrl: './callback.html',
     styleUrl: './callback.scss',
     host: {
         class: 'inline-block h-full w-full',
     },
+    providers: [
+        provideIcons({
+            lucideTriangleAlert,
+        }),
+    ],
 })
 export class Callback implements OnInit {
     private route = inject(ActivatedRoute);
@@ -23,15 +32,10 @@ export class Callback implements OnInit {
     private authStore = inject(AuthStore);
     private authDao = inject(AuthDao);
 
-    progreso = signal<number>(0);
-    desc_progreso = signal<string>('Cargando la información de tus negocios...');
-
-    interval!: number;
+    error = signal('');
 
     ngOnInit() {
         this.authStore.callbackRunning.set(true);
-
-        // this.iniciarProgresoFalso();
 
         this.route.queryParams.subscribe((params) => {
             const code = params['code'];
@@ -41,18 +45,29 @@ export class Callback implements OnInit {
             const codeVerifier = sessionStorage.getItem('pkce_code_verifier');
 
             // Se valida que venga code, que state sea válido, y que se tenga code verifier almacenado...
-            if (!code) {
-                console.error('No se incluyó code en URL');
+            if (!code || !returnedState || !storedState || !codeVerifier) {
+                if (!this.authStore.sesionIniciada()) {
+                    console.error(
+                        !code
+                            ? 'No se incluyó code en URL de callback'
+                            : !returnedState
+                              ? 'No se incluyó state en URL de callback'
+                              : !storedState
+                                ? 'No se encontró pkce_state en session storage'
+                                : !codeVerifier
+                                  ? 'No se encontró pkce_code_verifier en session storage'
+                                  : '',
+                    );
+                    this.error.set('¡Ups! parece que algo salió mal mientras procesabamos tu inicio de sesión, favor intenta nuevamente.');
+                } else {
+                    this.router.navigateByUrl('/inicio');
+                }
                 return;
             }
 
-            if (!returnedState || returnedState !== storedState) {
-                console.error('No se incluyó state en URL o es inválido');
-                return;
-            }
-
-            if (!codeVerifier) {
-                console.error('No se tiene code verifier almacenado');
+            if (returnedState !== storedState) {
+                console.error('El state incluido en la URL es inválido');
+                this.error.set('¡Ups! parece que algo salió mal mientras procesabamos tu inicio de sesión, favor intenta nuevamente.');
                 return;
             }
 
@@ -67,54 +82,25 @@ export class Callback implements OnInit {
                 .obtenerAccessToken(parametros)
                 .subscribe({
                     next: (tokens) => {
-                        clearInterval(this.interval);
-
                         this.authStore.setAccessToken(tokens.accessToken);
 
                         // Se setea cookie con CSRF Token...
                         const expires: Date = new Date(tokens.csrfTokenExpiration);
-                        document.cookie = `csrf_token=${
-                            tokens.csrfToken
-                        }; expires=${expires.toUTCString()}; path=/`;
+                        document.cookie = `csrf_token=${tokens.csrfToken}; expires=${expires.toUTCString()}; path=/`;
 
                         sessionStorage.removeItem('pkce_state');
                         sessionStorage.removeItem('pkce_code_verifier');
 
-                        this.progreso.set(100);
-                        this.desc_progreso.set('Sesión iniciada exitosamente...');
-
                         this.router.navigateByUrl('/inicio');
                     },
                     error: (err) => {
-                        clearInterval(this.interval);
-                        this.progreso.set(100);
-                        this.desc_progreso.set(
-                            'Ocurrió un error al iniciar sesión, intente nuevamente...',
-                        );
                         console.error('Ocurrió un error al obtener tokens', err);
+                        this.error.set('¡Ups! parece que algo salió mal mientras procesabamos tu inicio de sesión, favor intenta nuevamente.');
                     },
                 })
                 .add(() => {
                     this.authStore.callbackRunning.set(false);
                 });
         });
-    }
-
-    async iniciarProgresoFalso() {
-        let i = 0;
-        this.interval = setInterval(() => {
-            if (i >= 90) {
-                clearInterval(this.interval);
-                return;
-            }
-
-            this.progreso.update((oldValue) => (oldValue < 90 ? oldValue + 10 : oldValue));
-            i += 10;
-            if (i == 30) {
-                // this.desc_progreso.set('Validando estado contra XSRF...');
-            } else if (i == 60) {
-                // this.desc_progreso.set('Generando tokens de autenticación...');
-            }
-        }, 100);
     }
 }
