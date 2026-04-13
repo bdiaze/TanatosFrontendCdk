@@ -4,7 +4,7 @@ import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -96,14 +96,7 @@ export class MantenedorNormaSuscrita {
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
             .subscribe({
                 next: (res) => {
-                    const sorted = res.sort((a, b) =>
-                        a.nombre && b.nombre
-                            ? a.nombre
-                                  .toLocaleLowerCase()
-                                  .localeCompare(b.nombre.toLocaleLowerCase())
-                            : a.id - b.id,
-                    );
-                    this.listado.set(sorted);
+                    this.listado.set(res);
                 },
                 error: (err) => {
                     console.error('Error al obtener las normas vigentes', err);
@@ -187,29 +180,37 @@ export class MantenedorNormaSuscrita {
         return cortado.slice(0, ultimoEspacio).trim() + '...';
     }
 
-    obtenerNormasPropias(listado: SalNormaSuscrita[]): SalNormaSuscrita[] {
-        return listado.filter((x) => x.templateNorma == null);
-    }
+    obtenerNormasPropias = computed(() => {
+        return this.listado()
+            .filter((x) => x.templateNorma == null)
+            .sort((a, b) => (a.nombre && b.nombre ? a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()) : a.id - b.id));
+    });
 
-    obtenerNormasSegunTemplate(
-        listado: SalNormaSuscrita[],
-        nombreTemplate: string,
-    ): SalNormaSuscrita[] {
-        return listado.filter(
-            (x) => x.templateNorma != null && x.templateNorma.nombreTemplate === nombreTemplate,
-        );
-    }
+    obtenerNormasSegunTemplate = computed(() => {
+        const resultado: Record<string, SalNormaSuscrita[]> = {};
 
-    obtenerTemplatesSuscritos(listado: SalNormaSuscrita[]): string[] {
-        const normasConTemplate = listado.filter((x) => x.templateNorma != null);
+        for (const norma of this.listado()) {
+            const template = norma.templateNorma?.nombreTemplate;
+            if (!template) continue;
 
-        const templates: string[] = [
-            ...new Set(normasConTemplate.map((n) => n.templateNorma?.nombreTemplate!)),
-        ];
-        const retorno: string[] = templates.sort((a, b) =>
-            a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()),
-        );
+            if (!resultado[template]) {
+                resultado[template] = [];
+            }
 
-        return retorno;
-    }
+            resultado[template].push(norma);
+        }
+
+        for (const key in resultado) {
+            resultado[key].sort((a, b) => a.id - b.id);
+        }
+
+        return resultado;
+    });
+
+    obtenerTemplatesSuscritos = computed(() => {
+        const normasConTemplate = this.listado().filter((x) => x.templateNorma != null);
+
+        const templates: string[] = [...new Set(normasConTemplate.map((n) => n.templateNorma?.nombreTemplate!))];
+        return templates.sort((a, b) => a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()));
+    });
 }
