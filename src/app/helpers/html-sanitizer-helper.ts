@@ -34,8 +34,8 @@ export class HtmlSanitizerHelper {
         this.configured = true;
     }
 
-    sanitizeQuill(html: string | null | undefined): string {
-        if (!html) return '';
+    sanitizeQuill(html: string | null | undefined): string | null | undefined {
+        if (!html) return html;
 
         return DOMPurify.sanitize(html, {
             ALLOWED_TAGS: [

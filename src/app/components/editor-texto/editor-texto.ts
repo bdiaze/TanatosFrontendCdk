@@ -1,13 +1,5 @@
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    forwardRef,
-    Input,
-    OnChanges,
-    SimpleChanges,
-    ViewChild,
-} from '@angular/core';
+import { HtmlSanitizerHelper } from '@/app/helpers/html-sanitizer-helper';
+import { AfterViewInit, Component, computed, ElementRef, forwardRef, inject, input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import Quill from 'quill';
 
@@ -24,10 +16,16 @@ import Quill from 'quill';
         },
     ],
 })
-export class EditorTexto implements AfterViewInit, ControlValueAccessor, OnChanges {
-    @Input() content: string | null | undefined = null;
-    @Input() placeholder: string | null = null;
-    @Input() readonly: boolean = false;
+export class EditorTexto implements AfterViewInit, ControlValueAccessor {
+    content = input<string | null | undefined>(null);
+    placeholder = input<string | null>(null);
+
+    private htmlSanitizerHelper = inject(HtmlSanitizerHelper);
+
+    safeContent = computed(() => {
+        return this.htmlSanitizerHelper.sanitizeQuill(this.content());
+    });
+
     @ViewChild('editor', { static: false }) editorElement!: ElementRef;
 
     quill!: Quill;
@@ -38,11 +36,10 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor, OnChang
     private onTouched = () => {};
 
     ngAfterViewInit(): void {
-        if (!this.content) {
+        if (!this.content()) {
             this.quill = new Quill(this.editorElement.nativeElement, {
                 theme: 'snow',
-                readOnly: this.readonly,
-                placeholder: this.placeholder ?? undefined,
+                placeholder: this.placeholder() ?? undefined,
                 modules: {
                     toolbar: [
                         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
@@ -53,18 +50,7 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor, OnChang
                         ['link'],
                     ],
                 },
-                formats: [
-                    'bold',
-                    'italic',
-                    'underline',
-                    'strike',
-                    'blockquote',
-                    'script',
-                    'list',
-                    'indent',
-                    'header',
-                    'link',
-                ],
+                formats: ['bold', 'italic', 'underline', 'strike', 'blockquote', 'script', 'list', 'indent', 'header', 'link'],
             });
 
             if (this.value) {
@@ -98,12 +84,6 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor, OnChang
     setDisabledState?(isDisabled: boolean): void {
         if (this.quill) {
             this.quill.enable(!isDisabled);
-        }
-    }
-
-    ngOnChanges(): void {
-        if (this.quill) {
-            this.quill.enable(!this.readonly);
         }
     }
 }
