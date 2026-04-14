@@ -23,6 +23,7 @@
         "@spartan-ng/brain": "0.0.1-alpha.647",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
+        "dompurify": "^3.3.3",
         "jwt-decode": "^4.0.0",
         "quill": "^2.0.3",
         "rxjs": "~7.8.0",
