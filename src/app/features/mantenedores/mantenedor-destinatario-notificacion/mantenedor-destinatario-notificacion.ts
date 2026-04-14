@@ -4,16 +4,7 @@ import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinata
 import { Component, inject, signal, effect, computed } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideClockAlert,
-    lucideEllipsis,
-    lucideGem,
-    lucideSend,
-    lucideTrash2,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideClockAlert, lucideEllipsis, lucideGem, lucideSend, lucideTrash2, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
@@ -100,9 +91,7 @@ export class MantenedorDestinatarioNotificacion {
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
             .subscribe({
                 next: (res) => {
-                    const sorted = res.sort((a, b) =>
-                        a.destino.toLocaleLowerCase().localeCompare(b.destino.toLocaleLowerCase()),
-                    );
+                    const sorted = res.sort((a, b) => a.destino.toLocaleLowerCase().localeCompare(b.destino.toLocaleLowerCase()));
                     this.listado.set(sorted);
                 },
                 error: (err) => {
@@ -122,6 +111,10 @@ export class MantenedorDestinatarioNotificacion {
             return false;
         }
         return true;
+    });
+
+    tienePlanEmpresa = computed(() => {
+        return this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
     });
 
     openModalEliminar(item: SalDestinatarioNotificacion) {

@@ -49,68 +49,45 @@
                             <td hlmTd class="text-xs md:text-sm">
                                 <p [hlmTooltip]="tooltip" class="w-42 md:w-auto truncate">
                                     @if (item.alias) {
-                                        <span class="text-[0.6rem] md:text-xs"
-                                            >{{ item.alias }}<br
-                                        /></span>
+                                        <span class="text-[0.6rem] md:text-xs">{{ item.alias }}<br /></span>
                                     }
-                                    {{
-                                        item.idTipoReceptor === 2
-                                            ? (item.destino | formatearTelefono)
-                                            : item.destino
-                                    }}
+                                    {{ item.idTipoReceptor === 2 ? (item.destino | formatearTelefono) : item.destino }}
                                 </p>
                                 <ng-template #tooltip>
                                     <span>
                                         @if (item.alias) {
                                             {{ item.alias }} <br />
                                         }
-                                        {{
-                                            item.idTipoReceptor === 2
-                                                ? (item.destino | formatearTelefono)
-                                                : item.destino
-                                        }}</span
+                                        {{ item.idTipoReceptor === 2 ? (item.destino | formatearTelefono) : item.destino }}</span
                                     >
                                 </ng-template>
                             </td>
                             <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">
-                                {{ item.nombreTipoReceptor }}
+                                <div class="flex flex-row items-center justify-center gap-1.5">
+                                    @if (!tienePlanEmpresa() && item.requierePlanEmpresa) {
+                                        <ng-icon hlm name="lucideGem" size="sm" hlmTooltip="Tu plan restringe el uso de este destinatario" class="opacity-90" />
+                                    }
+                                    {{ item.nombreTipoReceptor }}
+                                </div>
                             </td>
                             <td hlmTd class="text-center px-0">
                                 <div class="flex justify-center items-center">
                                     @if (item.validado) {
-                                        <ng-icon
-                                            hlm
-                                            name="lucideBadgeCheck"
-                                            class="text-green-700"
-                                        />
+                                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
                                     } @else {
-                                        <ng-icon
-                                            hlm
-                                            hlmTooltip="Pendiente confirmación del destinatario..."
-                                            name="lucideClockAlert"
-                                            class="opacity-65"
-                                        />
+                                        <ng-icon hlm hlmTooltip="Pendiente confirmación del destinatario..." name="lucideClockAlert" class="opacity-65" />
                                     }
                                 </div>
                             </td>
                             <td hlmTd class="px-0">
                                 <div class="flex items-center justify-center-safe">
-                                    <button
-                                        hlmBtn
-                                        variant="outline"
-                                        size="sm"
-                                        [hlmDropdownMenuTrigger]="menu"
-                                    >
+                                    <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
                                         <hlm-dropdown-menu>
                                             <hlm-dropdown-menu-group>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    variant="destructive"
-                                                    (click)="openModalEliminar(item)"
-                                                >
+                                                <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">
                                                     <ng-icon hlm size="sm" name="lucideTrash2" />
                                                     Eliminar
                                                 </button>
@@ -122,24 +99,14 @@
                         </tr>
                     } @empty {
                         <tr hlmTr>
-                            <td hlmTd colspan="4" class="text-center">
-                                No tienes destinatarios registrados
-                            </td>
+                            <td hlmTd colspan="4" class="text-center">No tienes destinatarios registrados</td>
                         </tr>
                     }
                 }
             </tbody>
         </table>
         @if (puedeCrear()) {
-            <button
-                hlmBtn
-                variant="azul"
-                (click)="openModalCrear()"
-                class="m-4"
-                [disabled]="cargando()"
-            >
-                Crear Nuevo
-            </button>
+            <button hlmBtn variant="azul" (click)="openModalCrear()" class="m-4" [disabled]="cargando()">Crear Nuevo</button>
         } @else {
             <app-popup-funcionalidad-bloqueada class="m-4 h-fit">
                 <button hlmBtn variant="azul" class="has-[>ng-icon]:pl-3 has-[>ng-icon]:pr-5">
@@ -162,15 +129,12 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un destinatario:"
-        [descripcion]="
-            `¿Seguro que deseas eliminar el destinatario ${itemSeleccionado()?.destino}?`
-        "
+        [descripcion]="`¿Seguro que deseas eliminar el destinatario ${itemSeleccionado()?.destino}?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >
     </app-modal-eliminacion>
 }
 @if (showModalCrear()) {
-    <app-modal-creacion-destinatario (cerrar)="closeModalCrear()" (confirmar)="confirmar($event)">
-    </app-modal-creacion-destinatario>
+    <app-modal-creacion-destinatario (cerrar)="closeModalCrear()" (confirmar)="confirmar($event)"> </app-modal-creacion-destinatario>
 }
