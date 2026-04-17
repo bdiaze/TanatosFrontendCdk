@@ -6,6 +6,7 @@ export interface Template {
     idTemplatePadre: number | null;
     nombre: string;
     descripcion: string;
+    requierePlanEmpresa: boolean;
     vigencia: boolean;
 
     templateNormas: TemplateNorma[] | null;

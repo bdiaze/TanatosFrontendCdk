@@ -4,10 +4,7 @@ import { InscripcionTemplateDao } from '@/app/daos/inscripcion-template-dao';
 import { TemplateDao } from '@/app/daos/template-dao';
 import { Template } from '@/app/entities/models/template';
 import { SalInscripcionTemplate } from '@/app/entities/others/sal-inscripcion-template';
-import {
-    TemplateConInscripcion,
-    TemplateNormasConInscripcion,
-} from '@/app/entities/others/template-con-inscripcion';
+import { TemplateConInscripcion, TemplateNormasConInscripcion } from '@/app/entities/others/template-con-inscripcion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
@@ -98,9 +95,7 @@ export class MantenedorPlantillasInscritas {
             return false;
         }
 
-        const template = this.templatesVigentes().find(
-            (u) => u.id === this.itemSeleccionado()?.idTemplate,
-        );
+        const template = this.templatesVigentes().find((u) => u.id === this.itemSeleccionado()?.idTemplate);
         if (!template) {
             return false;
         }
@@ -111,9 +106,7 @@ export class MantenedorPlantillasInscritas {
                 return true;
             }
 
-            templatePadre = this.templatesVigentes().find(
-                (u) => u.id === templatePadre!.idTemplatePadre,
-            );
+            templatePadre = this.templatesVigentes().find((u) => u.id === templatePadre!.idTemplatePadre);
         }
 
         return false;
@@ -156,12 +149,8 @@ export class MantenedorPlantillasInscritas {
         this.listado.set([]);
 
         forkJoin({
-            inscripciones: this.inscripcionTemplateDao.obtenerVigentes(
-                this.negocioStore.negocioSeleccionado()?.id!,
-            ),
-            templates: this.templateDao.obtenerVigentesConNormasYRecomendacion(
-                this.negocioStore.negocioSeleccionado()?.idTipoActividad!,
-            ),
+            inscripciones: this.inscripcionTemplateDao.obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!),
+            templates: this.templateDao.obtenerVigentesConNormasYRecomendacion(this.negocioStore.negocioSeleccionado()?.idTipoActividad!),
         })
             .subscribe({
                 next: ({ inscripciones, templates }) => {
@@ -173,8 +162,7 @@ export class MantenedorPlantillasInscritas {
 
                     const templatesConInscripciones: TemplateConInscripcion[] = [];
                     templatesSorted.forEach((template) => {
-                        const normasSorted =
-                            template.templateNormas?.sort((a, b) => a.idNorma - b.idNorma) ?? [];
+                        const normasSorted = template.templateNormas?.sort((a, b) => a.idNorma - b.idNorma) ?? [];
 
                         const templatesNormasConInscripciones: TemplateNormasConInscripcion[] = [];
                         normasSorted.forEach((norma) => {
@@ -187,12 +175,11 @@ export class MantenedorPlantillasInscritas {
                         templatesConInscripciones.push({
                             idTemplate: template.id,
                             nombreTemplate: template.nombre,
+                            requierePlanEmpresa: template.requierePlanEmpresa,
                             inscrito: inscripciones.some((i) => i.idTemplate == template.id),
                             templateNormas: templatesNormasConInscripciones,
                             recomendado: template.templateActividades?.find(
-                                (u) =>
-                                    u.idTipoActividad ===
-                                    this.negocioStore.negocioSeleccionado()?.idTipoActividad!,
+                                (u) => u.idTipoActividad === this.negocioStore.negocioSeleccionado()?.idTipoActividad!,
                             )
                                 ? true
                                 : false,
@@ -203,15 +190,17 @@ export class MantenedorPlantillasInscritas {
                 },
                 error: (err) => {
                     console.error('Error al obtener las plantillas inscritas', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener las plantillas inscritas',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener las plantillas inscritas');
                 },
             })
             .add(() => {
                 this.cargando.set(false);
             });
     }
+
+    tienePlanEmpresa = computed(() => {
+        return this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
+    });
 
     openModalDesinscribirse(item: TemplateConInscripcion) {
         this.itemSeleccionado.set(item);
@@ -301,12 +290,9 @@ export class MantenedorPlantillasInscritas {
             return '';
         }
 
-        let retorno =
-            '<p class="mb-1 text-left"><u>También te proponemos inscribirte a las plantillas siguientes:</u></p>';
+        let retorno = '<p class="mb-1 text-left"><u>También te proponemos inscribirte a las plantillas siguientes:</u></p>';
 
-        let templatePadre = this.templatesVigentes().find(
-            (u) => u.id === template!.idTemplatePadre,
-        );
+        let templatePadre = this.templatesVigentes().find((u) => u.id === template!.idTemplatePadre);
         while (templatePadre) {
             if (!this.inscripciones().some((i) => i.idTemplate == templatePadre?.id)) {
                 retorno += `<p class="mt-1 px-2 text-sm text-left"><b>${templatePadre.nombre}</b></p>`;
@@ -319,9 +305,7 @@ export class MantenedorPlantillasInscritas {
                 retorno += '</div>';
             }
 
-            templatePadre = this.templatesVigentes().find(
-                (u) => u.id === templatePadre!.idTemplatePadre,
-            );
+            templatePadre = this.templatesVigentes().find((u) => u.id === templatePadre!.idTemplatePadre);
         }
 
         return retorno;

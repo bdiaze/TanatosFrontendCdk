@@ -1,6 +1,7 @@
 export interface TemplateConInscripcion {
     idTemplate: number;
     nombreTemplate: string;
+    requierePlanEmpresa: boolean;
     templateNormas: TemplateNormasConInscripcion[];
     inscrito: boolean;
     recomendado: boolean;

@@ -25,9 +25,7 @@
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-xs md:text-sm text-center">Obligaciones</th>
-                    <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">
-                        ¿Inscrita?
-                    </th>
+                    <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">¿Inscrita?</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
             </thead>
@@ -79,10 +77,7 @@
                             </td>
                             <td hlmTd class="whitespace-normal text-xs md:text-sm">
                                 <div class="flex flex-wrap justify-center items-center gap-2">
-                                    @for (
-                                        norma of item.templateNormas.slice(0, 3);
-                                        track norma.idNorma
-                                    ) {
+                                    @for (norma of item.templateNormas.slice(0, 3); track norma.idNorma) {
                                         @if (norma.nombreNorma.length > 20) {
                                             <span
                                                 hlmBadge
@@ -90,35 +85,17 @@
                                                 [hlmTooltip]="norma.nombreNorma"
                                                 position="bottom"
                                                 class="text-[0.65rem] md:text-xs"
-                                                >{{
-                                                    norma.nombreNorma.substring(0, 17).trim() +
-                                                        '...'
-                                                }}</span
+                                                >{{ norma.nombreNorma.substring(0, 17).trim() + '...' }}</span
                                             >
                                         } @else {
-                                            <span
-                                                hlmBadge
-                                                variant="azul"
-                                                class="text-[0.65rem] md:text-xs"
-                                                >{{ norma.nombreNorma }}</span
-                                            >
+                                            <span hlmBadge variant="azul" class="text-[0.65rem] md:text-xs">{{ norma.nombreNorma }}</span>
                                         }
                                     }
                                     @if (item.templateNormas.length > 3) {
-                                        <span
-                                            hlmBadge
-                                            variant="azul"
-                                            [hlmTooltip]="tooltip"
-                                            position="bottom"
-                                            class="text-[0.65rem] md:text-xs"
-                                            >...</span
-                                        >
+                                        <span hlmBadge variant="azul" [hlmTooltip]="tooltip" position="bottom" class="text-[0.65rem] md:text-xs">...</span>
                                         <ng-template #tooltip>
                                             <span>
-                                                @for (
-                                                    norma of item.templateNormas.slice(3);
-                                                    track norma.idNorma
-                                                ) {
+                                                @for (norma of item.templateNormas.slice(3); track norma.idNorma) {
                                                     {{ '· ' + norma.nombreNorma }} <br />
                                                 }
                                             </span>
@@ -130,22 +107,12 @@
                                 @if (item.inscrito) {
                                     <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
                                 } @else {
-                                    <ng-icon
-                                        hlmTooltipTrigger
-                                        hlm
-                                        name="lucideBadgeX"
-                                        class="text-destructive"
-                                    />
+                                    <ng-icon hlmTooltipTrigger hlm name="lucideBadgeX" class="text-destructive" />
                                 }
                             </td>
                             <td hlmTd class="px-0">
                                 <div class="flex items-center justify-center-safe">
-                                    <button
-                                        hlmBtn
-                                        variant="outline"
-                                        size="sm"
-                                        [hlmDropdownMenuTrigger]="menu"
-                                    >
+                                    <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
@@ -155,26 +122,14 @@
                                                     <button
                                                         hlmDropdownMenuItem
                                                         (click)="openModalInscribirse(item)"
+                                                        [disabled]="!tienePlanEmpresa() && item.requierePlanEmpresa"
                                                     >
-                                                        <ng-icon
-                                                            hlm
-                                                            size="sm"
-                                                            name="lucideClipboardCheck"
-                                                            class="text-(--negro)/85"
-                                                        />
+                                                        <ng-icon hlm size="sm" name="lucideClipboardCheck" class="text-(--negro)/85" />
                                                         Inscribirse
                                                     </button>
                                                 } @else {
-                                                    <button
-                                                        hlmDropdownMenuItem
-                                                        variant="destructive"
-                                                        (click)="openModalDesinscribirse(item)"
-                                                    >
-                                                        <ng-icon
-                                                            hlm
-                                                            size="sm"
-                                                            name="lucideClipboardX"
-                                                        />
+                                                    <button hlmDropdownMenuItem variant="destructive" (click)="openModalDesinscribirse(item)">
+                                                        <ng-icon hlm size="sm" name="lucideClipboardX" />
                                                         Cancelar inscripción
                                                     </button>
                                                 }
@@ -186,9 +141,7 @@
                         </tr>
                     } @empty {
                         <tr hlmTr class="fade-in">
-                            <td hlmTd colspan="4" class="text-center">
-                                No tenemos plantillas disponibles para tu inscripción
-                            </td>
+                            <td hlmTd colspan="4" class="text-center">No tenemos plantillas disponibles para tu inscripción</td>
                         </tr>
                     }
                 }
@@ -208,9 +161,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Cancelar la inscripción:"
-        [descripcion]="
-            `¿Seguro que deseas cancelar la inscripción a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?`
-        "
+        [descripcion]="`¿Seguro que deseas cancelar la inscripción a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?`"
         textoBotonEliminar="Cancelar inscripción"
         textoBotonCancelar="Cerrar"
         (cerrar)="closeModalDesinscribirse()"
@@ -227,9 +178,7 @@
             [descripcion]="
                 `<p class='text-left'>¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?</p><div class='mx-2'>${listadoHTMLNormas(itemSeleccionado())}</div>`
             "
-            [descripcionSecundaria]="
-                `<div class='mx-2'>${informacionHTMLPadres(itemSeleccionado())}</div>`
-            "
+            [descripcionSecundaria]="`<div class='mx-2'>${informacionHTMLPadres(itemSeleccionado())}</div>`"
             [conFuncionSecundaria]="true"
             textoBotonGuardar="Sí, solo a la indicada"
             textoBotonSecundario="Inscribirse a todas"

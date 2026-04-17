@@ -18,26 +18,10 @@ import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { normalize } from '@/app/helpers/string-comparator';
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import {
-    AbstractControl,
-    FormArray,
-    FormControl,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideChevronDown,
-    lucidePlus,
-    lucideSquarePen,
-    lucideTrash2,
-    lucideX,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideChevronDown, lucidePlus, lucideSquarePen, lucideTrash2, lucideX } from '@ng-icons/lucide';
 import { BrnPopoverImports } from '@spartan-ng/brain/popover';
 import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmAccordionImports } from '@spartan-ng/helm/accordion';
@@ -131,6 +115,7 @@ export class MantenedorTemplateEdicion {
         idTemplatePadre: FormControl<number | null>;
         nombre: FormControl<string>;
         descripcion: FormControl<string>;
+        requierePlanEmpresa: FormControl<boolean>;
         vigencia: FormControl<boolean>;
         templateNormas: FormArray<
             FormGroup<{
@@ -176,6 +161,7 @@ export class MantenedorTemplateEdicion {
                 nonNullable: true,
             },
         ),
+        requierePlanEmpresa: new FormControl<boolean>({ value: false, disabled: false }, { validators: [Validators.required], nonNullable: true }),
         vigencia: new FormControl<boolean>(
             { value: false, disabled: false },
             {
@@ -263,29 +249,21 @@ export class MantenedorTemplateEdicion {
                     .subscribe({
                         next: (detalleTemplate) => {
                             if (detalleTemplate?.templateNormas) {
-                                detalleTemplate.templateNormas =
-                                    detalleTemplate?.templateNormas?.sort(
-                                        (a, b) => a.idNorma - b.idNorma,
-                                    );
+                                detalleTemplate.templateNormas = detalleTemplate?.templateNormas?.sort((a, b) => a.idNorma - b.idNorma);
 
                                 detalleTemplate?.templateNormas?.forEach((norma) => {
                                     if (norma.templateNormaFiscalizadores) {
-                                        norma.templateNormaFiscalizadores =
-                                            norma.templateNormaFiscalizadores?.sort(
-                                                (a, b) =>
-                                                    a.idTipoFiscalizador - b.idTipoFiscalizador,
-                                            );
+                                        norma.templateNormaFiscalizadores = norma.templateNormaFiscalizadores?.sort(
+                                            (a, b) => a.idTipoFiscalizador - b.idTipoFiscalizador,
+                                        );
                                     }
 
                                     if (norma.templateNormaNotificaciones) {
-                                        norma.templateNormaNotificaciones =
-                                            norma.templateNormaNotificaciones?.sort((a, b) =>
-                                                a.idTipoUnidadTiempoAntelacion !==
-                                                b.idTipoUnidadTiempoAntelacion
-                                                    ? b.idTipoUnidadTiempoAntelacion -
-                                                      a.idTipoUnidadTiempoAntelacion
-                                                    : b.cantAntelacion - a.cantAntelacion,
-                                            );
+                                        norma.templateNormaNotificaciones = norma.templateNormaNotificaciones?.sort((a, b) =>
+                                            a.idTipoUnidadTiempoAntelacion !== b.idTipoUnidadTiempoAntelacion
+                                                ? b.idTipoUnidadTiempoAntelacion - a.idTipoUnidadTiempoAntelacion
+                                                : b.cantAntelacion - a.cantAntelacion,
+                                        );
                                     }
                                 });
                             }
@@ -294,9 +272,7 @@ export class MantenedorTemplateEdicion {
                         },
                         error: (err) => {
                             console.error('Error al obtener los detalles del template', err);
-                            this.error.set(
-                                err.error ?? 'Error al obtener los detalles del template',
-                            );
+                            this.error.set(err.error ?? 'Error al obtener los detalles del template');
                         },
                     })
                     .add(() => {
@@ -315,15 +291,8 @@ export class MantenedorTemplateEdicion {
                     next: (vigentes) => {
                         if (this.item()) {
                             vigentes = vigentes.filter((t) => t.id !== this.item()!.id);
-                            vigentes = this.eliminarHijosComoPosiblesPadres(
-                                vigentes,
-                                this.item()!.id,
-                            );
-                            vigentes = vigentes.sort((a, b) =>
-                                a.nombre
-                                    .toLocaleLowerCase()
-                                    .localeCompare(b.nombre.toLocaleLowerCase()),
-                            );
+                            vigentes = this.eliminarHijosComoPosiblesPadres(vigentes, this.item()!.id);
+                            vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                         }
                         this.templatesExistentes.set(vigentes);
                     },
@@ -342,21 +311,18 @@ export class MantenedorTemplateEdicion {
                     idTemplatePadre: this.item()!.idTemplatePadre,
                     nombre: this.item()!.nombre,
                     descripcion: this.item()!.descripcion,
+                    requierePlanEmpresa: this.item()!.requierePlanEmpresa,
                     vigencia: this.item()!.vigencia,
                 });
 
                 (this.form.get('templateNormas') as FormArray).clear();
                 this.item()!.templateNormas?.forEach((norma) => {
-                    (this.form.get('templateNormas') as FormArray).push(
-                        this.buildNormaFormGroup(norma),
-                    );
+                    (this.form.get('templateNormas') as FormArray).push(this.buildNormaFormGroup(norma));
                 });
 
                 (this.form.get('templateActividades') as FormArray).clear();
                 this.item()!.templateActividades?.forEach((actividad) => {
-                    (this.form.get('templateActividades') as FormArray).push(
-                        this.buildActividadFormGroup(actividad),
-                    );
+                    (this.form.get('templateActividades') as FormArray).push(this.buildActividadFormGroup(actividad));
                 });
             } else {
                 this.form.patchValue({
@@ -364,6 +330,7 @@ export class MantenedorTemplateEdicion {
                     idTemplatePadre: null,
                     nombre: '',
                     descripcion: '',
+                    requierePlanEmpresa: false,
                     vigencia: false,
                 });
 
@@ -395,9 +362,7 @@ export class MantenedorTemplateEdicion {
                 next: ({ tiposRubros, tiposActividades }) => {
                     const sortedActividades = tiposActividades.sort((a, b) =>
                         a.idTipoRubro == b.idTipoRubro
-                            ? a.nombre
-                                  .toLocaleLowerCase()
-                                  .localeCompare(b.nombre.toLocaleLowerCase())
+                            ? a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase())
                             : a.idTipoRubro - b.idTipoRubro,
                     );
 
@@ -418,9 +383,7 @@ export class MantenedorTemplateEdicion {
             .obtenerPorVigencia(null)
             .subscribe({
                 next: (vigentes) => {
-                    vigentes = vigentes.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
-                    );
+                    vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                     this.categoriasExistentes.set(vigentes);
                 },
                 error: (err) => {
@@ -454,9 +417,7 @@ export class MantenedorTemplateEdicion {
             .obtenerPorVigencia(null)
             .subscribe({
                 next: (vigentes) => {
-                    vigentes = vigentes.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
-                    );
+                    vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                     this.fiscalizadoresExistentes.set(vigentes);
                 },
                 error: (err) => {
@@ -486,10 +447,7 @@ export class MantenedorTemplateEdicion {
             });
     }
 
-    private eliminarHijosComoPosiblesPadres(
-        vigentes: Template[],
-        idTemplatePadre: number,
-    ): Template[] {
+    private eliminarHijosComoPosiblesPadres(vigentes: Template[], idTemplatePadre: number): Template[] {
         let casosConDichoPadre = vigentes.filter((t) => t.idTemplatePadre === idTemplatePadre);
 
         casosConDichoPadre.forEach((p) => {
@@ -507,12 +465,8 @@ export class MantenedorTemplateEdicion {
 
         this.formFiscalizador = '';
 
-        const idx = (
-            normaControl.controls['templateNormaFiscalizadores'] as FormArray
-        ).controls.findIndex(
-            (ctrl: AbstractControl) =>
-                ctrl instanceof FormGroup &&
-                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
+        const idx = (normaControl.controls['templateNormaFiscalizadores'] as FormArray).controls.findIndex(
+            (ctrl: AbstractControl) => ctrl instanceof FormGroup && ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
         );
 
         if (idx !== -1) {
@@ -529,12 +483,8 @@ export class MantenedorTemplateEdicion {
     }
 
     quitarFiscalizador(normaControl: FormGroup, idFiscalizador: number) {
-        const idx = (
-            normaControl.controls['templateNormaFiscalizadores'] as FormArray
-        ).controls.findIndex(
-            (ctrl: AbstractControl) =>
-                ctrl instanceof FormGroup &&
-                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
+        const idx = (normaControl.controls['templateNormaFiscalizadores'] as FormArray).controls.findIndex(
+            (ctrl: AbstractControl) => ctrl instanceof FormGroup && ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
         );
 
         if (idx !== -1) {
@@ -543,12 +493,8 @@ export class MantenedorTemplateEdicion {
     }
 
     nombreFiscalizador(idFiscalizador: number): string {
-        const fiscalizador = this.fiscalizadoresExistentes().find(
-            (fiscalizador: TipoFiscalizador) => fiscalizador.id === idFiscalizador,
-        );
-        return fiscalizador?.nombreCorto && fiscalizador.nombreCorto.trim() !== ''
-            ? fiscalizador.nombreCorto
-            : fiscalizador?.nombre!;
+        const fiscalizador = this.fiscalizadoresExistentes().find((fiscalizador: TipoFiscalizador) => fiscalizador.id === idFiscalizador);
+        return fiscalizador?.nombreCorto && fiscalizador.nombreCorto.trim() !== '' ? fiscalizador.nombreCorto : fiscalizador?.nombre!;
     }
 
     formNotifCantTiempo = '';
@@ -561,9 +507,7 @@ export class MantenedorTemplateEdicion {
         this.formNotifCantTiempo = '';
         this.formNotifUnidadTiempo = '';
 
-        const idx = (
-            normaControl.controls['templateNormaNotificaciones'] as FormArray
-        ).controls.findIndex(
+        const idx = (normaControl.controls['templateNormaNotificaciones'] as FormArray).controls.findIndex(
             (ctrl: AbstractControl) =>
                 ctrl instanceof FormGroup &&
                 ctrl.controls['cantAntelacion']?.value === cantTiempo &&
@@ -586,19 +530,12 @@ export class MantenedorTemplateEdicion {
         );
     }
 
-    quitarNotificacionPrevia(
-        normaControl: FormGroup,
-        cantAntelacion: number,
-        idTipoUnidadTiempoAntelacion: number,
-    ) {
-        const idx = (
-            normaControl.controls['templateNormaNotificaciones'] as FormArray
-        ).controls.findIndex(
+    quitarNotificacionPrevia(normaControl: FormGroup, cantAntelacion: number, idTipoUnidadTiempoAntelacion: number) {
+        const idx = (normaControl.controls['templateNormaNotificaciones'] as FormArray).controls.findIndex(
             (ctrl: AbstractControl) =>
                 ctrl instanceof FormGroup &&
                 ctrl.controls['cantAntelacion']?.value === cantAntelacion &&
-                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value ===
-                    idTipoUnidadTiempoAntelacion,
+                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value === idTipoUnidadTiempoAntelacion,
         );
 
         if (idx !== -1) {
@@ -607,9 +544,7 @@ export class MantenedorTemplateEdicion {
     }
 
     nombreUnidadTiempo(idUnidadTiempo: number, cantUnidadTiempo: number | null = null): string {
-        const unidadTiempo = this.unidadesTiempoExistentes().find(
-            (unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo,
-        );
+        const unidadTiempo = this.unidadesTiempoExistentes().find((unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo);
 
         let cantidad = '';
         if (cantUnidadTiempo) {
@@ -666,13 +601,9 @@ export class MantenedorTemplateEdicion {
         const filtrados = this.actividadesExistentes().filter(
             (actividad) =>
                 (normalize(actividad.nombre).includes(normalize(this.searchActividad())) ||
-                    normalize(this.nombreRubro(actividad.idTipoRubro)).includes(
-                        normalize(this.searchActividad()),
-                    )) &&
+                    normalize(this.nombreRubro(actividad.idTipoRubro)).includes(normalize(this.searchActividad()))) &&
                 (this.form.controls['templateActividades'] as FormArray).controls.findIndex(
-                    (ctrl: AbstractControl) =>
-                        ctrl instanceof FormGroup &&
-                        ctrl.controls['idTipoActividad']?.value === actividad.id,
+                    (ctrl: AbstractControl) => ctrl instanceof FormGroup && ctrl.controls['idTipoActividad']?.value === actividad.id,
                 ) === -1,
         );
         const categorizados: any[] = [];
@@ -700,9 +631,7 @@ export class MantenedorTemplateEdicion {
         this.formActividad.set(null);
 
         const idx = (this.form.controls['templateActividades'] as FormArray).controls.findIndex(
-            (ctrl: AbstractControl) =>
-                ctrl instanceof FormGroup &&
-                ctrl.controls['idTipoActividad']?.value === idTipoActividad,
+            (ctrl: AbstractControl) => ctrl instanceof FormGroup && ctrl.controls['idTipoActividad']?.value === idTipoActividad,
         );
 
         if (idx !== -1) {
@@ -718,9 +647,7 @@ export class MantenedorTemplateEdicion {
 
     quitarActividad(idTipoActividad: number) {
         const idx = (this.form.controls['templateActividades'] as FormArray).controls.findIndex(
-            (ctrl: AbstractControl) =>
-                ctrl instanceof FormGroup &&
-                ctrl.controls['idTipoActividad']?.value === idTipoActividad,
+            (ctrl: AbstractControl) => ctrl instanceof FormGroup && ctrl.controls['idTipoActividad']?.value === idTipoActividad,
         );
 
         if (idx !== -1) {
@@ -729,26 +656,18 @@ export class MantenedorTemplateEdicion {
     }
 
     nombreActividad(idTipoActividad: number): string {
-        const tipoActividad = this.actividadesExistentes().find(
-            (actividad: TipoActividad) => actividad.id === idTipoActividad,
-        );
+        const tipoActividad = this.actividadesExistentes().find((actividad: TipoActividad) => actividad.id === idTipoActividad);
         return tipoActividad?.nombre!;
     }
 
     nombreRubroPorActividad(idTipoActividad: number): string {
-        const tipoActividad = this.actividadesExistentes().find(
-            (actividad: TipoActividad) => actividad.id === idTipoActividad,
-        );
-        const tipoRubro = this.rubrosExistentes().find(
-            (rubro: TipoRubro) => rubro.id === tipoActividad?.idTipoRubro,
-        );
+        const tipoActividad = this.actividadesExistentes().find((actividad: TipoActividad) => actividad.id === idTipoActividad);
+        const tipoRubro = this.rubrosExistentes().find((rubro: TipoRubro) => rubro.id === tipoActividad?.idTipoRubro);
         return tipoRubro?.nombre!;
     }
 
     nombreRubro(idTipoRubro: number): string {
-        const tipoRubro = this.rubrosExistentes().find(
-            (rubro: TipoRubro) => rubro.id === idTipoRubro,
-        );
+        const tipoRubro = this.rubrosExistentes().find((rubro: TipoRubro) => rubro.id === idTipoRubro);
         return tipoRubro?.nombre!;
     }
 
@@ -769,12 +688,8 @@ export class MantenedorTemplateEdicion {
                 nonNullable: true,
                 validators: [Validators.required],
             }),
-            templateNormaFiscalizadores: this.buildFiscalizadores(
-                norma.templateNormaFiscalizadores ?? [],
-            ),
-            templateNormaNotificaciones: this.buildNotificaciones(
-                norma.templateNormaNotificaciones ?? [],
-            ),
+            templateNormaFiscalizadores: this.buildFiscalizadores(norma.templateNormaFiscalizadores ?? []),
+            templateNormaNotificaciones: this.buildNotificaciones(norma.templateNormaNotificaciones ?? []),
             isOpened: new FormControl(false, { nonNullable: true }),
         });
     }
@@ -806,10 +721,7 @@ export class MantenedorTemplateEdicion {
             list.map(
                 (x) =>
                     new FormGroup({
-                        idTipoUnidadTiempoAntelacion: new FormControl(
-                            x.idTipoUnidadTiempoAntelacion,
-                            { nonNullable: true, validators: [Validators.required] },
-                        ),
+                        idTipoUnidadTiempoAntelacion: new FormControl(x.idTipoUnidadTiempoAntelacion, { nonNullable: true, validators: [Validators.required] }),
                         cantAntelacion: new FormControl(x.cantAntelacion, {
                             nonNullable: true,
                             validators: [Validators.required],
@@ -825,6 +737,7 @@ export class MantenedorTemplateEdicion {
             idTemplatePadre: this.form.controls['idTemplatePadre'].value,
             nombre: this.form.controls['nombre'].value!,
             descripcion: this.form.controls['descripcion'].value!,
+            requierePlanEmpresa: this.form.controls['requierePlanEmpresa'].value!,
             vigencia: this.form.controls['vigencia'].value!,
             templateNormas: [],
             templateActividades: [],
@@ -843,28 +756,22 @@ export class MantenedorTemplateEdicion {
                 templateNormaNotificaciones: [],
             } as TemplateNorma;
 
-            normaControl.controls['templateNormaFiscalizadores'].controls.forEach(
-                (fiscalizadorControl) => {
-                    norma.templateNormaFiscalizadores?.push({
-                        idTemplate: norma.idTemplate,
-                        idNorma: norma.idNorma,
-                        idTipoFiscalizador:
-                            fiscalizadorControl.controls['idTipoFiscalizador'].value!,
-                    });
-                },
-            );
+            normaControl.controls['templateNormaFiscalizadores'].controls.forEach((fiscalizadorControl) => {
+                norma.templateNormaFiscalizadores?.push({
+                    idTemplate: norma.idTemplate,
+                    idNorma: norma.idNorma,
+                    idTipoFiscalizador: fiscalizadorControl.controls['idTipoFiscalizador'].value!,
+                });
+            });
 
-            normaControl.controls['templateNormaNotificaciones'].controls.forEach(
-                (notificacionControl) => {
-                    norma.templateNormaNotificaciones?.push({
-                        idTemplate: norma.idTemplate,
-                        idNorma: norma.idNorma,
-                        idTipoUnidadTiempoAntelacion:
-                            notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
-                        cantAntelacion: notificacionControl.controls['cantAntelacion'].value!,
-                    });
-                },
-            );
+            normaControl.controls['templateNormaNotificaciones'].controls.forEach((notificacionControl) => {
+                norma.templateNormaNotificaciones?.push({
+                    idTemplate: norma.idTemplate,
+                    idNorma: norma.idNorma,
+                    idTipoUnidadTiempoAntelacion: notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
+                    cantAntelacion: notificacionControl.controls['cantAntelacion'].value!,
+                });
+            });
 
             template.templateNormas?.push(norma);
         });
