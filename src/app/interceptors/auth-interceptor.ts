@@ -53,6 +53,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             }
 
             return refreshService.refreshToken().pipe(
+                catchError((refreshErr) => {
+                    redireccionarALogin();
+                    return throwError(() => refreshErr);
+                }),
                 switchMap((newToken) =>
                     next(
                         req.clone({
@@ -63,10 +67,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                         }),
                     ),
                 ),
-                catchError((refreshErr) => {
-                    redireccionarALogin();
-                    return throwError(() => refreshErr);
-                }),
             );
         }),
     );
