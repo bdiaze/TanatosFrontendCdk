@@ -1,12 +1,4 @@
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    inject,
-    OnInit,
-    signal,
-    ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Header } from '@components/header/header';
 import { Footer } from '@components/footer/footer';
@@ -21,15 +13,8 @@ import { RecaptchaHelper } from './helpers/recaptcha-helper';
     styleUrl: './app.scss',
 })
 export class App implements OnInit {
-    protected readonly title = signal('tanatos-frontend');
-
     private recaptchHelper = inject(RecaptchaHelper);
-    private router = inject(Router);
-    private route = inject(ActivatedRoute);
-
-    private authStore = inject(AuthStore);
-    sesionIniciada = this.authStore.sesionIniciada;
-    logoutRunning = this.authStore.logoutRunning;
+    authStore = inject(AuthStore);
 
     mostrarDesktop = signal(false);
 
