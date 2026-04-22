@@ -125,6 +125,7 @@ export class MantenedorTemplateEdicion {
                 idTipoPeriodicidad: FormControl<number | null>;
                 multa: FormControl<string>;
                 idCategoriaNorma: FormControl<number | null>;
+                cronActivacionAutomatica: FormControl<string | null>;
                 templateNormaFiscalizadores: FormArray<
                     FormGroup<{
                         idTipoFiscalizador: FormControl<number | null>;
@@ -177,6 +178,7 @@ export class MantenedorTemplateEdicion {
                 idTipoPeriodicidad: FormControl<number | null>;
                 multa: FormControl<string>;
                 idCategoriaNorma: FormControl<number | null>;
+                cronActivacionAutomatica: FormControl<string | null>;
                 templateNormaFiscalizadores: FormArray<
                     FormGroup<{
                         idTipoFiscalizador: FormControl<number | null>;
@@ -583,6 +585,7 @@ export class MantenedorTemplateEdicion {
                     nonNullable: true,
                     validators: [Validators.required],
                 }),
+                cronActivacionAutomatica: new FormControl(null),
                 templateNormaFiscalizadores: this.buildFiscalizadores([]),
                 templateNormaNotificaciones: this.buildNotificaciones([]),
                 isOpened: new FormControl(true, { nonNullable: true }),
@@ -688,6 +691,7 @@ export class MantenedorTemplateEdicion {
                 nonNullable: true,
                 validators: [Validators.required],
             }),
+            cronActivacionAutomatica: new FormControl(norma.cronActivacionAutomatica),
             templateNormaFiscalizadores: this.buildFiscalizadores(norma.templateNormaFiscalizadores ?? []),
             templateNormaNotificaciones: this.buildNotificaciones(norma.templateNormaNotificaciones ?? []),
             isOpened: new FormControl(false, { nonNullable: true }),
@@ -744,6 +748,11 @@ export class MantenedorTemplateEdicion {
         };
 
         this.form.controls['templateNormas'].controls.forEach((normaControl) => {
+            let cronActivacionAutomatica = normaControl.controls['cronActivacionAutomatica'].value?.trim() ?? null;
+            if (cronActivacionAutomatica && cronActivacionAutomatica.length === 0) {
+                cronActivacionAutomatica = null;
+            }
+
             const norma = {
                 idTemplate: template.id,
                 idNorma: normaControl.controls['idNorma'].value!,
@@ -752,6 +761,7 @@ export class MantenedorTemplateEdicion {
                 idTipoPeriodicidad: normaControl.controls['idTipoPeriodicidad'].value,
                 multa: normaControl.controls['multa'].value,
                 idCategoriaNorma: normaControl.controls['idCategoriaNorma'].value!,
+                cronActivacionAutomatica: cronActivacionAutomatica,
                 templateNormaFiscalizadores: [],
                 templateNormaNotificaciones: [],
             } as TemplateNorma;

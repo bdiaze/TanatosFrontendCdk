@@ -9,6 +9,7 @@ export interface TemplateNorma {
     idTipoPeriodicidad: number | null;
     multa: string | null;
     idCategoriaNorma: number;
+    cronActivacionAutomatica: string | null;
 
     templateNormaFiscalizadores: TemplateNormaFiscalizador[] | null;
     templateNormaNotificaciones: TemplateNormaNotificacion[] | null;
