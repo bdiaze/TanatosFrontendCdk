@@ -19,6 +19,7 @@ import {
     lucideClipboardPlus,
     lucideClipboardX,
     lucideEllipsis,
+    lucideGem,
     lucideStar,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
@@ -35,6 +36,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { RouterModule } from '@angular/router';
 
 @Component({
     selector: 'app-mantenedor-plantillas-inscritas',
@@ -55,6 +57,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
         HlmTooltipImports,
         HlmSkeletonImports,
         HlmBreadCrumbImports,
+        RouterModule,
     ],
     templateUrl: './mantenedor-plantillas-inscritas.html',
     styleUrl: './mantenedor-plantillas-inscritas.scss',
@@ -70,6 +73,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
             lucideClipboardMinus,
             lucideClipboardX,
             lucideClipboardCheck,
+            lucideGem,
         }),
     ],
 })

@@ -60,6 +60,19 @@
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="whitespace-normal text-xs md:text-sm">
                                 <div class="flex justify-start items-center gap-2">
+                                    @if (!tienePlanEmpresa() && item.requierePlanEmpresa) {
+                                        <div class="w-4 flex items-center">
+                                            <ng-icon
+                                                hlm
+                                                name="lucideGem"
+                                                size="sm"
+                                                hlmTooltip="Tu plan restringe el uso de esta plantilla"
+                                                routerLink="/mi-plan"
+                                                class="cursor-pointer text-(--negro)/85"
+                                            />
+                                        </div>
+                                    }
+
                                     @if (item.recomendado) {
                                         <div class="w-4 flex items-center">
                                             <ng-icon
@@ -119,14 +132,19 @@
                                         <hlm-dropdown-menu>
                                             <hlm-dropdown-menu-group>
                                                 @if (!item.inscrito) {
-                                                    <button
-                                                        hlmDropdownMenuItem
-                                                        (click)="openModalInscribirse(item)"
-                                                        [disabled]="!tienePlanEmpresa() && item.requierePlanEmpresa"
-                                                    >
-                                                        <ng-icon hlm size="sm" name="lucideClipboardCheck" class="text-(--negro)/85" />
-                                                        Inscribirse
-                                                    </button>
+                                                    @if (tienePlanEmpresa() || !item.requierePlanEmpresa) {
+                                                        <button hlmDropdownMenuItem (click)="openModalInscribirse(item)">
+                                                            <ng-icon hlm size="sm" name="lucideClipboardCheck" class="text-(--negro)/85" />
+                                                            Inscribirse
+                                                        </button>
+                                                    } @else {
+                                                        <div hlmTooltip="Restringido debido a tu plan" position="left" routerLink="/mi-plan">
+                                                            <button hlmDropdownMenuItem disabled>
+                                                                <ng-icon hlm name="lucideGem" size="sm" class="text-(--negro)/80" />
+                                                                Inscribirse
+                                                            </button>
+                                                        </div>
+                                                    }
                                                 } @else {
                                                     <button hlmDropdownMenuItem variant="destructive" (click)="openModalDesinscribirse(item)">
                                                         <ng-icon hlm size="sm" name="lucideClipboardX" />
