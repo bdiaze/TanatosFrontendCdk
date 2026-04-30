@@ -1,4 +1,4 @@
-<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 pt-4 pb-6">
     <nav hlmBreadcrumb class="mb-4 pl-2">
         <ol hlmBreadcrumbList>
             <li hlmBreadcrumbItem>
@@ -282,43 +282,51 @@
             </div>
             <div class="flex flex-wrap items-center justify-center gap-4">
                 @for (plan of planes(); track plan.id) {
-                    <a
+                    <button
                         hlmItem
                         variant="outline"
-                        class="w-60 h-42 flex flex-row items-start justify-start p-0 fade-in group border border-(--azul) hover:border-(--azul)/90 gap-0"
+                        class="w-60 h-42 flex flex-row items-start justify-start p-0 fade-in group border border-(--azul) enabled:hover:border-(--azul)/90 gap-0"
                         (click)="generarUrlPago(plan.id)"
+                        [disabled]="procesandoPago()"
                     >
                         <div
                             hlmItemHeader
-                            class="flex flex-col items-stretch justify-start border border-(--azul) group-hover:border-(--azul) bg-(--azul) group-hover:bg-(--azul)/90 text-(--blanco) p-4"
+                            class="flex flex-col items-stretch justify-start border border-(--azul) group-enabled:group-hover:border-(--azul) bg-(--azul) group-enabled:group-hover:bg-(--azul)/90 text-(--blanco) p-4"
                         >
                             <p hlmItemTitle class="w-full justify-center text-center text-base underline underline-offset-3">
                                 {{ plan.nombre }}
                             </p>
                         </div>
                         <div hlmItemContent class="flex-1 flex flex-col items-start justify-start">
-                            <p hlmItemDescription class="w-full justify-center text-center">
-                                {{ plan.duracionMeses }}
-                                @if (plan.duracionMeses == 1) {
-                                    Mes
-                                } @else {
-                                    Meses
+                            @if (procesandoPago() && idPlanProcesandoPago() === plan.id) {
+                                <div class="w-full flex flex-col items-center justify-center gap-2 text-balance">
+                                    <hlm-spinner class="text-lg" />
+                                    <div>Redirigiendo a plataforma de pagos...</div>
+                                </div>
+                            } @else {
+                                <p hlmItemDescription class="w-full justify-center text-center">
+                                    {{ plan.duracionMeses }}
+                                    @if (plan.duracionMeses == 1) {
+                                        Mes
+                                    } @else {
+                                        Meses
+                                    }
+                                </p>
+                                @if (plan.id !== 1) {
+                                    <div class="w-full flex flex-row items-center justify-center gap-2">
+                                        <ng-icon hlm hlmAlertIcon name="lucideRefreshCw" size="sm" />Renovación automática
+                                    </div>
                                 }
-                            </p>
-                            @if (plan.id !== 1) {
-                                <div class="w-full flex flex-row items-center justify-center gap-2">
-                                    <ng-icon hlm hlmAlertIcon name="lucideRefreshCw" size="sm" />Renovación automática
+                                <div hlmItemTitle class="w-full justify-center text-center text-lg">
+                                    @if (plan.precio == 0) {
+                                        Gratuito
+                                    } @else {
+                                        ${{ plan.precio | number: '1.0-0' }}
+                                    }
                                 </div>
                             }
-                            <div hlmItemTitle class="w-full justify-center text-center text-lg">
-                                @if (plan.precio == 0) {
-                                    Gratuito
-                                } @else {
-                                    ${{ plan.precio | number: '1.0-0' }}
-                                }
-                            </div>
                         </div>
-                    </a>
+                    </button>
                 }
             </div>
         }

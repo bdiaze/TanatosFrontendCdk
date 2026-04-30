@@ -4,7 +4,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { injectHlmItemConfig } from './hlm-item-token';
 
 const itemVariants = cva(
-    'group/item [a]:hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-ring/50 flex flex-wrap items-center rounded-none border border-transparent text-sm transition-colors duration-100 outline-none focus-visible:ring-[3px] [a]:transition-colors [a]:hover:cursor-pointer',
+    'group/item [a]:hover:bg-accent/50 [button]:enabled:hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-ring/50 flex flex-wrap items-center rounded-none border border-transparent text-sm transition-colors duration-100 outline-none focus-visible:ring-[3px] [a]:transition-colors [a]:hover:cursor-pointer [button]:transition-colors [button]:enabled:hover:cursor-pointer',
     {
         variants: {
             variant: {
@@ -27,7 +27,7 @@ const itemVariants = cva(
 export type ItemVariants = VariantProps<typeof itemVariants>;
 
 @Directive({
-    selector: 'div[hlmItem], a[hlmItem]',
+    selector: 'div[hlmItem], a[hlmItem], button[hlmItem]',
     host: {
         'data-slot': 'item',
         '[attr.data-variant]': 'variant()',

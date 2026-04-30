@@ -207,11 +207,13 @@ export class MantenedorSuscripcion implements OnInit {
     }
 
     procesandoPago = signal(false);
+    idPlanProcesandoPago = signal<number | null>(null);
 
     generarUrlPago(idPlan: number) {
         if (this.procesandoPago()) return;
 
         this.procesandoPago.set(true);
+        this.idPlanProcesandoPago.set(idPlan);
         this.suscripcionDao
             .crear({
                 idPlan: idPlan,
@@ -221,17 +223,17 @@ export class MantenedorSuscripcion implements OnInit {
                     if (res.urlSuscripcion) {
                         window.location.href = res.urlSuscripcion;
                     } else {
-                        this.esCallback.set(true);
                         this.obtenerSuscripciones();
+                        this.procesandoPago.set(false);
+                        this.idPlanProcesandoPago.set(null);
                     }
                 },
                 error: (err) => {
                     console.error('Error al generar URL para pago de la suscripción', err);
                     this.error.set(getErrorMessage(err) ?? 'Error al generar URL para pago de la suscripción');
+                    this.procesandoPago.set(false);
+                    this.idPlanProcesandoPago.set(null);
                 },
-            })
-            .add(() => {
-                this.procesandoPago.set(false);
             });
     }
 
