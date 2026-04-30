@@ -5,12 +5,7 @@ import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { DecimalPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideEllipsis,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
@@ -37,9 +32,7 @@ import { catchError, combineLatest, of } from 'rxjs';
     ],
     templateUrl: './mantenedor-tipo-unidad-tiempo.html',
     styleUrl: './mantenedor-tipo-unidad-tiempo.scss',
-    providers: [
-        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
-    ],
+    providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoUnidadTiempo implements OnInit {
     private dao: TipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
@@ -76,6 +69,27 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             deshabilitado: false,
         },
         {
+            llave: 'cantMinutos',
+            nombre: 'Cant. Minutos',
+            tipo: 'number',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'cantHoras',
+            nombre: 'Cant. Horas',
+            tipo: 'number',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'cantDias',
+            nombre: 'Cant. Días',
+            tipo: 'number',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
             llave: 'vigencia',
             nombre: 'Vigencia',
             tipo: 'boolean',
@@ -105,6 +119,27 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
             nombre: 'Cant. Segundos',
             tipo: 'number',
             requerido: true,
+            deshabilitado: false,
+        },
+        {
+            llave: 'cantMinutos',
+            nombre: 'Cant. Minutos',
+            tipo: 'number',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'cantHoras',
+            nombre: 'Cant. Horas',
+            tipo: 'number',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'cantDias',
+            nombre: 'Cant. Días',
+            tipo: 'number',
+            requerido: false,
             deshabilitado: false,
         },
         {

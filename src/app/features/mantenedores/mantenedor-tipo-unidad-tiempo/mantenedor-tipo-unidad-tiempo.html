@@ -11,12 +11,7 @@
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-xs md:text-sm">Plural</th>
-                    <th
-                        hlmTh
-                        class="text-xs md:text-sm text-center whitespace-break-spaces w-22 md:w-34"
-                    >
-                        Cant. Segundos
-                    </th>
+                    <th hlmTh class="text-xs md:text-sm text-center whitespace-break-spaces w-22 md:w-34">Cant. Segundos, Minutos, Horas y Días</th>
                     <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
@@ -40,7 +35,16 @@
                             <td hlmTd class="text-xs md:text-sm">{{ item.nombre }}</td>
                             <td hlmTd class="text-xs md:text-sm">{{ item.nombrePlural }}</td>
                             <td hlmTd class="text-xs md:text-sm text-center">
-                                {{ item.cantSegundos | number: '1.0-0' }}
+                                <p class="text-xs">Cant. Segundos: {{ item.cantSegundos | number: '1.0-0' }}</p>
+                                @if (item.cantMinutos) {
+                                    <p class="text-xs">Cant. Minutos: {{ item.cantMinutos | number: '1.0-0' }}</p>
+                                }
+                                @if (item.cantHoras) {
+                                    <p class="text-xs">Cant. Horas: {{ item.cantHoras | number: '1.0-0' }}</p>
+                                }
+                                @if (item.cantDias) {
+                                    <p class="text-xs">Cant. Días: {{ item.cantDias | number: '1.0-0' }}</p>
+                                }
                             </td>
                             <td hlmTd class="text-xs md:text-sm text-center">
                                 @if (item.vigencia) {
@@ -51,30 +55,14 @@
                             </td>
                             <td hlmTd>
                                 <div class="flex items-center justify-center-safe">
-                                    <button
-                                        hlmBtn
-                                        size="sm"
-                                        variant="outline"
-                                        [hlmDropdownMenuTrigger]="menu"
-                                    >
+                                    <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
                                         <hlm-dropdown-menu>
                                             <hlm-dropdown-menu-group>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    (click)="openModalEditar(item)"
-                                                >
-                                                    Editar
-                                                </button>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    variant="destructive"
-                                                    (click)="openModalEliminar(item)"
-                                                >
-                                                    Eliminar
-                                                </button>
+                                                <button hlmDropdownMenuItem (click)="openModalEditar(item)">Editar</button>
+                                                <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
                                             </hlm-dropdown-menu-group>
                                         </hlm-dropdown-menu>
                                     </ng-template>
@@ -83,9 +71,7 @@
                         </tr>
                     } @empty {
                         <tr hlmTr class="fade-in">
-                            <td hlmTd colspan="6" class="text-center">
-                                No existen tipos de unidades de tiempo registrados
-                            </td>
+                            <td hlmTd colspan="6" class="text-center">No existen tipos de unidades de tiempo registrados</td>
                         </tr>
                     }
                 }
@@ -106,9 +92,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar una unidad de tiempo:"
-        [descripcion]="
-            `¿Seguro que deseas eliminar la unidad de tiempo (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`
-        "
+        [descripcion]="`¿Seguro que deseas eliminar la unidad de tiempo (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >
