@@ -15,13 +15,16 @@
         <h3 hlmH3>Mi Plan</h3>
     </div>
     @if (esCallback()) {
-        <div hlmAlert class="mb-3">
-            <ng-icon hlm hlmAlertIcon name="lucideHourglass" />
-            <h4 hlmAlertTitle>¡Procesando tu suscripción!</h4>
-            <p hlmAlertDescription>
-                Ya estamos procesando el primer pago de tus suscripción, esto tomará solo unos
-                segundos.
-            </p>
+        <div class="border-(--naranjo) border text-(--negro) w-full flex flex-col items-center justify-center mb-6">
+            <div class="border-(--naranjo) border bg-(--naranjo) text-(--blanco) w-full flex flex-row items-center justify-start gap-3 p-4 px-5">
+                <hlm-spinner class="text-2xl" />
+                <h4 hlmH4>¡Procesando tu primer pago!</h4>
+            </div>
+            <div class="py-5 px-8 flex flex-col gap-2">
+                <p hlmP class="text-center text-balance">Hemos registrado correctamente tu método de pago, ahora procederemos a efectuar el primer cargo.</p>
+                <p hlmP class="text-center text-balance font-semibold">¡Este proceso puede demorar algunos minutos!</p>
+                <p hlmP class="text-center text-balance">Mientras tanto puedes seguir explorando nuestra plataforma.</p>
+            </div>
         </div>
     }
     @if (cargandoSuscripciones() || cargandoPlanesVigentes()) {
@@ -44,13 +47,9 @@
         @if (ultimaSuscripcion()) {
             <div
                 class="border-(--azul) border w-full flex flex-col items-stretch justify-center"
-                [class.mb-6]="
-                    ultimaSuscripcion()!.precioPlan === 0 || ultimaSuscripcion()!.estado !== 1
-                "
+                [class.mb-6]="ultimaSuscripcion()!.precioPlan === 0 || ultimaSuscripcion()!.estado !== 1"
             >
-                <div
-                    class="bg-(--azul) text-(--blanco) flex flex-row items-center justify-between py-4 px-8"
-                >
+                <div class="bg-(--azul) text-(--blanco) flex flex-row items-center justify-between py-4 px-8">
                     <div class="flex flex-col items-start justify-center gap-2">
                         <h4 hlmH4>{{ ultimaSuscripcion()?.nombrePlan }}</h4>
                     </div>
@@ -64,10 +63,7 @@
                     <div class="flex flex-col items-center justify-center">
                         <p hlmP class="text-sm">Vencimiento:</p>
                         <p hlmP class="font-semibold">
-                            {{
-                                ultimaSuscripcion()?.fechaExpiracion
-                                    | date: "EEEE d 'de' MMMM 'de' yyyy"
-                            }}
+                            {{ ultimaSuscripcion()?.fechaExpiracion | date: "EEEE d 'de' MMMM 'de' yyyy" }}
                         </p>
                     </div>
                     @if (obtenerRenovacion(ultimaSuscripcion()!.idPlan)) {
@@ -75,12 +71,7 @@
                             <p hlmP class="text-sm">Renovación:</p>
                             <div class="flex flex-row items-center justify-center gap-2">
                                 @if (ultimaSuscripcion()!.estado !== 1) {
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideRefreshCwOff"
-                                        size="20px"
-                                    />
+                                    <ng-icon hlm hlmAlertIcon name="lucideRefreshCwOff" size="20px" />
                                     <p hlmP class="font-semibold">
                                         {{ obtenerEstadoSuscripcion(ultimaSuscripcion()!.estado) }}
                                     </p>
@@ -114,21 +105,16 @@
                 </div>
             }
         } @else {
-            <div
-                class="border-(--primary) border text-(--negro) w-full flex flex-col items-center justify-center mb-6"
-            >
-                <div
-                    class="border-(--primary) border bg-(--primary) text-(--blanco) w-full flex flex-row items-center justify-between gap-2 p-4 px-8"
-                >
+            <div class="border-(--primary) border text-(--negro) w-full flex flex-col items-center justify-center mb-6">
+                <div class="border-(--primary) border bg-(--primary) text-(--blanco) w-full flex flex-row items-center justify-between gap-2 p-4 px-8">
                     <h4 hlmH4>Plan Emprendedor</h4>
                     <h4 hlmH4>Gratuito</h4>
                 </div>
                 <div class="py-4 px-8">
                     <p hlmP class="text-center text-balance">
                         Posees el plan más básico, te recomendamos mejorar al
-                        <b class="font-semibold">Plan Empresa</b> para que
-                        <u class="underline-offset-3">desbloquees todas las funcionalidades</u> de
-                        Todo en Orden.
+                        <b class="font-semibold">Plan Empresa</b> para que <u class="underline-offset-3">desbloquees todas las funcionalidades</u> de Todo en
+                        Orden.
                     </p>
                 </div>
             </div>
@@ -142,11 +128,8 @@
                             <th hlmTh></th>
                             <th hlmTh class="text-center text-base px-6">Plan Emprendedor</th>
                             <th hlmTh class="text-center text-base px-6">
-                                <div
-                                    class="flex flex-row items-center justify-center gap-3 text-lg"
-                                >
-                                    <ng-icon hlm hlmAlertIcon name="lucideGem" size="base" />Plan
-                                    Empresa
+                                <div class="flex flex-row items-center justify-center gap-3 text-lg">
+                                    <ng-icon hlm hlmAlertIcon name="lucideGem" size="base" />Plan Empresa
                                 </div>
                             </th>
                         </tr>
@@ -158,9 +141,7 @@
                                 Negocios
                             </th>
                             <td hlmTd class="text-base px-6">Solo un negocio</td>
-                            <td hlmTd class="text-base px-6">
-                                Cantidad ilimitada <br />de negocios
-                            </td>
+                            <td hlmTd class="text-base px-6">Cantidad ilimitada <br />de negocios</td>
                         </tr>
                         <tr hlmTr>
                             <th hlmTh class="text-right">
@@ -168,27 +149,13 @@
                                 Personalizadas
                             </th>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                         </tr>
@@ -198,27 +165,13 @@
                                 Obligaciones
                             </th>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                         </tr>
@@ -227,37 +180,19 @@
                                 Acceso a Plantillas<br />
                                 de Obligaciones
                             </th>
-                            <td hlmTd class="text-base px-6">
-                                Limitado a <br />plantillas básicas
-                            </td>
-                            <td hlmTd class="text-base px-6">
-                                Acceso completo a <br />todas las plantillas
-                            </td>
+                            <td hlmTd class="text-base px-6">Limitado a <br />plantillas básicas</td>
+                            <td hlmTd class="text-base px-6">Acceso completo a <br />todas las plantillas</td>
                         </tr>
                         <tr hlmTr>
                             <th hlmTh class="text-right">Destinatarios de<br />Notificaciones</th>
                             <td hlmTd class="px-6">
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideUserRound"
-                                        size="base"
-                                    />Solo uno
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideUserRound" size="base" />Solo uno
                                 </div>
                             </td>
                             <td hlmTd class="px-6">
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideUsersRound"
-                                        size="base"
-                                    />Todos los destinatarios<br />
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideUsersRound" size="base" />Todos los destinatarios<br />
                                     que desees
                                 </div>
                             </td>
@@ -268,27 +203,13 @@
                                 Correo Electrónico
                             </th>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                         </tr>
@@ -298,22 +219,13 @@
                                 Whatsapp
                             </th>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
                                     <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="28px" />No
                                 </div>
                             </td>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                         </tr>
@@ -323,22 +235,13 @@
                                 Adjuntos
                             </th>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
                                     <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="28px" />No
                                 </div>
                             </td>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                         </tr>
@@ -348,22 +251,13 @@
                                 Prioritario
                             </th>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
                                     <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="28px" />No
                                 </div>
                             </td>
                             <td hlmTd>
-                                <div
-                                    class="flex flex-row items-center justify-center gap-2 text-base"
-                                >
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideCircleCheck"
-                                        size="28px"
-                                    />Sí
+                                <div class="flex flex-row items-center justify-center gap-2 text-base">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" size="28px" />Sí
                                 </div>
                             </td>
                         </tr>
@@ -398,10 +292,7 @@
                             hlmItemHeader
                             class="flex flex-col items-stretch justify-start border border-(--azul) group-hover:border-(--azul) bg-(--azul) group-hover:bg-(--azul)/90 text-(--blanco) p-4"
                         >
-                            <p
-                                hlmItemTitle
-                                class="w-full justify-center text-center text-base underline underline-offset-3"
-                            >
+                            <p hlmItemTitle class="w-full justify-center text-center text-base underline underline-offset-3">
                                 {{ plan.nombre }}
                             </p>
                         </div>
@@ -416,12 +307,7 @@
                             </p>
                             @if (plan.id !== 1) {
                                 <div class="w-full flex flex-row items-center justify-center gap-2">
-                                    <ng-icon
-                                        hlm
-                                        hlmAlertIcon
-                                        name="lucideRefreshCw"
-                                        size="sm"
-                                    />Renovación automática
+                                    <ng-icon hlm hlmAlertIcon name="lucideRefreshCw" size="sm" />Renovación automática
                                 </div>
                             }
                             <div hlmItemTitle class="w-full justify-center text-center text-lg">

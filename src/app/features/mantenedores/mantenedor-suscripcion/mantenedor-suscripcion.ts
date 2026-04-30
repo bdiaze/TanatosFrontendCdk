@@ -7,8 +7,8 @@ import { SalSuscripcion } from '@/app/entities/others/sal-suscripcion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideCalendarRange,
@@ -38,6 +38,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { interval, merge, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-mantenedor-suscripcion',
@@ -87,6 +88,7 @@ export class MantenedorSuscripcion implements OnInit {
     negocioStore: NegocioStore = inject(NegocioStore);
     private activatedRoute = inject(ActivatedRoute);
     private datePipe = inject(DatePipe);
+    private router = inject(Router);
 
     suscripciones = signal([] as SalSuscripcion[]);
     planesVigentes = signal([] as SalPlan[]);
@@ -94,9 +96,7 @@ export class MantenedorSuscripcion implements OnInit {
         const suscripciones = this.suscripciones();
 
         // Buscamos la suscripción con mayor expiración...
-        const suscripcionesConFechaExpiracion = suscripciones.filter(
-            (s) => s.fechaExpiracion && new Date(s.fechaExpiracion) > new Date(),
-        );
+        const suscripcionesConFechaExpiracion = suscripciones.filter((s) => s.fechaExpiracion && new Date(s.fechaExpiracion) > new Date());
         if (suscripcionesConFechaExpiracion.length > 0) {
             const mayorExpiracion = suscripcionesConFechaExpiracion.reduce((max, actual) =>
                 new Date(actual.fechaExpiracion!) > new Date(max.fechaExpiracion!) ? actual : max,
@@ -108,20 +108,13 @@ export class MantenedorSuscripcion implements OnInit {
     });
     fechaExpiracionFormateada = computed(() => {
         if (this.ultimaSuscripcion()) {
-            return this.datePipe.transform(
-                this.ultimaSuscripcion()?.fechaExpiracion,
-                "EEEE d 'de' MMMM 'de' yyyy",
-            );
+            return this.datePipe.transform(this.ultimaSuscripcion()?.fechaExpiracion, "EEEE d 'de' MMMM 'de' yyyy");
         }
         return null;
     });
     esPlanEmpresa = computed(() => {
         const ultimaSuscripcion = this.ultimaSuscripcion();
-        if (
-            ultimaSuscripcion &&
-            ultimaSuscripcion.fechaExpiracion &&
-            new Date(ultimaSuscripcion.fechaExpiracion) > new Date()
-        ) {
+        if (ultimaSuscripcion && ultimaSuscripcion.fechaExpiracion && new Date(ultimaSuscripcion.fechaExpiracion) > new Date()) {
             return true;
         }
         return false;
@@ -129,9 +122,7 @@ export class MantenedorSuscripcion implements OnInit {
     planes = computed(() => {
         const planesVigentes = this.planesVigentes();
         const suscripciones = this.suscripciones();
-        return planesVigentes.filter(
-            (p) => !p.suscripcionUnica || !suscripciones.some((s) => s.idPlan == p.id),
-        );
+        return planesVigentes.filter((p) => !p.suscripcionUnica || !suscripciones.some((s) => s.idPlan == p.id));
     });
 
     cargandoSuscripciones = signal(true);
@@ -140,21 +131,42 @@ export class MantenedorSuscripcion implements OnInit {
 
     esCallback = signal(false);
 
+    private pollingSub?: Subscription;
+
+    constructor() {
+        effect(() => {
+            if (this.esCallback()) {
+                if (this.pollingSub) return;
+                this.pollingSub = interval(10 * 1000).subscribe(() => {
+                    const ultima = this.ultimaSuscripcion();
+                    if (!ultima || ultima.estado !== 1) {
+                        this.obtenerSuscripciones(true);
+                    } else {
+                        this.router.navigate([], { queryParams: { callback: null }, queryParamsHandling: 'merge' });
+                    }
+                });
+            } else {
+                this.pollingSub?.unsubscribe();
+                this.pollingSub = undefined;
+            }
+        });
+    }
+
     ngOnInit(): void {
         this.obtenerSuscripciones();
         this.obtenerPlanesVigentes();
 
         this.activatedRoute.queryParams.subscribe((params) => {
             const callback = params['callback'];
-            if (callback == 1) {
-                this.esCallback.set(true);
-            }
+            this.esCallback.set(callback == 1);
         });
     }
 
-    obtenerSuscripciones() {
-        this.cargandoSuscripciones.set(true);
-        this.suscripciones.set([]);
+    obtenerSuscripciones(oculto: boolean = false) {
+        if (!oculto) {
+            this.cargandoSuscripciones.set(true);
+            this.suscripciones.set([]);
+        }
 
         this.suscripcionDao
             .obtenerVigentes()
@@ -164,13 +176,13 @@ export class MantenedorSuscripcion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener las suscripciones del cliente', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener las suscripciones del cliente',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener las suscripciones del cliente');
                 },
             })
             .add(() => {
-                this.cargandoSuscripciones.set(false);
+                if (!oculto) {
+                    this.cargandoSuscripciones.set(false);
+                }
             });
     }
 
@@ -215,9 +227,7 @@ export class MantenedorSuscripcion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al generar URL para pago de la suscripción', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al generar URL para pago de la suscripción',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al generar URL para pago de la suscripción');
                 },
             })
             .add(() => {
