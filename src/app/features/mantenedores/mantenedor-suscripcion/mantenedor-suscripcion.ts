@@ -38,7 +38,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
-import { interval, merge, Subscription } from 'rxjs';
+import { interval, merge, startWith, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-mantenedor-suscripcion',
@@ -129,21 +129,18 @@ export class MantenedorSuscripcion implements OnInit {
     cargandoPlanesVigentes = signal(true);
     error = signal('');
 
-    esCallback = signal(false);
+    procesandoPrimerPago = computed(() => {
+        return this.suscripciones().some((s) => s.estado === 4 /* Pago Pendiente */ && s.tieneFlowSubscriptionId);
+    });
 
     private pollingSub?: Subscription;
 
     constructor() {
         effect(() => {
-            if (this.esCallback()) {
+            if (this.procesandoPrimerPago()) {
                 if (this.pollingSub) return;
                 this.pollingSub = interval(10 * 1000).subscribe(() => {
-                    const ultima = this.ultimaSuscripcion();
-                    if (!ultima || ultima.estado !== 1) {
-                        this.obtenerSuscripciones(true);
-                    } else {
-                        this.router.navigate([], { queryParams: { callback: null }, queryParamsHandling: 'merge' });
-                    }
+                    this.obtenerSuscripciones(true);
                 });
             } else {
                 this.pollingSub?.unsubscribe();
@@ -155,11 +152,6 @@ export class MantenedorSuscripcion implements OnInit {
     ngOnInit(): void {
         this.obtenerSuscripciones();
         this.obtenerPlanesVigentes();
-
-        this.activatedRoute.queryParams.subscribe((params) => {
-            const callback = params['callback'];
-            this.esCallback.set(callback == 1);
-        });
     }
 
     obtenerSuscripciones(oculto: boolean = false) {

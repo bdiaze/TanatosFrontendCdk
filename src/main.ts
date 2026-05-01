@@ -13,7 +13,7 @@ if (url.pathname === '/callback') {
     console.log(`Redirigiendo a ${newUrl}`);
     window.location.replace(newUrl);
 } else if (url.pathname === '/flow-callback') {
-    const newUrl = `/#/mi-plan?callback=1`;
+    const newUrl = `/#/mi-plan${url.search}`;
     console.log(`Redirigiendo a ${newUrl}`);
     window.location.replace(newUrl);
 } else {

@@ -7,5 +7,6 @@ export interface SalSuscripcion {
     fechaInicio: string | null;
     fechaExpiracion: string | null;
     fechaCancelacion: string | null;
-    estado: number;
+    estado: number; // 1: Activa - 2: Cancelada - 3: Expirada - 4: Pago Pendiente.
+    tieneFlowSubscriptionId: boolean;
 }
