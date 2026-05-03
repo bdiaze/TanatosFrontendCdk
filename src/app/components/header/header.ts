@@ -12,6 +12,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { Menu } from '@components/menu/menu';
 import { ClickOutside } from '@/app/directives/click-outside';
 import { CommonModule } from '@angular/common';
+import { MobileHelper } from '@/app/helpers/mobile-helper';
 
 @Component({
     selector: 'app-header',
@@ -48,20 +49,19 @@ export class Header implements OnInit {
 
     private authStore = inject(AuthStore);
     private router = inject(Router);
+    mobileHelper = inject(MobileHelper);
 
     sesionIniciada = this.authStore.sesionIniciada;
     logoutRunning = this.authStore.logoutRunning;
 
     menuAbierto = signal<boolean>(false);
 
-    mostrarMovil = signal(false);
+    mostrarMovil = computed(() => {
+        return this.mobileHelper.isMobile();
+    });
 
     ngOnInit() {
         this.authStore.backgroundRefresh();
-
-        const mqMovil = window.matchMedia('(max-width: 767px)');
-        this.mostrarMovil.set(mqMovil.matches);
-        mqMovil.addEventListener('change', (e) => this.mostrarMovil.set(e.matches));
     }
 
     toggleMenu() {
