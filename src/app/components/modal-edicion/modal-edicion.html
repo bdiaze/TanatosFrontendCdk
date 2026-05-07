@@ -1,13 +1,5 @@
-<div
-    class="fixed left-0 top-0 bg-black/70 w-screen h-screen flex justify-center items-center z-50"
-    (pointerdown)="cerrar.emit()"
->
-    <div
-        hlmCard
-        (pointerdown)="$event.stopPropagation()"
-        (click)="$event.stopPropagation()"
-        class="min-w-xs md:min-w-md"
-    >
+<div class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50" (pointerdown)="cerrar.emit()">
+    <div hlmCard (pointerdown)="$event.stopPropagation()" (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md">
         <div hlmCardHeader class="faster-fade-in">
             <div class="flex items-center gap-4">
                 <ng-icon hlm name="lucideSquarePen" />
@@ -26,21 +18,16 @@
                                 @if (campo.tipo === 'string' || campo.tipo === 'number') {
                                     <div hlmInputGroup>
                                         <div hlmInputGroupAddon align="block-start">
-                                            <label
-                                                [for]="campo.llave"
-                                                hlmLabel
-                                                class="text-xs opacity-80 font-semibold whitespace-nowrap"
-                                                >{{ campo.nombre ?? campo.llave }}</label
-                                            >
+                                            <label [for]="campo.llave" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">{{
+                                                campo.nombre ?? campo.llave
+                                            }}</label>
                                             <hlm-field-error
                                                 class="transition-all duration-500 ease-out text-xs ml-auto"
                                                 [class.opacity-100]="invalid(campo.llave)"
                                                 [class.opacity-0]="!invalid(campo.llave)"
                                                 [class.max-h-10]="invalid(campo.llave)"
                                                 [class.max-h-0]="!invalid(campo.llave)"
-                                                >Debes ingresar el "{{
-                                                    campo.nombre ?? campo.llave
-                                                }}"</hlm-field-error
+                                                >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
                                             >
                                         </div>
                                         @if (campo.tipo === 'string') {
@@ -65,32 +52,19 @@
                                 }
                                 @if (campo.tipo === 'boolean') {
                                     <div class="flex justify-end-safe items-center gap-4">
-                                        <label
-                                            [for]="campo.llave"
-                                            hlmLabel
-                                            class="opacity-80 font-semibold text-xs md:text-sm"
-                                            >{{ campo.nombre ?? campo.llave }}</label
-                                        >
+                                        <label [for]="campo.llave" hlmLabel class="opacity-80 font-semibold text-xs md:text-sm">{{
+                                            campo.nombre ?? campo.llave
+                                        }}</label>
                                         <hlm-switch
                                             [id]="campo.llave"
                                             class="scale-[120%]"
                                             [checked]="form.controls[campo.llave].value"
-                                            (checkedChange)="
-                                                form.controls[campo.llave].setValue($event)
-                                            "
+                                            (checkedChange)="form.controls[campo.llave].setValue($event)"
                                         />
                                         @if (form.controls[campo.llave].value) {
-                                            <ng-icon
-                                                hlm
-                                                name="lucideBadgeCheck"
-                                                class="text-green-700"
-                                            />
+                                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
                                         } @else {
-                                            <ng-icon
-                                                hlm
-                                                name="lucideBadgeX"
-                                                class="text-destructive"
-                                            />
+                                            <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
                                         }
                                     </div>
                                     <hlm-field-error
@@ -99,41 +73,28 @@
                                         [class.opacity-0]="!invalid(campo.llave)"
                                         [class.max-h-10]="invalid(campo.llave)"
                                         [class.max-h-0]="!invalid(campo.llave)"
-                                        >Debes ingresar el "{{
-                                            campo.nombre ?? campo.llave
-                                        }}"</hlm-field-error
+                                        >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
                                     >
                                 }
                                 @if (campo.tipo === 'select') {
-                                    <div class="flex justify-start items-center gap-4">
-                                        <label
-                                            [for]="campo.llave"
-                                            hlmLabel
-                                            class="opacity-80 font-semibold text-xs md:text-sm pl-2 whitespace-nowrap"
-                                            >{{ campo.nombre ?? campo.llave }}</label
-                                        >
-                                        <brn-select
-                                            [id]="campo.llave"
-                                            class="inline-block z-10 w-full"
-                                            [formControl]="form.controls[campo.llave]"
-                                        >
+                                    <div class="flex flex-col justify-start items-center">
+                                        <div class="flex flex-row items-center justify-start w-full px-3 pb-1">
+                                            <label
+                                                [for]="campo.llave"
+                                                hlmLabel
+                                                class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground"
+                                                >{{ campo.nombre ?? campo.llave }}</label
+                                            >
+                                        </div>
+                                        <brn-select [id]="campo.llave" class="inline-block z-10 w-full" [formControl]="form.controls[campo.llave]">
                                             <hlm-select-trigger class="">
                                                 <div class="flex justify-start items-center gap-2">
-                                                    <hlm-select-value
-                                                        class="text-xs md:text-sm truncate"
-                                                    />
+                                                    <hlm-select-value class="text-xs md:text-sm truncate" />
                                                 </div>
                                             </hlm-select-trigger>
                                             <hlm-select-content>
-                                                @for (
-                                                    posibleValor of campo.posiblesValores;
-                                                    track posibleValor.id
-                                                ) {
-                                                    <hlm-option
-                                                        [value]="posibleValor.id"
-                                                        class="text-xs md:text-sm"
-                                                        >{{ `${posibleValor.valor}` }}</hlm-option
-                                                    >
+                                                @for (posibleValor of campo.posiblesValores; track posibleValor.id) {
+                                                    <hlm-option [value]="posibleValor.id" class="text-xs md:text-sm">{{ `${posibleValor.valor}` }}</hlm-option>
                                                 }
                                             </hlm-select-content>
                                         </brn-select>
@@ -144,16 +105,12 @@
                                         [class.opacity-0]="!invalid(campo.llave)"
                                         [class.max-h-10]="invalid(campo.llave)"
                                         [class.max-h-0]="!invalid(campo.llave)"
-                                        >Debes ingresar el "{{
-                                            campo.nombre ?? campo.llave
-                                        }}"</hlm-field-error
+                                        >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
                                     >
                                 }
                                 @if (campo.tipo === 'autocomplete') {
                                     <div class="flex flex-col justify-start items-center">
-                                        <div
-                                            class="flex flex-row items-center justify-start w-full px-3 pb-1"
-                                        >
+                                        <div class="flex flex-row items-center justify-start w-full px-3 pb-1">
                                             <label
                                                 [for]="campo.llave"
                                                 hlmLabel
@@ -164,42 +121,26 @@
                                         <hlm-autocomplete
                                             [(search)]="campo.autocompleteSearch!"
                                             [itemToString]="campo.autocompleteItemToString!"
-                                            [isItemEqualToValue]="
-                                                campo.autocompleteIsItemEqualToValue!
-                                            "
+                                            [isItemEqualToValue]="campo.autocompleteIsItemEqualToValue!"
                                             [formControl]="form.controls[campo.llave]"
                                             class="w-full"
                                         >
                                             <hlm-autocomplete-input
                                                 [id]="campo.llave"
-                                                [placeholder]="
-                                                    `Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`
-                                                "
+                                                [placeholder]="`Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`"
                                                 class="text-xs md:text-sm"
                                                 showClear
                                             />
                                             <div *brnPopoverContent hlmAutocompleteContent>
-                                                <hlm-autocomplete-empty
-                                                    >{{ campo.nombre }} no
-                                                    encontrad@...</hlm-autocomplete-empty
-                                                >
+                                                <hlm-autocomplete-empty>{{ campo.nombre }} no encontrad@...</hlm-autocomplete-empty>
                                                 <div hlmAutocompleteList>
-                                                    @for (
-                                                        grupo of campo.autocompleteFilteredOptions!();
-                                                        track $index;
-                                                        let last = $last
-                                                    ) {
+                                                    @for (grupo of campo.autocompleteFilteredOptions!(); track $index; let last = $last) {
                                                         <div hlmAutocompleteGroup>
                                                             <div hlmAutocompleteLabel>
                                                                 {{ grupo.categoria }}
                                                             </div>
-                                                            @for (
-                                                                option of grupo.items;
-                                                                track $index
-                                                            ) {
-                                                                <hlm-autocomplete-item
-                                                                    [value]="option.id"
-                                                                >
+                                                            @for (option of grupo.items; track $index) {
+                                                                <hlm-autocomplete-item [value]="option.id">
                                                                     {{ option.valor }}
                                                                 </hlm-autocomplete-item>
                                                             }
@@ -218,9 +159,7 @@
                                         [class.opacity-0]="!invalid(campo.llave)"
                                         [class.max-h-10]="invalid(campo.llave)"
                                         [class.max-h-0]="!invalid(campo.llave)"
-                                        >Debes ingresar el "{{
-                                            campo.nombre ?? campo.llave
-                                        }}"</hlm-field-error
+                                        >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
                                     >
                                 }
                             </div>
@@ -239,20 +178,11 @@
             <hlm-separator class="faster-fade-in" />
             <div hlmCardContent class="faster-fade-in">
                 @if (descripcionSecundaria) {
-                    <p
-                        hlmP
-                        class="text-center text-balance mx-1"
-                        [innerHTML]="descripcionSecundaria"
-                    ></p>
+                    <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcionSecundaria"></p>
                 }
             </div>
             <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-4 faster-fade-in">
-                <button
-                    hlmBtn
-                    variant="azul"
-                    (click)="funcionSecundaria.emit(this.form.getRawValue())"
-                    [disabled]="form.invalid"
-                >
+                <button hlmBtn variant="azul" (click)="funcionSecundaria.emit(this.form.getRawValue())" [disabled]="form.invalid">
                     {{ textoBotonSecundario }}
                 </button>
             </div>

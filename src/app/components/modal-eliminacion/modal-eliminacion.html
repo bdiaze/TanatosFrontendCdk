@@ -1,13 +1,5 @@
-<div
-    class="fixed left-0 top-0 p-4 bg-black/70 w-screen h-screen flex justify-center items-center z-50"
-    (pointerdown)="cerrar.emit()"
->
-    <div
-        hlmCard
-        (pointerdown)="$event.stopPropagation()"
-        (click)="$event.stopPropagation()"
-        class="px-3"
-    >
+<div class="fixed left-0 top-0 right-0 bottom-0 p-4 bg-black/70 flex justify-center items-center z-50" (pointerdown)="cerrar.emit()">
+    <div hlmCard (pointerdown)="$event.stopPropagation()" (click)="$event.stopPropagation()" class="px-3">
         <div hlmCardHeader class="faster-fade-in">
             <div class="flex items-center gap-3 my-2">
                 <ng-icon hlm name="lucideCircleAlert" class="text-destructive" />
@@ -20,10 +12,7 @@
             @if (textoVerificacion) {
                 <div class="mt-4">
                     <p class="text-sm mx-1">
-                        {{
-                            descripcionTextVerificacion ??
-                                `Para confirmar, escribe a continuación "${textoVerificacion}":`
-                        }}
+                        {{ descripcionTextVerificacion ?? `Para confirmar, escribe a continuación "${textoVerificacion}":` }}
                     </p>
                     <input
                         hlmInput

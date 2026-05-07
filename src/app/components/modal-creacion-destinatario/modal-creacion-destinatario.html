@@ -1,14 +1,6 @@
-<div
-    class="fixed left-0 top-0 bg-black/70 w-screen h-screen flex justify-center items-center z-50"
-    (pointerdown)="cerrar.emit()"
->
+<div class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50" (pointerdown)="cerrar.emit()">
     <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
-        <div
-            hlmCard
-            (pointerdown)="$event.stopPropagation()"
-            (click)="$event.stopPropagation()"
-            class="min-w-xs md:min-w-md gap-3"
-        >
+        <div hlmCard (pointerdown)="$event.stopPropagation()" (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md gap-3">
             <div hlmCardHeader class="faster-fade-in">
                 <div class="flex items-center gap-4 pt-1 pb-2">
                     <ng-icon hlm name="lucideSend" />
@@ -29,23 +21,14 @@
                                     class="grid gap-4 fade-in"
                                     [class.grid-cols-2]="tiposReceptoresVigentes().length >= 2"
                                 >
-                                    @for (
-                                        tipoReceptor of tiposReceptoresVigentes();
-                                        track tipoReceptor.id
-                                    ) {
-                                        @if (
-                                            !restringirTipos() || !tipoReceptor.requierePlanEmpresa
-                                        ) {
+                                    @for (tipoReceptor of tiposReceptoresVigentes(); track tipoReceptor.id) {
+                                        @if (!restringirTipos() || !tipoReceptor.requierePlanEmpresa) {
                                             <label
                                                 hlmLabel
                                                 class="text-center relative space-x-0 border-(--negro)/30 flex flex-col items-center justify-center rounded-lg border-2 px-2 py-4 bg-background hover:bg-accent/10 cursor-pointer transition-colors [&>span]:mt-4 [&:has([data-checked=true])]:border-(--azul) [&:has([data-checked=true])]:border-2 text-(--negro)/30 [&:has([data-checked=true])]:text-(--azul) [&:has([data-checked=true])_ng-icon]:text-(--azul)"
                                             >
                                                 <hlm-radio [value]="tipoReceptor.id">
-                                                    <ng-icon
-                                                        hlm
-                                                        [name]="obtenerIconName(tipoReceptor.id)"
-                                                        class="mr-3 text-(--negro)/20"
-                                                    />
+                                                    <ng-icon hlm [name]="obtenerIconName(tipoReceptor.id)" class="mr-3 text-(--negro)/20" />
                                                 </hlm-radio>
                                                 {{ tipoReceptor.nombre }}
                                             </label>
@@ -60,21 +43,10 @@
                                                         disabled
                                                         class="data-[disabled=true]:cursor-default data-[disabled=true]:opacity-100"
                                                     >
-                                                        <ng-icon
-                                                            hlm
-                                                            [name]="
-                                                                obtenerIconName(tipoReceptor.id)
-                                                            "
-                                                            class="mr-3 text-(--negro)/20"
-                                                        />
+                                                        <ng-icon hlm [name]="obtenerIconName(tipoReceptor.id)" class="mr-3 text-(--negro)/20" />
                                                     </hlm-radio>
                                                     <div class="flex flex-row items-center gap-1.5">
-                                                        <ng-icon
-                                                            hlm
-                                                            name="lucideGem"
-                                                            class="text-(--negro)/20"
-                                                            size="14px"
-                                                        />
+                                                        <ng-icon hlm name="lucideGem" class="text-(--negro)/20" size="14px" />
                                                         {{ tipoReceptor.nombre }}
                                                     </div>
                                                 </label>
@@ -87,12 +59,7 @@
                         <div hlmField class="gap-1">
                             <div hlmInputGroup>
                                 <div hlmInputGroupAddon align="block-start">
-                                    <label
-                                        for="alias"
-                                        hlmLabel
-                                        class="text-xs opacity-80 font-semibold whitespace-nowrap"
-                                        >Alias</label
-                                    >
+                                    <label for="alias" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Alias</label>
                                     <hlm-field-error
                                         class="transition-all duration-500 ease-out text-xs ml-auto"
                                         [class.opacity-100]="invalid('alias')"
@@ -102,22 +69,13 @@
                                         >Debes ingresar un alias</hlm-field-error
                                     >
                                 </div>
-                                <input
-                                    hlmInputGroupInput
-                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
-                                    id="alias"
-                                    formControlName="alias"
-                                />
+                                <input hlmInputGroupInput class="transition-all duration-500 ease-out text-xs md:text-sm" id="alias" formControlName="alias" />
                             </div>
                         </div>
                         <div hlmField class="gap-1">
                             <div hlmInputGroup>
                                 <div hlmInputGroupAddon align="block-start">
-                                    <label
-                                        for="destino"
-                                        hlmLabel
-                                        class="text-xs opacity-80 font-semibold whitespace-nowrap"
-                                    >
+                                    <label for="destino" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">
                                         {{
                                             form.controls['idTipoReceptor'].value === 1
                                                 ? 'Correo Electrónico'
@@ -154,11 +112,7 @@
                                     hlmInputGroupInput
                                     class="transition-all duration-500 ease-out text-xs md:text-sm"
                                     id="destino"
-                                    [placeholder]="
-                                        obtenerDestinoPlaceholder(
-                                            form.controls['idTipoReceptor'].value
-                                        )
-                                    "
+                                    [placeholder]="obtenerDestinoPlaceholder(form.controls['idTipoReceptor'].value)"
                                     formControlName="destino"
                                 />
                             </div>
@@ -175,15 +129,8 @@
                     </div>
                 }
                 <div class="w-full flex items-center justify-end gap-6">
-                    <button hlmBtn type="button" variant="outlineAzul" (click)="cerrar.emit()">
-                        Cancelar
-                    </button>
-                    <button
-                        hlmBtn
-                        variant="azul"
-                        type="submit"
-                        [disabled]="form.invalid || procesando()"
-                    >
+                    <button hlmBtn type="button" variant="outlineAzul" (click)="cerrar.emit()">Cancelar</button>
+                    <button hlmBtn variant="azul" type="submit" [disabled]="form.invalid || procesando()">
                         @if (procesando()) {
                             <hlm-spinner />
                         }
