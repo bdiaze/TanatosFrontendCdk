@@ -3,17 +3,7 @@ import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { setCookie } from '@/app/helpers/cookie-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import {
-    Component,
-    computed,
-    effect,
-    EventEmitter,
-    inject,
-    Input,
-    OnInit,
-    Output,
-    signal,
-} from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -24,6 +14,7 @@ import {
     lucideChevronRight,
     lucideChevronsUpDown,
     lucideClipboardPaste,
+    lucideContactRound,
     lucideCreditCard,
     lucideGem,
     lucideHouse,
@@ -81,6 +72,7 @@ import { filter, map } from 'rxjs';
             lucideMessageCircleMore,
             lucideCreditCard,
             lucideGem,
+            lucideContactRound,
         }),
     ],
 })
@@ -141,6 +133,13 @@ export class Menu {
                         titulo: 'Plantillas Inscritas',
                         icon: 'lucideClipboardPaste',
                         url: '/plantillas-inscritas',
+                    },
+                    {
+                        id: 'group-negocio-seleccionado-item-mis-empleados',
+                        tipo: 'item',
+                        icon: 'lucideContactRound',
+                        titulo: 'Mis Empleados',
+                        url: '/mis-empleados',
                     },
                     {
                         id: 'group-negocio-seleccionado-item-mis-destinatarios',
@@ -302,11 +301,7 @@ export class Menu {
     }
 
     tieneUrlHijoActivo(opcion: OpcionMenu, url: string) {
-        if (
-            opcion.tipo === 'item' &&
-            opcion.items &&
-            opcion.items.some((subitem) => subitem.url === url)
-        ) {
+        if (opcion.tipo === 'item' && opcion.items && opcion.items.some((subitem) => subitem.url === url)) {
             return true;
         }
         return false;

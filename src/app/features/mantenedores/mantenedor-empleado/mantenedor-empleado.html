@@ -1,0 +1,106 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <nav hlmBreadcrumb class="mb-4 pl-2">
+            <ol hlmBreadcrumbList>
+                <li hlmBreadcrumbItem>
+                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                </li>
+                <li hlmBreadcrumbSeparator></li>
+                <li hlmBreadcrumbItem>
+                    <span hlmBreadcrumbPage>Mis Empleados</span>
+                </li>
+            </ol>
+        </nav>
+        <h4 hlmH4 class="text-center">
+            {{ negocioStore.negocioSeleccionado()?.nombre }}
+        </h4>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <ng-icon hlm name="lucideContactRound" />
+            <h3 hlmH3>Mis Empleados</h3>
+        </div>
+    </div>
+    <div hlmTableContainer class="fade-in">
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-center text-xs md:text-sm">Cargo</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargando()) {
+                    <tr hlmTr>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
+                        <td hlmTd></td>
+                    </tr>
+                } @else {
+                    @for (item of empleados(); track item.id) {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd class="text-xs md:text-sm">
+                                {{ item.nombre }}
+                            </td>
+                            <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">
+                                {{ item.nombreCargo }}
+                            </td>
+                            <td hlmTd class="px-0">
+                                <div class="flex items-center justify-center-safe">
+                                    <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
+                                        <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                    </button>
+                                    <ng-template #menu>
+                                        <hlm-dropdown-menu>
+                                            <hlm-dropdown-menu-group>
+                                                <button hlmDropdownMenuItem (click)="openModalEditarEmpleado(item)">
+                                                    <ng-icon hlm size="sm" name="lucidePencil" />Editar
+                                                </button>
+                                                <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminarEmpleado(item)">
+                                                    <ng-icon hlm size="sm" name="lucideTrash2" />
+                                                    Eliminar
+                                                </button>
+                                            </hlm-dropdown-menu-group>
+                                        </hlm-dropdown-menu>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr hlmTr>
+                            <td hlmTd colspan="3" class="text-center">No tienes empleados registrados</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <button hlmBtn variant="azul" (click)="openModalCrearEmpleado()" class="m-4" [disabled]="cargando()">Nuevo Empleado</button>
+    </div>
+    @if (error()) {
+        <div hlmAlert variant="destructive" class="mt-6">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
+    }
+</section>
+
+@if (showModalEliminarEmpleado()) {
+    <app-modal-eliminacion
+        [item]="empleadoSeleccionado()"
+        titulo="Quitar a un empleado:"
+        [descripcion]="`¿Seguro que deseas quitar al empleado ${empleadoSeleccionado()?.nombre}?`"
+        (cerrar)="closeModalEliminarEmpleado()"
+        (eliminar)="eliminarEmpleado($event)"
+    >
+    </app-modal-eliminacion>
+}
+@if (showModalEditarEmpleado()) {
+    <app-modal-mantenedor-empleado (cerrar)="closeModalEditarEmpleado()" (postGuardar)="postGuardar()"> </app-modal-mantenedor-empleado>
+}
+@if (showModalCrearEmpleado()) {
+    <app-modal-mantenedor-empleado (cerrar)="closeModalCrearEmpleado()" (postGuardar)="postGuardar()"> </app-modal-mantenedor-empleado>
+}

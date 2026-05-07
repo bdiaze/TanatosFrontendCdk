@@ -32,6 +32,7 @@ import { PoliticaDeCookies } from './features/tableros/politica-de-cookies/polit
 import { ChatsWhatsapp } from './features/tableros/chats-whatsapp/chats-whatsapp';
 import { MantenedorPlan } from './features/mantenedores/mantenedor-plan/mantenedor-plan';
 import { MantenedorSuscripcion } from './features/mantenedores/mantenedor-suscripcion/mantenedor-suscripcion';
+import { MantenedorEmpleado } from './features/mantenedores/mantenedor-empleado/mantenedor-empleado';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -157,5 +158,9 @@ export const routes: Routes = [
     {
         path: 'validar-destinatario',
         component: ValidarDestinatario,
+    },
+    {
+        path: 'mis-empleados',
+        component: MantenedorEmpleado,
     },
 ];

@@ -1,0 +1,87 @@
+<div class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50" (pointerdown)="cerrar.emit()">
+    <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
+        <div hlmCard (pointerdown)="$event.stopPropagation()" (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md gap-3">
+            <div hlmCardHeader class="faster-fade-in">
+                <div class="flex items-center gap-2 pt-1 pb-2">
+                    <ng-icon hlm name="lucideContactRound" />
+                    <h3 hlmCardTitle>Nuevo Empleado:</h3>
+                </div>
+
+                <hlm-separator />
+            </div>
+            <div hlmCardContent class="faster-fade-in">
+                <fieldset hlmFieldSet>
+                    <div hlmFieldGroup class="gap-3">
+                        <div hlmField class="gap-1">
+                            <div hlmInputGroup>
+                                <div hlmInputGroupAddon align="block-start">
+                                    <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Nombre</label>
+                                    <hlm-field-error
+                                        class="transition-all duration-500 ease-out text-xs ml-auto"
+                                        [class.opacity-100]="invalid('nombre')"
+                                        [class.opacity-0]="!invalid('nombre')"
+                                        [class.max-h-10]="invalid('nombre')"
+                                        [class.max-h-0]="!invalid('nombre')"
+                                        >Debes ingresar el nombre del empleado</hlm-field-error
+                                    >
+                                </div>
+                                <input
+                                    hlmInputGroupInput
+                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                    id="nombre"
+                                    formControlName="nombre"
+                                />
+                            </div>
+                        </div>
+                        <div hlmField class="gap-1">
+                            <div class="flex flex-col justify-start items-start">
+                                <div class="flex flex-row items-center justify-start w-full px-3 pb-1">
+                                    <label for="cargo" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground">Cargo</label>
+                                </div>
+                                <hlm-autocomplete-search formControlName="cargo" [(search)]="search" class="w-full" autoHighlight>
+                                    <hlm-autocomplete-input inputId="cargo" />
+                                    <div *brnPopoverContent hlmAutocompleteContent>
+                                        <hlm-autocomplete-empty>Se creará el cargo "{{ search() }}"</hlm-autocomplete-empty>
+                                        <div hlmAutocompleteList>
+                                            @for (cargo of filteredOptions(); track $index) {
+                                                <hlm-autocomplete-item [value]="cargo.nombre">
+                                                    {{ cargo.nombre }}
+                                                </hlm-autocomplete-item>
+                                            }
+                                        </div>
+                                    </div>
+                                </hlm-autocomplete-search>
+                            </div>
+                            <hlm-field-error
+                                class="transition-all duration-500 ease-out text-xs ml-auto"
+                                [class.opacity-100]="invalid('cargo')"
+                                [class.opacity-0]="!invalid('cargo')"
+                                [class.max-h-10]="invalid('cargo')"
+                                [class.max-h-0]="!invalid('cargo')"
+                                >Debes ingresar un cargo para el empleado</hlm-field-error
+                            >
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div hlmCardFooter class="flex flex-col items-center gap-4 faster-fade-in">
+                @if (error()) {
+                    <div hlmAlert variant="destructive">
+                        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                        <p hlmAlertDescription>{{ error() }}</p>
+                    </div>
+                }
+                <div class="w-full flex items-center justify-end gap-6">
+                    <button hlmBtn type="button" variant="outlineAzul" (click)="cerrar.emit()">Cancelar</button>
+                    <button hlmBtn variant="azul" type="submit" [disabled]="form.invalid || procesando()">
+                        @if (procesando()) {
+                            <hlm-spinner />
+                        }
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
