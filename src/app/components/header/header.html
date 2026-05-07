@@ -1,45 +1,21 @@
 <header class="relative pr-4 md:pr-8 md:pl-4 max-w-dvw border-(--gris) border-b bg-(--blanco)">
     <div class="w-full mx-auto flex flex-row justify-between items-center">
         <a [routerLink]="logoRedirect()">
-            <img
-                class="h-19 md:h-[clamp(3rem,10vw,7rem)] select-none ml-3 md:ml-0"
-                [src]="urlLogo"
-                alt="Logo Todo en Orden"
-            />
+            <img class="h-19 md:h-23 lg:h-27 select-none ml-3 md:ml-0" [src]="urlLogo" alt="Logo Todo en Orden" />
         </a>
         <nav class="ml-[2vw] hidden md:inline-flex">
             <ul class="flex flex-row gap-4 md:gap-6 justify-center items-center">
                 <li>
-                    <a
-                        hlmBtn
-                        variant="link"
-                        routerLink="/servicios"
-                        class="text-(--negro)/80 text-[clamp(0.7rem,1.5vw,1.1rem)] px-4"
-                        (click)="cerrarMenu()"
+                    <a hlmBtn variant="link" routerLink="/servicios" class="text-(--negro)/80 md:text-sm lg:text-base px-4 lg:px-6" (click)="cerrarMenu()"
                         >Servicios</a
                     >
-                    <a
-                        hlmBtn
-                        variant="link"
-                        routerLink="/planes"
-                        class="text-(--negro)/80 text-[clamp(0.7rem,1.5vw,1.1rem)] px-4"
-                        (click)="cerrarMenu()"
+                    <a hlmBtn variant="link" routerLink="/planes" class="text-(--negro)/80 md:text-sm lg:text-base px-4 lg:px-6" (click)="cerrarMenu()"
                         >Planes</a
                     >
-                    <a
-                        hlmBtn
-                        variant="link"
-                        routerLink="/nosotros"
-                        class="text-(--negro)/80 text-[clamp(0.7rem,1.5vw,1.1rem)] px-4"
-                        (click)="cerrarMenu()"
+                    <a hlmBtn variant="link" routerLink="/nosotros" class="text-(--negro)/80 md:text-sm lg:text-base px-4 lg:px-6" (click)="cerrarMenu()"
                         >Nosotros</a
                     >
-                    <a
-                        hlmBtn
-                        variant="link"
-                        routerLink="/contacto"
-                        class="text-(--negro)/80 text-[clamp(0.7rem,1.5vw,1.1rem)] px-4"
-                        (click)="cerrarMenu()"
+                    <a hlmBtn variant="link" routerLink="/contacto" class="text-(--negro)/80 md:text-sm lg:text-base px-4 lg:px-6" (click)="cerrarMenu()"
                         >Contacto</a
                     >
                 </li>
@@ -55,19 +31,8 @@
         </div>
         @if (mostrarMovil()) {
             <div class="flex items-center justify-center">
-                <button
-                    hlmBtn
-                    hlmsidebartrigger
-                    variant="ghost"
-                    class="hover:bg-transparent"
-                    (click)="toggleMenu()"
-                >
-                    <ng-icon
-                        hlm
-                        name="lucideMenu"
-                        size="base"
-                        class="text-(--negro)/70 scale-100"
-                    />
+                <button hlmBtn hlmsidebartrigger variant="ghost" class="hover:bg-transparent" (click)="toggleMenu()">
+                    <ng-icon hlm name="lucideMenu" size="base" class="text-(--negro)/70 scale-100" />
                 </button>
                 <app-menu
                     clickOutside
@@ -81,41 +46,11 @@
                 >
                     <div class="flex flex-col items-start justify-start gap-2 mt-4 w-full">
                         @if (!sesionIniciada() && !logoutRunning()) {
-                            <div
-                                class="flex flex-col items-start justify-start gap-2 md:hidden w-full"
-                            >
-                                <a
-                                    hlmBtn
-                                    variant="link"
-                                    routerLink="/servicios"
-                                    class="text-(--negro)/70 text-base ml-2"
-                                    (click)="cerrarMenu()"
-                                    >Servicios</a
-                                >
-                                <a
-                                    hlmBtn
-                                    variant="link"
-                                    routerLink="/planes"
-                                    class="text-(--negro)/70 text-base ml-2"
-                                    (click)="cerrarMenu()"
-                                    >Planes</a
-                                >
-                                <a
-                                    hlmBtn
-                                    variant="link"
-                                    routerLink="/nosotros"
-                                    class="text-(--negro)/70 text-base ml-2"
-                                    (click)="cerrarMenu()"
-                                    >Nosotros</a
-                                >
-                                <a
-                                    hlmBtn
-                                    variant="link"
-                                    routerLink="/contacto"
-                                    class="text-(--negro)/70 text-base ml-2"
-                                    (click)="cerrarMenu()"
-                                    >Contacto</a
-                                >
+                            <div class="flex flex-col items-start justify-start gap-2 md:hidden w-full">
+                                <a hlmBtn variant="link" routerLink="/servicios" class="text-(--negro)/70 text-base ml-2" (click)="cerrarMenu()">Servicios</a>
+                                <a hlmBtn variant="link" routerLink="/planes" class="text-(--negro)/70 text-base ml-2" (click)="cerrarMenu()">Planes</a>
+                                <a hlmBtn variant="link" routerLink="/nosotros" class="text-(--negro)/70 text-base ml-2" (click)="cerrarMenu()">Nosotros</a>
+                                <a hlmBtn variant="link" routerLink="/contacto" class="text-(--negro)/70 text-base ml-2" (click)="cerrarMenu()">Contacto</a>
                                 <hlm-separator class="mt-2 mb-4" />
                             </div>
                         }
@@ -123,10 +58,7 @@
                             @if (!sesionIniciada() && !logoutRunning()) {
                                 <app-login [vertical]="false"></app-login>
                             } @else {
-                                <app-logout
-                                    [primary]="true"
-                                    (click)="cerrarSesionGatillado()"
-                                ></app-logout>
+                                <app-logout [primary]="true" (click)="cerrarSesionGatillado()"></app-logout>
                             }
                         </div>
                     </div>
