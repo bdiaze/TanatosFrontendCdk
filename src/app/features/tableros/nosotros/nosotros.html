@@ -1,124 +1,64 @@
-<section
-    id="sobre-todo-en-orden"
-    class="relative w-full overflow-hidden flex flex-col items-center justify-center bg-(--azul) max-w-dvw p-0 fade-in"
->
-    <div
-        class="flex-1 flex flex-col items-center justify-evenly px-12 py-10 md:py-12 lg:py-16 h-full gap-8 lg:gap-12"
-    >
-        <p hlmP class="text-(--blanco) font-serif text-center text-lg lg:text-2xl text-balance">
-            Todo En Orden nace con un propósito claro:
-        </p>
-        <p
-            hlmP
-            class="text-(--blanco) font-serif text-center text-2xl md:text-3xl lg:text-4xl font-semibold text-balance"
-        >
-            Ayudar a los emprendedores chilenos a cumplir sus obligaciones normativas sin estrés,
-            multas ni desorden.
+<section id="sobre-todo-en-orden" class="relative w-full overflow-hidden flex flex-col items-center justify-center bg-(--azul) max-w-dvw p-0 fade-in">
+    <div class="flex-1 flex flex-col items-center justify-evenly px-12 py-10 md:py-12 lg:py-16 h-full gap-8 lg:gap-12">
+        <p hlmP class="text-(--blanco) font-serif text-center text-lg lg:text-2xl text-balance">Todo En Orden nace con un propósito claro:</p>
+        <p hlmP class="text-(--blanco) font-serif text-center text-2xl md:text-3xl lg:text-4xl font-semibold text-balance">
+            Ayudar a los emprendedores chilenos a cumplir sus obligaciones normativas sin estrés, multas ni desorden.
         </p>
     </div>
 </section>
-<section
-    class="text-(--azul) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center p-0 max-w-dvw fade-in"
->
-    <div
-        class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(30rem,40vw,40rem)] overflow-hidden object-top-right"
-    >
-        <video
-            #bgVideo
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="auto"
-            [poster]="urlVideo1_Poster"
-            class="absolute inset-0 w-full h-full object-cover -z-10"
-        >
+<section class="text-(--azul) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center p-0 max-w-dvw fade-in">
+    <div class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(30rem,40vw,40rem)] overflow-hidden object-top-right">
+        <video #bgVideo autoplay muted loop playsinline preload="auto" [poster]="urlVideo1_Poster" class="absolute inset-0 w-full h-full object-cover -z-10">
             <source [src]="urlVideo1_WebM" type="video/webm" />
             <source [src]="urlVideo1_MP4" type="video/mp4" />
         </video>
     </div>
-    <div
-        class="flex flex-col items-center justify-evenly w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8"
-    >
+    <div class="flex flex-col items-center justify-evenly w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8">
         <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-            Sabemos que emprender en Chile implica enfrentar múltiples responsabilidades legales y
-            administrativas. Muchas veces, el problema no es la intención de cumplir, sino la falta
-            de organización y visibilidad.
+            Sabemos que emprender en Chile implica enfrentar múltiples responsabilidades legales y administrativas. Muchas veces, el problema no es la intención
+            de cumplir, sino la falta de organización y visibilidad.
         </p>
         <p hlmP class="font-serif text-center font-semibold text-lg lg:text-2xl text-balance">
-            Creamos una herramienta simple, clara y automatizada para que el cumplimiento deje de
-            ser una preocupación constante y pase a ser parte natural de la gestión del negocio.
+            Creamos una herramienta simple, clara y automatizada para que el cumplimiento deje de ser una preocupación constante y pase a ser parte natural de
+            la gestión del negocio.
         </p>
     </div>
 </section>
 <section
     id="nuestros-valores"
-    class="text-(--blanco) relative w-full flex flex-col items-center justify-center bg-(--primary) py-14 lg:py-20 px-12 max-w-dvw fade-in"
+    class="text-(--blanco) relative w-full flex flex-col items-center justify-center bg-(--calipso) py-14 lg:py-20 px-12 max-w-dvw fade-in"
 >
-    <p hlmP class="font-serif text-center text-3xl lg:text-5xl font-semibold text-balance mb-8">
-        Nuestros Valores
-    </p>
+    <p hlmP class="font-serif text-center text-3xl lg:text-5xl font-semibold text-balance mb-8">Nuestros Valores</p>
     <div class="grid grid-cols-1 md:grid-cols-2 w-full gap-8 lg:gap-16">
         <div class="flex flex-col items-center justify-start gap-4 lg:gap-6 w-full h-full">
             <ng-icon hlm size="lg" name="lucideSearchCheck" />
-            <p
-                hlmP
-                class="font-serif text-center text-xl md:text-2xl lg:text-4xl font-semibold text-balance"
-            >
-                Claridad
-            </p>
-            <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-                Simplificamos lo complejo. Hablamos claro.
-            </p>
+            <p hlmP class="font-serif text-center text-xl md:text-2xl lg:text-4xl font-semibold text-balance">Claridad</p>
+            <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">Simplificamos lo complejo. Hablamos claro.</p>
         </div>
         <div class="flex flex-col items-center justify-start gap-4 lg:gap-6 w-full h-full">
             <ng-icon hlm size="lg" name="lucideHeartHandshake" />
-            <p
-                hlmP
-                class="font-serif text-center text-xl md:text-2xl lg:text-4xl font-semibold text-balance"
-            >
-                Confianza
-            </p>
+            <p hlmP class="font-serif text-center text-xl md:text-2xl lg:text-4xl font-semibold text-balance">Confianza</p>
             <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
                 Tratamos la información de nuestros usuarios con la máxima responsabilidad.
             </p>
         </div>
         <div class="flex flex-col items-center justify-start gap-4 lg:gap-6 w-full h-full">
             <ng-icon hlm size="lg" name="lucideRoute" />
-            <p
-                hlmP
-                class="font-serif text-center text-xl md:text-2xl lg:text-4xl font-semibold text-balance"
-            >
-                Proactividad
-            </p>
-            <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-                No solo registramos obligaciones: te ayudamos a anticiparte.
-            </p>
+            <p hlmP class="font-serif text-center text-xl md:text-2xl lg:text-4xl font-semibold text-balance">Proactividad</p>
+            <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">No solo registramos obligaciones: te ayudamos a anticiparte.</p>
         </div>
         <div class="flex flex-col items-center justify-start gap-4 lg:gap-6 w-full h-full">
             <ng-icon hlm size="lg" name="lucideMapPinCheck" />
-            <p
-                hlmP
-                class="font-serif text-center text-xl md:text-2xl lg:text-4xl font-semibold text-balance"
-            >
-                Enfoque Local
-            </p>
+            <p hlmP class="font-serif text-center text-xl md:text-2xl lg:text-4xl font-semibold text-balance">Enfoque Local</p>
             <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
                 Diseñado pensando en la normativa chilena y la realidad del emprendedor local.
             </p>
         </div>
     </div>
 </section>
-<section
-    id="nuestros-objetivos"
-    class="text-(--azul) relative w-full flex flex-col items-center justify-center py-10 lg:py-16 px-12 max-w-dvw fade-in"
->
-    <p hlmP class="font-serif text-center text-3xl lg:text-5xl font-semibold text-balance mb-8">
-        Nuestros Objetivos
-    </p>
-    <div
-        class="font-serif flex flex-col items-center justify-center w-full gap-6 lg:gap-8 text-lg lg:text-xl"
-    >
+<section id="nuestros-objetivos" class="text-(--azul) relative w-full flex flex-col items-center justify-center py-10 lg:py-16 px-12 max-w-dvw fade-in">
+    <p hlmP class="font-serif text-center text-3xl lg:text-5xl font-semibold text-balance mb-8">Nuestros Objetivos</p>
+    <div class="font-serif flex flex-col items-center justify-center w-full gap-6 lg:gap-8 text-lg lg:text-xl">
         <div class="flex flex-row items-center justify-center gap-4">
             <div class="flex items-center justify-center">
                 <ng-icon hlm size="lg" name="lucideReceipt" />
@@ -149,46 +89,28 @@
     id="nuestro-equipo"
     class="text-(--blanco) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw fade-in"
 >
-    <div
-        class="flex flex-col items-center justify-center gap-4 lg:gap-10 w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8 order-2 md:order-1"
-    >
-        <p hlmP class="font-serif text-center text-2xl lg:text-4xl font-semibold text-balance">
-            Nuestro Equipo
-        </p>
+    <div class="flex flex-col items-center justify-center gap-4 lg:gap-10 w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8 order-2 md:order-1">
+        <p hlmP class="font-serif text-center text-2xl lg:text-4xl font-semibold text-balance">Nuestro Equipo</p>
         <p hlmP class="font-serif text-center text-xl lg:text-3xl text-balance">
-            Somos un equipo comprometido con el emprendimiento y la tecnología. Combinamos
-            conocimiento técnico con comprensión de la realidad de los pequeños negocios en Chile.
+            Somos un equipo comprometido con el emprendimiento y la tecnología. Combinamos conocimiento técnico con comprensión de la realidad de los pequeños
+            negocios en Chile.
         </p>
-        <p hlmP class="font-serif text-center text-xl lg:text-3xl text-balance">
-            Creemos que la tecnología debe facilitar la vida, no complicarla.
-        </p>
+        <p hlmP class="font-serif text-center text-xl lg:text-3xl text-balance">Creemos que la tecnología debe facilitar la vida, no complicarla.</p>
     </div>
-    <div
-        class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(20rem,55vw,35rem)] overflow-hidden object-top-right order-1 md:order-2"
-    >
+    <div class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(20rem,55vw,35rem)] overflow-hidden object-top-right order-1 md:order-2">
         <img
             [src]="urlFondo1_1280"
-            [srcset]="
-                `${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w`
-            "
+            [srcset]="`${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w`"
             sizes="(max-width: 767px) 100vw, 50vw"
             alt="Empleado sirviendo café"
             class="absolute inset-0 h-full w-full object-cover"
         />
     </div>
 </section>
-<section
-    class="relative w-full overflow-hidden flex flex-col items-center justify-center max-w-dvw p-0 fade-in bg-(--celeste)"
->
-    <div
-        class="flex-1 flex flex-col items-center justify-evenly px-12 py-10 md:py-12 lg:py-18 h-full gap-8 lg:gap-12"
-    >
-        <p
-            hlmP
-            class="text-(--blanco) font-serif text-center text-xl md:text-2xl lg:text-3xl leading-8 md:leading-12 lg:leading-16 font-semibold text-balance"
-        >
-            Nuestro compromiso es seguir mejorando la plataforma, incorporar nuevas plantillas
-            normativas y escuchar constantemente a nuestra comunidad.
+<section class="relative w-full overflow-hidden flex flex-col items-center justify-center max-w-dvw p-0 fade-in bg-(--celeste)">
+    <div class="flex-1 flex flex-col items-center justify-evenly px-12 py-10 md:py-12 lg:py-18 h-full gap-8 lg:gap-12">
+        <p hlmP class="text-(--blanco) font-serif text-center text-xl md:text-2xl lg:text-3xl leading-8 md:leading-12 lg:leading-16 font-semibold text-balance">
+            Nuestro compromiso es seguir mejorando la plataforma, incorporar nuevas plantillas normativas y escuchar constantemente a nuestra comunidad.
         </p>
     </div>
 </section>

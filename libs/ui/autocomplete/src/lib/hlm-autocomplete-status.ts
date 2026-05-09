@@ -11,9 +11,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmAutocompleteStatus {
     constructor() {
-        classes(
-            () =>
-                'text-muted-foreground flex w-full items-center justify-center gap-2 px-3 py-2 text-center text-sm',
-        );
+        classes(() => 'text-muted-foreground flex w-full items-center justify-center gap-2 px-3 py-2 text-center text-sm');
     }
 }

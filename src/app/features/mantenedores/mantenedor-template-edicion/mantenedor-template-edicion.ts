@@ -22,11 +22,8 @@ import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, Reacti
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideChevronDown, lucidePlus, lucideSquarePen, lucideTrash2, lucideX } from '@ng-icons/lucide';
-import { BrnPopoverImports } from '@spartan-ng/brain/popover';
-import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmAccordionImports } from '@spartan-ng/helm/accordion';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
-import { BrnPopoverContent } from '@spartan-ng/brain/popover';
 import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -64,7 +61,6 @@ import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
         HlmIcon,
         NgIcon,
         HlmTextareaImports,
-        BrnSelectImports,
         HlmSelectImports,
         HlmSpinnerImports,
         HlmH4,
@@ -78,7 +74,6 @@ import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
         HlmBadgeImports,
         FormsModule,
         RouterLink,
-        BrnPopoverContent,
         HlmAutocompleteImports,
         HlmSkeletonImports,
         EditorTexto,
@@ -204,9 +199,9 @@ export class MantenedorTemplateEdicion {
 
     titulo = computed<string>(() => {
         if (this.idTemplate()) {
-            return `Actualizar el template "${this.item()?.nombre}":`;
+            return `Actualizar la plantilla "${this.item()?.nombre}":`;
         }
-        return `Crear un template nuevo:`;
+        return `Crear una plantilla nueva:`;
     });
 
     error = signal<string>('');
@@ -460,12 +455,15 @@ export class MantenedorTemplateEdicion {
         return casosSinDichoPadre;
     }
 
-    formFiscalizador = '';
+    formFiscalizador: FormGroup<{
+        idFiscalizador: FormControl<number | null>;
+    }> = new FormGroup({
+        idFiscalizador: new FormControl<number | null>({ value: null, disabled: false }),
+    });
 
     agregarFiscalizador(normaControl: FormGroup) {
-        const idFiscalizador = this.formFiscalizador;
-
-        this.formFiscalizador = '';
+        const idFiscalizador = this.formFiscalizador.controls.idFiscalizador.value;
+        this.formFiscalizador.controls.idFiscalizador.setValue(null);
 
         const idx = (normaControl.controls['templateNormaFiscalizadores'] as FormArray).controls.findIndex(
             (ctrl: AbstractControl) => ctrl instanceof FormGroup && ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
@@ -499,15 +497,19 @@ export class MantenedorTemplateEdicion {
         return fiscalizador?.nombreCorto && fiscalizador.nombreCorto.trim() !== '' ? fiscalizador.nombreCorto : fiscalizador?.nombre!;
     }
 
-    formNotifCantTiempo = '';
-    formNotifUnidadTiempo = '';
+    formNotificacion: FormGroup<{
+        cantTiempo: FormControl<number | null>;
+        idUnidadTiempo: FormControl<number | null>;
+    }> = new FormGroup({
+        cantTiempo: new FormControl<number | null>({ value: null, disabled: false }, [Validators.min(1)]),
+        idUnidadTiempo: new FormControl<number | null>({ value: null, disabled: false }),
+    });
 
     agregarNotificacionPrevia(normaControl: FormGroup) {
-        const cantTiempo = this.formNotifCantTiempo;
-        const idUnidadTiempo = this.formNotifUnidadTiempo;
-
-        this.formNotifCantTiempo = '';
-        this.formNotifUnidadTiempo = '';
+        const cantTiempo = this.formNotificacion.controls.cantTiempo.value;
+        const idUnidadTiempo = this.formNotificacion.controls.idUnidadTiempo.value;
+        this.formNotificacion.controls.cantTiempo.setValue(null);
+        this.formNotificacion.controls.idUnidadTiempo.setValue(null);
 
         const idx = (normaControl.controls['templateNormaNotificaciones'] as FormArray).controls.findIndex(
             (ctrl: AbstractControl) =>
@@ -579,6 +581,7 @@ export class MantenedorTemplateEdicion {
                 descripcion: new FormControl('', { nonNullable: true }),
                 idTipoPeriodicidad: new FormControl(null, {
                     nonNullable: true,
+                    validators: [Validators.required],
                 }),
                 multa: new FormControl('', { nonNullable: true }),
                 idCategoriaNorma: new FormControl(null, {
@@ -847,4 +850,24 @@ export class MantenedorTemplateEdicion {
         }
         return control?.invalid && control?.touched;
     }
+
+    itemToStringTemplatePadre = (value: number) => {
+        return this.templatesExistentes().find((c) => c.id === value)?.nombre ?? '';
+    };
+
+    itemToStringCategoria = (value: number) => {
+        return this.categoriasExistentes().find((c) => c.id === value)?.nombre ?? '';
+    };
+
+    itemToStringPeriodicidad = (value: number) => {
+        return this.periodicidadesExistentes().find((c) => c.id === value)?.nombre ?? '';
+    };
+
+    itemToStringFiscalizadores = (value: number) => {
+        return this.fiscalizadoresExistentes().find((c) => c.id === value)?.nombre ?? '';
+    };
+
+    itemToStringUnidadTiempo = (value: number) => {
+        return this.unidadesTiempoExistentes().find((c) => c.id === value)?.nombre ?? '';
+    };
 }

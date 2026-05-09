@@ -11,9 +11,6 @@ import { classes } from '@spartan-ng/helm/utils';
 })
 export class HlmAutocompleteList {
     constructor() {
-        classes(
-            () =>
-                'no-scrollbar max-h-[calc(--spacing(72)---spacing(9))] scroll-py-1 overflow-y-auto overscroll-contain p-1 data-empty:p-0',
-        );
+        classes(() => 'no-scrollbar max-h-[calc(--spacing(72)---spacing(9))] scroll-py-1 overflow-y-auto overscroll-contain p-1 data-empty:p-0');
     }
 }

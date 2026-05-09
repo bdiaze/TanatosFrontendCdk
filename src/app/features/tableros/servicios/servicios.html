@@ -2,192 +2,110 @@
     id="nuestros-servicios"
     class="relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--celeste) p-0 max-w-dvw fade-in"
 >
-    <div
-        class="flex-1 flex flex-col items-center justify-center px-8 md:px-12 py-10 md:py-8 order-2 md:order-1 gap-10"
-    >
-        <p
-            hlmP
-            class="text-(--blanco) font-serif text-center text-xl md:text-3xl lg:text-5xl font-semibold text-balance"
-        >
+    <div class="flex-1 flex flex-col items-center justify-center px-8 md:px-12 py-10 md:py-8 order-2 md:order-1 gap-10">
+        <p hlmP class="text-(--blanco) font-serif text-center text-xl md:text-3xl lg:text-5xl font-semibold text-balance">
             Mantén tu negocio al día con sus obligaciones legales, sin estrés ni confusiones.
         </p>
-        <p
-            hlmP
-            class="text-(--blanco) font-serif text-center text-lg md:text-xl lg:text-4xl text-balance px-8"
-        >
-            En Todo En Orden ayudamos a emprendedores y microempresarios chilenos a gestionar sus
-            obligaciones normativas de manera simple, ordenada y automatizada.
+        <p hlmP class="text-(--blanco) font-serif text-center text-lg md:text-xl lg:text-4xl text-balance px-8">
+            En Todo En Orden ayudamos a emprendedores y microempresarios chilenos a gestionar sus obligaciones normativas de manera simple, ordenada y
+            automatizada.
         </p>
     </div>
-    <div
-        class="relative w-full md:w-1/2 h-[clamp(16rem,80vw,40rem)] md:h-[clamp(35rem,50vw,40rem)] overflow-hidden object-top-right order-1 md:order-2"
-    >
+    <div class="relative w-full md:w-1/2 h-[clamp(16rem,80vw,40rem)] md:h-[clamp(35rem,50vw,40rem)] overflow-hidden object-top-right order-1 md:order-2">
         <img
             [src]="urlFondo1_1280"
-            [srcset]="
-                `${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w`
-            "
+            [srcset]="`${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w`"
             sizes="(max-width: 767px) 100vw, 50vw"
             alt="Empleado sirviendo café"
             class="absolute inset-0 h-full w-full object-cover"
         />
     </div>
 </section>
-<section
-    id="principales-funciones"
-    class="relative w-full flex flex-col items-center justify-center text-(--azul) py-10 lg:py-16 px-12 max-w-dvw fade-in"
->
-    <p hlmP class="font-serif text-center text-3xl lg:text-5xl font-semibold text-balance mb-8">
-        Principales Funciones
-    </p>
+<section id="principales-funciones" class="relative w-full flex flex-col items-center justify-center text-(--azul) py-10 lg:py-16 px-12 max-w-dvw fade-in">
+    <p hlmP class="font-serif text-center text-3xl lg:text-5xl font-semibold text-balance mb-8">Principales Funciones</p>
     <div class="flex flex-col md:flex-row justify-evenly w-full gap-8">
-        <div
-            class="flex-1 flex flex-col items-center justify-center gap-3 lg:gap-6 w-full md:w-1/2"
-        >
+        <div class="flex-1 flex flex-col items-center justify-center gap-3 lg:gap-6 w-full md:w-1/2">
             <ng-icon hlm size="lg" name="lucideStore" />
-            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">
-                Registro de Negocios
-            </p>
-            <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-                Crea y administra uno o más negocios con su información básica.
-            </p>
+            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">Registro de Negocios</p>
+            <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">Crea y administra uno o más negocios con su información básica.</p>
         </div>
-        <div
-            class="flex-1 flex flex-col items-center justify-center gap-3 lg:gap-6 w-full md:w-1/2"
-        >
+        <div class="flex-1 flex flex-col items-center justify-center gap-3 lg:gap-6 w-full md:w-1/2">
             <ng-icon hlm size="lg" name="lucideSmartphone" />
-            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">
-                Gestión de Destinatarios
-            </p>
+            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">Gestión de Destinatarios</p>
             <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-                Define quién debe recibir notificaciones (socios, contadores, encargados
-                administrativos, etc.).
+                Define quién debe recibir notificaciones (socios, contadores, encargados administrativos, etc.).
             </p>
         </div>
     </div>
-    <p hlmP class="font-serif text-center font-semibold text-xl lg:text-3xl text-balance mt-8">
-        Todos informados, nadie sorprendido.
-    </p>
+    <p hlmP class="font-serif text-center font-semibold text-xl lg:text-3xl text-balance mt-8">Todos informados, nadie sorprendido.</p>
 </section>
-<section
-    class="text-(--blanco) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw fade-in"
->
-    <div
-        class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(30rem,40vw,50rem)] overflow-hidden object-top-right"
-    >
-        <video
-            #bgVideo
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="auto"
-            [poster]="urlVideo1_Poster"
-            class="absolute inset-0 w-full h-full object-cover -z-10"
-        >
+<section class="text-(--blanco) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw fade-in">
+    <div class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(30rem,40vw,50rem)] overflow-hidden object-top-right">
+        <video #bgVideo autoplay muted loop playsinline preload="auto" [poster]="urlVideo1_Poster" class="absolute inset-0 w-full h-full object-cover -z-10">
             <source [src]="urlVideo1_WebM" type="video/webm" />
             <source [src]="urlVideo1_MP4" type="video/mp4" />
         </video>
     </div>
-    <div
-        class="flex flex-col items-center justify-center gap-4 lg:gap-8 w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8"
-    >
+    <div class="flex flex-col items-center justify-center gap-4 lg:gap-8 w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8">
         <ng-icon hlm size="lg" name="lucideSquarePen" />
-        <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">
-            Creación de Obligaciones Personalizadas
-        </p>
-        <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-            Crea tus propias obligaciones indicando:
-        </p>
+        <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">Creación de Obligaciones Personalizadas</p>
+        <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">Crea tus propias obligaciones indicando:</p>
         <ul class="list-disc font-serif text-lg lg:text-2xl text-balance px-8">
             <li>Nombre y descripción</li>
             <li>Periodicidad (diaria, semanal, etc.)</li>
             <li>Notificaciones previas</li>
             <li>Fecha de vencimiento</li>
         </ul>
-        <p hlmP class="font-serif text-center font-semibold text-lg lg:text-2xl text-balance">
-            La plataforma se encarga del resto.
-        </p>
+        <p hlmP class="font-serif text-center font-semibold text-lg lg:text-2xl text-balance">La plataforma se encarga del resto.</p>
     </div>
 </section>
-<section
-    class="relative w-full flex flex-col items-center justify-center bg-(--azul) max-w-dvw fade-in"
->
-    <div
-        class="text-(--blanco) flex flex-col md:flex-row justify-evenly w-full gap-8 py-12 lg:py-16 px-12"
-    >
+<section class="relative w-full flex flex-col items-center justify-center bg-(--azul) max-w-dvw fade-in">
+    <div class="text-(--blanco) flex flex-col md:flex-row justify-evenly w-full gap-8 py-12 lg:py-16 px-12">
         <div class="flex flex-col items-center justify-center gap-4 lg:gap-6 w-full md:w-1/2">
             <ng-icon hlm size="lg" name="lucideClipboardPaste" />
-            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">
-                Plantillas de Normas
-            </p>
+            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">Plantillas de Normas</p>
             <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-                Suscríbete a plantillas predefinidas con obligaciones ya configuradas según
-                normativa chilena.
+                Suscríbete a plantillas predefinidas con obligaciones ya configuradas según normativa chilena.
             </p>
-            <p hlmP class="font-serif text-center font-semibold text-lg lg:text-2xl text-balance">
-                Puedes adaptarlas a tu realidad cuando lo necesites.
-            </p>
+            <p hlmP class="font-serif text-center font-semibold text-lg lg:text-2xl text-balance">Puedes adaptarlas a tu realidad cuando lo necesites.</p>
         </div>
         <div class="flex flex-col items-center justify-center gap-4 lg:gap-6 w-full md:w-1/2">
             <ng-icon hlm size="lg" name="lucideCalendar" />
-            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">
-                Mi Calendario
-            </p>
-            <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-                Visualiza en un solo panel:
-            </p>
+            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">Mi Calendario</p>
+            <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">Visualiza en un solo panel:</p>
             <ul class="list-disc font-serif text-lg lg:text-2xl text-balance px-8">
                 <li>Obligaciones vencidas</li>
                 <li>Próximas a vencer</li>
                 <li>Completadas</li>
             </ul>
-            <p hlmP class="font-serif text-center text-lg lg:text-2xl font-semibold text-balance">
-                Un sistema claro, visual y accionable.
-            </p>
+            <p hlmP class="font-serif text-center text-lg lg:text-2xl font-semibold text-balance">Un sistema claro, visual y accionable.</p>
         </div>
     </div>
 </section>
 <section class="relative w-full flex flex-col items-center justify-center max-w-dvw fade-in">
-    <div
-        class="text-(--azul) flex flex-col md:flex-row justify-evenly w-full gap-8 py-12 lg:py-16 px-12"
-    >
+    <div class="text-(--azul) flex flex-col md:flex-row justify-evenly w-full gap-8 py-12 lg:py-16 px-12">
         <div class="flex flex-col items-center justify-center gap-4 lg:gap-8 w-full md:w-1/2">
             <ng-icon hlm size="lg" name="lucideClipboardCheck" />
-            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">
-                Gestión de Cumplimiento
-            </p>
+            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">Gestión de Cumplimiento</p>
             <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-                Marca obligaciones como completadas y adjunta documentos de respaldo para mantener
-                tu evidencia organizada.
+                Marca obligaciones como completadas y adjunta documentos de respaldo para mantener tu evidencia organizada.
             </p>
         </div>
         <div class="flex flex-col items-center justify-center gap-4 lg:gap-8 w-full md:w-1/2">
             <ng-icon hlm size="lg" name="lucideBellRing" />
-            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">
-                Notificaciones Automáticas
-            </p>
+            <p hlmP class="font-serif text-center text-xl lg:text-3xl font-semibold text-balance">Notificaciones Automáticas</p>
             <p hlmP class="font-serif text-center text-lg lg:text-2xl text-balance">
-                Recibe alertas previas al vencimiento. Al cumplirse una obligación periódica, el
-                sistema programa automáticamente el próximo vencimiento.
+                Recibe alertas previas al vencimiento. Al cumplirse una obligación periódica, el sistema programa automáticamente el próximo vencimiento.
             </p>
         </div>
     </div>
 </section>
-<section
-    class="relative w-full overflow-hidden flex flex-col items-center justify-center bg-(--primary) max-w-dvw p-0 fade-in"
->
-    <div
-        class="flex-1 flex flex-col items-center justify-evenly px-12 py-10 md:py-12 lg:py-16 h-full gap-8 lg:gap-12"
-    >
+<section class="relative w-full overflow-hidden flex flex-col items-center justify-center bg-(--calipso) max-w-dvw p-0 fade-in">
+    <div class="flex-1 flex flex-col items-center justify-evenly px-12 py-10 md:py-12 lg:py-16 h-full gap-8 lg:gap-12">
         <p hlmP class="text-(--blanco) font-serif text-center text-lg lg:text-2xl text-balance">
-            Ya no tendrás que depender de recordatorios manuales, planillas desordenadas o miedo a
-            multas por olvido.
+            Ya no tendrás que depender de recordatorios manuales, planillas desordenadas o miedo a multas por olvido.
         </p>
-        <p
-            hlmP
-            class="text-(--blanco) font-serif text-center text-2xl md:text-3xl lg:text-4xl font-semibold text-balance"
-        >
+        <p hlmP class="text-(--blanco) font-serif text-center text-2xl md:text-3xl lg:text-4xl font-semibold text-balance">
             Tu cumplimiento normativo, bajo control.
         </p>
     </div>

@@ -1,16 +1,18 @@
-import { Directive, computed, input } from '@angular/core';
-import { hlm } from '@spartan-ng/helm/utils';
-import type { ClassValue } from 'clsx';
+import { Directive, inject } from '@angular/core';
+import { BrnSelectValue } from '@spartan-ng/brain/select';
+import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({
-	selector: 'hlm-select-value,[hlmSelectValue], brn-select-value[hlm]',
-	host: {
-		'[class]': '_computedClass()',
-	},
+    selector: '[hlmSelectValue],hlm-select-value',
+    hostDirectives: [{ directive: BrnSelectValue, inputs: ['placeholder'] }],
+    host: { '[attr.data-slot]': '!_hidden() ? "select-value" : null' },
 })
 export class HlmSelectValue {
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
-	protected readonly _computedClass = computed(() =>
-		hlm('data-[placeholder]:text-muted-foreground line-clamp-1 flex items-center gap-2 truncate', this.userClass()),
-	);
+    private readonly _brnSelectValue = inject(BrnSelectValue);
+
+    protected readonly _hidden = this._brnSelectValue.hidden;
+
+    constructor() {
+        classes(() => 'data-hidden:hidden');
+    }
 }

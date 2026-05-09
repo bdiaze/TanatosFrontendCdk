@@ -1,14 +1,4 @@
-import {
-    Component,
-    computed,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    Signal,
-    signal,
-    WritableSignal,
-} from '@angular/core';
+import { Component, computed, EventEmitter, Input, OnInit, Output, Signal, signal, WritableSignal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -22,9 +12,7 @@ import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideSquarePen } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
-import { BrnSelectImports } from '@spartan-ng/brain/select';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
-import { BrnPopoverContent } from '@spartan-ng/brain/popover';
 import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
 import { normalize } from '@/app/helpers/string-comparator';
 import { HlmH3 } from '@spartan-ng/helm/typography';
@@ -45,9 +33,7 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
         HlmIcon,
         NgIcon,
         HlmH3,
-        BrnSelectImports,
         HlmSelectImports,
-        BrnPopoverContent,
         HlmAutocompleteImports,
     ],
     templateUrl: './modal-edicion.html',
@@ -72,24 +58,14 @@ export class ModalEdicion implements OnInit {
     ngOnInit() {
         const camposForm: any = {};
         this.campos.forEach((campo) => {
-            let valorInicial =
-                campo.tipo === 'boolean'
-                    ? this.item
-                        ? this.item[campo.llave]
-                        : false
-                    : this.item
-                      ? this.item[campo.llave]
-                      : null;
+            let valorInicial = campo.tipo === 'boolean' ? (this.item ? this.item[campo.llave] : false) : this.item ? this.item[campo.llave] : null;
 
             if (valorInicial === '') valorInicial = null;
 
             const validadores = [];
             if (campo.requerido) validadores.push(Validators.required);
 
-            const control = new FormControl(
-                { value: valorInicial, disabled: campo.deshabilitado },
-                validadores,
-            );
+            const control = new FormControl({ value: valorInicial, disabled: campo.deshabilitado }, validadores);
 
             if (campo.tipo === 'autocomplete') {
                 const itemSeleccionado = campo.posiblesValores!.find((v) => v.id === valorInicial);
@@ -97,14 +73,8 @@ export class ModalEdicion implements OnInit {
                 campo.autocompleteFilteredOptions = computed(() => {
                     const filtrados = campo.posiblesValores!.filter(
                         (option) =>
-                            normalize(option.valor).includes(
-                                normalize(campo.autocompleteSearch!()),
-                            ) ||
-                            (option.categoria
-                                ? normalize(option.categoria!).includes(
-                                      normalize(campo.autocompleteSearch!()),
-                                  )
-                                : false),
+                            normalize(option.valor).includes(normalize(campo.autocompleteSearch!())) ||
+                            (option.categoria ? normalize(option.categoria!).includes(normalize(campo.autocompleteSearch!())) : false),
                     );
 
                     const categorizados: PosiblesValoresCategorizados[] = [];
@@ -121,11 +91,14 @@ export class ModalEdicion implements OnInit {
                     const item = campo.posiblesValores?.find((x) => x.id === id);
                     return `${item?.valor}`;
                 };
-                campo.autocompleteIsItemEqualToValue = (
-                    itemValue: number,
-                    idSelectedValue: number | null,
-                ) => {
+                campo.autocompleteIsItemEqualToValue = (itemValue: number, idSelectedValue: number | null) => {
                     return itemValue === idSelectedValue;
+                };
+            }
+
+            if (campo.tipo === 'select') {
+                campo.selectItemToString = (value: number) => {
+                    return campo.posiblesValores?.find((c) => c.id === value)?.valor ?? '';
                 };
             }
 
@@ -156,6 +129,7 @@ export interface CampoDinamico {
     autocompleteFilteredOptions?: Signal<PosiblesValoresCategorizados[]>;
     autocompleteItemToString?: (id: number) => string;
     autocompleteIsItemEqualToValue?: (itemValue: number, idSelectedValue: number | null) => boolean;
+    selectItemToString?: (id: number) => string;
 }
 
 export interface PosiblesValores {

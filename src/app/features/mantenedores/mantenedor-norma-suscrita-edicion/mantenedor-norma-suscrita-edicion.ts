@@ -13,26 +13,10 @@ import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
-import {
-    AbstractControl,
-    FormArray,
-    FormControl,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucidePlus,
-    lucideSquarePen,
-    lucideX,
-} from '@ng-icons/lucide';
-import { BrnPopoverImports } from '@spartan-ng/brain/popover';
-import { BrnSelectImports } from '@spartan-ng/brain/select';
+import { lucideBadgeCheck, lucideBadgeX, lucidePlus, lucideSquarePen, lucideX } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -70,20 +54,17 @@ import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
         HlmIcon,
         NgIcon,
         HlmTextareaImports,
-        BrnSelectImports,
         HlmSelectImports,
         HlmSpinnerImports,
         HlmIconImports,
         HlmAlertImports,
         HlmP,
         HlmH3,
-        HlmH4,
         HlmBadgeImports,
         FormsModule,
         RouterLink,
         HlmDropdownMenuImports,
         HlmDatePickerImports,
-        BrnPopoverImports,
         HlmPopoverImports,
         HlmSkeletonImports,
         HlmBreadCrumbImports,
@@ -145,18 +126,12 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         fechaProximoVencimiento: FormControl<Date | null>;
         horaProximoVencimiento: FormControl<string | null>;
     }> = new FormGroup({
-        nombre: new FormControl<string | null>({ value: null, disabled: false }, [
-            Validators.required,
-        ]),
+        nombre: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required]),
         descripcion: new FormControl<string | null>({ value: null, disabled: false }),
-        idTipoPeriodicidad: new FormControl<number | null>({ value: 0, disabled: false }, [
-            Validators.required,
-        ]),
+        idTipoPeriodicidad: new FormControl<number | null>({ value: 0, disabled: false }, [Validators.required]),
         multa: new FormControl<string | null>({ value: null, disabled: false }),
         idCategoriaNorma: new FormControl<number | null>({ value: null, disabled: false }),
-        activado: new FormControl<boolean | null>({ value: null, disabled: false }, [
-            Validators.required,
-        ]),
+        activado: new FormControl<boolean | null>({ value: null, disabled: false }, [Validators.required]),
         fiscalizadores: new FormArray<
             FormGroup<{
                 idTipoFiscalizador: FormControl<number | null>;
@@ -176,9 +151,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     titulo = computed<string>(() => {
         if (this.item()) {
-            return `Edita la obligación "${
-                this.item()?.nombre ?? this.item()?.templateNorma?.nombre
-            }"`;
+            return `Edita la obligación "${this.item()?.nombre ?? this.item()?.templateNorma?.nombre}"`;
         }
         return `Crea una obligación nueva:`;
     });
@@ -231,10 +204,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                         },
                         error: (err) => {
                             console.error('Error al obtener la información de la obligación', err);
-                            this.error.set(
-                                getErrorMessage(err) ??
-                                    'Error al obtener la información de la obligación',
-                            );
+                            this.error.set(getErrorMessage(err) ?? 'Error al obtener la información de la obligación');
                         },
                     })
                     .add(() => {
@@ -245,17 +215,11 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
         effect(() => {
             if (this.item()) {
-                const fechaVencimiento = this.item()?.proximoVencimiento
-                    ? new Date(this.item()!.proximoVencimiento!)
-                    : null;
+                const fechaVencimiento = this.item()?.proximoVencimiento ? new Date(this.item()!.proximoVencimiento!) : null;
 
                 let fechaProximoVencimiento = null;
                 if (fechaVencimiento != null) {
-                    fechaProximoVencimiento = new Date(
-                        fechaVencimiento.getFullYear(),
-                        fechaVencimiento.getMonth(),
-                        fechaVencimiento.getDate(),
-                    );
+                    fechaProximoVencimiento = new Date(fechaVencimiento.getFullYear(), fechaVencimiento.getMonth(), fechaVencimiento.getDate());
                 }
                 let horaProximoVencimiento = null;
                 if (fechaVencimiento != null) {
@@ -268,15 +232,10 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
                 this.form.patchValue({
                     nombre: this.item()?.nombre ?? this.item()?.templateNorma?.nombre,
-                    descripcion:
-                        this.item()?.descripcion ?? this.item()?.templateNorma?.descripcion,
-                    idTipoPeriodicidad:
-                        this.item()?.idTipoPeriodicidad ??
-                        this.item()?.templateNorma?.idTipoPeriodicidad,
+                    descripcion: this.item()?.descripcion ?? this.item()?.templateNorma?.descripcion,
+                    idTipoPeriodicidad: this.item()?.idTipoPeriodicidad ?? this.item()?.templateNorma?.idTipoPeriodicidad,
                     multa: this.item()?.multa ?? this.item()?.templateNorma?.multa,
-                    idCategoriaNorma:
-                        this.item()?.idCategoriaNorma ??
-                        this.item()?.templateNorma?.idCategoriaNorma,
+                    idCategoriaNorma: this.item()?.idCategoriaNorma ?? this.item()?.templateNorma?.idCategoriaNorma,
                     activado: this.item()?.activado,
                     fechaProximoVencimiento: fechaProximoVencimiento ?? undefined,
                     horaProximoVencimiento: horaProximoVencimiento ?? undefined,
@@ -287,13 +246,10 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     this.item()!.fiscalizadores?.forEach((fiscalizador) => {
                         (this.form.get('fiscalizadores') as FormArray).push(
                             new FormGroup({
-                                idTipoFiscalizador: new FormControl(
-                                    fiscalizador.idTipoFiscalizador,
-                                    {
-                                        nonNullable: true,
-                                        validators: [Validators.required],
-                                    },
-                                ),
+                                idTipoFiscalizador: new FormControl(fiscalizador.idTipoFiscalizador, {
+                                    nonNullable: true,
+                                    validators: [Validators.required],
+                                }),
                             }),
                         );
                     });
@@ -301,13 +257,10 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     this.item()!.templateNorma?.fiscalizadores?.forEach((fiscalizador) => {
                         (this.form.get('fiscalizadores') as FormArray).push(
                             new FormGroup({
-                                idTipoFiscalizador: new FormControl(
-                                    fiscalizador.idTipoFiscalizador,
-                                    {
-                                        nonNullable: true,
-                                        validators: [Validators.required],
-                                    },
-                                ),
+                                idTipoFiscalizador: new FormControl(fiscalizador.idTipoFiscalizador, {
+                                    nonNullable: true,
+                                    validators: [Validators.required],
+                                }),
                             }),
                         );
                     });
@@ -318,13 +271,10 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     this.item()!.notificaciones?.forEach((notificacion) => {
                         (this.form.get('notificaciones') as FormArray).push(
                             new FormGroup({
-                                idTipoUnidadTiempoAntelacion: new FormControl(
-                                    notificacion.idTipoUnidadTiempoAntelacion,
-                                    {
-                                        nonNullable: true,
-                                        validators: [Validators.required],
-                                    },
-                                ),
+                                idTipoUnidadTiempoAntelacion: new FormControl(notificacion.idTipoUnidadTiempoAntelacion, {
+                                    nonNullable: true,
+                                    validators: [Validators.required],
+                                }),
                                 cantAntelacion: new FormControl(notificacion.cantAntelacion, {
                                     nonNullable: true,
                                     validators: [Validators.required],
@@ -336,13 +286,10 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     this.item()!.templateNorma?.notificaciones?.forEach((notificacion) => {
                         (this.form.get('notificaciones') as FormArray).push(
                             new FormGroup({
-                                idTipoUnidadTiempoAntelacion: new FormControl(
-                                    notificacion.idTipoUnidadTiempoAntelacion,
-                                    {
-                                        nonNullable: true,
-                                        validators: [Validators.required],
-                                    },
-                                ),
+                                idTipoUnidadTiempoAntelacion: new FormControl(notificacion.idTipoUnidadTiempoAntelacion, {
+                                    nonNullable: true,
+                                    validators: [Validators.required],
+                                }),
                                 cantAntelacion: new FormControl(notificacion.cantAntelacion, {
                                     nonNullable: true,
                                     validators: [Validators.required],
@@ -402,9 +349,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             .obtenerVigentes()
             .subscribe({
                 next: (vigentes) => {
-                    vigentes = vigentes.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
-                    );
+                    vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                     this.categoriasVigentes.set(vigentes);
                 },
                 error: (err) => {
@@ -426,9 +371,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener periodicidades vigentes', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener periodicidades vigentes',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener periodicidades vigentes');
                 },
             })
             .add(() => {
@@ -440,16 +383,12 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             .obtenerVigentes()
             .subscribe({
                 next: (vigentes) => {
-                    vigentes = vigentes.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
-                    );
+                    vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                     this.fiscalizadoresVigentes.set(vigentes);
                 },
                 error: (err) => {
                     console.error('Error al obtener fiscalizadores vigentes', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener fiscalizadores vigentes',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener fiscalizadores vigentes');
                 },
             })
             .add(() => {
@@ -466,9 +405,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener unidades de tiempo vigentes', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener unidades de tiempo vigentes',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener unidades de tiempo vigentes');
                 },
             })
             .add(() => {
@@ -476,17 +413,18 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             });
     }
 
-    formFiscalizador = '';
+    formFiscalizador: FormGroup<{
+        idFiscalizador: FormControl<number | null>;
+    }> = new FormGroup({
+        idFiscalizador: new FormControl<number | null>({ value: null, disabled: false }),
+    });
 
     agregarFiscalizador() {
-        const idFiscalizador = this.formFiscalizador;
-
-        this.formFiscalizador = '';
+        const idFiscalizador = this.formFiscalizador.controls.idFiscalizador.value;
+        this.formFiscalizador.controls.idFiscalizador.setValue(null);
 
         const idx = (this.form.controls['fiscalizadores'] as FormArray).controls.findIndex(
-            (ctrl: AbstractControl) =>
-                ctrl instanceof FormGroup &&
-                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
+            (ctrl: AbstractControl) => ctrl instanceof FormGroup && ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
         );
 
         if (idx !== -1) {
@@ -504,9 +442,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     quitarFiscalizador(idFiscalizador: number) {
         const idx = (this.form.controls['fiscalizadores'] as FormArray).controls.findIndex(
-            (ctrl: AbstractControl) =>
-                ctrl instanceof FormGroup &&
-                ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
+            (ctrl: AbstractControl) => ctrl instanceof FormGroup && ctrl.controls['idTipoFiscalizador']?.value === idFiscalizador,
         );
 
         if (idx !== -1) {
@@ -515,23 +451,23 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
     }
 
     nombreFiscalizador(idFiscalizador: number): string {
-        const fiscalizador = this.fiscalizadoresVigentes().find(
-            (fiscalizador: TipoFiscalizador) => fiscalizador.id === idFiscalizador,
-        );
-        return fiscalizador?.nombreCorto && fiscalizador.nombreCorto.trim() !== ''
-            ? fiscalizador.nombreCorto
-            : fiscalizador?.nombre!;
+        const fiscalizador = this.fiscalizadoresVigentes().find((fiscalizador: TipoFiscalizador) => fiscalizador.id === idFiscalizador);
+        return fiscalizador?.nombreCorto && fiscalizador.nombreCorto.trim() !== '' ? fiscalizador.nombreCorto : fiscalizador?.nombre!;
     }
 
-    formNotifCantTiempo = '';
-    formNotifUnidadTiempo = '';
+    formNotificacion: FormGroup<{
+        cantTiempo: FormControl<number | null>;
+        idUnidadTiempo: FormControl<number | null>;
+    }> = new FormGroup({
+        cantTiempo: new FormControl<number | null>({ value: null, disabled: false }, [Validators.min(1)]),
+        idUnidadTiempo: new FormControl<number | null>({ value: null, disabled: false }),
+    });
 
     agregarNotificacionPrevia() {
-        const cantTiempo = this.formNotifCantTiempo;
-        const idUnidadTiempo = this.formNotifUnidadTiempo;
-
-        this.formNotifCantTiempo = '';
-        this.formNotifUnidadTiempo = '';
+        const cantTiempo = this.formNotificacion.controls.cantTiempo.value;
+        const idUnidadTiempo = this.formNotificacion.controls.idUnidadTiempo.value;
+        this.formNotificacion.controls.cantTiempo.setValue(null);
+        this.formNotificacion.controls.idUnidadTiempo.setValue(null);
 
         const idx = (this.form.controls['notificaciones'] as FormArray).controls.findIndex(
             (ctrl: AbstractControl) =>
@@ -561,8 +497,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             (ctrl: AbstractControl) =>
                 ctrl instanceof FormGroup &&
                 ctrl.controls['cantAntelacion']?.value === cantAntelacion &&
-                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value ===
-                    idTipoUnidadTiempoAntelacion,
+                ctrl.controls['idTipoUnidadTiempoAntelacion']?.value === idTipoUnidadTiempoAntelacion,
         );
 
         if (idx !== -1) {
@@ -571,9 +506,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
     }
 
     nombreUnidadTiempo(idUnidadTiempo: number, cantUnidadTiempo: number | null = null): string {
-        const unidadTiempo = this.unidadesTiempoVigentes().find(
-            (unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo,
-        );
+        const unidadTiempo = this.unidadesTiempoVigentes().find((unidadTiempo: TipoUnidadTiempo) => unidadTiempo.id === idUnidadTiempo);
 
         let cantidad = '';
         if (cantUnidadTiempo) {
@@ -592,11 +525,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         if (this.item()) {
             let proximoVencimiento = null;
             if (this.form.controls['activado'].value!) {
-                const fechaProximoVencimiento =
-                    this.form.controls['fechaProximoVencimiento'].value!;
-                const [hora, minuto] = this.form.controls['horaProximoVencimiento']
-                    .value!.split(':')
-                    .map(Number);
+                const fechaProximoVencimiento = this.form.controls['fechaProximoVencimiento'].value!;
+                const [hora, minuto] = this.form.controls['horaProximoVencimiento'].value!.split(':').map(Number);
                 proximoVencimiento = new Date(
                     fechaProximoVencimiento.getFullYear(),
                     fechaProximoVencimiento.getMonth(),
@@ -630,8 +560,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
             this.form.controls['notificaciones'].controls.forEach((notificacionControl) => {
                 normaSuscrita.notificaciones?.push({
-                    idTipoUnidadTiempoAntelacion:
-                        notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
+                    idTipoUnidadTiempoAntelacion: notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
                     cantAntelacion: notificacionControl.controls['cantAntelacion'].value!,
                 });
             });
@@ -654,11 +583,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         } else {
             let proximoVencimiento = null;
             if (this.form.controls['activado'].value!) {
-                const fechaProximoVencimiento =
-                    this.form.controls['fechaProximoVencimiento'].value!;
-                const [hora, minuto] = this.form.controls['horaProximoVencimiento']
-                    .value!.split(':')
-                    .map(Number);
+                const fechaProximoVencimiento = this.form.controls['fechaProximoVencimiento'].value!;
+                const [hora, minuto] = this.form.controls['horaProximoVencimiento'].value!.split(':').map(Number);
                 proximoVencimiento = new Date(
                     fechaProximoVencimiento.getFullYear(),
                     fechaProximoVencimiento.getMonth(),
@@ -691,8 +617,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
             this.form.controls['notificaciones'].controls.forEach((notificacionControl) => {
                 normaSuscrita.notificaciones?.push({
-                    idTipoUnidadTiempoAntelacion:
-                        notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
+                    idTipoUnidadTiempoAntelacion: notificacionControl.controls['idTipoUnidadTiempoAntelacion'].value!,
                     cantAntelacion: notificacionControl.controls['cantAntelacion'].value!,
                 });
             });
@@ -724,4 +649,20 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         }
         return control?.invalid && control?.touched;
     }
+
+    itemToStringCategoria = (value: number) => {
+        return this.categoriasVigentes().find((c) => c.id === value)?.nombre ?? '';
+    };
+
+    itemToStringFiscalizadores = (value: number) => {
+        return this.fiscalizadoresVigentes().find((c) => c.id === value)?.nombre ?? '';
+    };
+
+    itemToStringPeriodicidad = (value: number) => {
+        return this.periodicidadesVigentes().find((c) => c.id === value)?.nombre ?? '';
+    };
+
+    itemToStringUnidadTiempo = (value: number) => {
+        return this.unidadesTiempoVigentes().find((c) => c.id === value)?.nombre ?? '';
+    };
 }

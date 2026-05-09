@@ -7,10 +7,11 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { clearCookie } from '@/app/helpers/cookie-helper';
 import { NegocioStore } from '@/app/services/negocio-store';
+import { CommonModule } from '@angular/common';
 
 @Component({
     selector: 'app-logout',
-    imports: [HlmButtonImports, HlmSpinnerImports],
+    imports: [HlmButtonImports, HlmSpinnerImports, CommonModule],
     templateUrl: './logout.html',
     styleUrl: './logout.scss',
 })

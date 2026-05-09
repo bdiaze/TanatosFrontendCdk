@@ -4,6 +4,13 @@
     (click)="cerrarSesion()"
     [disabled]="deshabilitarBoton()"
     class="px-4 text-[0.7rem] h-[1.9rem] lg:text-[0.8rem] lg:h-[2.1rem]"
+    [ngClass]="{
+        'bg-(--calipso)!': primary,
+        'hover:bg-(--calipso)/80!': primary,
+        'border-(--calipso)!': !primary,
+        'hover:border-(--calipso)/80!': !primary,
+        'text-(--calipso)!': !primary,
+    }"
 >
     @if (deshabilitarBoton()) {
         <hlm-spinner />

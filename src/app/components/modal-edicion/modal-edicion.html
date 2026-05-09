@@ -16,20 +16,7 @@
                         @if (campo.tipo !== 'oculto') {
                             <div hlmField class="gap-1">
                                 @if (campo.tipo === 'string' || campo.tipo === 'number') {
-                                    <div hlmInputGroup>
-                                        <div hlmInputGroupAddon align="block-start">
-                                            <label [for]="campo.llave" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">{{
-                                                campo.nombre ?? campo.llave
-                                            }}</label>
-                                            <hlm-field-error
-                                                class="transition-all duration-500 ease-out text-xs ml-auto"
-                                                [class.opacity-100]="invalid(campo.llave)"
-                                                [class.opacity-0]="!invalid(campo.llave)"
-                                                [class.max-h-10]="invalid(campo.llave)"
-                                                [class.max-h-0]="!invalid(campo.llave)"
-                                                >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
-                                            >
-                                        </div>
+                                    <hlm-input-group>
                                         @if (campo.tipo === 'string') {
                                             <input
                                                 hlmInputGroupInput
@@ -48,7 +35,20 @@
                                                 [formControl]="form.controls[campo.llave]"
                                             />
                                         }
-                                    </div>
+                                        <hlm-input-group-addon align="block-start">
+                                            <label [for]="campo.llave" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">{{
+                                                campo.nombre ?? campo.llave
+                                            }}</label>
+                                            <hlm-field-error
+                                                class="transition-all duration-500 ease-out text-xs ml-auto"
+                                                [class.opacity-100]="invalid(campo.llave)"
+                                                [class.opacity-0]="!invalid(campo.llave)"
+                                                [class.max-h-10]="invalid(campo.llave)"
+                                                [class.max-h-0]="!invalid(campo.llave)"
+                                                >Debes ingresar "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
+                                            >
+                                        </hlm-input-group-addon>
+                                    </hlm-input-group>
                                 }
                                 @if (campo.tipo === 'boolean') {
                                     <div class="flex justify-end-safe items-center gap-4">
@@ -56,7 +56,7 @@
                                             campo.nombre ?? campo.llave
                                         }}</label>
                                         <hlm-switch
-                                            [id]="campo.llave"
+                                            [inputId]="campo.llave"
                                             class="scale-[120%]"
                                             [checked]="form.controls[campo.llave].value"
                                             (checkedChange)="form.controls[campo.llave].setValue($event)"
@@ -73,94 +73,111 @@
                                         [class.opacity-0]="!invalid(campo.llave)"
                                         [class.max-h-10]="invalid(campo.llave)"
                                         [class.max-h-0]="!invalid(campo.llave)"
-                                        >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
+                                        >Debes ingresar "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
                                     >
                                 }
                                 @if (campo.tipo === 'select') {
-                                    <div class="flex flex-col justify-start items-center">
-                                        <div class="flex flex-row items-center justify-start w-full px-3 pb-1">
-                                            <label
-                                                [for]="campo.llave"
-                                                hlmLabel
-                                                class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground"
-                                                >{{ campo.nombre ?? campo.llave }}</label
-                                            >
-                                        </div>
-                                        <brn-select [id]="campo.llave" class="inline-block z-10 w-full" [formControl]="form.controls[campo.llave]">
-                                            <hlm-select-trigger class="">
-                                                <div class="flex justify-start items-center gap-2">
-                                                    <hlm-select-value class="text-xs md:text-sm truncate" />
-                                                </div>
-                                            </hlm-select-trigger>
-                                            <hlm-select-content>
-                                                @for (posibleValor of campo.posiblesValores; track posibleValor.id) {
-                                                    <hlm-option [value]="posibleValor.id" class="text-xs md:text-sm">{{ `${posibleValor.valor}` }}</hlm-option>
-                                                }
-                                            </hlm-select-content>
-                                        </brn-select>
+                                    <div hlmField class="flex flex-col justify-start items-center">
+                                        <hlm-input-group>
+                                            <hlm-input-group-addon align="block-start">
+                                                <label
+                                                    [for]="campo.llave"
+                                                    hlmLabel
+                                                    class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground"
+                                                    >{{ campo.nombre ?? campo.llave }}</label
+                                                >
+                                                <hlm-field-error
+                                                    class="transition-all duration-500 ease-out text-xs ml-auto"
+                                                    [class.opacity-100]="invalid(campo.llave)"
+                                                    [class.opacity-0]="!invalid(campo.llave)"
+                                                    [class.max-h-10]="invalid(campo.llave)"
+                                                    [class.max-h-0]="!invalid(campo.llave)"
+                                                    >Debes ingresar "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
+                                                >
+                                            </hlm-input-group-addon>
+                                            <div class="pb-2 px-2 w-full">
+                                                <hlm-select
+                                                    [id]="campo.llave"
+                                                    class="inline-block z-10 w-full"
+                                                    [formControl]="form.controls[campo.llave]"
+                                                    [itemToString]="campo.selectItemToString"
+                                                >
+                                                    <hlm-select-trigger class="">
+                                                        <div class="flex justify-start items-center gap-2">
+                                                            <hlm-select-value class="text-xs md:text-sm truncate" />
+                                                        </div>
+                                                    </hlm-select-trigger>
+                                                    <hlm-select-content *hlmSelectPortal>
+                                                        <hlm-select-group>
+                                                            @for (posibleValor of campo.posiblesValores; track posibleValor.id) {
+                                                                <hlm-select-item [value]="posibleValor.id" class="text-xs md:text-sm">{{
+                                                                    `${posibleValor.valor}`
+                                                                }}</hlm-select-item>
+                                                            }
+                                                        </hlm-select-group>
+                                                    </hlm-select-content>
+                                                </hlm-select>
+                                            </div>
+                                        </hlm-input-group>
                                     </div>
-                                    <hlm-field-error
-                                        class="transition-all duration-500 ease-out"
-                                        [class.opacity-100]="invalid(campo.llave)"
-                                        [class.opacity-0]="!invalid(campo.llave)"
-                                        [class.max-h-10]="invalid(campo.llave)"
-                                        [class.max-h-0]="!invalid(campo.llave)"
-                                        >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
-                                    >
                                 }
                                 @if (campo.tipo === 'autocomplete') {
-                                    <div class="flex flex-col justify-start items-center">
-                                        <div class="flex flex-row items-center justify-start w-full px-3 pb-1">
-                                            <label
-                                                [for]="campo.llave"
-                                                hlmLabel
-                                                class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground"
-                                                >{{ campo.nombre ?? campo.llave }}</label
-                                            >
-                                        </div>
-                                        <hlm-autocomplete
-                                            [(search)]="campo.autocompleteSearch!"
-                                            [itemToString]="campo.autocompleteItemToString!"
-                                            [isItemEqualToValue]="campo.autocompleteIsItemEqualToValue!"
-                                            [formControl]="form.controls[campo.llave]"
-                                            class="w-full"
+                                    <div hlmField class="flex flex-col justify-start items-center">
+                                        <hlm-input-group
+                                            class="has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-input"
                                         >
-                                            <hlm-autocomplete-input
-                                                [id]="campo.llave"
-                                                [placeholder]="`Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`"
-                                                class="text-xs md:text-sm"
-                                                showClear
-                                            />
-                                            <div *brnPopoverContent hlmAutocompleteContent>
-                                                <hlm-autocomplete-empty>{{ campo.nombre }} no encontrad@...</hlm-autocomplete-empty>
-                                                <div hlmAutocompleteList>
-                                                    @for (grupo of campo.autocompleteFilteredOptions!(); track $index; let last = $last) {
-                                                        <div hlmAutocompleteGroup>
-                                                            <div hlmAutocompleteLabel>
-                                                                {{ grupo.categoria }}
-                                                            </div>
-                                                            @for (option of grupo.items; track $index) {
-                                                                <hlm-autocomplete-item [value]="option.id">
-                                                                    {{ option.valor }}
-                                                                </hlm-autocomplete-item>
-                                                            }
-                                                            @if (!last) {
-                                                                <div hlmAutocompleteSeparator></div>
+                                            <hlm-input-group-addon align="block-start">
+                                                <label [for]="campo.llave" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">{{
+                                                    campo.nombre ?? campo.llave
+                                                }}</label>
+                                                <hlm-field-error
+                                                    class="transition-all duration-500 ease-out text-xs ml-auto"
+                                                    [class.opacity-100]="invalid(campo.llave)"
+                                                    [class.opacity-0]="!invalid(campo.llave)"
+                                                    [class.max-h-10]="invalid(campo.llave)"
+                                                    [class.max-h-0]="!invalid(campo.llave)"
+                                                    >Debes ingresar "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
+                                                >
+                                            </hlm-input-group-addon>
+                                            <div class="pb-2 px-2 w-full">
+                                                <hlm-autocomplete
+                                                    [(search)]="campo.autocompleteSearch!"
+                                                    [itemToString]="campo.autocompleteItemToString!"
+                                                    [isItemEqualToValue]="campo.autocompleteIsItemEqualToValue!"
+                                                    [formControl]="form.controls[campo.llave]"
+                                                    [autoHighlight]="true"
+                                                    class="w-full"
+                                                >
+                                                    <hlm-autocomplete-input
+                                                        [id]="campo.llave"
+                                                        [placeholder]="`Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`"
+                                                        class="text-xs md:text-sm"
+                                                        showClear
+                                                    />
+                                                    <hlm-autocomplete-content *hlmAutocompletePortal>
+                                                        <hlm-autocomplete-empty>{{ campo.nombre }} no encontrad@...</hlm-autocomplete-empty>
+                                                        <div hlmAutocompleteList>
+                                                            @for (grupo of campo.autocompleteFilteredOptions!(); track $index; let last = $last) {
+                                                                <div hlmAutocompleteGroup>
+                                                                    <div hlmAutocompleteLabel>
+                                                                        {{ grupo.categoria }}
+                                                                    </div>
+                                                                    @for (option of grupo.items; track $index) {
+                                                                        <hlm-autocomplete-item [value]="option.id">
+                                                                            {{ option.valor }}
+                                                                        </hlm-autocomplete-item>
+                                                                    }
+                                                                    @if (!last) {
+                                                                        <div hlmAutocompleteSeparator></div>
+                                                                    }
+                                                                </div>
                                                             }
                                                         </div>
-                                                    }
-                                                </div>
+                                                    </hlm-autocomplete-content>
+                                                </hlm-autocomplete>
                                             </div>
-                                        </hlm-autocomplete>
+                                        </hlm-input-group>
                                     </div>
-                                    <hlm-field-error
-                                        class="transition-all duration-500 ease-out"
-                                        [class.opacity-100]="invalid(campo.llave)"
-                                        [class.opacity-0]="!invalid(campo.llave)"
-                                        [class.max-h-10]="invalid(campo.llave)"
-                                        [class.max-h-0]="!invalid(campo.llave)"
-                                        >Debes ingresar el "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
-                                    >
                                 }
                             </div>
                         }

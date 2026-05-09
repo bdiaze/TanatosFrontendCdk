@@ -1,16 +1,16 @@
-import { Directive, computed, input } from '@angular/core';
+import { Directive } from '@angular/core';
 import { BrnSelectGroup } from '@spartan-ng/brain/select';
-import { hlm } from '@spartan-ng/helm/utils';
-import type { ClassValue } from 'clsx';
+import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({
-	selector: '[hlmSelectGroup], hlm-select-group',
-	hostDirectives: [BrnSelectGroup],
-	host: {
-		'[class]': '_computedClass()',
-	},
+    selector: '[hlmSelectGroup],hlm-select-group',
+    hostDirectives: [{ directive: BrnSelectGroup }],
+    host: {
+        'data-slot': 'select-group',
+    },
 })
 export class HlmSelectGroup {
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
-	protected readonly _computedClass = computed(() => hlm(this.userClass()));
+    constructor() {
+        classes(() => 'scroll-my-1 p-1');
+    }
 }

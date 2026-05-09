@@ -40,7 +40,7 @@
                                 </div>
                                 <hlm-autocomplete-search formControlName="cargo" [(search)]="search" class="w-full" autoHighlight>
                                     <hlm-autocomplete-input inputId="cargo" />
-                                    <div *brnPopoverContent hlmAutocompleteContent>
+                                    <hlm-autocomplete-content *hlmAutocompletePortal>
                                         <hlm-autocomplete-empty>Se creará el cargo "{{ search() }}"</hlm-autocomplete-empty>
                                         <div hlmAutocompleteList>
                                             @for (cargo of filteredOptions(); track $index) {
@@ -49,7 +49,7 @@
                                                 </hlm-autocomplete-item>
                                             }
                                         </div>
-                                    </div>
+                                    </hlm-autocomplete-content>
                                 </hlm-autocomplete-search>
                             </div>
                             <hlm-field-error

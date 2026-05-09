@@ -1,25 +1,22 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideChevronUp } from '@ng-icons/lucide';
-import { HlmIcon } from '@spartan-ng/helm/icon';
-import { hlm } from '@spartan-ng/helm/utils';
-import type { ClassValue } from 'clsx';
+import { BrnSelectScrollUp } from '@spartan-ng/brain/select';
+import { classes } from '@spartan-ng/helm/utils';
 
 @Component({
-	selector: 'hlm-select-scroll-up',
-	imports: [NgIcon, HlmIcon],
-	providers: [provideIcons({ lucideChevronUp })],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	host: {
-		'[class]': '_computedClass()',
-	},
-	template: `
-		<ng-icon hlm size="sm" class="ml-2" name="lucideChevronUp" />
-	`,
+    selector: 'hlm-select-scroll-up',
+    imports: [NgIcon],
+    providers: [provideIcons({ lucideChevronUp })],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    hostDirectives: [BrnSelectScrollUp],
+    template: ` <ng-icon name="lucideChevronUp" /> `,
 })
 export class HlmSelectScrollUp {
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
-	protected readonly _computedClass = computed(() =>
-		hlm('flex cursor-default items-center justify-center py-1', this.userClass()),
-	);
+    constructor() {
+        classes(
+            () =>
+                "bg-popover sticky top-0 z-10 flex w-full cursor-default items-center justify-center py-1 data-hidden:hidden [&_ng-icon:not([class*='text-'])]:text-base",
+        );
+    }
 }

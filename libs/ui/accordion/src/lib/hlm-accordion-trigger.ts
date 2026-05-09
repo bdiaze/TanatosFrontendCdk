@@ -1,22 +1,40 @@
-import { Directive, computed, input } from '@angular/core';
-import { BrnAccordionTrigger } from '@spartan-ng/brain/accordion';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideChevronDown, lucideChevronUp } from '@ng-icons/lucide';
+import { BrnAccordionImports } from '@spartan-ng/brain/accordion';
 import { hlm } from '@spartan-ng/helm/utils';
 import type { ClassValue } from 'clsx';
 
-@Directive({
-	selector: '[hlmAccordionTrigger]',
-	hostDirectives: [BrnAccordionTrigger],
-	host: {
-		'[style.--tw-ring-offset-shadow]': '"0 0 #000"',
-		'[class]': '_computedClass()',
-	},
+@Component({
+    selector: 'hlm-accordion-trigger',
+    imports: [BrnAccordionImports, NgIcon],
+    providers: [provideIcons({ lucideChevronDown, lucideChevronUp })],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
+        <h3 brnAccordionHeader class="flex">
+            <button brnAccordionTrigger data-slot="accordion-trigger" [class]="_computedTriggerClass()">
+                <ng-content />
+                <ng-icon
+                    name="lucideChevronDown"
+                    data-slot="accordion-trigger-icon"
+                    class="spartan-accordion-trigger-icon pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:hidden"
+                />
+                <ng-icon
+                    name="lucideChevronUp"
+                    data-slot="accordion-trigger-icon"
+                    class="spartan-accordion-trigger-icon pointer-events-none shrink-0 group-aria-expanded/accordion-trigger:inline group-aria-[expanded=false]/accordion-trigger:hidden"
+                />
+            </button>
+        </h3>
+    `,
 })
 export class HlmAccordionTrigger {
-	public readonly userClass = input<ClassValue>('', { alias: 'class' });
-	protected readonly _computedClass = computed(() =>
-		hlm(
-			'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none hover:underline focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>[hlmAccIcon]]:rotate-180',
-			this.userClass(),
-		),
-	);
+    public readonly triggerClass = input<ClassValue>('');
+
+    protected readonly _computedTriggerClass = computed(() =>
+        hlm(
+            'spartan-accordion-trigger group/accordion-trigger relative flex flex-1 items-start justify-between border border-transparent transition-all outline-none aria-disabled:pointer-events-none aria-disabled:opacity-50',
+            this.triggerClass(),
+        ),
+    );
 }

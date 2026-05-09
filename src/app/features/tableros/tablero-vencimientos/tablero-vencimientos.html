@@ -29,18 +29,12 @@
                         <a
                             hlmItem
                             variant="outline"
-                            [routerLink]="[
-                                '/obligacion',
-                                vencido.idNormaSuscrita,
-                                vencido.idHistorialNormaSuscrita,
-                            ]"
+                            [routerLink]="['/obligacion', vencido.idNormaSuscrita, vencido.idHistorialNormaSuscrita]"
                             class="flex flex-row items-start justify-start px-5 fade-in"
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
                                 <div class="w-full text-center">
-                                    <span hlmBadge variant="destructive">{{
-                                        haceCuanto(vencido.fechaVencimiento)
-                                    }}</span>
+                                    <span hlmBadge variant="destructive">{{ haceCuanto(vencido.fechaVencimiento) }}</span>
                                 </div>
                                 <p hlmItemDescription class="text-center mt-1">
                                     {{ vencido.fechaVencimiento | date: 'd MMM yyyy' }}
@@ -49,10 +43,7 @@
                                     {{ vencido.fechaVencimiento | date: 'HH:mm' }}
                                 </p>
                             </div>
-                            <div
-                                hlmItemContent
-                                class="flex-1 flex flex-col items-start justify-start mb-2 w-full"
-                            >
+                            <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-2 w-full">
                                 <div hlmItemTitle class="w-full justify-center text-center">
                                     {{ vencido.nombreNorma }}
                                 </div>
@@ -60,12 +51,7 @@
                                     {{ vencido.descripcionNorma | plainText }}
                                 </p>
                                 @if (vencido.multaNorma) {
-                                    <p
-                                        [hlmTooltip]="vencido.multaNorma"
-                                        position="bottom"
-                                        hlmItemDescription
-                                        class="text-destructive opacity-90 text-xs mt-1"
-                                    >
+                                    <p [hlmTooltip]="vencido.multaNorma" position="bottom" hlmItemDescription class="text-destructive opacity-90 text-xs mt-1">
                                         <b>Multa:</b><br />
                                         {{ vencido.multaNorma }}
                                     </p>
@@ -79,8 +65,7 @@
                             <p hlmAlertDescription>
                                 Las obligaciones de
                                 {{ negocioStore.negocioSeleccionado()?.nombre }}
-                                se encuentran al día. Te recomendamos revisar a continuación las
-                                próximas obligaciones que tienes por completar.
+                                se encuentran al día. Te recomendamos revisar a continuación las próximas obligaciones que tienes por completar.
                             </p>
                         </div>
                     }
@@ -98,16 +83,12 @@
                         <a
                             hlmItem
                             variant="outline"
-                            [routerLink]="[
-                                '/obligacion',
-                                futuro.idNormaSuscrita,
-                                futuro.idHistorialNormaSuscrita,
-                            ]"
+                            [routerLink]="['/obligacion', futuro.idNormaSuscrita, futuro.idHistorialNormaSuscrita]"
                             class="flex flex-row items-start justify-start px-5 fade-in"
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
                                 <div class="text-center">
-                                    <span hlmBadge>{{ enCuanto(futuro.fechaVencimiento) }}</span>
+                                    <span hlmBadge class="bg-(--calipso)">{{ enCuanto(futuro.fechaVencimiento) }}</span>
                                 </div>
                                 <p hlmItemDescription class="text-center mt-1">
                                     {{ futuro.fechaVencimiento | date: 'd MMM yyyy' }}
@@ -116,10 +97,7 @@
                                     {{ futuro.fechaVencimiento | date: 'HH:mm' }}
                                 </p>
                             </div>
-                            <div
-                                hlmItemContent
-                                class="flex-1 flex flex-col items-start justify-start mb-2 w-full"
-                            >
+                            <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-2 w-full">
                                 <div hlmItemTitle class="w-full justify-center text-center">
                                     {{ futuro.nombreNorma }}
                                 </div>
@@ -127,12 +105,7 @@
                                     {{ futuro.descripcionNorma | plainText }}
                                 </p>
                                 @if (futuro.multaNorma) {
-                                    <p
-                                        [hlmTooltip]="futuro.multaNorma"
-                                        position="bottom"
-                                        hlmItemDescription
-                                        class="opacity-90 text-xs mt-1"
-                                    >
+                                    <p [hlmTooltip]="futuro.multaNorma" position="bottom" hlmItemDescription class="opacity-90 text-xs mt-1">
                                         <b>Multa:</b><br />
                                         {{ futuro.multaNorma }}
                                     </p>
@@ -144,13 +117,10 @@
                             <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
                             <h4 hlmAlertTitle>¿Sin obligaciones?</h4>
                             <div hlmAlertDescription>
-                                Por lo visto no tienes obligaciones programadas, haz click a
-                                continuación para configurar las obligaciones de
+                                Por lo visto no tienes obligaciones programadas, haz click a continuación para configurar las obligaciones de
                                 {{ negocioStore.negocioSeleccionado()?.nombre }}:
                                 <div class="my-1 w-full flex justify-center">
-                                    <a hlmBtn variant="secondary" routerLink="/mis-obligaciones">
-                                        Mis Obligaciones
-                                    </a>
+                                    <a hlmBtn variant="secondary" routerLink="/mis-obligaciones"> Mis Obligaciones </a>
                                 </div>
                             </div>
                         </div>
@@ -178,18 +148,11 @@
                     <hlm-skeleton class="h-50 rounded-xl" />
                     <hlm-skeleton class="h-50 rounded-xl" />
                 } @else {
-                    @for (
-                        completada of normasCompletadasFiltradasPaginadas();
-                        track completada.idHistorialNormaSuscrita
-                    ) {
+                    @for (completada of normasCompletadasFiltradasPaginadas(); track completada.idHistorialNormaSuscrita) {
                         <a
                             hlmItem
                             variant="outline"
-                            [routerLink]="[
-                                '/obligacion',
-                                completada.idNormaSuscrita,
-                                completada.idHistorialNormaSuscrita,
-                            ]"
+                            [routerLink]="['/obligacion', completada.idNormaSuscrita, completada.idHistorialNormaSuscrita]"
                             class="flex flex-row items-start justify-start px-5 fade-in"
                         >
                             <div hlmItemHeader class="flex flex-col items-stretch justify-start">
@@ -203,10 +166,7 @@
                                     {{ completada.fechaVencimiento | date: 'HH:mm' }}
                                 </p>
                             </div>
-                            <div
-                                hlmItemContent
-                                class="flex-1 flex flex-col items-start justify-start mb-2 w-full"
-                            >
+                            <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-2 w-full">
                                 <div hlmItemTitle class="w-full justify-center text-center">
                                     {{ completada.nombreNorma }}
                                 </div>
@@ -214,12 +174,7 @@
                                     {{ completada.descripcionNorma | plainText }}
                                 </p>
                                 @if (completada.multaNorma) {
-                                    <p
-                                        [hlmTooltip]="completada.multaNorma"
-                                        position="bottom"
-                                        hlmItemDescription
-                                        class="opacity-90 text-xs mt-1"
-                                    >
+                                    <p [hlmTooltip]="completada.multaNorma" position="bottom" hlmItemDescription class="opacity-90 text-xs mt-1">
                                         <b>Multa:</b><br />
                                         {{ completada.multaNorma }}
                                     </p>
@@ -232,30 +187,21 @@
                                 <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
                                 <h4 hlmAlertTitle>Sin obligaciones completadas</h4>
                                 <div hlmAlertDescription>
-                                    Aún no has completado ninguna obligación, te recomendamos
-                                    revisar tus próximas obligaciones para ir adelantando trabajo.
+                                    Aún no has completado ninguna obligación, te recomendamos revisar tus próximas obligaciones para ir adelantando trabajo.
                                 </div>
                             </div>
                         } @else {
                             <div hlmAlert class="col-span-1 md:col-span-3">
                                 <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
                                 <h4 hlmAlertTitle>Obligaciones no encontradas</h4>
-                                <div hlmAlertDescription>
-                                    No tienes obligaciones completadas que cumplan con tu filtro de
-                                    búsqueda.
-                                </div>
+                                <div hlmAlertDescription>No tienes obligaciones completadas que cumplan con tu filtro de búsqueda.</div>
                             </div>
                         }
                     }
                 }
-                @if (
-                    normasCompletadasFiltradasPaginadas().length <
-                    normasCompletadasFiltradas().length
-                ) {
+                @if (normasCompletadasFiltradasPaginadas().length < normasCompletadasFiltradas().length) {
                     <div class="w-full flex items-center justify-center md:col-span-3">
-                        <button hlmBtn variant="link" (click)="mostrarMasCompletadas()">
-                            Mostrar más resultados
-                        </button>
+                        <button hlmBtn variant="link" (click)="mostrarMasCompletadas()">Mostrar más resultados</button>
                     </div>
                 }
             </div>

@@ -1,15 +1,5 @@
 import type { BooleanInput } from '@angular/cdk/coercion';
-import {
-    booleanAttribute,
-    ChangeDetectionStrategy,
-    Component,
-    computed,
-    forwardRef,
-    input,
-    linkedSignal,
-    model,
-    output,
-} from '@angular/core';
+import { booleanAttribute, ChangeDetectionStrategy, Component, computed, forwardRef, input, linkedSignal, model, output } from '@angular/core';
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import type { ChangeFn, TouchFn } from '@spartan-ng/brain/forms';
 import { BrnSwitch, BrnSwitchThumb } from '@spartan-ng/brain/switch';
@@ -30,7 +20,6 @@ export const HLM_SWITCH_VALUE_ACCESSOR = {
     changeDetection: ChangeDetectionStrategy.OnPush,
     host: {
         class: 'contents',
-        '[attr.id]': 'null',
         '[attr.aria-label]': 'null',
         '[attr.aria-labelledby]': 'null',
         '[attr.aria-describedby]': 'null',
@@ -42,7 +31,7 @@ export const HLM_SWITCH_VALUE_ACCESSOR = {
             (checkedChange)="handleChange($event)"
             (touched)="_onTouched?.()"
             [disabled]="_disabled()"
-            [id]="id()"
+            [id]="inputId()"
             [aria-label]="ariaLabel()"
             [aria-labelledby]="ariaLabelledby()"
             [aria-describedby]="ariaDescribedby()"
@@ -55,7 +44,7 @@ export class HlmSwitch implements ControlValueAccessor {
     public readonly userClass = input<ClassValue>('', { alias: 'class' });
     protected readonly _computedClass = computed(() =>
         hlm(
-            'data-[state=checked]:bg-(--azul) data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 group inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent shadow-xs transition-all outline-none focus-visible:ring-[3px] data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50 hover:cursor-pointer',
+            'data-[state=checked]:bg-primary data-[state=unchecked]:bg-input focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 group inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent transition-all outline-none focus-visible:ring-[3px] data-[disabled=true]:cursor-not-allowed data-[disabled=true]:opacity-50',
             this.userClass(),
         ),
     );
@@ -72,7 +61,7 @@ export class HlmSwitch implements ControlValueAccessor {
     });
 
     /** Used to set the id on the underlying brn element. */
-    public readonly id = input<string | null>(null);
+    public readonly inputId = input<string | null>(null);
 
     /** Used to set the aria-label attribute on the underlying brn element. */
     public readonly ariaLabel = input<string | null>(null, { alias: 'aria-label' });
