@@ -19,6 +19,14 @@
             <h3 hlmH3>Mis Empleados</h3>
         </div>
     </div>
+    <div class="w-full flex justify-end">
+        <div class="flex flex-wrap items-center justify-end gap-1 w-full md:w-1/2">
+            <p hlmP class="text-sm px-2 underline underline-offset-2">Cargos:</p>
+            @for (cargo of cargos(); track cargo.id) {
+                <span hlmBadge>{{ cargo.nombre }}</span>
+            }
+        </div>
+    </div>
     <div hlmTableContainer class="fade-in">
         <table hlmTable>
             <thead hlmTHead>
@@ -99,7 +107,8 @@
     </app-modal-eliminacion>
 }
 @if (showModalEditarEmpleado()) {
-    <app-modal-mantenedor-empleado (cerrar)="closeModalEditarEmpleado()" (postGuardar)="postGuardar()"> </app-modal-mantenedor-empleado>
+    <app-modal-mantenedor-empleado [idEmpleado]="empleadoSeleccionado()?.id!" (cerrar)="closeModalEditarEmpleado()" (postGuardar)="postGuardar()">
+    </app-modal-mantenedor-empleado>
 }
 @if (showModalCrearEmpleado()) {
     <app-modal-mantenedor-empleado (cerrar)="closeModalCrearEmpleado()" (postGuardar)="postGuardar()"> </app-modal-mantenedor-empleado>

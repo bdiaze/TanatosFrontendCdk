@@ -14,6 +14,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideContactRound, lucideEllipsis, lucidePencil, lucideTrash2, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
@@ -41,6 +42,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
         HlmSkeletonImports,
         HlmBreadCrumbImports,
         HlmSeparatorImports,
+        HlmBadgeImports,
     ],
     templateUrl: './mantenedor-empleado.html',
     styleUrl: './mantenedor-empleado.scss',
@@ -56,13 +58,16 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 })
 export class MantenedorEmpleado {
     empleadoDao: EmpleadoDao = inject(EmpleadoDao);
+    cargoDao = inject(CargoDao);
     negocioStore = inject(NegocioStore);
 
     empleados = signal([] as SalEmpleado[]);
+    cargos = signal([] as SalCargo[]);
 
-    cargandoEmpleados = signal(true);
+    cargandoEmpleados = signal(false);
+    cargandoCargos = signal(false);
     cargando = computed(() => {
-        return this.cargandoEmpleados();
+        return this.cargandoEmpleados() || this.cargandoCargos();
     });
     error = signal('');
 
@@ -76,6 +81,7 @@ export class MantenedorEmpleado {
         effect(() => {
             if (this.negocioStore.negocioSeleccionado()) {
                 this.obtenerEmpleados();
+                this.obtenerCargos();
             }
         });
     }
@@ -98,6 +104,27 @@ export class MantenedorEmpleado {
             })
             .add(() => {
                 this.cargandoEmpleados.set(false);
+            });
+    }
+
+    obtenerCargos() {
+        this.cargandoCargos.set(true);
+        this.cargos.set([]);
+
+        this.cargoDao
+            .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
+            .subscribe({
+                next: (res) => {
+                    const sorted = res.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
+                    this.cargos.set(sorted);
+                },
+                error: (err) => {
+                    console.error('Error al obtener los cargos', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener los cargos');
+                },
+            })
+            .add(() => {
+                this.cargandoCargos.set(false);
             });
     }
 

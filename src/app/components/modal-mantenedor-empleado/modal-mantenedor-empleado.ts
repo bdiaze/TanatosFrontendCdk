@@ -1,6 +1,8 @@
 import { CargoDao } from '@/app/daos/cargo-dao';
 import { EmpleadoDao } from '@/app/daos/empleado-dao';
+import { EntCargoActualizar } from '@/app/entities/others/ent-cargo-actualizar';
 import { EntCargoCrear } from '@/app/entities/others/ent-cargo-crear';
+import { EntEmpleadoActualizar } from '@/app/entities/others/ent-empleado-actualizar';
 import { EntEmpleadoCrear } from '@/app/entities/others/ent-empleado-crear';
 import { SalCargo } from '@/app/entities/others/sal-cargo';
 import { SalEmpleado } from '@/app/entities/others/sal-empleado';
@@ -25,6 +27,7 @@ import { HlmLabelImports } from '@spartan-ng/helm/label';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-modal-mantenedor-empleado',
@@ -46,6 +49,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
         RouterModule,
         HlmAutocompleteImports,
         BrnPopoverContent,
+        HlmP,
     ],
     templateUrl: './modal-mantenedor-empleado.html',
     styleUrl: './modal-mantenedor-empleado.scss',
@@ -63,8 +67,8 @@ export class ModalMantenedorEmpleado {
     empleado = signal<SalEmpleado | null>(null);
     cargos = signal([] as SalCargo[]);
 
-    cargandoEmpleados = signal(true);
-    cargandoCargos = signal(true);
+    cargandoEmpleados = signal(false);
+    cargandoCargos = signal(false);
     procesando = signal<boolean>(false);
 
     cargando = computed(() => {
@@ -97,6 +101,14 @@ export class ModalMantenedorEmpleado {
                 if (this.idEmpleado) {
                     this.obtenerEmpleados();
                 }
+            }
+        });
+
+        effect(() => {
+            if (this.empleado()) {
+                this.form.controls.nombre.setValue(this.empleado()?.nombre!);
+                this.form.controls.cargo.setValue(this.empleado()?.nombreCargo!);
+                this.search.set(this.empleado()?.nombreCargo!);
             }
         });
     }
@@ -211,7 +223,59 @@ export class ModalMantenedorEmpleado {
                     this.procesando.set(false);
                 });
         } else if (!cargoExistente && this.idEmpleado /* Si el cargo no existe y el empleado sí, se crea el cargo y se edita el empleado... */) {
+            this.cargoDao
+                .crear({
+                    idNegocio: idNegocio,
+                    nombre: valorForm.cargo,
+                } as EntCargoCrear)
+                .subscribe({
+                    next: (res) => {
+                        this.empleadoDao
+                            .actualizar({
+                                id: this.idEmpleado,
+                                nombre: valorForm.nombre,
+                                idCargo: res.id,
+                            } as EntEmpleadoActualizar)
+                            .subscribe({
+                                next: () => {
+                                    this.postGuardar.emit();
+                                    this.cerrar.emit();
+                                },
+                                error: (err) => {
+                                    console.error('Error al actualizar el empleado', err);
+                                    this.error.set(getErrorMessage(err) ?? 'Error al actualizar el empleado');
+                                },
+                            })
+                            .add(() => {
+                                this.procesando.set(false);
+                            });
+                    },
+                    error: (err) => {
+                        console.error('Error al crear el nuevo cargo', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al crear el nuevo cargo');
+                        this.procesando.set(false);
+                    },
+                });
         } else if (cargoExistente && this.idEmpleado /* Si el cargo existe y el empleado también, solo se edita el empleado... */) {
+            this.empleadoDao
+                .actualizar({
+                    id: this.idEmpleado,
+                    nombre: valorForm.nombre,
+                    idCargo: cargoExistente.id,
+                } as EntEmpleadoActualizar)
+                .subscribe({
+                    next: () => {
+                        this.postGuardar.emit();
+                        this.cerrar.emit();
+                    },
+                    error: (err) => {
+                        console.error('Error al actualizar el empleado', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al actualizar el empleado');
+                    },
+                })
+                .add(() => {
+                    this.procesando.set(false);
+                });
         }
     }
 

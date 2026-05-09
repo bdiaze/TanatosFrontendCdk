@@ -13,53 +13,68 @@
                 <fieldset hlmFieldSet>
                     <div hlmFieldGroup class="gap-3">
                         <div hlmField class="gap-1">
-                            <div hlmInputGroup>
-                                <div hlmInputGroupAddon align="block-start">
-                                    <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Nombre</label>
-                                    <hlm-field-error
-                                        class="transition-all duration-500 ease-out text-xs ml-auto"
-                                        [class.opacity-100]="invalid('nombre')"
-                                        [class.opacity-0]="!invalid('nombre')"
-                                        [class.max-h-10]="invalid('nombre')"
-                                        [class.max-h-0]="!invalid('nombre')"
-                                        >Debes ingresar el nombre del empleado</hlm-field-error
-                                    >
+                            @if (cargandoEmpleados()) {
+                                <hlm-skeleton class="h-17.25 w-full rounded-md" />
+                            } @else {
+                                <div hlmInputGroup class="fade-in">
+                                    <div hlmInputGroupAddon align="block-start">
+                                        <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Nombre</label>
+                                        <hlm-field-error
+                                            class="transition-all duration-500 ease-out text-xs ml-auto"
+                                            [class.opacity-100]="invalid('nombre')"
+                                            [class.opacity-0]="!invalid('nombre')"
+                                            [class.max-h-10]="invalid('nombre')"
+                                            [class.max-h-0]="!invalid('nombre')"
+                                            >Debes ingresar el nombre del empleado</hlm-field-error
+                                        >
+                                    </div>
+                                    <input
+                                        hlmInputGroupInput
+                                        class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                        id="nombre"
+                                        formControlName="nombre"
+                                    />
                                 </div>
-                                <input
-                                    hlmInputGroupInput
-                                    class="transition-all duration-500 ease-out text-xs md:text-sm"
-                                    id="nombre"
-                                    formControlName="nombre"
-                                />
-                            </div>
+                            }
                         </div>
                         <div hlmField class="gap-1">
-                            <div class="flex flex-col justify-start items-start">
-                                <div class="flex flex-row items-center justify-start w-full px-3 pb-1">
-                                    <label for="cargo" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground">Cargo</label>
+                            @if (cargandoCargos()) {
+                                <hlm-skeleton class="h-20 w-full rounded-md" />
+                            } @else {
+                                <div
+                                    hlmInputGroup
+                                    class="has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-input fade-in"
+                                >
+                                    <div hlmInputGroupAddon align="block-start">
+                                        <label for="cargo" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground"
+                                            >Cargo</label
+                                        >
+                                        <hlm-field-error
+                                            class="transition-all duration-500 ease-out text-xs ml-auto"
+                                            [class.opacity-100]="invalid('cargo')"
+                                            [class.opacity-0]="!invalid('cargo')"
+                                            [class.max-h-10]="invalid('cargo')"
+                                            [class.max-h-0]="!invalid('cargo')"
+                                            >Debes ingresar un cargo para el empleado</hlm-field-error
+                                        >
+                                    </div>
+                                    <div class="pb-2 px-2 w-full">
+                                        <hlm-autocomplete-search formControlName="cargo" [(search)]="search" class="w-full" autoHighlight>
+                                            <hlm-autocomplete-input inputId="cargo" />
+                                            <hlm-autocomplete-content *hlmAutocompletePortal>
+                                                <hlm-autocomplete-empty>Se creará el cargo {{ search() }}</hlm-autocomplete-empty>
+                                                <div hlmAutocompleteList>
+                                                    @for (cargo of filteredOptions(); track $index) {
+                                                        <hlm-autocomplete-item [value]="cargo.nombre">
+                                                            {{ cargo.nombre }}
+                                                        </hlm-autocomplete-item>
+                                                    }
+                                                </div>
+                                            </hlm-autocomplete-content>
+                                        </hlm-autocomplete-search>
+                                    </div>
                                 </div>
-                                <hlm-autocomplete-search formControlName="cargo" [(search)]="search" class="w-full" autoHighlight>
-                                    <hlm-autocomplete-input inputId="cargo" />
-                                    <hlm-autocomplete-content *hlmAutocompletePortal>
-                                        <hlm-autocomplete-empty>Se creará el cargo "{{ search() }}"</hlm-autocomplete-empty>
-                                        <div hlmAutocompleteList>
-                                            @for (cargo of filteredOptions(); track $index) {
-                                                <hlm-autocomplete-item [value]="cargo.nombre">
-                                                    {{ cargo.nombre }}
-                                                </hlm-autocomplete-item>
-                                            }
-                                        </div>
-                                    </hlm-autocomplete-content>
-                                </hlm-autocomplete-search>
-                            </div>
-                            <hlm-field-error
-                                class="transition-all duration-500 ease-out text-xs ml-auto"
-                                [class.opacity-100]="invalid('cargo')"
-                                [class.opacity-0]="!invalid('cargo')"
-                                [class.max-h-10]="invalid('cargo')"
-                                [class.max-h-0]="!invalid('cargo')"
-                                >Debes ingresar un cargo para el empleado</hlm-field-error
-                            >
+                            }
                         </div>
                     </div>
                 </fieldset>
@@ -74,7 +89,7 @@
                 }
                 <div class="w-full flex items-center justify-end gap-6">
                     <button hlmBtn type="button" variant="outlineAzul" (click)="cerrar.emit()">Cancelar</button>
-                    <button hlmBtn variant="azul" type="submit" [disabled]="form.invalid || procesando()">
+                    <button hlmBtn variant="azul" type="submit" [disabled]="form.invalid || cargando()">
                         @if (procesando()) {
                             <hlm-spinner />
                         }
