@@ -12,7 +12,7 @@ import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideContactRound, lucideEllipsis, lucidePencil, lucideTrash2, lucideTriangleAlert } from '@ng-icons/lucide';
+import { lucideContactRound, lucideEllipsis, lucidePencil, lucideTrash2, lucideTriangleAlert, lucideX } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
@@ -53,6 +53,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
             lucideContactRound,
             lucidePencil,
             lucideTrash2,
+            lucideX,
         }),
     ],
 })
@@ -74,8 +75,10 @@ export class MantenedorEmpleado {
     showModalEliminarEmpleado = signal(false);
     showModalEditarEmpleado = signal(false);
     showModalCrearEmpleado = signal(false);
+    showModalEliminarCargo = signal(false);
 
     empleadoSeleccionado = signal<SalEmpleado | null>(null);
+    cargoSeleccionado = signal<SalCargo | null>(null);
 
     constructor() {
         effect(() => {
@@ -175,5 +178,34 @@ export class MantenedorEmpleado {
 
     postGuardar() {
         this.obtenerEmpleados();
+        this.obtenerCargos();
+    }
+
+    openModalEliminarCargo(item: SalCargo) {
+        this.cargoSeleccionado.set(item);
+        this.showModalEliminarCargo.set(true);
+    }
+
+    closeModalEliminarCargo() {
+        this.showModalEliminarCargo.set(false);
+        this.cargoSeleccionado.set(null);
+    }
+
+    eliminarCargo(item: SalEmpleado) {
+        this.cargandoCargos.set(true);
+        this.cargandoEmpleados.set(true);
+        this.cargoDao.eliminar(item.id).subscribe({
+            next: () => {
+                this.obtenerCargos();
+                this.obtenerEmpleados();
+            },
+            error: (err) => {
+                this.cargandoCargos.set(false);
+                this.cargandoEmpleados.set(false);
+                console.error('Error al borrar el cargo', err);
+                this.error.set(getErrorMessage(err) ?? 'Error al borrar el cargo');
+            },
+        });
+        this.showModalEliminarCargo.set(false);
     }
 }

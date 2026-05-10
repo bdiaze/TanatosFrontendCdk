@@ -19,14 +19,27 @@
             <h3 hlmH3>Mis Empleados</h3>
         </div>
     </div>
-    <div class="w-full flex justify-end">
-        <div class="flex flex-wrap items-center justify-end gap-1 w-full md:w-1/2">
-            <p hlmP class="text-sm px-2 underline underline-offset-2">Cargos:</p>
-            @for (cargo of cargos(); track cargo.id) {
-                <span hlmBadge>{{ cargo.nombre }}</span>
-            }
+    @if (cargos().length > 0) {
+        <div class="w-full flex justify-end mb-3">
+            <div class="flex flex-wrap items-center justify-end gap-1 w-full md:w-4/5">
+                <p hlmP class="text-sm px-2 underline underline-offset-2">Cargos:</p>
+                @for (cargo of cargos(); track cargo.id) {
+                    <span hlmBadge class="text-xs pr-1 flex items-center">
+                        {{ cargo.nombre }}
+                        <button
+                            hlmBtn
+                            variant="link"
+                            size="icon"
+                            class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                            (click)="openModalEliminarCargo(cargo)"
+                        >
+                            <ng-icon hlm name="lucideX" />
+                        </button>
+                    </span>
+                }
+            </div>
         </div>
-    </div>
+    }
     <div hlmTableContainer class="fade-in">
         <table hlmTable>
             <thead hlmTHead>
@@ -112,4 +125,15 @@
 }
 @if (showModalCrearEmpleado()) {
     <app-modal-mantenedor-empleado (cerrar)="closeModalCrearEmpleado()" (postGuardar)="postGuardar()"> </app-modal-mantenedor-empleado>
+}
+
+@if (showModalEliminarCargo()) {
+    <app-modal-eliminacion
+        [item]="cargoSeleccionado()"
+        titulo="Eliminar un cargo:"
+        [descripcion]="`¿Seguro que deseas eliminar el cargo ${cargoSeleccionado()?.nombre}?`"
+        (cerrar)="closeModalEliminarCargo()"
+        (eliminar)="eliminarCargo($event)"
+    >
+    </app-modal-eliminacion>
 }
