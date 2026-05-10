@@ -86,10 +86,6 @@ export class Callback implements OnInit {
                     next: (tokens) => {
                         this.authStore.setAccessToken(tokens.accessToken);
 
-                        // Se setea cookie con CSRF Token...
-                        const expires: Date = new Date(tokens.csrfTokenExpiration);
-                        document.cookie = `csrf_token=${tokens.csrfToken}; expires=${expires.toUTCString()}; path=/`;
-
                         sessionStorage.removeItem('pkce_state');
                         sessionStorage.removeItem('pkce_code_verifier');
 

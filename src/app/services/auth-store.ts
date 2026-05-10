@@ -54,27 +54,21 @@ export class AuthStore {
 
     backgroundRefresh() {
         if (!this.backgroundRefreshRunning() && !this._accessToken()) {
-            const csrfToken = getCookie('csrf_token');
-            if (csrfToken) {
-                this.backgroundRefreshRunning.set(true);
+            this.backgroundRefreshRunning.set(true);
 
-                this.authDao
-                    .refreshAccessToken()
-                    .subscribe({
-                        next: (newToken) => {
-                            this.setAccessToken(newToken.accessToken);
-                        },
-                        error: (err) => {
-                            console.warn(
-                                'No se logra hacer refresh inicial del access token...',
-                                err,
-                            );
-                        },
-                    })
-                    .add(() => {
-                        this.backgroundRefreshRunning.set(false);
-                    });
-            }
+            this.authDao
+                .refreshAccessToken()
+                .subscribe({
+                    next: (newToken) => {
+                        this.setAccessToken(newToken.accessToken);
+                    },
+                    error: (err) => {
+                        console.warn('No se logra hacer refresh inicial del access token...', err);
+                    },
+                })
+                .add(() => {
+                    this.backgroundRefreshRunning.set(false);
+                });
         }
     }
 

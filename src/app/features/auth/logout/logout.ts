@@ -44,7 +44,6 @@ export class Logout {
             })
             .add(() => {
                 this.authStore.setAccessToken(null);
-                clearCookie('csrf_token');
 
                 this.negocioStore.negociosUsuario.set([]);
                 this.negocioStore.negocioSeleccionado.set(null);

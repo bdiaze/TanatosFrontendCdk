@@ -32,7 +32,6 @@ export class AuthRefreshService {
                 catchError((err) => {
                     this.isRefreshing = false;
                     this.authStore.setAccessToken(null);
-                    document.cookie = `csrf_token=; max-age=0; path=/`;
                     this.refreshTokenSubject.error(err);
                     redireccionarALogin();
                     return throwError(() => err);

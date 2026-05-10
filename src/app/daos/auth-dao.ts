@@ -13,25 +13,18 @@ export class AuthDao {
     constructor(private http: HttpClient) {}
 
     obtenerAccessToken(entrada: EntAuthObtenerAccessToken): Observable<SalAuthObtenerAccessToken> {
-        return this.http.post<SalAuthObtenerAccessToken>(
-            environment.tanatosService.apiUrl + '/public/Auth/ObtenerAccessToken',
-            entrada,
-            {
-                withCredentials: true,
-            }
-        );
+        return this.http.post<SalAuthObtenerAccessToken>(environment.tanatosService.apiUrl + '/public/Auth/ObtenerAccessToken', entrada, {
+            withCredentials: true,
+        });
     }
 
     refreshAccessToken(): Observable<SalAuthObtenerAccessToken> {
-        const csrfToken = getCookie('csrf_token');
-
         return this.http.post<SalAuthObtenerAccessToken>(
             environment.tanatosService.apiUrl + '/public/Auth/RefreshAccessToken',
             {},
             {
-                headers: new HttpHeaders({ 'X-CSRF-Token': csrfToken ?? '' }),
                 withCredentials: true,
-            }
+            },
         );
     }
 
@@ -41,7 +34,7 @@ export class AuthDao {
             {},
             {
                 withCredentials: true,
-            }
+            },
         );
     }
 }
