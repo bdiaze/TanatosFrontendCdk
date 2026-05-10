@@ -21,20 +21,13 @@
             >
                 <div class="flex flex-row justify-center items-center gap-2 md:gap-3 w-full">
                     @if (!withClose) {
-                        <div
-                            class="text-(--negro)/80 flex aspect-square size-6 items-center justify-center rounded-lg"
-                        >
+                        <div class="text-(--negro)/80 flex aspect-square size-6 items-center justify-center rounded-lg">
                             <ng-icon name="lucideStore" class="text-2xl" />
                         </div>
                     } @else {
                         @if (negocioStore.negociosUsuario().length > 1) {
                             <div class="size-6">
-                                <ng-icon
-                                    hlm
-                                    name="lucideChevronsUpDown"
-                                    class="ml-auto opacity-80"
-                                    size="base"
-                                />
+                                <ng-icon hlm name="lucideChevronsUpDown" class="ml-auto opacity-80" size="base" />
                             </div>
                         }
                     }
@@ -47,15 +40,10 @@
                             @if (cargandoNegocios()) {
                                 <hlm-skeleton class="h-7 w-32 rounded-xl" />
                             } @else {
-                                {{
-                                    negocioStore.negocioSeleccionado()?.nombre ??
-                                        'Seleccionar negocio...'
-                                }}
+                                {{ negocioStore.negocioSeleccionado()?.nombre ?? 'Seleccionar negocio...' }}
                             }
                         </span>
-                        <span
-                            class="truncate text-sm flex items-center gap-1 font-normal font-serif w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46"
-                        >
+                        <span class="truncate text-sm flex items-center gap-1 font-normal font-serif w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46">
                             @if (cargandoInformacionUsuario()) {
                                 <hlm-skeleton class="h-5 w-36 rounded-xl mt-1" />
                             } @else {
@@ -70,12 +58,7 @@
                     @if (estatico) {
                         @if (negocioStore.negociosUsuario().length > 1) {
                             <div class="flex items-center justify-end">
-                                <ng-icon
-                                    hlm
-                                    name="lucideChevronsUpDown"
-                                    class="opacity-80"
-                                    size="sm"
-                                />
+                                <ng-icon hlm name="lucideChevronsUpDown" class="opacity-80" size="sm" />
                             </div>
                         }
                     }
@@ -84,43 +67,22 @@
             <ng-template #menuNegocios>
                 @if (negocioStore.negociosUsuario().length > 1) {
                     <hlm-dropdown-menu sidebar-dropdown-menu class="mx-4">
-                        @for (
-                            negocio of negocioStore.negociosUsuario();
-                            track negocio.id;
-                            let first = $first
-                        ) {
+                        @for (negocio of negocioStore.negociosUsuario(); track negocio.id; let first = $first) {
                             @if (!restringirSeleccionNegocios() || first) {
                                 <button
                                     hlmDropdownMenuCheckbox
-                                    [checked]="
-                                        negocioStore.negocioSeleccionado()?.id === negocio.id
-                                    "
+                                    [checked]="negocioStore.negocioSeleccionado()?.id === negocio.id"
                                     (triggered)="cambiarNegocio(negocio)"
                                 >
                                     <hlm-dropdown-menu-checkbox-indicator />
-                                    <span class="pr-8 truncate max-w-40 md:max-w-54">{{
-                                        negocio.nombre
-                                    }}</span>
+                                    <span class="pr-8 truncate max-w-40 md:max-w-54">{{ negocio.nombre }}</span>
                                     <hlm-dropdown-menu-shortcut>
-                                        <ng-icon
-                                            name="lucideStore"
-                                            class="text-sm translate-y-0.5 mr-1"
-                                        />
+                                        <ng-icon name="lucideStore" class="text-sm translate-y-0.5 mr-1" />
                                     </hlm-dropdown-menu-shortcut>
                                 </button>
                             } @else {
-                                <div
-                                    hlmTooltip="Tu plan restringe el uso de este negocio"
-                                    position="bottom"
-                                    routerLink="/mi-plan"
-                                >
-                                    <button
-                                        hlmDropdownMenuCheckbox
-                                        [checked]="
-                                            negocioStore.negocioSeleccionado()?.id === negocio.id
-                                        "
-                                        disabled
-                                    >
+                                <div hlmTooltip="Tu plan restringe el uso de este negocio" position="bottom" routerLink="/mi-plan">
+                                    <button hlmDropdownMenuCheckbox [checked]="negocioStore.negocioSeleccionado()?.id === negocio.id" disabled>
                                         <hlm-dropdown-menu-checkbox-indicator />
                                         <div class="flex items-center gap-1.5">
                                             <ng-icon name="lucideGem" class="text-sm" />
@@ -129,10 +91,7 @@
                                             </span>
                                         </div>
                                         <hlm-dropdown-menu-shortcut>
-                                            <ng-icon
-                                                name="lucideStore"
-                                                class="text-sm translate-y-0.5 mr-1"
-                                            />
+                                            <ng-icon name="lucideStore" class="text-sm translate-y-0.5 mr-1" />
                                         </hlm-dropdown-menu-shortcut>
                                     </button>
                                 </div>
@@ -144,16 +103,8 @@
         }
         <div class="flex-1"></div>
         @if (withClose) {
-            <div
-                class="flex items-center justify-center h-19 md:h-[clamp(3rem,10vw,7rem)] min-h-19 md:min-h-[clamp(3rem,10vw,7rem)] pr-2"
-            >
-                <button
-                    hlmBtn
-                    hlmsidebartrigger
-                    variant="ghost"
-                    class="hover:bg-transparent py-4"
-                    (click)="cerrar()"
-                >
+            <div class="flex items-center justify-center h-19 md:h-[clamp(3rem,10vw,7rem)] min-h-19 md:min-h-[clamp(3rem,10vw,7rem)] pr-2">
+                <button hlmBtn hlmsidebartrigger variant="ghost" class="hover:bg-transparent py-4" (click)="cerrar()">
                     <ng-icon hlm name="lucideX" size="base" class="text-(--negro)/70 scale-100" />
                 </button>
             </div>
@@ -161,9 +112,7 @@
     </div>
     <hlm-separator />
     @if (authStore.sesionIniciada()) {
-        <div
-            class="[direction:rtl] md:scrollContainer overflow-y-auto overflow-x-hidden overscroll-contain md:overscroll-auto pb-4"
-        >
+        <div class="[direction:rtl] scrollContainer overflow-y-auto overflow-x-hidden overscroll-auto pb-4">
             <div class="[direction:ltr]">
                 @for (item of opcionesMenu(); track item.id; let first = $first) {
                     @if (item.tipo === 'item' && item.url) {
@@ -194,11 +143,7 @@
                                         <ng-icon hlm [name]="item.icon" />
                                     }
                                     <span>{{ item.titulo }}</span>
-                                    <ng-icon
-                                        name="lucideChevronRight"
-                                        class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90"
-                                        hlm
-                                    />
+                                    <ng-icon name="lucideChevronRight" class="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" hlm />
                                 </button>
                                 <hlm-collapsible-content>
                                     @for (subItem of item.items; track subItem.id) {
@@ -231,9 +176,7 @@
                             @if (item.icon) {
                                 <ng-icon hlm [name]="item.icon" />
                             }
-                            <span class="w-46 md:w-38 lg:w-53 xl:w-53 2xl:w-54 truncate block">{{
-                                item.titulo
-                            }}</span>
+                            <span class="w-46 md:w-38 lg:w-53 xl:w-53 2xl:w-54 truncate block">{{ item.titulo }}</span>
                         </div>
                         @for (groupItem of item.items; track groupItem.id) {
                             @if (groupItem.tipo === 'item' && groupItem.url) {
@@ -256,18 +199,12 @@
                                     </li>
                                 </ul>
                             }
-                            @if (
-                                groupItem.tipo === 'item' &&
-                                groupItem.items &&
-                                groupItem.items.length > 0
-                            ) {
+                            @if (groupItem.tipo === 'item' && groupItem.items && groupItem.items.length > 0) {
                                 <ul>
                                     <hlm-collapsible
                                         class="group/collapsible"
                                         [expanded]="estaAbierto(groupItem.id)"
-                                        (expandedChange)="
-                                            itemCollapsibleChange(groupItem.id, $event)
-                                        "
+                                        (expandedChange)="itemCollapsibleChange(groupItem.id, $event)"
                                     >
                                         <div class="pl-2">
                                             <button
@@ -277,11 +214,7 @@
                                                 class="w-full flex items-center justify-start gap-2 text-(--negro)/80 py- text-sm font-normal my-0.5"
                                             >
                                                 @if (groupItem.icon) {
-                                                    <ng-icon
-                                                        hlm
-                                                        [name]="groupItem.icon"
-                                                        size="sm"
-                                                    />
+                                                    <ng-icon hlm [name]="groupItem.icon" size="sm" />
                                                 }
                                                 <span>{{ groupItem.titulo }}</span>
                                                 <ng-icon
@@ -292,14 +225,9 @@
                                                 />
                                             </button>
                                         </div>
-                                        <hlm-collapsible-content
-                                            class="transition-all ease-out data-[state=closed]:opacity-0"
-                                        >
+                                        <hlm-collapsible-content class="transition-all ease-out data-[state=closed]:opacity-0">
                                             <div class="border-l ml-6.5 mr-3">
-                                                @for (
-                                                    subItem of groupItem.items;
-                                                    track subItem.id
-                                                ) {
+                                                @for (subItem of groupItem.items; track subItem.id) {
                                                     <li>
                                                         <a
                                                             hlmBtn
@@ -313,11 +241,7 @@
                                                             (click)="click()"
                                                         >
                                                             @if (subItem.icon) {
-                                                                <ng-icon
-                                                                    hlm
-                                                                    [name]="subItem.icon"
-                                                                    size="sm"
-                                                                />
+                                                                <ng-icon hlm [name]="subItem.icon" size="sm" />
                                                             }
                                                             <span>{{ subItem.titulo }}</span></a
                                                         >
