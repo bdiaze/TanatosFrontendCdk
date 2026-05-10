@@ -2,16 +2,9 @@ import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
 import { SalNormaSuscritaObtenerConVencimiento } from '@/app/entities/others/sal-norma-suscrita-obtener-con-vencimiento';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideCalendarRange,
-    lucideCircleAlert,
-    lucideCircleCheck,
-    lucideClockAlert,
-    lucideSearch,
-    lucideX,
-} from '@ng-icons/lucide';
+import { lucideCalendarRange, lucideCircleAlert, lucideCircleCheck, lucideClockAlert, lucideSearch, lucideX } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
@@ -80,9 +73,7 @@ export class TableroVencimientos {
     filtroCompletadas = signal<string>('');
     cuantosMostrarCompletadas = signal<number>(this.initialMostrarMas);
     normasCompletadasFiltradas = computed(() => {
-        return this.normasCompletadas().filter((n) =>
-            normalize(n.nombreNorma!).includes(normalize(this.filtroCompletadas())),
-        );
+        return this.normasCompletadas().filter((n) => normalize(n.nombreNorma!).includes(normalize(this.filtroCompletadas())));
     });
     normasCompletadasFiltradasPaginadas = computed(() => {
         return this.normasCompletadasFiltradas().slice(0, this.cuantosMostrarCompletadas());
@@ -93,9 +84,13 @@ export class TableroVencimientos {
 
     constructor() {
         effect(() => {
-            if (this.negocioStore.negocioSeleccionado()) {
-                this.obtenerTodos();
-            }
+            const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+
+            untracked(() => {
+                if (negocioSeleccionado) {
+                    this.obtenerTodos();
+                }
+            });
         });
     }
 
@@ -109,35 +104,15 @@ export class TableroVencimientos {
             .obtenerConVencimiento(this.negocioStore.negocioSeleccionado()?.id!)
             .subscribe({
                 next: (res) => {
-                    const sorted = res.sort(
-                        (a, b) =>
-                            new Date(a.fechaVencimiento).getTime() -
-                            new Date(b.fechaVencimiento).getTime(),
-                    );
+                    const sorted = res.sort((a, b) => new Date(a.fechaVencimiento).getTime() - new Date(b.fechaVencimiento).getTime());
 
                     const ahora = new Date();
-                    this.normasVencidas.set(
-                        sorted.filter(
-                            (x) =>
-                                new Date(x.fechaVencimiento).getTime() <= ahora.getTime() &&
-                                !x.fechaCompletitud,
-                        ),
-                    );
-                    this.normasFuturas.set(
-                        sorted.filter(
-                            (x) =>
-                                new Date(x.fechaVencimiento).getTime() > ahora.getTime() &&
-                                !x.fechaCompletitud,
-                        ),
-                    );
+                    this.normasVencidas.set(sorted.filter((x) => new Date(x.fechaVencimiento).getTime() <= ahora.getTime() && !x.fechaCompletitud));
+                    this.normasFuturas.set(sorted.filter((x) => new Date(x.fechaVencimiento).getTime() > ahora.getTime() && !x.fechaCompletitud));
 
                     const sortedFechaCompletitud = res
                         .filter((x) => x.fechaCompletitud)
-                        .sort(
-                            (a, b) =>
-                                new Date(b.fechaCompletitud!).getTime() -
-                                new Date(a.fechaCompletitud!).getTime(),
-                        );
+                        .sort((a, b) => new Date(b.fechaCompletitud!).getTime() - new Date(a.fechaCompletitud!).getTime());
                     this.normasCompletadas.set(sortedFechaCompletitud);
                 },
                 error: (err) => {
@@ -182,8 +157,7 @@ export class TableroVencimientos {
         }
 
         // Se calcula la diferencia en meses...
-        let meses =
-            (fin.getFullYear() - inicio.getFullYear()) * 12 + (fin.getMonth() - inicio.getMonth());
+        let meses = (fin.getFullYear() - inicio.getFullYear()) * 12 + (fin.getMonth() - inicio.getMonth());
         const checkMes = new Date(inicio);
         checkMes.setMonth(inicio.getMonth() + meses);
         if (checkMes > fin) {

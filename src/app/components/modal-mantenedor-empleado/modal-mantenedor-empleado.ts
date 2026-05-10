@@ -8,7 +8,7 @@ import { SalCargo } from '@/app/entities/others/sal-cargo';
 import { SalEmpleado } from '@/app/entities/others/sal-empleado';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, EventEmitter, inject, Input, Output, signal } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, Input, Output, signal, untracked } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -49,7 +49,6 @@ import { HlmP } from '@spartan-ng/helm/typography';
         RouterModule,
         HlmAutocompleteImports,
         BrnPopoverContent,
-        HlmP,
     ],
     templateUrl: './modal-mantenedor-empleado.html',
     styleUrl: './modal-mantenedor-empleado.scss',
@@ -96,20 +95,28 @@ export class ModalMantenedorEmpleado {
 
     constructor() {
         effect(() => {
-            if (this.negocioStore.negocioSeleccionado()) {
-                this.obtenerCargos();
-                if (this.idEmpleado) {
-                    this.obtenerEmpleados();
+            const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+
+            untracked(() => {
+                if (negocioSeleccionado) {
+                    this.obtenerCargos();
+                    if (this.idEmpleado) {
+                        this.obtenerEmpleados();
+                    }
                 }
-            }
+            });
         });
 
         effect(() => {
-            if (this.empleado()) {
-                this.form.controls.nombre.setValue(this.empleado()?.nombre!);
-                this.form.controls.cargo.setValue(this.empleado()?.nombreCargo!);
-                this.search.set(this.empleado()?.nombreCargo!);
-            }
+            const empleado = this.empleado();
+
+            untracked(() => {
+                if (empleado) {
+                    this.form.controls.nombre.setValue(empleado?.nombre!);
+                    this.form.controls.cargo.setValue(empleado?.nombreCargo!);
+                    this.search.set(empleado?.nombreCargo!);
+                }
+            });
         });
     }
 

@@ -7,7 +7,7 @@ import { SalSuscripcion } from '@/app/entities/others/sal-suscripcion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -137,15 +137,19 @@ export class MantenedorSuscripcion implements OnInit {
 
     constructor() {
         effect(() => {
-            if (this.procesandoPrimerPago()) {
-                if (this.pollingSub) return;
-                this.pollingSub = interval(10 * 1000).subscribe(() => {
-                    this.obtenerSuscripciones(true);
-                });
-            } else {
-                this.pollingSub?.unsubscribe();
-                this.pollingSub = undefined;
-            }
+            const procesandoPrimerPago = this.procesandoPrimerPago();
+
+            untracked(() => {
+                if (procesandoPrimerPago) {
+                    if (this.pollingSub) return;
+                    this.pollingSub = interval(10 * 1000).subscribe(() => {
+                        this.obtenerSuscripciones(true);
+                    });
+                } else {
+                    this.pollingSub?.unsubscribe();
+                    this.pollingSub = undefined;
+                }
+            });
         });
     }
 

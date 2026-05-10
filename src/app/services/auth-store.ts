@@ -23,32 +23,43 @@ export class AuthStore {
         return this._accessToken();
     }
 
+    sesionIniciada = signal<boolean>(false);
+
+    groups = signal<Set<string>>(new Set<string>());
+
     setAccessToken(token: string | null) {
         this._accessToken.set(token);
 
         if (token) {
             sessionStorage.setItem('access_token', token);
+
+            // Se valida si cambiaron los groups del token...
+            let mismosGrupos = true;
+            const groupsNuevoToken = new Set<string>(jwtDecode<AuthClaims>(token)['cognito:groups'] ?? []);
+            const groupsActuales = this.groups();
+            if (groupsNuevoToken.size !== groupsActuales.size) {
+                mismosGrupos = false;
+            } else {
+                for (const valor of groupsNuevoToken) {
+                    if (!groupsActuales.has(valor)) {
+                        mismosGrupos = false;
+                        break;
+                    }
+                }
+            }
+            if (!mismosGrupos) {
+                this.groups.set(groupsNuevoToken);
+            }
+
             if (!this.sesionIniciada()) {
                 this.sesionIniciada.set(true);
             }
         } else {
             sessionStorage.removeItem('access_token');
+            this.groups.set(new Set<string>());
             this.sesionIniciada.set(false);
         }
     }
-
-    sesionIniciada = signal<boolean>(false);
-
-    claims = computed<AuthClaims | null>(() => {
-        const token = this._accessToken();
-        if (!token) return null;
-
-        return jwtDecode<AuthClaims>(token);
-    });
-
-    sub = computed<string | null>(() => {
-        return this.claims()?.sub ?? null;
-    });
 
     backgroundRefreshRunning = signal<boolean>(false);
 
@@ -63,7 +74,7 @@ export class AuthStore {
                         this.setAccessToken(newToken.accessToken);
                     },
                     error: (err) => {
-                        console.warn('No se logra hacer refresh inicial del access token...', err);
+                        console.warn('No se logra hacer refresh inicial del access token...');
                     },
                 })
                 .add(() => {

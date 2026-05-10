@@ -5,7 +5,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, computed, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideCalendarCheck, lucideDownload, lucideGem, lucidePlus, lucideTrash } from '@ng-icons/lucide';
@@ -113,16 +113,21 @@ export class Vencimiento implements OnInit {
 
     constructor() {
         effect(() => {
-            if (this.idNormaSuscrita() && this.idHistorialNormaSuscrita()) {
-                this.error.set('');
-                this.showModalEliminar.set(false);
-                this.itemSeleccionado.set(null);
-                this.item.set(null);
-                this.documentosAdjuntos.set([]);
-                this.documentosEnProgreso.set([]);
-                this.cargandoNormaSuscritaConVencimiento.set(true);
-                this.obtenerNormaConVencimiento();
-            }
+            const idNormaSuscrita = this.idNormaSuscrita();
+            const idHistorialNormaSuscrita = this.idHistorialNormaSuscrita();
+
+            untracked(() => {
+                if (idNormaSuscrita && idHistorialNormaSuscrita) {
+                    this.error.set('');
+                    this.showModalEliminar.set(false);
+                    this.itemSeleccionado.set(null);
+                    this.item.set(null);
+                    this.documentosAdjuntos.set([]);
+                    this.documentosEnProgreso.set([]);
+                    this.cargandoNormaSuscritaConVencimiento.set(true);
+                    this.obtenerNormaConVencimiento();
+                }
+            });
         });
     }
 

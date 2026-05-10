@@ -8,7 +8,7 @@ import { TemplateConInscripcion, TemplateNormasConInscripcion } from '@/app/enti
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -142,9 +142,13 @@ export class MantenedorPlantillasInscritas {
 
     constructor() {
         effect(() => {
-            if (this.negocioStore.negocioSeleccionado()) {
-                this.obtenerTemplatesEInscripciones();
-            }
+            const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+
+            untracked(() => {
+                if (negocioSeleccionado) {
+                    this.obtenerTemplatesEInscripciones();
+                }
+            });
         });
     }
 

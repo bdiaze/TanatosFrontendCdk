@@ -38,9 +38,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     }
 
     // Si se obtiene 401 Unauthorized, se obtendrá nuevo access token...
-    // La marca isRefreshing indica que se está esperando por un nuevo access token,
-    // es decir que todas las requests quedarán encoladas, una vez recepcionado el nuevo
-    // access token, se procesan todas las request encoladas...
     return next(req).pipe(
         catchError((err: HttpErrorResponse) => {
             if (err.status !== 401) {

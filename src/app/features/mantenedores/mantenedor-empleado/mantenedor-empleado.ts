@@ -10,7 +10,7 @@ import { SalEmpleado } from '@/app/entities/others/sal-empleado';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideContactRound, lucideEllipsis, lucidePencil, lucideTrash2, lucideTriangleAlert, lucideX } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -82,10 +82,14 @@ export class MantenedorEmpleado {
 
     constructor() {
         effect(() => {
-            if (this.negocioStore.negocioSeleccionado()) {
-                this.obtenerEmpleados();
-                this.obtenerCargos();
-            }
+            const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+
+            untracked(() => {
+                if (negocioSeleccionado) {
+                    this.obtenerEmpleados();
+                    this.obtenerCargos();
+                }
+            });
         });
     }
 

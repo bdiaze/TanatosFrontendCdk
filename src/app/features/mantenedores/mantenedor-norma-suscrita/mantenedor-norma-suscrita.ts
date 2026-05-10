@@ -4,7 +4,7 @@ import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -82,9 +82,13 @@ export class MantenedorNormaSuscrita {
 
     constructor(private plainTextPipe: PlainTextPipe) {
         effect(() => {
-            if (this.negocioStore.negocioSeleccionado()) {
-                this.obtenerTodos();
-            }
+            const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+
+            untracked(() => {
+                if (negocioSeleccionado) {
+                    this.obtenerTodos();
+                }
+            });
         });
     }
 

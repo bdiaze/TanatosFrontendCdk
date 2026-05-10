@@ -17,7 +17,7 @@ import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
 import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { normalize } from '@/app/helpers/string-comparator';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -231,109 +231,121 @@ export class MantenedorTemplateEdicion {
 
     constructor() {
         effect(() => {
-            if (this.cargandoTemplatesExistentes()) {
-                this.form.controls['idTemplatePadre'].disable();
-            } else {
-                this.form.controls['idTemplatePadre'].enable();
-            }
+            const cargandoTemplatesExistentes = this.cargandoTemplatesExistentes();
+
+            untracked(() => {
+                if (cargandoTemplatesExistentes) {
+                    this.form.controls['idTemplatePadre'].disable();
+                } else {
+                    this.form.controls['idTemplatePadre'].enable();
+                }
+            });
         });
 
         effect(() => {
-            if (this.idTemplate()) {
-                this.cargandoDetalleTemplate.set(true);
+            const idTemplate = this.idTemplate();
+
+            untracked(() => {
+                if (idTemplate) {
+                    this.cargandoDetalleTemplate.set(true);
+                    this.templateDao
+                        .obtener(idTemplate!)
+                        .subscribe({
+                            next: (detalleTemplate) => {
+                                if (detalleTemplate?.templateNormas) {
+                                    detalleTemplate.templateNormas = detalleTemplate?.templateNormas?.sort((a, b) => a.idNorma - b.idNorma);
+
+                                    detalleTemplate?.templateNormas?.forEach((norma) => {
+                                        if (norma.templateNormaFiscalizadores) {
+                                            norma.templateNormaFiscalizadores = norma.templateNormaFiscalizadores?.sort(
+                                                (a, b) => a.idTipoFiscalizador - b.idTipoFiscalizador,
+                                            );
+                                        }
+
+                                        if (norma.templateNormaNotificaciones) {
+                                            norma.templateNormaNotificaciones = norma.templateNormaNotificaciones?.sort((a, b) =>
+                                                a.idTipoUnidadTiempoAntelacion !== b.idTipoUnidadTiempoAntelacion
+                                                    ? b.idTipoUnidadTiempoAntelacion - a.idTipoUnidadTiempoAntelacion
+                                                    : b.cantAntelacion - a.cantAntelacion,
+                                            );
+                                        }
+                                    });
+                                }
+
+                                this.item.set(detalleTemplate);
+                            },
+                            error: (err) => {
+                                console.error('Error al obtener los detalles del template', err);
+                                this.error.set(err.error ?? 'Error al obtener los detalles del template');
+                            },
+                        })
+                        .add(() => {
+                            this.cargandoDetalleTemplate.set(false);
+                        });
+
+                    this.form.controls['id'].disable();
+                }
+            });
+        });
+
+        effect(() => {
+            const item = this.item();
+
+            untracked(() => {
+                this.cargandoTemplatesExistentes.set(true);
                 this.templateDao
-                    .obtener(this.idTemplate()!)
+                    .obtenerPorVigencia(null)
                     .subscribe({
-                        next: (detalleTemplate) => {
-                            if (detalleTemplate?.templateNormas) {
-                                detalleTemplate.templateNormas = detalleTemplate?.templateNormas?.sort((a, b) => a.idNorma - b.idNorma);
-
-                                detalleTemplate?.templateNormas?.forEach((norma) => {
-                                    if (norma.templateNormaFiscalizadores) {
-                                        norma.templateNormaFiscalizadores = norma.templateNormaFiscalizadores?.sort(
-                                            (a, b) => a.idTipoFiscalizador - b.idTipoFiscalizador,
-                                        );
-                                    }
-
-                                    if (norma.templateNormaNotificaciones) {
-                                        norma.templateNormaNotificaciones = norma.templateNormaNotificaciones?.sort((a, b) =>
-                                            a.idTipoUnidadTiempoAntelacion !== b.idTipoUnidadTiempoAntelacion
-                                                ? b.idTipoUnidadTiempoAntelacion - a.idTipoUnidadTiempoAntelacion
-                                                : b.cantAntelacion - a.cantAntelacion,
-                                        );
-                                    }
-                                });
+                        next: (vigentes) => {
+                            if (item) {
+                                vigentes = vigentes.filter((t) => t.id !== item!.id);
+                                vigentes = this.eliminarHijosComoPosiblesPadres(vigentes, item!.id);
+                                vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                             }
-
-                            this.item.set(detalleTemplate);
+                            this.templatesExistentes.set(vigentes);
                         },
                         error: (err) => {
-                            console.error('Error al obtener los detalles del template', err);
-                            this.error.set(err.error ?? 'Error al obtener los detalles del template');
+                            console.error('Error al obtener templates', err);
+                            this.error.set(err.error ?? 'Error al obtener templates');
                         },
                     })
                     .add(() => {
-                        this.cargandoDetalleTemplate.set(false);
+                        this.cargandoTemplatesExistentes.set(false);
                     });
 
-                this.form.controls['id'].disable();
-            }
-        });
+                if (item) {
+                    this.form.patchValue({
+                        id: item!.id,
+                        idTemplatePadre: item!.idTemplatePadre,
+                        nombre: item!.nombre,
+                        descripcion: item!.descripcion,
+                        requierePlanEmpresa: item!.requierePlanEmpresa,
+                        vigencia: item!.vigencia,
+                    });
 
-        effect(() => {
-            this.cargandoTemplatesExistentes.set(true);
-            this.templateDao
-                .obtenerPorVigencia(null)
-                .subscribe({
-                    next: (vigentes) => {
-                        if (this.item()) {
-                            vigentes = vigentes.filter((t) => t.id !== this.item()!.id);
-                            vigentes = this.eliminarHijosComoPosiblesPadres(vigentes, this.item()!.id);
-                            vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
-                        }
-                        this.templatesExistentes.set(vigentes);
-                    },
-                    error: (err) => {
-                        console.error('Error al obtener templates', err);
-                        this.error.set(err.error ?? 'Error al obtener templates');
-                    },
-                })
-                .add(() => {
-                    this.cargandoTemplatesExistentes.set(false);
-                });
+                    (this.form.get('templateNormas') as FormArray).clear();
+                    item!.templateNormas?.forEach((norma) => {
+                        (this.form.get('templateNormas') as FormArray).push(this.buildNormaFormGroup(norma));
+                    });
 
-            if (this.item()) {
-                this.form.patchValue({
-                    id: this.item()!.id,
-                    idTemplatePadre: this.item()!.idTemplatePadre,
-                    nombre: this.item()!.nombre,
-                    descripcion: this.item()!.descripcion,
-                    requierePlanEmpresa: this.item()!.requierePlanEmpresa,
-                    vigencia: this.item()!.vigencia,
-                });
+                    (this.form.get('templateActividades') as FormArray).clear();
+                    item!.templateActividades?.forEach((actividad) => {
+                        (this.form.get('templateActividades') as FormArray).push(this.buildActividadFormGroup(actividad));
+                    });
+                } else {
+                    this.form.patchValue({
+                        id: null,
+                        idTemplatePadre: null,
+                        nombre: '',
+                        descripcion: '',
+                        requierePlanEmpresa: false,
+                        vigencia: false,
+                    });
 
-                (this.form.get('templateNormas') as FormArray).clear();
-                this.item()!.templateNormas?.forEach((norma) => {
-                    (this.form.get('templateNormas') as FormArray).push(this.buildNormaFormGroup(norma));
-                });
-
-                (this.form.get('templateActividades') as FormArray).clear();
-                this.item()!.templateActividades?.forEach((actividad) => {
-                    (this.form.get('templateActividades') as FormArray).push(this.buildActividadFormGroup(actividad));
-                });
-            } else {
-                this.form.patchValue({
-                    id: null,
-                    idTemplatePadre: null,
-                    nombre: '',
-                    descripcion: '',
-                    requierePlanEmpresa: false,
-                    vigencia: false,
-                });
-
-                (this.form.get('templateNormas') as FormArray).clear();
-                (this.form.get('templateActividades') as FormArray).clear();
-            }
+                    (this.form.get('templateNormas') as FormArray).clear();
+                    (this.form.get('templateActividades') as FormArray).clear();
+                }
+            });
         });
     }
 

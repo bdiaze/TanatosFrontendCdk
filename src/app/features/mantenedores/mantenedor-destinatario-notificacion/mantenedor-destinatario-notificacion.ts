@@ -1,7 +1,7 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { DestinatarioNotificacionDao } from '@/app/daos/destinatario-notificacion-dao';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, inject, signal, effect, computed } from '@angular/core';
+import { Component, inject, signal, effect, computed, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { lucideBadgeCheck, lucideBadgeX, lucideClockAlert, lucideEllipsis, lucideGem, lucideSend, lucideTrash2, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -77,9 +77,14 @@ export class MantenedorDestinatarioNotificacion {
 
     constructor() {
         effect(() => {
-            if (this.authStote.sesionIniciada() && this.negocioStore.negocioSeleccionado()) {
-                this.obtenerTodos();
-            }
+            const sesionIniciada = this.authStote.sesionIniciada();
+            const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+
+            untracked(() => {
+                if (sesionIniciada && negocioSeleccionado) {
+                    this.obtenerTodos();
+                }
+            });
         });
     }
 

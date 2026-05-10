@@ -3,7 +3,7 @@ import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { setCookie } from '@/app/helpers/cookie-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, signal, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -90,8 +90,8 @@ export class Menu {
     negocioDao = inject(NegocioDao);
 
     accesoAdmin = computed<boolean>(() => {
-        const claims = this.authStore.claims();
-        if (claims && claims['cognito:groups'] && claims['cognito:groups'].includes('Admin')) {
+        const groups = this.authStore.groups();
+        if (groups.has('Admin')) {
             return true;
         }
         return false;
@@ -276,27 +276,33 @@ export class Menu {
 
     constructor() {
         effect(() => {
-            if (this.authStore.sesionIniciada()) {
-                this.obtenerNegocios();
-                this.obtenerInformacionUsuario();
-            }
+            const sesionIniciada = this.authStore.sesionIniciada();
+
+            untracked(() => {
+                if (sesionIniciada) {
+                    this.obtenerNegocios();
+                    this.obtenerInformacionUsuario();
+                }
+            });
         });
 
         effect(() => {
             const url = this.url();
             const opciones = this.opcionesMenu();
 
-            for (const item of opciones) {
-                if (item.tipo === 'item' && this.tieneUrlHijoActivo(item, url)) {
-                    this.groupsAbiertos.add(item.id);
-                } else if (item.tipo === 'group' && item.items) {
-                    for (const item2 of item.items) {
-                        if (this.tieneUrlHijoActivo(item2, url)) {
-                            this.groupsAbiertos.add(item2.id);
+            untracked(() => {
+                for (const item of opciones) {
+                    if (item.tipo === 'item' && this.tieneUrlHijoActivo(item, url)) {
+                        this.groupsAbiertos.add(item.id);
+                    } else if (item.tipo === 'group' && item.items) {
+                        for (const item2 of item.items) {
+                            if (this.tieneUrlHijoActivo(item2, url)) {
+                                this.groupsAbiertos.add(item2.id);
+                            }
                         }
                     }
                 }
-            }
+            });
         });
     }
 

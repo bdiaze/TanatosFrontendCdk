@@ -3,19 +3,7 @@ import { SalWhatsappMensaje } from '@/app/entities/others/sal-whatsapp-mensaje';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { DatePipe } from '@angular/common';
-import {
-    AfterViewChecked,
-    Component,
-    computed,
-    DestroyRef,
-    effect,
-    ElementRef,
-    inject,
-    input,
-    OnInit,
-    signal,
-    ViewChild,
-} from '@angular/core';
+import { AfterViewChecked, Component, computed, DestroyRef, effect, ElementRef, inject, input, OnInit, signal, untracked, ViewChild } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
@@ -24,24 +12,11 @@ import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmInput } from '@spartan-ng/helm/input';
-import {
-    lucideCheck,
-    lucideCheckCheck,
-    lucideClock3,
-    lucideDownload,
-    lucideSendHorizonal,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideCheck, lucideCheckCheck, lucideClock3, lucideDownload, lucideSendHorizonal, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmButton } from '@spartan-ng/helm/button';
-import {
-    FormControl,
-    FormGroup,
-    Validators,
-    ɵInternalFormsSharedModule,
-    ReactiveFormsModule,
-} from '@angular/forms';
+import { FormControl, FormGroup, Validators, ɵInternalFormsSharedModule, ReactiveFormsModule } from '@angular/forms';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { EMPTY, filter, interval, switchMap } from 'rxjs';
@@ -103,19 +78,21 @@ export class WhatsappMensajes {
 
     constructor() {
         effect(() => {
-            if (this.numeroTelefono() && this.numeroTelefono()!.length > 0) {
-                this.error.set('');
-                this.obtenerMensajes();
-            }
+            const numeroTelefono = this.numeroTelefono();
+
+            untracked(() => {
+                if (numeroTelefono && numeroTelefono!.length > 0) {
+                    this.error.set('');
+                    this.obtenerMensajes();
+                }
+            });
         });
 
         toObservable(this.numeroTelefono)
             .pipe(
                 switchMap((numeroTelefono) =>
                     numeroTelefono && numeroTelefono.length > 0
-                        ? interval(10 * 1000).pipe(
-                              switchMap(() => this.whatsappDao.obtenerMensajes(numeroTelefono)),
-                          )
+                        ? interval(10 * 1000).pipe(switchMap(() => this.whatsappDao.obtenerMensajes(numeroTelefono)))
                         : EMPTY,
                 ),
                 takeUntilDestroyed(),
@@ -136,9 +113,7 @@ export class WhatsappMensajes {
     }
 
     generarRandomSkeleton() {
-        const arreglo: number[] = Array.from({ length: this.randomEntre(3, 6) }, (_) =>
-            this.randomEntre(1, 4),
-        );
+        const arreglo: number[] = Array.from({ length: this.randomEntre(3, 6) }, (_) => this.randomEntre(1, 4));
         this.random.set(arreglo);
     }
 
@@ -178,9 +153,7 @@ export class WhatsappMensajes {
                 },
                 error: (err) => {
                     console.error('Error al descargar media del mensaje de Whatsapp', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al descargar media del mensaje de Whatsapp',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al descargar media del mensaje de Whatsapp');
                 },
             })
             .add(() => {
@@ -196,11 +169,7 @@ export class WhatsappMensajes {
         const hoy = new Date();
         const fecha = new Date(strFecha);
 
-        return (
-            fecha.getUTCFullYear() === hoy.getUTCFullYear() &&
-            fecha.getUTCMonth() === hoy.getUTCMonth() &&
-            fecha.getUTCDate() === hoy.getUTCDate()
-        );
+        return fecha.getUTCFullYear() === hoy.getUTCFullYear() && fecha.getUTCMonth() === hoy.getUTCMonth() && fecha.getUTCDate() === hoy.getUTCDate();
     }
 
     fueAyer(strFecha: string) {
@@ -208,11 +177,7 @@ export class WhatsappMensajes {
         const ayer = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() - 1);
         const fecha = new Date(strFecha);
 
-        return (
-            fecha.getUTCFullYear() === ayer.getUTCFullYear() &&
-            fecha.getUTCMonth() === ayer.getUTCMonth() &&
-            fecha.getUTCDate() === ayer.getUTCDate()
-        );
+        return fecha.getUTCFullYear() === ayer.getUTCFullYear() && fecha.getUTCMonth() === ayer.getUTCMonth() && fecha.getUTCDate() === ayer.getUTCDate();
     }
 
     randomEntre(min: number, max: number): number {
@@ -257,9 +222,7 @@ export class WhatsappMensajes {
                     },
                     error: (err) => {
                         console.error('Error al enviar el mensaje de Whatsapp', err);
-                        this.error.set(
-                            getErrorMessage(err) ?? 'Error al enviar el mensaje de Whatsapp',
-                        );
+                        this.error.set(getErrorMessage(err) ?? 'Error al enviar el mensaje de Whatsapp');
                     },
                 })
                 .add(() => {
