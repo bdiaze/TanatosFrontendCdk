@@ -20,7 +20,7 @@
         </div>
     </div>
     @if (cargos().length > 0) {
-        <div class="w-full flex justify-end mb-3">
+        <div class="w-full flex justify-end mb-3 fade-in">
             <div class="flex flex-wrap items-center justify-end gap-1 w-full md:w-4/5">
                 <p hlmP class="text-sm px-2 underline underline-offset-2">Cargos:</p>
                 @for (cargo of cargos(); track cargo.id) {
@@ -51,6 +51,15 @@
             </thead>
             <tbody hlmTBody>
                 @if (cargando()) {
+                    <tr hlmTr>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
+                        <td hlmTd></td>
+                    </tr>
                     <tr hlmTr>
                         <td hlmTd>
                             <hlm-skeleton class="h-8 rounded-xl" />

@@ -1,4 +1,4 @@
-<div class="px-1 mb-3">
+<div class="px-1 mb-3 fade-in">
     <form [formGroup]="form" (ngSubmit)="enviarMensaje()">
         <div hlmInputGroup class="flex flex-row items-stretch">
             <textarea
@@ -41,11 +41,7 @@
 <div #scrollContainer class="flex flex-col w-full gap-1.5 px-2">
     @if (cargando()) {
         @for (i of random(); track $index; let index = $index) {
-            <div
-                class="w-full flex flex-row"
-                [class.justify-start]="$index % 2 === 0"
-                [class.justify-end]="$index % 2 !== 0"
-            >
+            <div class="w-full flex flex-row" [class.justify-start]="$index % 2 === 0" [class.justify-end]="$index % 2 !== 0">
                 <hlm-skeleton
                     class="rounded-none"
                     [class.h-10]="i === 1"
@@ -62,20 +58,13 @@
     } @else {
         @for (mensaje of mensajes(); track $index) {
             <div
-                class="w-full flex flex-row"
+                class="w-full flex flex-row fade-in"
                 [class.justify-start]="mensaje.direccion == 'Entrada'"
                 [class.justify-end]="mensaje.direccion == 'Salida'"
             >
-                <div
-                    hlmItem
-                    class="mensajeRecibido w-max items-stretch py-1 px-2"
-                    [class.mensajeEnviado]="mensaje.direccion == 'Salida'"
-                >
+                <div hlmItem class="mensajeRecibido w-max items-stretch py-1 px-2" [class.mensajeEnviado]="mensaje.direccion == 'Salida'">
                     <div hlmItemContent>
-                        <p
-                            hlmItemDescription
-                            class="text-(--blanco) py-1 px-2 flex flex-row items-center gap-2"
-                        >
+                        <p hlmItemDescription class="text-(--blanco) py-1 px-2 flex flex-row items-center gap-2">
                             @if (tiposDescarga().includes(mensaje.tipo)) {
                                 <div class="w-6 flex flex-row items-center justify-center">
                                     @if (descargandoImagen().has(mensaje.whatsappMessageId)) {
@@ -91,10 +80,7 @@
                                     }
                                 </div>
                             }
-                            {{
-                                mensaje.cuerpo ??
-                                    `${mensaje.tipo} recibid${tiposFemeninos().includes(mensaje.tipo) ? 'a' : 'o'}`
-                            }}
+                            {{ mensaje.cuerpo ?? `${mensaje.tipo} recibid${tiposFemeninos().includes(mensaje.tipo) ? 'a' : 'o'}` }}
                         </p>
                     </div>
                     <div hlmItemContent class="flex-none text-center items-center justify-end">
@@ -105,9 +91,7 @@
                                 </p>
                             } @else {
                                 @if (fueAyer(mensaje.fechaCreacion)) {
-                                    <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
-                                        Ayer<br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}
-                                    </p>
+                                    <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">Ayer<br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}</p>
                                 } @else {
                                     <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
                                         {{ mensaje.fechaCreacion | date: 'dd/MM/yyyy' }}
@@ -116,26 +100,13 @@
                                 }
                             }
                             @if (mensaje.estado === 'Leido') {
-                                <ng-icon
-                                    hlm
-                                    size="xs"
-                                    name="lucideCheckCheck"
-                                    class="text-(--blanco)"
-                                />
+                                <ng-icon hlm size="xs" name="lucideCheckCheck" class="text-(--blanco)" />
                             }
                             @if (mensaje.estado === 'Entregado') {
                                 <ng-icon hlm size="xs" name="lucideCheck" class="text-(--blanco)" />
                             }
-                            @if (
-                                mensaje.estado === 'Enviado' ||
-                                mensaje.estado === 'ConfirmacionEnvio'
-                            ) {
-                                <ng-icon
-                                    hlm
-                                    size="xs"
-                                    name="lucideClock3"
-                                    class="text-(--blanco)"
-                                />
+                            @if (mensaje.estado === 'Enviado' || mensaje.estado === 'ConfirmacionEnvio') {
+                                <ng-icon hlm size="xs" name="lucideClock3" class="text-(--blanco)" />
                             }
                         </div>
                     </div>

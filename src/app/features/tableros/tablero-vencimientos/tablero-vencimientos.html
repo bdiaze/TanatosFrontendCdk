@@ -59,7 +59,7 @@
                             </div>
                         </a>
                     } @empty {
-                        <div hlmAlert class="col-span-1 md:col-span-3">
+                        <div hlmAlert class="col-span-1 md:col-span-3 fade-in">
                             <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" />
                             <h4 hlmAlertTitle>¡Felicidades! Sin obligaciones vencidas.</h4>
                             <p hlmAlertDescription>
@@ -113,7 +113,7 @@
                             </div>
                         </a>
                     } @empty {
-                        <div hlmAlert class="col-span-1 md:col-span-3">
+                        <div hlmAlert class="col-span-1 md:col-span-3 fade-in">
                             <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
                             <h4 hlmAlertTitle>¿Sin obligaciones?</h4>
                             <div hlmAlertDescription>
@@ -183,7 +183,7 @@
                         </a>
                     } @empty {
                         @if (normasCompletadas().length == 0) {
-                            <div hlmAlert class="col-span-1 md:col-span-3">
+                            <div hlmAlert class="col-span-1 md:col-span-3 fade-in">
                                 <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
                                 <h4 hlmAlertTitle>Sin obligaciones completadas</h4>
                                 <div hlmAlertDescription>
@@ -191,7 +191,7 @@
                                 </div>
                             </div>
                         } @else {
-                            <div hlmAlert class="col-span-1 md:col-span-3">
+                            <div hlmAlert class="col-span-1 md:col-span-3 fade-in">
                                 <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
                                 <h4 hlmAlertTitle>Obligaciones no encontradas</h4>
                                 <div hlmAlertDescription>No tienes obligaciones completadas que cumplan con tu filtro de búsqueda.</div>
@@ -200,7 +200,7 @@
                     }
                 }
                 @if (normasCompletadasFiltradasPaginadas().length < normasCompletadasFiltradas().length) {
-                    <div class="w-full flex items-center justify-center md:col-span-3">
+                    <div class="w-full flex items-center justify-center md:col-span-3 fade-in">
                         <button hlmBtn variant="link" (click)="mostrarMasCompletadas()">Mostrar más resultados</button>
                     </div>
                 }

@@ -1,10 +1,7 @@
 <div class="flex flex-row items-stretch justify-start w-max">
     @if (cargando()) {
         @for (i of tres(); track $index) {
-            <div
-                hlmItem
-                class="bg-(--blanco) text-(--negro) w-52 min-h-32 fade-in transition-all border-(--gris) -ml-px gap-3"
-            >
+            <div hlmItem class="bg-(--blanco) text-(--negro) w-52 min-h-32 fade-in transition-all border-(--gris) -ml-px gap-3">
                 <div hlmItemHeader>
                     <div hlmItemTitle>
                         <hlm-skeleton class="h-6 w-29" />
@@ -23,12 +20,7 @@
             </div>
         }
     } @else {
-        @for (
-            conversacion of conversaciones();
-            track conversacion.numeroTelefono;
-            let first = $first;
-            let last = $last
-        ) {
+        @for (conversacion of conversaciones(); track conversacion.numeroTelefono; let first = $first; let last = $last) {
             <div
                 hlmItem
                 class="bg-(--blanco) text-(--negro) w-52 min-h-32 fade-in transition-all"
@@ -46,9 +38,7 @@
                         {{ conversacion.numeroTelefono | formatearTelefono }}
                     </div>
                     @if (conversacion.cantidadNoLeidos != 0) {
-                        <span hlmBadge class="rounded-full">{{
-                            conversacion.cantidadNoLeidos
-                        }}</span>
+                        <span hlmBadge class="rounded-full">{{ conversacion.cantidadNoLeidos }}</span>
                     }
                 </div>
                 <div hlmItemContent>
@@ -69,19 +59,12 @@
                         }
                     }
                 </div>
-                @if (
-                    conversacion.puedeResponderGratuitoHasta &&
-                    fechaFutura(conversacion.puedeResponderGratuitoHasta)
-                ) {
+                @if (conversacion.puedeResponderGratuitoHasta && fechaFutura(conversacion.puedeResponderGratuitoHasta)) {
                     <div hlmItemFooter>
                         <span
                             hlmBadge
                             variant="azul"
-                            [hlmTooltip]="
-                                'Responde gratuitamente hasta el ' +
-                                (conversacion.puedeResponderGratuitoHasta
-                                    | date: formatoFechaRespuestaGratuita)
-                            "
+                            [hlmTooltip]="'Responde gratuitamente hasta el ' + (conversacion.puedeResponderGratuitoHasta | date: formatoFechaRespuestaGratuita)"
                             position="bottom"
                             class="mx-auto flex flex-row items-center justify-end pr-3 text-xs"
                         >
@@ -93,10 +76,7 @@
                                     Mañana a las
                                     {{ conversacion.puedeResponderGratuitoHasta | date: 'HH:mm' }}
                                 } @else {
-                                    {{
-                                        conversacion.puedeResponderGratuitoHasta
-                                            | date: 'dd/MM/yyyy HH:mm'
-                                    }}
+                                    {{ conversacion.puedeResponderGratuitoHasta | date: 'dd/MM/yyyy HH:mm' }}
                                 }
                             }
                         </span>
