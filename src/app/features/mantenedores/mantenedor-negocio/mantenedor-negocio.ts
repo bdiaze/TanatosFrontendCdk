@@ -1,8 +1,4 @@
-import {
-    CampoDinamico,
-    ModalEdicion,
-    PosiblesValores,
-} from '@/app/components/modal-edicion/modal-edicion';
+import { CampoDinamico, ModalEdicion, PosiblesValores } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { NegocioDao } from '@/app/daos/negocio-dao';
@@ -15,7 +11,8 @@ import { EntNegocioCrear } from '@/app/entities/others/ent-negocio-crear';
 import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -78,6 +75,8 @@ import { forkJoin } from 'rxjs';
     ],
 })
 export class MantenedorNegocio implements OnInit {
+    private destroyRef = inject(DestroyRef);
+
     private dao: NegocioDao = inject(NegocioDao);
     private tipoRubroDao: TipoRubroDao = inject(TipoRubroDao);
     private tipoActividadDao: TipoActividadDao = inject(TipoActividadDao);
@@ -165,27 +164,20 @@ export class MantenedorNegocio implements OnInit {
             tiposRubros: this.tipoRubroDao.obtenerVigentes(),
             tiposActividades: this.tipoActividadDao.obtenerVigentes(),
         })
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: ({ negocios, tiposRubros, tiposActividades }) => {
                     this.tiposRubros.set(tiposRubros);
                     this.tiposActividades.set(tiposActividades);
 
-                    const sorted = negocios.sort(
-                        (a, b) =>
-                            new Date(a.fechaCreacion).getTime() -
-                            new Date(b.fechaCreacion).getTime(),
-                    );
+                    const sorted = negocios.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
                     this.listado.set(sorted);
 
-                    const sortedActividades = tiposActividades.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
-                    );
+                    const sortedActividades = tiposActividades.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
 
                     const posiblesValoresActividades = [] as PosiblesValores[];
                     sortedActividades.forEach((tipoActividad) => {
-                        const tipoRubro = tiposRubros.find(
-                            (u) => u.id === tipoActividad.idTipoRubro,
-                        );
+                        const tipoRubro = tiposRubros.find((u) => u.id === tipoActividad.idTipoRubro);
                         if (tipoRubro) {
                             posiblesValoresActividades.push({
                                 id: tipoActividad.id,
@@ -196,19 +188,11 @@ export class MantenedorNegocio implements OnInit {
                     });
 
                     this.camposEdicion.update((lista) =>
-                        lista.map((u) =>
-                            u.llave === 'idTipoActividad'
-                                ? { ...u, posiblesValores: posiblesValoresActividades }
-                                : u,
-                        ),
+                        lista.map((u) => (u.llave === 'idTipoActividad' ? { ...u, posiblesValores: posiblesValoresActividades } : u)),
                     );
 
                     this.camposCreacion.update((lista) =>
-                        lista.map((u) =>
-                            u.llave === 'idTipoActividad'
-                                ? { ...u, posiblesValores: posiblesValoresActividades }
-                                : u,
-                        ),
+                        lista.map((u) => (u.llave === 'idTipoActividad' ? { ...u, posiblesValores: posiblesValoresActividades } : u)),
                     );
                 },
                 error: (err) => {

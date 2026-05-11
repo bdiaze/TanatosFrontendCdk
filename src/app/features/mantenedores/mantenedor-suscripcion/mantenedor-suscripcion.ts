@@ -7,7 +7,8 @@ import { SalSuscripcion } from '@/app/entities/others/sal-suscripcion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -83,6 +84,7 @@ import { interval, merge, startWith, Subscription } from 'rxjs';
     ],
 })
 export class MantenedorSuscripcion implements OnInit {
+    private destroyRef = inject(DestroyRef);
     private suscripcionDao: SuscripcionDao = inject(SuscripcionDao);
     private planDao: PlanDao = inject(PlanDao);
     negocioStore: NegocioStore = inject(NegocioStore);
@@ -166,6 +168,7 @@ export class MantenedorSuscripcion implements OnInit {
 
         this.suscripcionDao
             .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     this.suscripciones.set(res);
@@ -187,6 +190,7 @@ export class MantenedorSuscripcion implements OnInit {
         this.planesVigentes.set([]);
         this.planDao
             .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) => a.precio - b.precio);

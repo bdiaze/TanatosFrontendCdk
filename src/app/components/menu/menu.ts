@@ -3,8 +3,8 @@ import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { setCookie } from '@/app/helpers/cookie-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, signal, untracked } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Component, computed, DestroyRef, effect, EventEmitter, inject, Input, OnInit, Output, signal, untracked } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -83,6 +83,7 @@ export class Menu {
     @Input() estatico = false;
     @Output() onClose = new EventEmitter<void>();
 
+    private destroyRef = inject(DestroyRef);
     private router = inject(Router);
 
     authStore = inject(AuthStore);
@@ -345,6 +346,7 @@ export class Menu {
         this.cargandoNegocios.set(true);
         this.negocioDao
             .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({})
             .add(() => {
                 this.cargandoNegocios.set(false);
@@ -357,6 +359,7 @@ export class Menu {
         this.cargandoInformacionUsuario.set(true);
         this.negocioDao
             .obtenerInformacionUsuario()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({})
             .add(() => {
                 this.cargandoInformacionUsuario.set(false);

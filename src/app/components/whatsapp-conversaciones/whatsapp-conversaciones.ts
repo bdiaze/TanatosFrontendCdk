@@ -3,7 +3,7 @@ import { SalWhatsappConversacion } from '@/app/entities/others/sal-whatsapp-conv
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { DatePipe } from '@angular/common';
-import { Component, effect, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
+import { Component, DestroyRef, effect, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMessageCircleMore, lucideTag, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -39,6 +39,7 @@ export class WhatsappConversaciones implements OnInit {
 
     tres = signal([0, 1, 2]);
 
+    private destroyRef = inject(DestroyRef);
     whatsappDao: WhatsappDao = inject(WhatsappDao);
 
     conversaciones = signal([] as SalWhatsappConversacion[]);
@@ -66,9 +67,7 @@ export class WhatsappConversaciones implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener conversaciones de Whatsapp', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener conversaciones de Whatsapp',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener conversaciones de Whatsapp');
                 },
             });
     }
@@ -81,6 +80,7 @@ export class WhatsappConversaciones implements OnInit {
         this.cargando.set(true);
         this.whatsappDao
             .obtenerConversaciones()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     this.conversaciones.set(res);
@@ -92,9 +92,7 @@ export class WhatsappConversaciones implements OnInit {
                 },
                 error: (err) => {
                     console.error('Error al obtener conversaciones de Whatsapp', err);
-                    this.error.set(
-                        getErrorMessage(err) ?? 'Error al obtener conversaciones de Whatsapp',
-                    );
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener conversaciones de Whatsapp');
                 },
             })
             .add(() => {
@@ -111,11 +109,7 @@ export class WhatsappConversaciones implements OnInit {
         const hoy = new Date();
         const fecha = new Date(strFecha);
 
-        return (
-            fecha.getUTCFullYear() === hoy.getUTCFullYear() &&
-            fecha.getUTCMonth() === hoy.getUTCMonth() &&
-            fecha.getUTCDate() === hoy.getUTCDate()
-        );
+        return fecha.getUTCFullYear() === hoy.getUTCFullYear() && fecha.getUTCMonth() === hoy.getUTCMonth() && fecha.getUTCDate() === hoy.getUTCDate();
     }
 
     fueAyer(strFecha: string) {
@@ -123,11 +117,7 @@ export class WhatsappConversaciones implements OnInit {
         const ayer = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() - 1);
         const fecha = new Date(strFecha);
 
-        return (
-            fecha.getUTCFullYear() === ayer.getUTCFullYear() &&
-            fecha.getUTCMonth() === ayer.getUTCMonth() &&
-            fecha.getUTCDate() === ayer.getUTCDate()
-        );
+        return fecha.getUTCFullYear() === ayer.getUTCFullYear() && fecha.getUTCMonth() === ayer.getUTCMonth() && fecha.getUTCDate() === ayer.getUTCDate();
     }
 
     esMannana(strFecha: string) {
@@ -136,9 +126,7 @@ export class WhatsappConversaciones implements OnInit {
         const fecha = new Date(strFecha);
 
         return (
-            fecha.getUTCFullYear() === mannana.getUTCFullYear() &&
-            fecha.getUTCMonth() === mannana.getUTCMonth() &&
-            fecha.getUTCDate() === mannana.getUTCDate()
+            fecha.getUTCFullYear() === mannana.getUTCFullYear() && fecha.getUTCMonth() === mannana.getUTCMonth() && fecha.getUTCDate() === mannana.getUTCDate()
         );
     }
 

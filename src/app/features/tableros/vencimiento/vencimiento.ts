@@ -5,7 +5,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, computed, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideCalendarCheck, lucideDownload, lucideGem, lucidePlus, lucideTrash } from '@ng-icons/lucide';
@@ -30,6 +30,7 @@ import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
 import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-vencimiento',
@@ -75,6 +76,7 @@ import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalida
 export class Vencimiento implements OnInit {
     @ViewChild(PopupFuncionalidadBloqueada) popupFuncionalidadBloqueada?: any;
 
+    private destroyRef = inject(DestroyRef);
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     negocioStore = inject(NegocioStore);
@@ -148,6 +150,7 @@ export class Vencimiento implements OnInit {
     obtenerNormaConVencimiento() {
         this.normaSuscritaDao
             .obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (cargandoNormaSuscritaConVencimiento) => {
                     cargandoNormaSuscritaConVencimiento.documentosAdjuntos =
@@ -203,6 +206,7 @@ export class Vencimiento implements OnInit {
             .pipe(
                 debounceTime(500),
                 switchMap(() => this.normaSuscritaDao.obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
                 next: (cargandoNormaSuscritaConVencimiento) => {

@@ -3,7 +3,7 @@ import { TipoReceptorNotificacionDao } from '@/app/daos/tipo-receptor-notificaci
 import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
 import { EntDestinatarioNotificacionCrear } from '@/app/entities/others/ent-destinatario-notificacion-crear';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, computed, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
+import { Component, computed, DestroyRef, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideGem, lucideMail, lucideSend, lucideSmartphone } from '@ng-icons/lucide';
@@ -27,6 +27,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { RouterModule } from '@angular/router';
 import { PopupFuncionalidadBloqueada } from '../popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-modal-creacion-destinatario',
@@ -60,6 +61,7 @@ export class ModalCreacionDestinatario implements OnInit {
     @Output() cerrar = new EventEmitter<void>();
     @Output() confirmar = new EventEmitter<SalDestinatarioNotificacion>();
 
+    private destroyRef = inject(DestroyRef);
     tipoReceptorDao = inject(TipoReceptorNotificacionDao);
     destinatarioDao = inject(DestinatarioNotificacionDao);
     negocioStore = inject(NegocioStore);
@@ -79,11 +81,7 @@ export class ModalCreacionDestinatario implements OnInit {
         destino: new FormControl<string | null>(
             { value: null, disabled: false },
             {
-                validators: [
-                    Validators.required,
-                    (control) =>
-                        control.value?.trim().length === 0 ? { soloEspacios: true } : null,
-                ],
+                validators: [Validators.required, (control) => (control.value?.trim().length === 0 ? { soloEspacios: true } : null)],
                 nonNullable: true,
             },
         ),
@@ -119,11 +117,10 @@ export class ModalCreacionDestinatario implements OnInit {
         this.cargandoTipoReceptores.set(true);
         this.tipoReceptorDao
             .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (vigentes) => {
-                    vigentes = vigentes.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
-                    );
+                    vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                     this.tiposReceptoresVigentes.set(vigentes);
                 },
                 error: (err) => {

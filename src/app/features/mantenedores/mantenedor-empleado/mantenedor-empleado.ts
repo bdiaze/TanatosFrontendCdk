@@ -10,7 +10,8 @@ import { SalEmpleado } from '@/app/entities/others/sal-empleado';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideContactRound, lucideEllipsis, lucidePencil, lucideTrash2, lucideTriangleAlert, lucideX } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -58,6 +59,8 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
     ],
 })
 export class MantenedorEmpleado {
+    private destroyRef = inject(DestroyRef);
+
     empleadoDao: EmpleadoDao = inject(EmpleadoDao);
     cargoDao = inject(CargoDao);
     negocioStore = inject(NegocioStore);
@@ -99,6 +102,7 @@ export class MantenedorEmpleado {
 
         this.empleadoDao
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
@@ -120,6 +124,7 @@ export class MantenedorEmpleado {
 
         this.cargoDao
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));

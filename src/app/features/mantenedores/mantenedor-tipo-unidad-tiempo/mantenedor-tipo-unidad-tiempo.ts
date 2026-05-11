@@ -3,7 +3,8 @@ import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-elimi
 import { TipoUnidadTiempoDao } from '@/app/daos/tipo-unidad-tiempo-dao';
 import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { DecimalPipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -35,6 +36,7 @@ import { catchError, combineLatest, of } from 'rxjs';
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoUnidadTiempo implements OnInit {
+    private destroyRef = inject(DestroyRef);
     private dao: TipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
 
     listado = signal([] as TipoUnidadTiempo[]);
@@ -161,18 +163,21 @@ export class MantenedorTipoUnidadTiempo implements OnInit {
         this.cargando.set(true);
         this.listado.set([]);
 
-        this.dao.obtenerPorVigencia(null).subscribe({
-            next: (res) => {
-                const sorted = res.sort((a, b) => a.id - b.id);
-                this.listado.set(sorted);
-                this.cargando.set(false);
-            },
-            error: (err) => {
-                console.error('Error al obtener tipos de unidad de tiempo', err);
-                this.error.set(err.error ?? 'Error al obtener tipos de unidad de tiempo');
-                this.cargando.set(false);
-            },
-        });
+        this.dao
+            .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (res) => {
+                    const sorted = res.sort((a, b) => a.id - b.id);
+                    this.listado.set(sorted);
+                    this.cargando.set(false);
+                },
+                error: (err) => {
+                    console.error('Error al obtener tipos de unidad de tiempo', err);
+                    this.error.set(err.error ?? 'Error al obtener tipos de unidad de tiempo');
+                    this.cargando.set(false);
+                },
+            });
     }
 
     openModalEliminar(item: TipoUnidadTiempo) {

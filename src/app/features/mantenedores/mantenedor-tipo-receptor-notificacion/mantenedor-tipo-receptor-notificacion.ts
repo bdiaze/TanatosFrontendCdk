@@ -1,6 +1,6 @@
 import { TipoReceptorNotificacionDao } from '@/app/daos/tipo-receptor-notificacion-dao';
 import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { catchError, combineLatest, of } from 'rxjs';
 import { ModalEliminacion } from '@components/modal-eliminacion/modal-eliminacion';
 import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
@@ -9,15 +9,11 @@ import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideTriangleAlert,
-    lucideEllipsis,
-    lucideBadgeCheck,
-    lucideBadgeX,
-} from '@ng-icons/lucide';
+import { lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-mantenedor-tipo-receptor-notificacion',
@@ -35,14 +31,11 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
     ],
     templateUrl: './mantenedor-tipo-receptor-notificacion.html',
     styleUrl: './mantenedor-tipo-receptor-notificacion.scss',
-    providers: [
-        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
-    ],
+    providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoReceptorNotificacion implements OnInit {
-    private tipoReceptorNotificacionDao: TipoReceptorNotificacionDao = inject(
-        TipoReceptorNotificacionDao,
-    );
+    private destroyRef = inject(DestroyRef);
+    private tipoReceptorNotificacionDao: TipoReceptorNotificacionDao = inject(TipoReceptorNotificacionDao);
 
     tiposReceptoresNotificacion = signal([] as TipoReceptorNotificacion[]);
     cargando = signal(true);
@@ -126,18 +119,21 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
         this.cargando.set(true);
         this.tiposReceptoresNotificacion.set([]);
 
-        this.tipoReceptorNotificacionDao.obtenerPorVigencia(null).subscribe({
-            next: (res) => {
-                const sorted = res.sort((a, b) => a.id - b.id);
-                this.tiposReceptoresNotificacion.set(sorted);
-                this.cargando.set(false);
-            },
-            error: (err) => {
-                console.error('Error al obtener tipos de receptores', err);
-                this.error.set(err.error ?? 'Error al obtener tipos de receptores');
-                this.cargando.set(false);
-            },
-        });
+        this.tipoReceptorNotificacionDao
+            .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (res) => {
+                    const sorted = res.sort((a, b) => a.id - b.id);
+                    this.tiposReceptoresNotificacion.set(sorted);
+                    this.cargando.set(false);
+                },
+                error: (err) => {
+                    console.error('Error al obtener tipos de receptores', err);
+                    this.error.set(err.error ?? 'Error al obtener tipos de receptores');
+                    this.cargando.set(false);
+                },
+            });
     }
 
     openModalEliminar(tipoReceptorNotificacion: TipoReceptorNotificacion) {
@@ -159,9 +155,7 @@ export class MantenedorTipoReceptorNotificacion implements OnInit {
             error: (err) => {
                 this.cargando.set(false);
                 console.error('Error al eliminar el tipo de receptor de notificación', err);
-                this.error.set(
-                    err.error ?? 'Error al eliminar el tipo de receptor de notificación',
-                );
+                this.error.set(err.error ?? 'Error al eliminar el tipo de receptor de notificación');
             },
         });
         this.showModalEliminar.set(false);

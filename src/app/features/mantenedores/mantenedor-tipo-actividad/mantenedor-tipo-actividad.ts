@@ -1,22 +1,13 @@
-import {
-    CampoDinamico,
-    ModalEdicion,
-    PosiblesValores,
-} from '@/app/components/modal-edicion/modal-edicion';
+import { CampoDinamico, ModalEdicion, PosiblesValores } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { TipoActividadDao } from '@/app/daos/tipo-actividad-dao';
 import { TipoRubroDao } from '@/app/daos/tipo-rubro-dao';
 import { TipoActividad } from '@/app/entities/models/tipo-actividad';
 import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideEllipsis,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
@@ -27,6 +18,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-mantenedor-tipo-actividad',
@@ -46,11 +38,10 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
     ],
     templateUrl: './mantenedor-tipo-actividad.html',
     styleUrl: './mantenedor-tipo-actividad.scss',
-    providers: [
-        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
-    ],
+    providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoActividad implements OnInit {
+    private destroyRef = inject(DestroyRef);
     private dao: TipoActividadDao = inject(TipoActividadDao);
     private tipoRubroDao: TipoRubroDao = inject(TipoRubroDao);
 
@@ -144,14 +135,13 @@ export class MantenedorTipoActividad implements OnInit {
             tiposActividades: this.dao.obtenerPorVigencia(null),
             tiposRubros: this.tipoRubroDao.obtenerPorVigencia(null),
         })
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: ({ tiposActividades, tiposRubros }) => {
                     const sorted = tiposActividades.sort((a, b) => a.id - b.id);
                     this.listado.set(sorted);
 
-                    const sortedRubros = tiposRubros.sort((a, b) =>
-                        a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()),
-                    );
+                    const sortedRubros = tiposRubros.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                     this.tiposRubros.set(sortedRubros);
 
                     const posiblesValoresRubros = [] as PosiblesValores[];
@@ -162,21 +152,9 @@ export class MantenedorTipoActividad implements OnInit {
                         });
                     });
 
-                    this.camposEdicion.update((lista) =>
-                        lista.map((u) =>
-                            u.llave === 'idTipoRubro'
-                                ? { ...u, posiblesValores: posiblesValoresRubros }
-                                : u,
-                        ),
-                    );
+                    this.camposEdicion.update((lista) => lista.map((u) => (u.llave === 'idTipoRubro' ? { ...u, posiblesValores: posiblesValoresRubros } : u)));
 
-                    this.camposCreacion.update((lista) =>
-                        lista.map((u) =>
-                            u.llave === 'idTipoRubro'
-                                ? { ...u, posiblesValores: posiblesValoresRubros }
-                                : u,
-                        ),
-                    );
+                    this.camposCreacion.update((lista) => lista.map((u) => (u.llave === 'idTipoRubro' ? { ...u, posiblesValores: posiblesValoresRubros } : u)));
                 },
                 error: (err) => {
                     console.error('Error al obtener tipos de actividades', err);

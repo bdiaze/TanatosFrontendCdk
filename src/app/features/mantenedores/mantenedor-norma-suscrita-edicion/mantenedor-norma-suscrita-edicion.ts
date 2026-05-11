@@ -12,7 +12,7 @@ import { EntNormaSuscritaCrear } from '@/app/entities/others/ent-norma-suscrita-
 import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -38,6 +38,7 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita-edicion',
@@ -93,6 +94,7 @@ import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
     ],
 })
 export class MantenedorNormaSuscritaEdicion implements OnInit {
+    private destroyRef = inject(DestroyRef);
     private router = inject(Router);
     private route = inject(ActivatedRoute);
     idNormaSuscrita = signal<number | null>(null);
@@ -209,6 +211,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     this.cargandoNormaSuscrita.set(true);
                     this.normaSuscritaDao
                         .obtenerPorId(idNormaSuscrita!)
+                        .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe({
                             next: (normaSuscrita) => {
                                 this.item.set(normaSuscrita);
@@ -363,6 +366,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         this.cargandoCategoriasVigentes.set(true);
         this.categoriaNormaDao
             .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
@@ -380,6 +384,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         this.cargandoPeriodicidadVigentes.set(true);
         this.tipoPeriodicidadDao
             .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) => a.id - b.id);
@@ -397,6 +402,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         this.cargandoFiscalizadoresVigentes.set(true);
         this.tipoFiscalizadorDao
             .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
@@ -414,6 +420,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         this.cargandoUnidadesTiempoVigentes.set(true);
         this.tipoUnidadTiempoDao
             .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     res = res.sort((a, b) => a.id - b.id);

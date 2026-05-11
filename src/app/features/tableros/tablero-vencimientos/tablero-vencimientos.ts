@@ -2,7 +2,7 @@ import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
 import { SalNormaSuscritaObtenerConVencimiento } from '@/app/entities/others/sal-norma-suscrita-obtener-con-vencimiento';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCalendarRange, lucideCircleAlert, lucideCircleCheck, lucideClockAlert, lucideSearch, lucideX } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -23,6 +23,7 @@ import { normalize } from '@/app/helpers/string-comparator';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -60,6 +61,7 @@ import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
     ],
 })
 export class TableroVencimientos {
+    private destroyRef = inject(DestroyRef);
     normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     negocioStore = inject(NegocioStore);
 
@@ -102,6 +104,7 @@ export class TableroVencimientos {
 
         this.normaSuscritaDao
             .obtenerConVencimiento(this.negocioStore.negocioSeleccionado()?.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) => new Date(a.fechaVencimiento).getTime() - new Date(b.fechaVencimiento).getTime());

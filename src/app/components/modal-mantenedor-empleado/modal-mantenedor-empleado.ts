@@ -8,7 +8,8 @@ import { SalCargo } from '@/app/entities/others/sal-cargo';
 import { SalEmpleado } from '@/app/entities/others/sal-empleado';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, EventEmitter, inject, Input, Output, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, EventEmitter, inject, Input, Output, signal, untracked } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -58,6 +59,8 @@ export class ModalMantenedorEmpleado {
     @Input() idEmpleado: number | null = null;
     @Output() cerrar = new EventEmitter<void>();
     @Output() postGuardar = new EventEmitter<void>();
+
+    private destroyRef = inject(DestroyRef);
 
     empleadoDao = inject(EmpleadoDao);
     cargoDao = inject(CargoDao);
@@ -126,6 +129,7 @@ export class ModalMantenedorEmpleado {
 
         this.empleadoDao
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const empleado = res.find((e) => e.id === this.idEmpleado);
@@ -151,6 +155,7 @@ export class ModalMantenedorEmpleado {
 
         this.cargoDao
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));

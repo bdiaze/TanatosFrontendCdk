@@ -2,14 +2,10 @@ import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/moda
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { TipoRubroDao } from '@/app/daos/tipo-rubro-dao';
 import { TipoRubro } from '@/app/entities/models/tipo-rubro';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideEllipsis,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
@@ -36,11 +32,10 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './mantenedor-tipo-rubro.html',
     styleUrl: './mantenedor-tipo-rubro.scss',
-    providers: [
-        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
-    ],
+    providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoRubro implements OnInit {
+    private destroyRef = inject(DestroyRef);
     private dao: TipoRubroDao = inject(TipoRubroDao);
 
     listado = signal([] as TipoRubro[]);
@@ -111,18 +106,21 @@ export class MantenedorTipoRubro implements OnInit {
         this.cargando.set(true);
         this.listado.set([]);
 
-        this.dao.obtenerPorVigencia(null).subscribe({
-            next: (res) => {
-                const sorted = res.sort((a, b) => a.id - b.id);
-                this.listado.set(sorted);
-                this.cargando.set(false);
-            },
-            error: (err) => {
-                console.error('Error al obtener tipos de rubros', err);
-                this.error.set(err.error ?? 'Error al obtener tipos de rubros');
-                this.cargando.set(false);
-            },
-        });
+        this.dao
+            .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (res) => {
+                    const sorted = res.sort((a, b) => a.id - b.id);
+                    this.listado.set(sorted);
+                    this.cargando.set(false);
+                },
+                error: (err) => {
+                    console.error('Error al obtener tipos de rubros', err);
+                    this.error.set(err.error ?? 'Error al obtener tipos de rubros');
+                    this.cargando.set(false);
+                },
+            });
     }
 
     openModalEliminar(item: TipoRubro) {

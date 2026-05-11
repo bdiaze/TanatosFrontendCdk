@@ -4,7 +4,7 @@ import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -29,6 +29,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita',
@@ -66,6 +67,7 @@ import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
     ],
 })
 export class MantenedorNormaSuscrita {
+    private destroyRef = inject(DestroyRef);
     normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
@@ -98,6 +100,7 @@ export class MantenedorNormaSuscrita {
 
         this.normaSuscritaDao
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     this.listado.set(res);

@@ -1,14 +1,9 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { TemplateDao } from '@/app/daos/template-dao';
 import { Template } from '@/app/entities/models/template';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideEllipsis,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
@@ -18,6 +13,7 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { RouterLink } from '@angular/router';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-mantenedor-template',
@@ -36,11 +32,10 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
     ],
     templateUrl: './mantenedor-template.html',
     styleUrl: './mantenedor-template.scss',
-    providers: [
-        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
-    ],
+    providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTemplate implements OnInit {
+    private destroyRef = inject(DestroyRef);
     private dao: TemplateDao = inject(TemplateDao);
 
     listado = signal<Template[]>([]);
@@ -59,18 +54,21 @@ export class MantenedorTemplate implements OnInit {
         this.cargando.set(true);
         this.listado.set([]);
 
-        this.dao.obtenerPorVigencia(null).subscribe({
-            next: (res) => {
-                const sorted = res.sort((a, b) => a.id - b.id);
-                this.listado.set(sorted);
-                this.cargando.set(false);
-            },
-            error: (err) => {
-                console.error('Error al obtener templates', err);
-                this.error.set(err.error ?? 'Error al obtener templates');
-                this.cargando.set(false);
-            },
-        });
+        this.dao
+            .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (res) => {
+                    const sorted = res.sort((a, b) => a.id - b.id);
+                    this.listado.set(sorted);
+                    this.cargando.set(false);
+                },
+                error: (err) => {
+                    console.error('Error al obtener templates', err);
+                    this.error.set(err.error ?? 'Error al obtener templates');
+                    this.cargando.set(false);
+                },
+            });
     }
 
     obtenerPadre(id: number): Template | undefined {

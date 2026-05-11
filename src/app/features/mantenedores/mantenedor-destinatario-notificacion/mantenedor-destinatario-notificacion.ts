@@ -1,7 +1,7 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { DestinatarioNotificacionDao } from '@/app/daos/destinatario-notificacion-dao';
 import { SalDestinatarioNotificacion } from '@/app/entities/others/sal-destinatario-notificacion';
-import { Component, inject, signal, effect, computed, untracked } from '@angular/core';
+import { Component, inject, signal, effect, computed, untracked, DestroyRef } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { lucideBadgeCheck, lucideBadgeX, lucideClockAlert, lucideEllipsis, lucideGem, lucideSend, lucideTrash2, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -22,6 +22,7 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-mantenedor-destinatario-notificacion',
@@ -62,6 +63,8 @@ import { RouterModule } from '@angular/router';
     ],
 })
 export class MantenedorDestinatarioNotificacion {
+    private destroyRef = inject(DestroyRef);
+
     dao: DestinatarioNotificacionDao = inject(DestinatarioNotificacionDao);
     authStote = inject(AuthStore);
     negocioStore = inject(NegocioStore);
@@ -94,6 +97,7 @@ export class MantenedorDestinatarioNotificacion {
 
         this.dao
             .obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) => a.destino.toLocaleLowerCase().localeCompare(b.destino.toLocaleLowerCase()));

@@ -5,14 +5,10 @@ import { Plan } from '@/app/entities/models/plan';
 import { EntPlanCrearEditar } from '@/app/entities/others/ent-plan-crear-editar';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { DecimalPipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideEllipsis,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
@@ -42,11 +38,10 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './mantenedor-plan.html',
     styleUrl: './mantenedor-plan.scss',
-    providers: [
-        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
-    ],
+    providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorPlan implements OnInit {
+    private destroyRef = inject(DestroyRef);
     private dao: PlanDao = inject(PlanDao);
 
     listado = signal([] as Plan[]);
@@ -147,6 +142,7 @@ export class MantenedorPlan implements OnInit {
 
         this.dao
             .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     const sorted = res.sort((a, b) => a.id - b.id);

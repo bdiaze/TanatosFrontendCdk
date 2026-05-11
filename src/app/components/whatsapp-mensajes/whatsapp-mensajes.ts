@@ -59,6 +59,7 @@ import { S3Service } from '@/app/services/s3-service';
 export class WhatsappMensajes {
     numeroTelefono = input<string | null>();
 
+    private destroyRef = inject(DestroyRef);
     whatsappDao: WhatsappDao = inject(WhatsappDao);
     s3Service: S3Service = inject(S3Service);
 
@@ -122,6 +123,7 @@ export class WhatsappMensajes {
         this.cargando.set(true);
         this.whatsappDao
             .obtenerMensajes(this.numeroTelefono()!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     this.mensajesObtenidos.set(res);
@@ -147,6 +149,7 @@ export class WhatsappMensajes {
 
         this.whatsappDao
             .obtenerMedia(whatsappMessageId)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     this.s3Service.bajarArchivo(res.url);

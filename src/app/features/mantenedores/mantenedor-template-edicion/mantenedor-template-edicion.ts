@@ -17,7 +17,7 @@ import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
 import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { normalize } from '@/app/helpers/string-comparator';
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -45,6 +45,7 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-mantenedor-template-edicion',
@@ -93,6 +94,7 @@ import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
     ],
 })
 export class MantenedorTemplateEdicion {
+    private destroyRef = inject(DestroyRef);
     private router = inject(Router);
     private route = inject(ActivatedRoute);
     idTemplate = signal<number | null>(null);
@@ -250,6 +252,7 @@ export class MantenedorTemplateEdicion {
                     this.cargandoDetalleTemplate.set(true);
                     this.templateDao
                         .obtener(idTemplate!)
+                        .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe({
                             next: (detalleTemplate) => {
                                 if (detalleTemplate?.templateNormas) {
@@ -295,6 +298,7 @@ export class MantenedorTemplateEdicion {
                 this.cargandoTemplatesExistentes.set(true);
                 this.templateDao
                     .obtenerPorVigencia(null)
+                    .pipe(takeUntilDestroyed(this.destroyRef))
                     .subscribe({
                         next: (vigentes) => {
                             if (item) {
@@ -367,6 +371,7 @@ export class MantenedorTemplateEdicion {
             tiposRubros: this.tipoRubroDao.obtenerPorVigencia(null),
             tiposActividades: this.tipoActividadDao.obtenerPorVigencia(null),
         })
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: ({ tiposRubros, tiposActividades }) => {
                     const sortedActividades = tiposActividades.sort((a, b) =>
@@ -390,6 +395,7 @@ export class MantenedorTemplateEdicion {
         this.cargandoCategoriasExistentes.set(true);
         this.categoriaNormaDao
             .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
@@ -407,6 +413,7 @@ export class MantenedorTemplateEdicion {
         this.cargandoPeriodicidadExistentes.set(true);
         this.tipoPeriodicidadDao
             .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) => a.id - b.id);
@@ -424,6 +431,7 @@ export class MantenedorTemplateEdicion {
         this.cargandoFiscalizadoresExistentes.set(true);
         this.tipoFiscalizadorDao
             .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (vigentes) => {
                     vigentes = vigentes.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
@@ -441,6 +449,7 @@ export class MantenedorTemplateEdicion {
         this.cargandoUnidadesTiempoExistentes.set(true);
         this.tipoUnidadTiempoDao
             .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
                     res = res.sort((a, b) => a.id - b.id);

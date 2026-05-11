@@ -8,7 +8,7 @@ import { TemplateConInscripcion, TemplateNormasConInscripcion } from '@/app/enti
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -37,6 +37,7 @@ import { forkJoin } from 'rxjs';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { RouterModule } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-mantenedor-plantillas-inscritas',
@@ -78,6 +79,8 @@ import { RouterModule } from '@angular/router';
     ],
 })
 export class MantenedorPlantillasInscritas {
+    private destroyRef = inject(DestroyRef);
+
     inscripcionTemplateDao: InscripcionTemplateDao = inject(InscripcionTemplateDao);
     templateDao: TemplateDao = inject(TemplateDao);
     authStore = inject(AuthStore);
@@ -160,6 +163,7 @@ export class MantenedorPlantillasInscritas {
             inscripciones: this.inscripcionTemplateDao.obtenerVigentes(this.negocioStore.negocioSeleccionado()?.id!),
             templates: this.templateDao.obtenerVigentesConNormasYRecomendacion(this.negocioStore.negocioSeleccionado()?.idTipoActividad!),
         })
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: ({ inscripciones, templates }) => {
                     this.inscripciones.set(inscripciones);

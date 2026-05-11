@@ -4,14 +4,10 @@ import { TipoPeriodicidadDao } from '@/app/daos/tipo-periodicidad-dao';
 import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { DecimalPipe } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideEllipsis,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
@@ -37,11 +33,10 @@ import { catchError, combineLatest, of } from 'rxjs';
     ],
     templateUrl: './mantenedor-tipo-periodicidad.html',
     styleUrl: './mantenedor-tipo-periodicidad.scss',
-    providers: [
-        provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }),
-    ],
+    providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoPeriodicidad implements OnInit {
+    private destroyRef = inject(DestroyRef);
     private dao: TipoPeriodicidadDao = inject(TipoPeriodicidadDao);
 
     listado = signal([] as TipoPeriodicidad[]);
@@ -168,18 +163,21 @@ export class MantenedorTipoPeriodicidad implements OnInit {
         this.cargando.set(true);
         this.listado.set([]);
 
-        this.dao.obtenerPorVigencia(null).subscribe({
-            next: (res) => {
-                const sorted = res.sort((a, b) => a.id - b.id);
-                this.listado.set(sorted);
-                this.cargando.set(false);
-            },
-            error: (err) => {
-                console.error('Error al obtener tipos de periodicidad', err);
-                this.error.set(getErrorMessage(err) ?? 'Error al obtener tipos de periodicidad');
-                this.cargando.set(false);
-            },
-        });
+        this.dao
+            .obtenerPorVigencia(null)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (res) => {
+                    const sorted = res.sort((a, b) => a.id - b.id);
+                    this.listado.set(sorted);
+                    this.cargando.set(false);
+                },
+                error: (err) => {
+                    console.error('Error al obtener tipos de periodicidad', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener tipos de periodicidad');
+                    this.cargando.set(false);
+                },
+            });
     }
 
     openModalEliminar(item: TipoPeriodicidad) {
