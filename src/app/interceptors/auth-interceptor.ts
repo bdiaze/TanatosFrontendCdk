@@ -8,9 +8,6 @@ import { Router } from '@angular/router';
 import { redireccionarALogin } from '../features/auth/login/login';
 import { AuthRefreshService } from '../services/auth-refresh-service';
 
-let isRefreshing = false;
-let refreshTokenSubject = new Subject<string>();
-
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authStore = inject(AuthStore);
     const refreshService = inject(AuthRefreshService);
@@ -25,6 +22,21 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const skipUrls = [`${environment.tanatosService.apiUrl}/public/`];
     if (skipUrls.some((url) => req.url.startsWith(url))) {
         return next(req);
+    }
+
+    if (refreshService.isRefreshing || authStore.tokenPorExpirar()) {
+        return refreshService.refreshToken().pipe(
+            catchError((refreshErr) => {
+                return throwError(() => refreshErr);
+            }),
+            switchMap((newToken) =>
+                next(
+                    req.clone({
+                        setHeaders: { Authorization: `Bearer ${newToken}` },
+                    }),
+                ),
+            ),
+        );
     }
 
     // Se añade Authorization con access token...
@@ -51,7 +63,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
             return refreshService.refreshToken().pipe(
                 catchError((refreshErr) => {
-                    redireccionarALogin();
                     return throwError(() => refreshErr);
                 }),
                 switchMap((newToken) =>

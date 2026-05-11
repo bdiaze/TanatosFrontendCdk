@@ -8,7 +8,11 @@ import { redireccionarALogin } from '../features/auth/login/login';
     providedIn: 'root',
 })
 export class AuthRefreshService {
-    private isRefreshing = false;
+    private _isRefreshing = false;
+    get isRefreshing() {
+        return this._isRefreshing;
+    }
+
     private refreshTokenSubject = new ReplaySubject<string>(1);
 
     constructor(
@@ -17,26 +21,28 @@ export class AuthRefreshService {
     ) {}
 
     refreshToken(): Observable<string> {
-        if (!this.isRefreshing) {
-            this.isRefreshing = true;
+        if (!this._isRefreshing) {
+            this._isRefreshing = true;
             this.refreshTokenSubject = new ReplaySubject<string>(1);
 
-            return this.authDao.refreshAccessToken().pipe(
-                tap((res) => {
-                    this.authStore.setAccessToken(res.accessToken);
-                    this.refreshTokenSubject.next(res.accessToken);
-                    this.refreshTokenSubject.complete();
-                    this.isRefreshing = false;
-                }),
-                map((res) => res.accessToken),
-                catchError((err) => {
-                    this.isRefreshing = false;
-                    this.authStore.setAccessToken(null);
-                    this.refreshTokenSubject.error(err);
-                    redireccionarALogin();
-                    return throwError(() => err);
-                }),
-            );
+            this.authDao
+                .refreshAccessToken()
+                .pipe(
+                    tap((res) => {
+                        this.authStore.setAccessToken(res.accessToken);
+                        this.refreshTokenSubject.next(res.accessToken);
+                        this.refreshTokenSubject.complete();
+                        this._isRefreshing = false;
+                    }),
+                    catchError((err) => {
+                        this._isRefreshing = false;
+                        this.authStore.setAccessToken(null);
+                        this.refreshTokenSubject.error(err);
+                        redireccionarALogin();
+                        return throwError(() => err);
+                    }),
+                )
+                .subscribe();
         }
 
         return this.refreshTokenSubject.pipe(take(1));

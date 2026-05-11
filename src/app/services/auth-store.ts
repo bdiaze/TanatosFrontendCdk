@@ -86,4 +86,15 @@ export class AuthStore {
     callbackRunning = signal<boolean>(false);
 
     logoutRunning = signal<boolean>(false);
+
+    tokenPorExpirar(margenSegundos = 30): boolean {
+        const token = this._accessToken();
+        if (!token) return true;
+
+        const decoded = jwtDecode<AuthClaims>(token);
+        if (!decoded.exp) return true;
+
+        const ahora = Math.floor(Date.now() / 1000);
+        return decoded.exp < ahora + margenSegundos;
+    }
 }
