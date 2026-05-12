@@ -9,6 +9,7 @@ import { SalNormaSuscritaObtenerConVencimiento } from '../entities/others/sal-no
 import { SalNormaSuscritaObtenerPorIdConVencimiento } from '../entities/others/sal-norma-suscrita-obtener-por-id-con-vencimiento';
 import { EntNormaSuscritaCompletarNorma } from '../entities/others/ent-norma-suscrita-completar-norma';
 import { SalNormaSuscritaCompletarNorma } from '../entities/others/sal-norma-suscrita-completar-norma';
+import { EntNormaSuscritaCompletarNormaPorCodigoAcceso } from '../entities/others/ent-norma-suscrita-completar-norma-por-codigo-acceso';
 
 @Injectable({
     providedIn: 'root',
@@ -36,7 +37,7 @@ export class NormaSuscritaDao {
 
     obtenerPorCodigoAccesoConVencimiento(codigoAcceso: string): Observable<SalNormaSuscritaObtenerPorIdConVencimiento> {
         return this.http.get<SalNormaSuscritaObtenerPorIdConVencimiento>(
-            environment.tanatosService.apiUrl + `/public/NormaSuscrita/ObtenerPorCodigoAccesoConVencimiento/${codigoAcceso}`,
+            environment.tanatosService.apiUrl + `/public/NormaSuscrita/ObtenerPorCodigoAccesoConVencimiento?codigoAcceso=${encodeURIComponent(codigoAcceso)}`,
         );
     }
 
@@ -50,6 +51,13 @@ export class NormaSuscritaDao {
 
     completarNorma(entrada: EntNormaSuscritaCompletarNorma): Observable<SalNormaSuscritaCompletarNorma> {
         return this.http.put<SalNormaSuscritaCompletarNorma>(environment.tanatosService.apiUrl + '/NormaSuscrita/CompletarNorma', entrada);
+    }
+
+    completarNormaPorCodigoAcceso(entrada: EntNormaSuscritaCompletarNormaPorCodigoAcceso): Observable<SalNormaSuscritaCompletarNorma> {
+        return this.http.put<SalNormaSuscritaCompletarNorma>(
+            environment.tanatosService.apiUrl + '/public/NormaSuscrita/CompletarNormaPorCodigoAcceso',
+            entrada,
+        );
     }
 
     eliminar(id: number): Observable<void> {

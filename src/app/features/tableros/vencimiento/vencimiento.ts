@@ -31,6 +31,14 @@ import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
 import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { EntNormaSuscritaCompletarNormaPorCodigoAcceso } from '@/app/entities/others/ent-norma-suscrita-completar-norma-por-codigo-acceso';
+import { SalDocumentoAdjuntoGenerarUrlBajada } from '@/app/entities/others/sal-documento-adjunto-generar-url-bajada';
+import { SalDocumentoAdjuntoGenerarUrlSubida } from '@/app/entities/others/sal-documento-adjunto-generar-url-subida';
+import { EntDocumentoAdjuntoGenerarUrlSubidaPorCodigoAcceso } from '@/app/entities/others/ent-documento-adjunto-generar-url-subida-por-codigo-acceso';
+import { EntDocumentoAdjuntoGenerarUrlSubida } from '@/app/entities/others/ent-documento-adjunto-generar-url-subida';
+import { EntDocumentoAdjuntoConfirmarSubidaPorCodigoAcceso } from '@/app/entities/others/ent-documento-adjunto-confirmar-subida-por-codigo-acceso';
+import { EntDocumentoAdjuntoConfirmarSubida } from '@/app/entities/others/ent-documento-adjunto-confirmar-subida';
+import { EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso } from '@/app/entities/others/ent-documento-adjunto-generar-url-bajada-por-codigo-acceso';
 
 @Component({
     selector: 'app-vencimiento',
@@ -79,7 +87,7 @@ export class Vencimiento implements OnInit {
 
     private destroyRef = inject(DestroyRef);
     private route = inject(ActivatedRoute);
-    negocioStore = inject(NegocioStore);
+    // negocioStore = inject(NegocioStore);
 
     codigoAcceso = signal<string | null>(null);
     idNormaSuscrita = signal<number | null>(null);
@@ -117,26 +125,11 @@ export class Vencimiento implements OnInit {
     constructor() {
         effect(() => {
             const codigoAcceso = this.codigoAcceso();
-
-            untracked(() => {
-                if (codigoAcceso) {
-                    this.error.set('');
-                    this.showModalEliminar.set(false);
-                    this.itemSeleccionado.set(null);
-                    this.item.set(null);
-                    this.documentosAdjuntos.set([]);
-                    this.documentosEnProgreso.set([]);
-                    this.obtenerNormaConVencimientoPorCodigoAcceso();
-                }
-            });
-        });
-
-        effect(() => {
             const idNormaSuscrita = this.idNormaSuscrita();
             const idHistorialNormaSuscrita = this.idHistorialNormaSuscrita();
 
             untracked(() => {
-                if (idNormaSuscrita && idHistorialNormaSuscrita) {
+                if (codigoAcceso || (idNormaSuscrita && idHistorialNormaSuscrita)) {
                     this.error.set('');
                     this.showModalEliminar.set(false);
                     this.itemSeleccionado.set(null);
@@ -232,42 +225,42 @@ export class Vencimiento implements OnInit {
         this.expandido.set(masMenos);
     }
 
-    obtenerNormaConVencimientoPorCodigoAcceso() {
-        this.cargandoNormaSuscritaConVencimiento.set(true);
-        this.normaSuscritaDao
-            .obtenerPorCodigoAccesoConVencimiento(this.codigoAcceso()!)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-                next: (normaSuscritaConVencimiento) => {
-                    this.setearNormaSuscritaConVencimiento(normaSuscritaConVencimiento);
-                },
-                error: (err) => {
-                    console.error('Error al obtener obligación por código de acceso', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al obtener obligación por código de acceso');
-                },
-            })
-            .add(() => {
-                this.cargandoNormaSuscritaConVencimiento.set(false);
-            });
-    }
-
     obtenerNormaConVencimiento() {
         this.cargandoNormaSuscritaConVencimiento.set(true);
-        this.normaSuscritaDao
-            .obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-                next: (normaSuscritaConVencimiento) => {
-                    this.setearNormaSuscritaConVencimiento(normaSuscritaConVencimiento);
-                },
-                error: (err) => {
-                    console.error('Error al obtener obligación', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al obtener obligación');
-                },
-            })
-            .add(() => {
-                this.cargandoNormaSuscritaConVencimiento.set(false);
-            });
+
+        if (this.codigoAcceso()) {
+            this.normaSuscritaDao
+                .obtenerPorCodigoAccesoConVencimiento(this.codigoAcceso()!)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe({
+                    next: (normaSuscritaConVencimiento) => {
+                        this.setearNormaSuscritaConVencimiento(normaSuscritaConVencimiento);
+                    },
+                    error: (err) => {
+                        console.error('Error al obtener obligación por código de acceso', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al obtener obligación por código de acceso');
+                    },
+                })
+                .add(() => {
+                    this.cargandoNormaSuscritaConVencimiento.set(false);
+                });
+        } else {
+            this.normaSuscritaDao
+                .obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe({
+                    next: (normaSuscritaConVencimiento) => {
+                        this.setearNormaSuscritaConVencimiento(normaSuscritaConVencimiento);
+                    },
+                    error: (err) => {
+                        console.error('Error al obtener obligación', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al obtener obligación');
+                    },
+                })
+                .add(() => {
+                    this.cargandoNormaSuscritaConVencimiento.set(false);
+                });
+        }
     }
 
     setearNormaSuscritaConVencimiento(normaSuscritaConVencimiento: SalNormaSuscritaObtenerPorIdConVencimiento) {
@@ -294,11 +287,7 @@ export class Vencimiento implements OnInit {
     }
 
     puedeSubirArchivos = computed(() => {
-        const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
-        if (tienePlanEmpresa) {
-            return true;
-        }
-        return false;
+        return this.item()?.tienePlanEmpresa ?? false;
     });
 
     draggingFile = signal<boolean>(false);
@@ -385,73 +374,124 @@ export class Vencimiento implements OnInit {
                 } as DocumentoEnProgreso,
             ]);
 
-            this.documentoAdjuntoDao
-                .generarUrlSubida({
-                    idHistorialNormaSuscrita: this.idHistorialNormaSuscrita()!,
-                    nombreArchivo: archivoSeleccionado.name,
-                    mime: archivoSeleccionado.type,
-                    tamanno: archivoSeleccionado.size,
-                })
-                .subscribe({
-                    next: (salidaUrlSubida) => {
-                        // Se actualiza ID del documento adjunto en el documento en progreso...
-                        this.documentosEnProgreso.update((docsProgreso) =>
-                            docsProgreso.map((doc) =>
-                                doc.idTemporal === idTemporal
-                                    ? {
-                                          ...doc,
-                                          idDocumentoAdjunto: salidaUrlSubida.idDocumentoAdjunto,
-                                      }
-                                    : doc,
-                            ),
-                        );
+            if (this.codigoAcceso()) {
+                this.documentoAdjuntoDao
+                    .generarUrlSubidaPorCodigoAcceso({
+                        codigoAcceso: this.codigoAcceso()!,
+                        nombreArchivo: archivoSeleccionado.name,
+                        mime: archivoSeleccionado.type,
+                        tamanno: archivoSeleccionado.size,
+                    } as EntDocumentoAdjuntoGenerarUrlSubidaPorCodigoAcceso)
+                    .subscribe({
+                        next: (salidaUrlSubida) => {
+                            this.procesarUrlGenerada(salidaUrlSubida, idTemporal, archivoSeleccionado);
+                        },
+                        error: (err) => {
+                            // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
+                            this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
 
-                        this.s3Service.subirArchivo(salidaUrlSubida.preSignedUrl, salidaUrlSubida.preSignedFields, archivoSeleccionado).subscribe({
-                            next: (event) => {
-                                if (event.type === HttpEventType.UploadProgress) {
-                                    // Se actualiza el progreso de avance del documento en progreso...
-                                    const porcentaje = Math.round((100 * event.loaded) / (event.total ?? archivoSeleccionado.size));
+                            console.error('Error al generar URL de subida de documento por código de acceso', err);
+                            this.error.set(getErrorMessage(err) ?? 'Error al generar URL de subida de documento por código de acceso');
+                        },
+                    });
+            } else {
+                this.documentoAdjuntoDao
+                    .generarUrlSubida({
+                        idHistorialNormaSuscrita: this.idHistorialNormaSuscrita()!,
+                        nombreArchivo: archivoSeleccionado.name,
+                        mime: archivoSeleccionado.type,
+                        tamanno: archivoSeleccionado.size,
+                    } as EntDocumentoAdjuntoGenerarUrlSubida)
+                    .subscribe({
+                        next: (salidaUrlSubida) => {
+                            this.procesarUrlGenerada(salidaUrlSubida, idTemporal, archivoSeleccionado);
+                        },
+                        error: (err) => {
+                            // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
+                            this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
 
-                                    this.documentosEnProgreso.update((docsProgreso) =>
-                                        docsProgreso.map((doc) => (doc.idTemporal === idTemporal ? { ...doc, progreso: porcentaje } : doc)),
-                                    );
-                                } else if (event.type === HttpEventType.Response) {
-                                    this.documentoAdjuntoDao
-                                        .confirmarSubida({
-                                            idDocumentoAdjunto: salidaUrlSubida.idDocumentoAdjunto,
-                                        })
-                                        .subscribe({
-                                            next: () => {
-                                                // Se obtiene la información nuevamente para actualizar lista de archivos adjuntos...
-                                                this.refrescarAdjuntos$.next();
-                                            },
-                                            error: (err) => {
-                                                // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
-                                                this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
+                            console.error('Error al generar URL de subida de documento', err);
+                            this.error.set(getErrorMessage(err) ?? 'Error al generar URL de subida de documento');
+                        },
+                    });
+            }
+        });
+    }
 
-                                                console.error('Error al confirmar la subida de documento', err);
-                                                this.error.set(getErrorMessage(err) ?? 'Error al confirmar la subida de documento');
-                                            },
-                                        });
-                                }
-                            },
-                            error: (err) => {
-                                // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
-                                this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
+    procesarUrlGenerada(
+        salidaUrlSubida: SalDocumentoAdjuntoGenerarUrlSubida,
+        idTemporal: `${string}-${string}-${string}-${string}-${string}`,
+        archivoSeleccionado: File,
+    ) {
+        // Se actualiza ID del documento adjunto en el documento en progreso...
+        this.documentosEnProgreso.update((docsProgreso) =>
+            docsProgreso.map((doc) =>
+                doc.idTemporal === idTemporal
+                    ? {
+                          ...doc,
+                          idDocumentoAdjunto: salidaUrlSubida.idDocumentoAdjunto,
+                      }
+                    : doc,
+            ),
+        );
 
-                                console.error('Error en subida del documento', err);
-                                this.error.set(getErrorMessage(err) ?? 'Error en subida del documento');
-                            },
-                        });
-                    },
-                    error: (err) => {
-                        // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
-                        this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
+        this.s3Service.subirArchivo(salidaUrlSubida.preSignedUrl, salidaUrlSubida.preSignedFields, archivoSeleccionado).subscribe({
+            next: (event) => {
+                if (event.type === HttpEventType.UploadProgress) {
+                    // Se actualiza el progreso de avance del documento en progreso...
+                    const porcentaje = Math.round((100 * event.loaded) / (event.total ?? archivoSeleccionado.size));
 
-                        console.error('Error al generar URL de subida de documento', err);
-                        this.error.set(getErrorMessage(err) ?? 'Error al generar URL de subida de documento');
-                    },
-                });
+                    this.documentosEnProgreso.update((docsProgreso) =>
+                        docsProgreso.map((doc) => (doc.idTemporal === idTemporal ? { ...doc, progreso: porcentaje } : doc)),
+                    );
+                } else if (event.type === HttpEventType.Response) {
+                    if (this.codigoAcceso()) {
+                        this.documentoAdjuntoDao
+                            .confirmarSubidaPorCodigoAcceso({
+                                codigoAcceso: this.codigoAcceso()!,
+                                idDocumentoAdjunto: salidaUrlSubida.idDocumentoAdjunto,
+                            } as EntDocumentoAdjuntoConfirmarSubidaPorCodigoAcceso)
+                            .subscribe({
+                                next: () => {
+                                    // Se obtiene la información nuevamente para actualizar lista de archivos adjuntos...
+                                    this.refrescarAdjuntos$.next();
+                                },
+                                error: (err) => {
+                                    // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
+                                    this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
+
+                                    console.error('Error al confirmar la subida de documento por código de acceso', err);
+                                    this.error.set(getErrorMessage(err) ?? 'Error al confirmar la subida de documento por código de acceso');
+                                },
+                            });
+                    } else {
+                        this.documentoAdjuntoDao
+                            .confirmarSubida({
+                                idDocumentoAdjunto: salidaUrlSubida.idDocumentoAdjunto,
+                            } as EntDocumentoAdjuntoConfirmarSubida)
+                            .subscribe({
+                                next: () => {
+                                    // Se obtiene la información nuevamente para actualizar lista de archivos adjuntos...
+                                    this.refrescarAdjuntos$.next();
+                                },
+                                error: (err) => {
+                                    // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
+                                    this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
+
+                                    console.error('Error al confirmar la subida de documento', err);
+                                    this.error.set(getErrorMessage(err) ?? 'Error al confirmar la subida de documento');
+                                },
+                            });
+                    }
+                }
+            },
+            error: (err) => {
+                // Dado que no se subió el documento en progreso, se elimina del listado en progreso...
+                this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idTemporal !== idTemporal));
+
+                console.error('Error en subida del documento', err);
+                this.error.set(getErrorMessage(err) ?? 'Error en subida del documento');
+            },
         });
     }
 
@@ -460,25 +500,48 @@ export class Vencimiento implements OnInit {
         this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: true } : doc)));
 
         // Se obtiene URL prefirmada para descarga...
-        this.documentoAdjuntoDao
-            .generarUrlBajada({
-                idDocumentoAdjunto: idDocumento,
-            } as EntDocumentoAdjuntoGenerarUrlBajada)
-            .subscribe({
-                next: (salida) => {
-                    // Se descarga el archivo...
-                    this.s3Service.bajarArchivo(salida.preSignedUrl);
+        if (this.codigoAcceso()) {
+            this.documentoAdjuntoDao
+                .generarUrlBajadaPorCodigoAcceso({
+                    codigoAcceso: this.codigoAcceso(),
+                    idDocumentoAdjunto: idDocumento,
+                } as EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso)
+                .subscribe({
+                    next: (salida) => {
+                        // Se descarga el archivo...
+                        this.s3Service.bajarArchivo(salida.preSignedUrl);
 
-                    // Se deja spinner corriendo mientras navegador procesa la descarga...
-                    setTimeout(() => {
-                        this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: false } : doc)));
-                    }, 1500);
-                },
-                error: (err) => {
-                    console.error('Error al generar URL de bajada de documento', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al generar URL de bajada de documento');
-                },
-            });
+                        // Se deja spinner corriendo mientras navegador procesa la descarga...
+                        setTimeout(() => {
+                            this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: false } : doc)));
+                        }, 1500);
+                    },
+                    error: (err) => {
+                        console.error('Error al generar URL de bajada de documento', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al generar URL de bajada de documento');
+                    },
+                });
+        } else {
+            this.documentoAdjuntoDao
+                .generarUrlBajada({
+                    idDocumentoAdjunto: idDocumento,
+                } as EntDocumentoAdjuntoGenerarUrlBajada)
+                .subscribe({
+                    next: (salida) => {
+                        // Se descarga el archivo...
+                        this.s3Service.bajarArchivo(salida.preSignedUrl);
+
+                        // Se deja spinner corriendo mientras navegador procesa la descarga...
+                        setTimeout(() => {
+                            this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: false } : doc)));
+                        }, 1500);
+                    },
+                    error: (err) => {
+                        console.error('Error al generar URL de bajada de documento', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al generar URL de bajada de documento');
+                    },
+                });
+        }
     }
 
     openModalEliminar(item: DocumentoAdjunto) {
@@ -495,17 +558,29 @@ export class Vencimiento implements OnInit {
         // Se deja documento como "borrando"...
         this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === item.id ? { ...doc, borrando: true } : doc)));
 
-        this.documentoAdjuntoDao.eliminar(item.id).subscribe({
-            next: () => {
-                // Se obtiene la información nuevamente para actualizar lista de archivos adjuntos...
-                this.refrescarAdjuntos$.next();
-            },
-            error: (err) => {
-                console.error('Error al borrar el documento adjunto', err);
-                this.error.set(getErrorMessage(err) ?? 'Error al borrar el documento adjunto');
-            },
-        });
-
+        if (this.codigoAcceso()) {
+            this.documentoAdjuntoDao.eliminarPorCodigoAcceso(this.codigoAcceso()!, item.id).subscribe({
+                next: () => {
+                    // Se obtiene la información nuevamente para actualizar lista de archivos adjuntos...
+                    this.refrescarAdjuntos$.next();
+                },
+                error: (err) => {
+                    console.error('Error al borrar el documento adjunto', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al borrar el documento adjunto');
+                },
+            });
+        } else {
+            this.documentoAdjuntoDao.eliminar(item.id).subscribe({
+                next: () => {
+                    // Se obtiene la información nuevamente para actualizar lista de archivos adjuntos...
+                    this.refrescarAdjuntos$.next();
+                },
+                error: (err) => {
+                    console.error('Error al borrar el documento adjunto', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al borrar el documento adjunto');
+                },
+            });
+        }
         this.closeModalEliminar();
     }
 
@@ -548,28 +623,53 @@ export class Vencimiento implements OnInit {
     completar() {
         this.closeModalConfirmar();
         this.completando.set(true);
-        this.normaSuscritaDao
-            .completarNorma({
-                idNormaSuscrita: this.idNormaSuscrita(),
-                idHistorialNormaSuscrita: this.idHistorialNormaSuscrita(),
-            } as EntNormaSuscritaCompletarNorma)
-            .subscribe({
-                next: (retorno) => {
-                    this.item.update((normaSuscrita) => {
-                        if (normaSuscrita) {
-                            normaSuscrita.fechaCompletitud = retorno.fechaCompletitud;
-                        }
-                        return normaSuscrita;
-                    });
-                },
-                error: (err) => {
-                    console.error('Error al completar la obligación', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al completar la obligación');
-                },
-            })
-            .add(() => {
-                this.completando.set(false);
-            });
+
+        if (this.codigoAcceso()) {
+            this.normaSuscritaDao
+                .completarNormaPorCodigoAcceso({
+                    codigoAcceso: this.codigoAcceso(),
+                } as EntNormaSuscritaCompletarNormaPorCodigoAcceso)
+                .subscribe({
+                    next: (retorno) => {
+                        this.item.update((normaSuscrita) => {
+                            if (normaSuscrita) {
+                                normaSuscrita.fechaCompletitud = retorno.fechaCompletitud;
+                            }
+                            return normaSuscrita;
+                        });
+                    },
+                    error: (err) => {
+                        console.error('Error al completar la obligación por código de acceso', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al completar la obligación por código de acceso');
+                    },
+                })
+                .add(() => {
+                    this.completando.set(false);
+                });
+        } else {
+            this.normaSuscritaDao
+                .completarNorma({
+                    idNormaSuscrita: this.idNormaSuscrita(),
+                    idHistorialNormaSuscrita: this.idHistorialNormaSuscrita(),
+                } as EntNormaSuscritaCompletarNorma)
+                .subscribe({
+                    next: (retorno) => {
+                        this.item.update((normaSuscrita) => {
+                            if (normaSuscrita) {
+                                normaSuscrita.fechaCompletitud = retorno.fechaCompletitud;
+                            }
+                            return normaSuscrita;
+                        });
+                    },
+                    error: (err) => {
+                        console.error('Error al completar la obligación', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al completar la obligación');
+                    },
+                })
+                .add(() => {
+                    this.completando.set(false);
+                });
+        }
     }
 }
 
