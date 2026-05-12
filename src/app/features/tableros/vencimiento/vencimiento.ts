@@ -8,7 +8,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { AfterViewInit, Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideCalendarCheck, lucideDownload, lucideGem, lucidePlus, lucideTrash } from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideCalendarCheck, lucideDownload, lucideGem, lucidePlus, lucideTrash, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButton } from '@spartan-ng/helm/button';
@@ -69,6 +69,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
             lucideDownload,
             lucideTrash,
             lucideGem,
+            lucideTriangleAlert,
         }),
         DatePipe,
     ],
@@ -78,9 +79,9 @@ export class Vencimiento implements OnInit {
 
     private destroyRef = inject(DestroyRef);
     private route = inject(ActivatedRoute);
-    private router = inject(Router);
     negocioStore = inject(NegocioStore);
 
+    codigoAcceso = signal<string | null>(null);
     idNormaSuscrita = signal<number | null>(null);
     idHistorialNormaSuscrita = signal<number | null>(null);
 
@@ -115,6 +116,22 @@ export class Vencimiento implements OnInit {
 
     constructor() {
         effect(() => {
+            const codigoAcceso = this.codigoAcceso();
+
+            untracked(() => {
+                if (codigoAcceso) {
+                    this.error.set('');
+                    this.showModalEliminar.set(false);
+                    this.itemSeleccionado.set(null);
+                    this.item.set(null);
+                    this.documentosAdjuntos.set([]);
+                    this.documentosEnProgreso.set([]);
+                    this.obtenerNormaConVencimientoPorCodigoAcceso();
+                }
+            });
+        });
+
+        effect(() => {
             const idNormaSuscrita = this.idNormaSuscrita();
             const idHistorialNormaSuscrita = this.idHistorialNormaSuscrita();
 
@@ -126,62 +143,10 @@ export class Vencimiento implements OnInit {
                     this.item.set(null);
                     this.documentosAdjuntos.set([]);
                     this.documentosEnProgreso.set([]);
-                    this.cargandoNormaSuscritaConVencimiento.set(true);
                     this.obtenerNormaConVencimiento();
                 }
             });
         });
-    }
-
-    expandido = signal<boolean>(false);
-    mostrarBotonExpandir = signal<boolean>(true);
-
-    @ViewChild('contenedorDescripcion') set contenedorDescripcion(el: ElementRef | undefined) {
-        if (el) {
-            const mostrar = el.nativeElement.scrollHeight > 240;
-            this.mostrarBotonExpandir.set(mostrar);
-        }
-    }
-
-    mostrarMasMenos(masMenos: boolean) {
-        this.expandido.set(masMenos);
-    }
-
-    obtenerNormaConVencimiento() {
-        this.normaSuscritaDao
-            .obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-                next: (cargandoNormaSuscritaConVencimiento) => {
-                    cargandoNormaSuscritaConVencimiento.documentosAdjuntos =
-                        cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.sort((a, b) => {
-                            const fechaA = a.fechaSubida ? new Date(a.fechaSubida) : new Date();
-                            const fechaB = b.fechaSubida ? new Date(b.fechaSubida) : new Date();
-                            return fechaA.getTime() - fechaB.getTime();
-                        }) ?? null;
-
-                    this.documentosAdjuntos.set(
-                        cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.map(
-                            (x) =>
-                                ({
-                                    id: x.id,
-                                    nombreArchivo: x.nombreArchivo,
-                                    fechaSubida: x.fechaSubida,
-                                    descargando: false,
-                                    borrando: false,
-                                }) as DocumentoAdjunto,
-                        ) ?? [],
-                    );
-                    this.item.set(cargandoNormaSuscritaConVencimiento);
-                },
-                error: (err) => {
-                    console.error('Error al obtener norma suscrita por ID con vencimiento', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al obtener norma suscrita por ID con vencimiento');
-                },
-            })
-            .add(() => {
-                this.cargandoNormaSuscritaConVencimiento.set(false);
-            });
     }
 
     private refrescarAdjuntos$ = new Subject<void>();
@@ -191,12 +156,19 @@ export class Vencimiento implements OnInit {
             this.error.set('');
             this.item.set(null);
 
-            const paramIdNormaSuscrita = params.get('idNormaSuscrita');
+            const paramCodigoAccesoOIdNormaSuscrita = params.get('codigoAccesoOIdNormaSuscrita');
             const paramIdHistorialNormaSuscrita = params.get('idHistorialNormaSuscrita');
-            if (paramIdNormaSuscrita && paramIdHistorialNormaSuscrita) {
-                this.idNormaSuscrita.set(Number(paramIdNormaSuscrita));
+
+            if (paramCodigoAccesoOIdNormaSuscrita && !paramIdHistorialNormaSuscrita) {
+                this.codigoAcceso.set(paramCodigoAccesoOIdNormaSuscrita);
+                this.idNormaSuscrita.set(null);
+                this.idHistorialNormaSuscrita.set(null);
+            } else if (paramCodigoAccesoOIdNormaSuscrita && paramIdHistorialNormaSuscrita) {
+                this.codigoAcceso.set(null);
+                this.idNormaSuscrita.set(Number(paramCodigoAccesoOIdNormaSuscrita));
                 this.idHistorialNormaSuscrita.set(Number(paramIdHistorialNormaSuscrita));
             } else {
+                this.codigoAcceso.set(null);
                 this.idNormaSuscrita.set(null);
                 this.idHistorialNormaSuscrita.set(null);
             }
@@ -205,25 +177,29 @@ export class Vencimiento implements OnInit {
         this.refrescarAdjuntos$
             .pipe(
                 debounceTime(500),
-                switchMap(() => this.normaSuscritaDao.obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)),
+                switchMap(() =>
+                    this.codigoAcceso()
+                        ? this.normaSuscritaDao.obtenerPorCodigoAccesoConVencimiento(this.codigoAcceso()!)
+                        : this.normaSuscritaDao.obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!),
+                ),
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe({
-                next: (cargandoNormaSuscritaConVencimiento) => {
+                next: (normaSuscritaConVencimiento) => {
                     // Al obtener el listado de documentos adjuntos, se limpian los documentos retornados desde el listado de documentos en progreso...
-                    cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.forEach((documentoAdjunto) => {
+                    normaSuscritaConVencimiento.documentosAdjuntos?.forEach((documentoAdjunto) => {
                         this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idDocumentoAdjunto !== documentoAdjunto.id));
                     });
 
-                    cargandoNormaSuscritaConVencimiento.documentosAdjuntos =
-                        cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.sort((a, b) => {
+                    normaSuscritaConVencimiento.documentosAdjuntos =
+                        normaSuscritaConVencimiento.documentosAdjuntos?.sort((a, b) => {
                             const fechaA = a.fechaSubida ? new Date(a.fechaSubida) : new Date();
                             const fechaB = b.fechaSubida ? new Date(b.fechaSubida) : new Date();
                             return fechaA.getTime() - fechaB.getTime();
                         }) ?? null;
 
                     this.documentosAdjuntos.set(
-                        cargandoNormaSuscritaConVencimiento.documentosAdjuntos?.map(
+                        normaSuscritaConVencimiento.documentosAdjuntos?.map(
                             (x) =>
                                 ({
                                     id: x.id,
@@ -240,6 +216,81 @@ export class Vencimiento implements OnInit {
                     this.error.set(getErrorMessage(err) ?? 'Error al obtener los documentos adjuntos');
                 },
             });
+    }
+
+    expandido = signal<boolean>(false);
+    mostrarBotonExpandir = signal<boolean>(true);
+
+    @ViewChild('contenedorDescripcion') set contenedorDescripcion(el: ElementRef | undefined) {
+        if (el) {
+            const mostrar = el.nativeElement.scrollHeight > 240;
+            this.mostrarBotonExpandir.set(mostrar);
+        }
+    }
+
+    mostrarMasMenos(masMenos: boolean) {
+        this.expandido.set(masMenos);
+    }
+
+    obtenerNormaConVencimientoPorCodigoAcceso() {
+        this.cargandoNormaSuscritaConVencimiento.set(true);
+        this.normaSuscritaDao
+            .obtenerPorCodigoAccesoConVencimiento(this.codigoAcceso()!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (normaSuscritaConVencimiento) => {
+                    this.setearNormaSuscritaConVencimiento(normaSuscritaConVencimiento);
+                },
+                error: (err) => {
+                    console.error('Error al obtener obligación por código de acceso', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener obligación por código de acceso');
+                },
+            })
+            .add(() => {
+                this.cargandoNormaSuscritaConVencimiento.set(false);
+            });
+    }
+
+    obtenerNormaConVencimiento() {
+        this.cargandoNormaSuscritaConVencimiento.set(true);
+        this.normaSuscritaDao
+            .obtenerPorIdConVencimiento(this.idNormaSuscrita()!, this.idHistorialNormaSuscrita()!)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (normaSuscritaConVencimiento) => {
+                    this.setearNormaSuscritaConVencimiento(normaSuscritaConVencimiento);
+                },
+                error: (err) => {
+                    console.error('Error al obtener obligación', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener obligación');
+                },
+            })
+            .add(() => {
+                this.cargandoNormaSuscritaConVencimiento.set(false);
+            });
+    }
+
+    setearNormaSuscritaConVencimiento(normaSuscritaConVencimiento: SalNormaSuscritaObtenerPorIdConVencimiento) {
+        normaSuscritaConVencimiento.documentosAdjuntos =
+            normaSuscritaConVencimiento.documentosAdjuntos?.sort((a, b) => {
+                const fechaA = a.fechaSubida ? new Date(a.fechaSubida) : new Date();
+                const fechaB = b.fechaSubida ? new Date(b.fechaSubida) : new Date();
+                return fechaA.getTime() - fechaB.getTime();
+            }) ?? null;
+
+        this.documentosAdjuntos.set(
+            normaSuscritaConVencimiento.documentosAdjuntos?.map(
+                (x) =>
+                    ({
+                        id: x.id,
+                        nombreArchivo: x.nombreArchivo,
+                        fechaSubida: x.fechaSubida,
+                        descargando: false,
+                        borrando: false,
+                    }) as DocumentoAdjunto,
+            ) ?? [],
+        );
+        this.item.set(normaSuscritaConVencimiento);
     }
 
     puedeSubirArchivos = computed(() => {

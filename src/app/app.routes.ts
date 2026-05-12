@@ -76,7 +76,11 @@ export const routes: Routes = [
         component: TableroVencimientos,
     },
     {
-        path: 'obligacion/:idNormaSuscrita/:idHistorialNormaSuscrita',
+        path: 'obligacion/:codigoAccesoOIdNormaSuscrita',
+        component: Vencimiento,
+    },
+    {
+        path: 'obligacion/:codigoAccesoOIdNormaSuscrita/:idHistorialNormaSuscrita',
         component: Vencimiento,
     },
     {
