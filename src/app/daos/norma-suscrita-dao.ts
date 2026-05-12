@@ -17,54 +17,39 @@ export class NormaSuscritaDao {
     constructor(private http: HttpClient) {}
 
     obtenerVigentes(idNegocio: number): Observable<SalNormaSuscrita[]> {
-        return this.http.get<SalNormaSuscrita[]>(
-            environment.tanatosService.apiUrl + `/NormaSuscrita/Vigentes/${idNegocio}`,
-        );
+        return this.http.get<SalNormaSuscrita[]>(environment.tanatosService.apiUrl + `/NormaSuscrita/Vigentes/${idNegocio}`);
     }
 
     obtenerPorId(idNormaSuscrita: number): Observable<SalNormaSuscrita> {
-        return this.http.get<SalNormaSuscrita>(
-            environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerPorId/${idNormaSuscrita}`,
-        );
+        return this.http.get<SalNormaSuscrita>(environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerPorId/${idNormaSuscrita}`);
     }
 
     obtenerConVencimiento(idNegocio: number): Observable<SalNormaSuscritaObtenerConVencimiento[]> {
-        return this.http.get<SalNormaSuscritaObtenerConVencimiento[]>(
-            environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerConVencimiento/${idNegocio}`,
+        return this.http.get<SalNormaSuscritaObtenerConVencimiento[]>(environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerConVencimiento/${idNegocio}`);
+    }
+
+    obtenerPorIdConVencimiento(idNormaSuscrita: number, idHistorialNormaSuscrita: number): Observable<SalNormaSuscritaObtenerPorIdConVencimiento> {
+        return this.http.get<SalNormaSuscritaObtenerPorIdConVencimiento>(
+            environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerPorIdConVencimiento/${idNormaSuscrita}/${idHistorialNormaSuscrita}`,
         );
     }
 
-    obtenerPorIdConVencimiento(
-        idNormaSuscrita: number,
-        idHistorialNormaSuscrita: number,
-    ): Observable<SalNormaSuscritaObtenerPorIdConVencimiento> {
+    obtenerPorCodigoAccesoConVencimiento(codigoAcceso: string): Observable<SalNormaSuscritaObtenerPorIdConVencimiento> {
         return this.http.get<SalNormaSuscritaObtenerPorIdConVencimiento>(
-            environment.tanatosService.apiUrl +
-                `/NormaSuscrita/ObtenerPorIdConVencimiento/${idNormaSuscrita}/${idHistorialNormaSuscrita}`,
+            environment.tanatosService.apiUrl + `/public/NormaSuscrita/ObtenerPorCodigoAccesoConVencimiento/${codigoAcceso}`,
         );
     }
 
     crear(entrada: EntNormaSuscritaCrear): Observable<SalNormaSuscrita> {
-        return this.http.post<SalNormaSuscrita>(
-            environment.tanatosService.apiUrl + '/NormaSuscrita/',
-            entrada,
-        );
+        return this.http.post<SalNormaSuscrita>(environment.tanatosService.apiUrl + '/NormaSuscrita/', entrada);
     }
 
     actualizar(entrada: EntNormaSuscritaActualizar): Observable<SalNormaSuscrita> {
-        return this.http.put<SalNormaSuscrita>(
-            environment.tanatosService.apiUrl + '/NormaSuscrita/',
-            entrada,
-        );
+        return this.http.put<SalNormaSuscrita>(environment.tanatosService.apiUrl + '/NormaSuscrita/', entrada);
     }
 
-    completarNorma(
-        entrada: EntNormaSuscritaCompletarNorma,
-    ): Observable<SalNormaSuscritaCompletarNorma> {
-        return this.http.put<SalNormaSuscritaCompletarNorma>(
-            environment.tanatosService.apiUrl + '/NormaSuscrita/CompletarNorma',
-            entrada,
-        );
+    completarNorma(entrada: EntNormaSuscritaCompletarNorma): Observable<SalNormaSuscritaCompletarNorma> {
+        return this.http.put<SalNormaSuscritaCompletarNorma>(environment.tanatosService.apiUrl + '/NormaSuscrita/CompletarNorma', entrada);
     }
 
     eliminar(id: number): Observable<void> {
