@@ -20,7 +20,7 @@
                                     <div hlmInputGroupAddon align="block-start">
                                         <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Nombre</label>
                                         <hlm-field-error
-                                            class="transition-all duration-500 ease-out text-xs ml-auto"
+                                            class="transition-all duration-500 ease-out text-xs ml-auto text-balance text-right"
                                             [class.opacity-100]="invalid('nombre')"
                                             [class.opacity-0]="!invalid('nombre')"
                                             [class.max-h-10]="invalid('nombre')"
@@ -28,12 +28,7 @@
                                             >Debes ingresar el nombre del empleado</hlm-field-error
                                         >
                                     </div>
-                                    <input
-                                        hlmInputGroupInput
-                                        class="transition-all duration-500 ease-out text-xs md:text-sm"
-                                        id="nombre"
-                                        formControlName="nombre"
-                                    />
+                                    <input hlmInputGroupInput class="transition-all duration-500 ease-out text-sm" id="nombre" formControlName="nombre" />
                                 </div>
                             }
                         </div>
@@ -50,7 +45,7 @@
                                             >Cargo</label
                                         >
                                         <hlm-field-error
-                                            class="transition-all duration-500 ease-out text-xs ml-auto"
+                                            class="transition-all duration-500 ease-out text-xs ml-auto text-balance text-right"
                                             [class.opacity-100]="invalid('cargo')"
                                             [class.opacity-0]="!invalid('cargo')"
                                             [class.max-h-10]="invalid('cargo')"
@@ -73,6 +68,114 @@
                                             </hlm-autocomplete-content>
                                         </hlm-autocomplete-search>
                                     </div>
+                                </div>
+                            }
+                        </div>
+                        <div hlmField class="gap-1">
+                            @if (cargandoTipoReceptores() || cargandoEmpleados()) {
+                                <hlm-skeleton class="h-18.25 w-full rounded-md" />
+                            } @else {
+                                <div class="flex flex-row items-center justify-center pb-1.5 relative">
+                                    <h4 hlmH4 class="flex-1 text-center text-base">Enviar notificaciones por:</h4>
+                                    <button
+                                        hlmBtn
+                                        size="icon"
+                                        class="ml-auto size-7 absolute right-1.5"
+                                        type="button"
+                                        [hlmDropdownMenuTrigger]="menuReceptores"
+                                    >
+                                        <ng-icon name="lucidePlus" class="text-base" />
+                                    </button>
+                                    <ng-template #menuReceptores>
+                                        <hlm-dropdown-menu>
+                                            <hlm-dropdown-menu-group>
+                                                @for (tipoReceptor of tiposReceptores(); track tipoReceptor.id) {
+                                                    <button hlmDropdownMenuItem (click)="crearDestinatario(tipoReceptor.id)">
+                                                        <span class="opacity-85">{{ tipoReceptor.nombre }}</span>
+                                                        @if (tipoReceptor.id === 1) {
+                                                            <hlm-dropdown-menu-shortcut>
+                                                                <div class="flex items-center justify-center">
+                                                                    <ng-icon name="lucideMail" class="text-base" />
+                                                                </div>
+                                                            </hlm-dropdown-menu-shortcut>
+                                                        } @else if (tipoReceptor.id === 2) {
+                                                            <hlm-dropdown-menu-shortcut>
+                                                                <div class="flex items-center justify-center">
+                                                                    <ng-icon name="lucideSmartphone" class="text-base" />
+                                                                </div>
+                                                            </hlm-dropdown-menu-shortcut>
+                                                        }
+                                                    </button>
+                                                }
+                                            </hlm-dropdown-menu-group>
+                                        </hlm-dropdown-menu>
+                                    </ng-template>
+                                </div>
+                                <div class="pb-1.5 w-full flex flex-col items-center justify-center gap-1.5">
+                                    @for (destinatario of form.controls['destinatarios'].controls; track $index) {
+                                        <div hlmInputGroup class="fade-in">
+                                            <div hlmInputGroupAddon align="block-start" class="pt-1.5! pb-0.5!">
+                                                <label [for]="`destino_${$index}`" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">
+                                                    {{ obtenerNombreTipoReceptor(destinatario.controls['idTipoReceptor'].value) }}
+                                                </label>
+                                                <hlm-field-error
+                                                    class="transition-all duration-500 ease-out text-xs ml-auto text-balance text-right"
+                                                    [class.opacity-100]="invalid('destino', destinatario)"
+                                                    [class.opacity-0]="!invalid('destino', destinatario)"
+                                                    [class.max-h-10]="invalid('destino', destinatario)"
+                                                    [class.max-h-0]="!invalid('destino', destinatario)"
+                                                >
+                                                    @if (destinatario.controls['destino'].errors?.['required']) {
+                                                        Debes ingresar un
+                                                        {{
+                                                            destinatario.controls['idTipoReceptor'].value === 1
+                                                                ? 'correo electrónico'
+                                                                : destinatario.controls['idTipoReceptor'].value === 2
+                                                                  ? 'número de Whatsapp'
+                                                                  : 'destinatario'
+                                                        }}
+                                                    }
+                                                    @if (destinatario.controls['destino'].errors?.['email']) {
+                                                        El correo electrónico ingresado no es válido.
+                                                    }
+                                                </hlm-field-error>
+                                                <button hlmInputGroupButton size="icon-xs" [hlmDropdownMenuTrigger]="borrarDestinatario" class="group">
+                                                    <ng-icon name="lucideTrash2" class="group-hover:text-destructive transition-colors" />
+                                                </button>
+                                                <ng-template #borrarDestinatario>
+                                                    <hlm-dropdown-menu>
+                                                        <hlm-dropdown-menu-label class="font-normal text-center opacity-80"
+                                                            >¿Estás seguro?</hlm-dropdown-menu-label
+                                                        >
+                                                        <hlm-dropdown-menu-separator />
+                                                        <hlm-dropdown-menu-group>
+                                                            <button
+                                                                hlmDropdownMenuItem
+                                                                variant="destructive"
+                                                                class="hover:cursor-pointer"
+                                                                (click)="eliminarDestinatario($index)"
+                                                            >
+                                                                ¡Sí, eliminalo!
+                                                                <ng-icon hlm size="sm" name="lucideTrash2" />
+                                                            </button>
+                                                        </hlm-dropdown-menu-group>
+                                                    </hlm-dropdown-menu>
+                                                </ng-template>
+                                            </div>
+                                            <input
+                                                hlmInputGroupInput
+                                                class="transition-all duration-500 ease-out text-sm"
+                                                [id]="`destino_${$index}`"
+                                                [formControl]="destinatario.controls['destino']"
+                                                [formatoTelefono]="destinatario.controls['idTipoReceptor'].value === 2"
+                                                [formatoCorreo]="destinatario.controls['idTipoReceptor'].value === 1"
+                                                [placeholder]="obtenerDestinoPlaceholder(destinatario.controls['idTipoReceptor'].value)"
+                                            />
+                                        </div>
+                                    } @empty {
+                                        <hlm-separator />
+                                        <p hlmP class="text-sm mt-1.5">Sin envío de notificaciones</p>
+                                    }
                                 </div>
                             }
                         </div>

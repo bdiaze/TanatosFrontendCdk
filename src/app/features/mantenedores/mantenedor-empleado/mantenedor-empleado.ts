@@ -8,12 +8,22 @@ import { EntEmpleadoCrear } from '@/app/entities/others/ent-empleado-crear';
 import { SalCargo } from '@/app/entities/others/sal-cargo';
 import { SalEmpleado } from '@/app/entities/others/sal-empleado';
 import { getErrorMessage } from '@/app/helpers/error-message';
+import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideContactRound, lucideEllipsis, lucidePencil, lucideTrash2, lucideTriangleAlert, lucideX } from '@ng-icons/lucide';
+import {
+    lucideBadgeCheck,
+    lucideClockAlert,
+    lucideContactRound,
+    lucideEllipsis,
+    lucidePencil,
+    lucideTrash2,
+    lucideTriangleAlert,
+    lucideX,
+} from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
@@ -24,6 +34,7 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 
 @Component({
@@ -44,6 +55,8 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
         HlmBreadCrumbImports,
         HlmSeparatorImports,
         HlmBadgeImports,
+        FormatearTelefonoPipe,
+        HlmTooltipImports,
     ],
     templateUrl: './mantenedor-empleado.html',
     styleUrl: './mantenedor-empleado.scss',
@@ -55,6 +68,8 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
             lucidePencil,
             lucideTrash2,
             lucideX,
+            lucideBadgeCheck,
+            lucideClockAlert,
         }),
     ],
 })
@@ -105,7 +120,14 @@ export class MantenedorEmpleado {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
-                    const sorted = res.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
+                    const sorted = res
+                        .map((empleado) => ({
+                            ...empleado,
+                            destinatarios: empleado.destinatarios.sort((a, b) =>
+                                a.nombreTipoReceptor.toLocaleLowerCase().localeCompare(b.nombreTipoReceptor.toLocaleLowerCase()),
+                            ),
+                        }))
+                        .sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
                     this.empleados.set(sorted);
                 },
                 error: (err) => {

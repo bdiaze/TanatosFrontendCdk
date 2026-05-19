@@ -46,6 +46,7 @@
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-center text-xs md:text-sm">Cargo</th>
+                    <th hlmTh class="text-center text-xs md:text-sm">Envío Notificaciones</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
             </thead>
@@ -58,9 +59,15 @@
                         <td hlmTd>
                             <hlm-skeleton class="h-8 rounded-xl" />
                         </td>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
                         <td hlmTd></td>
                     </tr>
                     <tr hlmTr>
+                        <td hlmTd>
+                            <hlm-skeleton class="h-8 rounded-xl" />
+                        </td>
                         <td hlmTd>
                             <hlm-skeleton class="h-8 rounded-xl" />
                         </td>
@@ -77,6 +84,37 @@
                             </td>
                             <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">
                                 {{ item.nombreCargo }}
+                            </td>
+                            <td hlmTd class="whitespace-normal text-center text-xs md:text-sm px-3">
+                                <div class="flex flex-col items-start gap-1">
+                                    @for (destinatario of item.destinatarios; track destinatario.id) {
+                                        <div class="flex flex-col items-start justify-center">
+                                            <p hlmP class="text-[0.65rem] md:text-[0.7rem] opacity-85">{{ destinatario.nombreTipoReceptor }}</p>
+                                            <div class="flex flex-row items-center gap-1">
+                                                @if (destinatario.validado) {
+                                                    <ng-icon
+                                                        hlm
+                                                        hlmTooltip="El destinatario aceptó recibir notificaciones"
+                                                        name="lucideBadgeCheck"
+                                                        class="text-green-700"
+                                                        size="sm"
+                                                    />
+                                                } @else {
+                                                    <ng-icon
+                                                        hlm
+                                                        hlmTooltip="Pendiente confirmación del destinatario..."
+                                                        name="lucideClockAlert"
+                                                        class="opacity-90"
+                                                        size="sm"
+                                                    />
+                                                }
+                                                <p hlmP class="text-xs md:text-sm">
+                                                    {{ destinatario.idTipoReceptor === 2 ? (destinatario.destino | formatearTelefono) : destinatario.destino }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
                             </td>
                             <td hlmTd class="px-0">
                                 <div class="flex items-center justify-center-safe">
@@ -101,7 +139,7 @@
                         </tr>
                     } @empty {
                         <tr hlmTr>
-                            <td hlmTd colspan="3" class="text-center">No tienes empleados registrados</td>
+                            <td hlmTd colspan="4" class="text-center">No tienes empleados registrados</td>
                         </tr>
                     }
                 }
