@@ -136,12 +136,13 @@ export class Menu {
                         url: '/plantillas-inscritas',
                     },
                     {
-                        id: 'group-negocio-seleccionado-item-mis-empleados',
+                        id: 'group-negocio-seleccionado-item-mi-equipo',
                         tipo: 'item',
                         icon: 'lucideContactRound',
-                        titulo: 'Mis Empleados',
-                        url: '/mis-empleados',
+                        titulo: 'Mi Equipo',
+                        url: '/mi-equipo',
                     },
+                    /*
                     {
                         id: 'group-negocio-seleccionado-item-mis-destinatarios',
                         tipo: 'item',
@@ -149,6 +150,7 @@ export class Menu {
                         titulo: 'Mis Destinatarios',
                         url: '/mis-destinatario',
                     },
+                    */
                 ],
             });
         }

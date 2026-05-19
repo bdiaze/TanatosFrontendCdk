@@ -13,12 +13,14 @@ import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
     lucideClockAlert,
     lucideContactRound,
     lucideEllipsis,
+    lucideGem,
     lucidePencil,
     lucideTrash2,
     lucideTriangleAlert,
@@ -57,6 +59,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
         HlmBadgeImports,
         FormatearTelefonoPipe,
         HlmTooltipImports,
+        RouterLink,
     ],
     templateUrl: './mantenedor-empleado.html',
     styleUrl: './mantenedor-empleado.scss',
@@ -70,6 +73,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
             lucideX,
             lucideBadgeCheck,
             lucideClockAlert,
+            lucideGem,
         }),
     ],
 })
@@ -110,6 +114,10 @@ export class MantenedorEmpleado {
             });
         });
     }
+
+    tienePlanEmpresa = computed(() => {
+        return this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
+    });
 
     obtenerEmpleados() {
         this.cargandoEmpleados.set(true);

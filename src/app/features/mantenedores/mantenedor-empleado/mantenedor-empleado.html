@@ -7,7 +7,7 @@
                 </li>
                 <li hlmBreadcrumbSeparator></li>
                 <li hlmBreadcrumbItem>
-                    <span hlmBreadcrumbPage>Mis Empleados</span>
+                    <span hlmBreadcrumbPage>Mi Equipo</span>
                 </li>
             </ol>
         </nav>
@@ -16,7 +16,7 @@
         </h4>
         <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
             <ng-icon hlm name="lucideContactRound" />
-            <h3 hlmH3>Mis Empleados</h3>
+            <h3 hlmH3>Mi Equipo</h3>
         </div>
     </div>
     @if (cargos().length > 0) {
@@ -46,7 +46,21 @@
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-center text-xs md:text-sm">Cargo</th>
-                    <th hlmTh class="text-center text-xs md:text-sm">Envío Notificaciones</th>
+                    <th hlmTh class="text-center text-xs md:text-sm">
+                        <div class="flex flex-row items-center justify-center gap-1">
+                            @if (!tienePlanEmpresa()) {
+                                <ng-icon
+                                    hlm
+                                    name="lucideGem"
+                                    size="sm"
+                                    hlmTooltip="Tu plan restringe el envío de notificaciones a tu equipo"
+                                    class="opacity-90"
+                                    routerLink="/mi-plan"
+                                />
+                            }
+                            Envío Notificaciones
+                        </div>
+                    </th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
             </thead>
@@ -145,7 +159,7 @@
                 }
             </tbody>
         </table>
-        <button hlmBtn variant="azul" (click)="openModalCrearEmpleado()" class="m-4" [disabled]="cargando()">Nuevo Empleado</button>
+        <button hlmBtn variant="azul" (click)="openModalCrearEmpleado()" class="m-4" [disabled]="cargando()">Nuevo Integrante</button>
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">

@@ -15,9 +15,9 @@ import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, EventEmitter, inject, Input, Output, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideContactRound, lucideMail, lucidePlus, lucideSmartphone, lucideSquarePlus, lucideTrash, lucideTrash2 } from '@ng-icons/lucide';
+import { lucideContactRound, lucideGem, lucideMail, lucidePlus, lucideSmartphone, lucideSquarePlus, lucideTrash, lucideTrash2 } from '@ng-icons/lucide';
 import { BrnPopoverContent } from '@spartan-ng/brain/popover';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
@@ -35,6 +35,8 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { PopupFuncionalidadBloqueada } from '../popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 
 @Component({
     selector: 'app-modal-mantenedor-empleado',
@@ -60,10 +62,13 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
         HlmH4,
         FormatoTelefono,
         FormatoCorreo,
+        PopupFuncionalidadBloqueada,
+        HlmTooltipImports,
+        RouterLink,
     ],
     templateUrl: './modal-mantenedor-empleado.html',
     styleUrl: './modal-mantenedor-empleado.scss',
-    providers: [provideIcons({ lucideContactRound, lucidePlus, lucideMail, lucideSmartphone, lucideTrash2 })],
+    providers: [provideIcons({ lucideContactRound, lucidePlus, lucideMail, lucideSmartphone, lucideTrash2, lucideGem })],
 })
 export class ModalMantenedorEmpleado {
     @Input() idEmpleado: number | null = null;
@@ -152,6 +157,10 @@ export class ModalMantenedorEmpleado {
             });
         });
     }
+
+    tienePlanEmpresa = computed(() => {
+        return this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
+    });
 
     obtenerEmpleados() {
         this.cargandoEmpleados.set(true);

@@ -4,7 +4,7 @@
             <div hlmCardHeader class="faster-fade-in">
                 <div class="flex items-center gap-2 pt-1 pb-2">
                     <ng-icon hlm name="lucideContactRound" />
-                    <h3 hlmCardTitle>Nuevo Empleado:</h3>
+                    <h3 hlmCardTitle>Nuevo Integrante:</h3>
                 </div>
 
                 <hlm-separator />
@@ -75,43 +75,63 @@
                             @if (cargandoTipoReceptores() || cargandoEmpleados()) {
                                 <hlm-skeleton class="h-18.25 w-full rounded-md" />
                             } @else {
-                                <div class="flex flex-row items-center justify-center pb-1.5 relative">
-                                    <h4 hlmH4 class="flex-1 text-center text-base">Enviar notificaciones por:</h4>
-                                    <button
-                                        hlmBtn
-                                        size="icon"
-                                        class="ml-auto size-7 absolute right-1.5"
-                                        type="button"
-                                        [hlmDropdownMenuTrigger]="menuReceptores"
-                                    >
-                                        <ng-icon name="lucidePlus" class="text-base" />
-                                    </button>
-                                    <ng-template #menuReceptores>
-                                        <hlm-dropdown-menu>
-                                            <hlm-dropdown-menu-group>
-                                                @for (tipoReceptor of tiposReceptores(); track tipoReceptor.id) {
-                                                    <button hlmDropdownMenuItem (click)="crearDestinatario(tipoReceptor.id)">
-                                                        <span class="opacity-85">{{ tipoReceptor.nombre }}</span>
-                                                        @if (tipoReceptor.id === 1) {
-                                                            <hlm-dropdown-menu-shortcut>
-                                                                <div class="flex items-center justify-center">
-                                                                    <ng-icon name="lucideMail" class="text-base" />
-                                                                </div>
-                                                            </hlm-dropdown-menu-shortcut>
-                                                        } @else if (tipoReceptor.id === 2) {
-                                                            <hlm-dropdown-menu-shortcut>
-                                                                <div class="flex items-center justify-center">
-                                                                    <ng-icon name="lucideSmartphone" class="text-base" />
-                                                                </div>
-                                                            </hlm-dropdown-menu-shortcut>
-                                                        }
-                                                    </button>
-                                                }
-                                            </hlm-dropdown-menu-group>
-                                        </hlm-dropdown-menu>
-                                    </ng-template>
+                                <div class="flex flex-row items-center justify-center pb-1.5 relative fade-in">
+                                    <div class="flex-1 flex flex-row items-center justify-center gap-2">
+                                        @if (!tienePlanEmpresa()) {
+                                            <ng-icon
+                                                hlm
+                                                name="lucideGem"
+                                                size="sm"
+                                                hlmTooltip="Tu plan restringe el envío de notificaciones a tu equipo"
+                                                class="opacity-90"
+                                                routerLink="/mi-plan"
+                                            />
+                                        }
+                                        <h4 hlmH4 class="text-center text-base">Enviar notificaciones por:</h4>
+                                    </div>
+                                    @if (tienePlanEmpresa()) {
+                                        <button
+                                            hlmBtn
+                                            size="icon"
+                                            class="ml-auto size-7 absolute right-1.5"
+                                            type="button"
+                                            [hlmDropdownMenuTrigger]="menuReceptores"
+                                        >
+                                            <ng-icon name="lucidePlus" class="text-base" />
+                                        </button>
+                                        <ng-template #menuReceptores>
+                                            <hlm-dropdown-menu>
+                                                <hlm-dropdown-menu-group>
+                                                    @for (tipoReceptor of tiposReceptores(); track tipoReceptor.id) {
+                                                        <button hlmDropdownMenuItem (click)="crearDestinatario(tipoReceptor.id)">
+                                                            <span class="opacity-85">{{ tipoReceptor.nombre }}</span>
+                                                            @if (tipoReceptor.id === 1) {
+                                                                <hlm-dropdown-menu-shortcut>
+                                                                    <div class="flex items-center justify-center">
+                                                                        <ng-icon name="lucideMail" class="text-base" />
+                                                                    </div>
+                                                                </hlm-dropdown-menu-shortcut>
+                                                            } @else if (tipoReceptor.id === 2) {
+                                                                <hlm-dropdown-menu-shortcut>
+                                                                    <div class="flex items-center justify-center">
+                                                                        <ng-icon name="lucideSmartphone" class="text-base" />
+                                                                    </div>
+                                                                </hlm-dropdown-menu-shortcut>
+                                                            }
+                                                        </button>
+                                                    }
+                                                </hlm-dropdown-menu-group>
+                                            </hlm-dropdown-menu>
+                                        </ng-template>
+                                    } @else {
+                                        <app-popup-funcionalidad-bloqueada class="ml-auto size-7 absolute right-1.5">
+                                            <button hlmBtn size="icon" class="size-7" type="button">
+                                                <ng-icon name="lucidePlus" class="text-base" />
+                                            </button>
+                                        </app-popup-funcionalidad-bloqueada>
+                                    }
                                 </div>
-                                <div class="pb-1.5 w-full flex flex-col items-center justify-center gap-1.5">
+                                <div class="pt-0.5 pb-1.5 w-full flex flex-col items-center justify-center gap-1.5 fade-in">
                                     @for (destinatario of form.controls['destinatarios'].controls; track $index) {
                                         <div hlmInputGroup class="fade-in">
                                             <div hlmInputGroupAddon align="block-start" class="pt-1.5! pb-0.5!">

@@ -131,10 +131,12 @@ export const routes: Routes = [
         path: 'administracion/mantenedores/plan',
         component: MantenedorPlan,
     },
+    /*
     {
         path: 'mis-destinatario',
         component: MantenedorDestinatarioNotificacion,
     },
+    */
     {
         path: 'mis-negocios',
         component: MantenedorNegocio,
@@ -164,7 +166,7 @@ export const routes: Routes = [
         component: ValidarDestinatario,
     },
     {
-        path: 'mis-empleados',
+        path: 'mi-equipo',
         component: MantenedorEmpleado,
     },
 ];
