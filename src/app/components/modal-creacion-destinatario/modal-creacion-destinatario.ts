@@ -41,17 +41,17 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmSeparatorImports,
         HlmInputGroupImports,
         HlmButtonGroupImports,
-        HlmIcon,
-        NgIcon,
+        // HlmIcon,
+        // NgIcon,
         HlmRadioGroupImports,
         HlmAlertImports,
         HlmSpinnerImports,
-        FormatoTelefono,
-        FormatoCorreo,
+        // FormatoTelefono,
+        // FormatoCorreo,
         HlmSkeletonImports,
         HlmTooltipImports,
         RouterModule,
-        PopupFuncionalidadBloqueada,
+        // PopupFuncionalidadBloqueada,
     ],
     templateUrl: './modal-creacion-destinatario.html',
     styleUrl: './modal-creacion-destinatario.scss',
@@ -141,6 +141,7 @@ export class ModalCreacionDestinatario implements OnInit {
         return false;
     });
 
+    /*
     clickConfirmar() {
         const item: EntDestinatarioNotificacionCrear = {
             idNegocio: this.negocioStore.negocioSeleccionado()?.id!,
@@ -165,6 +166,7 @@ export class ModalCreacionDestinatario implements OnInit {
                 this.procesando.set(false);
             });
     }
+    */
 
     obtenerIconName(idTipoReceptor: number): string {
         switch (idTipoReceptor) {

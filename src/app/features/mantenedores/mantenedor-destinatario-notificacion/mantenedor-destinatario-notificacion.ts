@@ -27,7 +27,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 @Component({
     selector: 'app-mantenedor-destinatario-notificacion',
     imports: [
-        ModalEliminacion,
+        // ModalEliminacion,
         HlmButtonImports,
         HlmTableImports,
         HlmAlertImports,
@@ -85,12 +85,13 @@ export class MantenedorDestinatarioNotificacion {
 
             untracked(() => {
                 if (sesionIniciada && negocioSeleccionado) {
-                    this.obtenerTodos();
+                    // this.obtenerTodos();
                 }
             });
         });
     }
 
+    /*
     obtenerTodos() {
         this.cargando.set(true);
         this.listado.set([]);
@@ -112,6 +113,7 @@ export class MantenedorDestinatarioNotificacion {
                 this.cargando.set(false);
             });
     }
+    */
 
     puedeCrear = computed(() => {
         const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
@@ -136,6 +138,7 @@ export class MantenedorDestinatarioNotificacion {
         this.itemSeleccionado.set(null);
     }
 
+    /*
     eliminar(item: SalDestinatarioNotificacion) {
         this.cargando.set(true);
         this.dao.eliminar(item.id).subscribe({
@@ -150,6 +153,7 @@ export class MantenedorDestinatarioNotificacion {
         });
         this.showModalEliminar.set(false);
     }
+    */
 
     openModalCrear() {
         this.itemSeleccionado.set(null);
@@ -162,7 +166,7 @@ export class MantenedorDestinatarioNotificacion {
     }
 
     confirmar(item: SalDestinatarioNotificacion) {
-        this.obtenerTodos();
+        // this.obtenerTodos();
         this.showModalCrear.set(false);
     }
 }

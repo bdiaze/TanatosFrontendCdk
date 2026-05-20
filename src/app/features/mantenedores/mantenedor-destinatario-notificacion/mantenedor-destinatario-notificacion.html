@@ -126,6 +126,7 @@
 </section>
 
 @if (showModalEliminar()) {
+    <!--
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un destinatario:"
@@ -134,6 +135,7 @@
         (eliminar)="eliminar($event)"
     >
     </app-modal-eliminacion>
+    -->
 }
 @if (showModalCrear()) {
     <app-modal-creacion-destinatario (cerrar)="closeModalCrear()" (confirmar)="confirmar($event)"> </app-modal-creacion-destinatario>

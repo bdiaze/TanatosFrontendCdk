@@ -12,6 +12,7 @@ import { EntDestinatarioNotificacionValidar } from '../entities/others/ent-desti
 export class DestinatarioNotificacionDao {
     constructor(private http: HttpClient) {}
 
+    /*
     obtenerVigentes(idNegocio: number): Observable<SalDestinatarioNotificacion[]> {
         return this.http.get<SalDestinatarioNotificacion[]>(
             environment.tanatosService.apiUrl + `/DestinatarioNotificacion/Vigentes/${idNegocio}`
@@ -30,11 +31,9 @@ export class DestinatarioNotificacionDao {
             environment.tanatosService.apiUrl + `/DestinatarioNotificacion/${id}`
         );
     }
+    */
 
     validarDestinatario(entrada: EntDestinatarioNotificacionValidar): Observable<void> {
-        return this.http.post<void>(
-            environment.tanatosService.apiUrl + '/public/DestinatarioNotificacion/Validar/',
-            entrada
-        );
+        return this.http.post<void>(environment.tanatosService.apiUrl + '/public/DestinatarioNotificacion/Validar/', entrada);
     }
 }
