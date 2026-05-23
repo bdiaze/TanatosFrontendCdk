@@ -214,6 +214,21 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                         .pipe(takeUntilDestroyed(this.destroyRef))
                         .subscribe({
                             next: (normaSuscrita) => {
+                                if (normaSuscrita.fiscalizadores) {
+                                    normaSuscrita.fiscalizadores = normaSuscrita.fiscalizadores.filter((f) => f.nombreTipoFiscalizador);
+                                    normaSuscrita.fiscalizadores = normaSuscrita.fiscalizadores.sort((a, b) =>
+                                        a.nombreTipoFiscalizador!.toLocaleLowerCase().localeCompare(b.nombreTipoFiscalizador!.toLocaleLowerCase()),
+                                    );
+                                }
+
+                                if (normaSuscrita.notificaciones) {
+                                    normaSuscrita.notificaciones = normaSuscrita.notificaciones.sort((a, b) =>
+                                        a.idTipoUnidadTiempoAntelacion !== b.idTipoUnidadTiempoAntelacion
+                                            ? b.idTipoUnidadTiempoAntelacion - a.idTipoUnidadTiempoAntelacion
+                                            : b.cantAntelacion - a.cantAntelacion,
+                                    );
+                                }
+
                                 this.item.set(normaSuscrita);
                             },
                             error: (err) => {
