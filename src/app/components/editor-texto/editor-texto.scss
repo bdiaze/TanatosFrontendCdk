@@ -4,15 +4,17 @@
     border-width: 1px;
     border-top-left-radius: calc(var(--radius) - 2px);
     border-top-right-radius: calc(var(--radius) - 2px);
+    border-top: none;
+    border-left: none;
+    border-right: none;
 }
 
 :host ::ng-deep .ql-container {
     border-color: var(--input);
     border-style: var(--tw-border-style);
-    border-width: 1px;
     border-bottom-left-radius: calc(var(--radius) - 2px);
     border-bottom-right-radius: calc(var(--radius) - 2px);
-    border-top: none;
+    border: none;
 }
 
 :host ::ng-deep .ql-toolbar .ql-formats button {
