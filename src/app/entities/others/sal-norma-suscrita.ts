@@ -7,6 +7,8 @@ export interface SalNormaSuscrita {
     multa: string | null;
     idCategoriaNorma: number | null;
     nombreCategoriaNorma: string | null;
+    idCargo: number | null;
+    nombreCargo: string | null;
     ordenVisual: number | null;
     editable: boolean;
     activado: boolean;
@@ -24,7 +26,7 @@ export interface SalTemplateNorma {
     idTipoPeriodicidad: number | null;
     nombreTipoPeriodicidad: string | null;
     multa: string | null;
-    idCategoriaNorma: number;
+    idCategoriaNorma: number | null;
     nombreCategoriaNorma: string | null;
     fiscalizadores: SalFiscalizadorNormaSuscrita[] | null;
     notificaciones: SalNotificacionNormaSuscrita[] | null;

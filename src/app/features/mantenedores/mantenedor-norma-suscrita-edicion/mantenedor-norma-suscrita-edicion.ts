@@ -16,7 +16,7 @@ import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untrac
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideBadgeX, lucidePlus, lucideSquarePen, lucideX } from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideCircleAlert, lucidePlus, lucideSquarePen, lucideX } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -38,7 +38,12 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { SalCargo } from '@/app/entities/others/sal-cargo';
+import { CargoDao } from '@/app/daos/cargo-dao';
+import { EmpleadoDao } from '@/app/daos/empleado-dao';
+import { SalEmpleado, SalEmpleadoDestinatario } from '@/app/entities/others/sal-empleado';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita-edicion',
@@ -70,6 +75,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmSkeletonImports,
         HlmBreadCrumbImports,
         EditorTexto,
+        HlmTooltipImports,
     ],
     templateUrl: './mantenedor-norma-suscrita-edicion.html',
     styleUrl: './mantenedor-norma-suscrita-edicion.scss',
@@ -80,6 +86,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
             lucidePlus,
             lucideX,
             lucideSquarePen,
+            lucideCircleAlert,
         }),
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,
@@ -104,6 +111,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
     tipoPeriodicidadDao = inject(TipoPeriodicidadDao);
     tipoFiscalizadorDao = inject(TipoFiscalizadorDao);
     tipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
+    cargoDao = inject(CargoDao);
+    empleadoDao = inject(EmpleadoDao);
 
     negocioStore = inject(NegocioStore);
 
@@ -113,6 +122,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         idTipoPeriodicidad: FormControl<number | null>;
         multa: FormControl<string | null>;
         idCategoriaNorma: FormControl<number | null>;
+        idCargo: FormControl<number | null>;
         activado: FormControl<boolean | null>;
         fiscalizadores: FormArray<
             FormGroup<{
@@ -133,6 +143,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         idTipoPeriodicidad: new FormControl<number | null>({ value: 0, disabled: false }, [Validators.required]),
         multa: new FormControl<string | null>({ value: null, disabled: false }),
         idCategoriaNorma: new FormControl<number | null>({ value: null, disabled: false }),
+        idCargo: new FormControl<number | null>({ value: null, disabled: false }),
         activado: new FormControl<boolean | null>({ value: null, disabled: false }, [Validators.required]),
         fiscalizadores: new FormArray<
             FormGroup<{
@@ -174,9 +185,56 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
     cargandoUnidadesTiempoVigentes = signal<boolean>(true);
     unidadesTiempoVigentes = signal<TipoUnidadTiempo[]>([]);
 
+    cargandoCargosVigentes = signal<boolean>(true);
+    cargosVigentes = signal<SalCargo[]>([]);
+
+    cargandoEmpleadosVigentes = signal<boolean>(true);
+    empleadosVigentes = signal<SalEmpleado[]>([]);
+
     procesando = signal<boolean>(false);
 
     minDate = signal<Date>(new Date());
+
+    cargoSeleccionado = toSignal(this.form.controls['idCargo'].valueChanges, {
+        initialValue: this.form.controls['idCargo'].value,
+    });
+    empleadosSeleccionados = computed(() => {
+        const idCargo = this.cargoSeleccionado();
+        const empleados = this.empleadosVigentes();
+        const cargando = this.cargandoCargosVigentes() || this.cargandoEmpleadosVigentes();
+        const informacionUsuario = this.negocioStore.informacionUsuario();
+
+        if (!cargando) {
+            if (idCargo) {
+                return empleados
+                    .filter((e) => e.idCargo === idCargo)
+                    .map((e) => ({
+                        ...e,
+                        destinatarios: e.destinatarios.filter((d) => d.validado),
+                    }));
+            } else if (informacionUsuario) {
+                return [
+                    {
+                        id: 0,
+                        nombre: `${informacionUsuario.nombre} ${informacionUsuario.apellido}`,
+                        idCargo: null,
+                        nombreCargo: null,
+                        destinatarios: [
+                            {
+                                id: 0,
+                                idTipoReceptor: 1,
+                                nombreTipoReceptor: 'Correo electrónico',
+                                tipoReceptorRequierePlanEmpresa: false,
+                                destino: informacionUsuario.email,
+                                validado: true,
+                            } as SalEmpleadoDestinatario,
+                        ],
+                    } as SalEmpleado,
+                ];
+            }
+        }
+        return [];
+    });
 
     constructor() {
         effect(() => {
@@ -199,6 +257,61 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                     this.form.controls['idTipoPeriodicidad'].disable();
                 } else {
                     this.form.controls['idTipoPeriodicidad'].enable();
+                }
+            });
+        });
+
+        effect(() => {
+            const cargandoCargosVigentes = this.cargandoCargosVigentes();
+            untracked(() => {
+                if (cargandoCargosVigentes) {
+                    this.form.controls['idCargo'].disable();
+                } else {
+                    this.form.controls['idCargo'].enable();
+                }
+            });
+        });
+
+        effect(() => {
+            const idNegocio = this.negocioStore.negocioSeleccionado()?.id;
+
+            untracked(() => {
+                if (idNegocio) {
+                    this.cargandoCargosVigentes.set(true);
+                    this.cargoDao
+                        .obtenerVigentes(idNegocio)
+                        .pipe(takeUntilDestroyed(this.destroyRef))
+                        .subscribe({
+                            next: (res) => {
+                                res = res.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
+                                this.cargosVigentes.set(res);
+                            },
+                            error: (err) => {
+                                console.error('Error al obtener los cargos vigentes', err);
+                                this.error.set(getErrorMessage(err) ?? 'Error al obtener los cargos vigentes');
+                            },
+                        })
+                        .add(() => {
+                            this.cargandoCargosVigentes.set(false);
+                        });
+
+                    this.cargandoEmpleadosVigentes.set(true);
+                    this.empleadoDao
+                        .obtenerVigentes(idNegocio)
+                        .pipe(takeUntilDestroyed(this.destroyRef))
+                        .subscribe({
+                            next: (res) => {
+                                res = res.sort((a, b) => a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()));
+                                this.empleadosVigentes.set(res);
+                            },
+                            error: (err) => {
+                                console.error('Error al obtener los empleados vigentes', err);
+                                this.error.set(getErrorMessage(err) ?? 'Error al obtener los empleados vigentes');
+                            },
+                        })
+                        .add(() => {
+                            this.cargandoEmpleadosVigentes.set(false);
+                        });
                 }
             });
         });
@@ -268,7 +381,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                         descripcion: item?.descripcion ?? item?.templateNorma?.descripcion,
                         idTipoPeriodicidad: item?.idTipoPeriodicidad ?? item?.templateNorma?.idTipoPeriodicidad,
                         multa: item?.multa ?? item?.templateNorma?.multa,
-                        idCategoriaNorma: item?.idCategoriaNorma ?? item?.templateNorma?.idCategoriaNorma,
+                        idCategoriaNorma: item?.idCategoriaNorma ?? item?.templateNorma?.idCategoriaNorma ?? null,
+                        idCargo: item?.idCargo,
                         activado: item?.activado,
                         fechaProximoVencimiento: fechaProximoVencimiento ?? undefined,
                         horaProximoVencimiento: horaProximoVencimiento ?? undefined,
@@ -338,6 +452,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                         idTipoPeriodicidad: 0,
                         multa: null,
                         idCategoriaNorma: null,
+                        idCargo: null,
                         activado: false,
                         fechaProximoVencimiento: undefined,
                         horaProximoVencimiento: undefined,
@@ -584,6 +699,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 idTipoPeriodicidad: this.form.controls['idTipoPeriodicidad'].value!,
                 multa: this.form.controls['multa'].value,
                 idCategoriaNorma: this.form.controls['idCategoriaNorma'].value!,
+                idCargo: this.form.controls['idCargo'].value,
                 activado: this.form.controls['activado'].value!,
                 fiscalizadores: [],
                 notificaciones: [],
@@ -641,6 +757,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 idTipoPeriodicidad: this.form.controls['idTipoPeriodicidad'].value!,
                 multa: this.form.controls['multa'].value,
                 idCategoriaNorma: this.form.controls['idCategoriaNorma'].value!,
+                idCargo: this.form.controls['idCargo'].value,
                 activado: this.form.controls['activado'].value!,
                 fiscalizadores: [],
                 notificaciones: [],
@@ -702,5 +819,9 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     itemToStringUnidadTiempo = (value: number) => {
         return this.unidadesTiempoVigentes().find((c) => c.id === value)?.nombre ?? '';
+    };
+
+    itemToStringCargo = (value: number) => {
+        return this.cargosVigentes().find((c) => c.id === value)?.nombre ?? '';
     };
 }

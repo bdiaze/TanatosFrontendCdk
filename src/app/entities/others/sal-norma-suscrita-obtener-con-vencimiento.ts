@@ -10,4 +10,6 @@ export interface SalNormaSuscritaObtenerConVencimiento {
     nombreCategoriaNorma: string | null;
     idTipoPeriodicidad: number | null;
     nombreTipoPeriodicidad: string | null;
+    idCargo: number | null;
+    nombreCargo: string | null;
 }

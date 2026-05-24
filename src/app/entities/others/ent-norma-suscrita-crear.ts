@@ -2,9 +2,10 @@ export interface EntNormaSuscritaCrear {
     idNegocio: number;
     nombre: string;
     descripcion: string | null;
-    idTipoPeriodicidad: number;
+    idTipoPeriodicidad: number | null;
     multa: string | null;
-    idCategoriaNorma: number;
+    idCategoriaNorma: number | null;
+    idCargo: number | null;
     activado: boolean;
     fiscalizadores: EntFiscalizadorNormaSuscritaCrear[] | null;
     notificaciones: EntNotificacionNormaSuscritaCrear[] | null;

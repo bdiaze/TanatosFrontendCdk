@@ -265,7 +265,77 @@
                     @if (form.controls['activado'].value!) {
                         <div class="flex flex-col justify-center items-start gap-2">
                             <!--<p hlmH4 class="text-base text-center w-full">¿Próximo vencimiento?</p>-->
-                            <p hlmP class="text-sm pl-2">Indícanos cuando sería la próxima fecha límite para cumplir con la obligación:</p>
+                            <p hlmP class="text-sm pl-2">
+                                Indícanos quién es el responsable y cuándo sería la próxima fecha límite para cumplir con la obligación:
+                            </p>
+                            <div class="flex flex-col md:flex-row justify-center items-center gap-2 w-full">
+                                <div hlmField class="flex justify-center items-center gap-1 w-full">
+                                    <div hlmInputGroup>
+                                        <div hlmInputGroupAddon align="block-start">
+                                            <label for="idCargo" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Cargo Responsable</label>
+                                            <hlm-field-error
+                                                class="transition-all duration-500 ease-out text-xs ml-auto"
+                                                [class.opacity-100]="invalid('idCargo')"
+                                                [class.opacity-0]="!invalid('idCargo')"
+                                                [class.max-h-10]="invalid('idCargo')"
+                                                [class.max-h-0]="!invalid('idCargo')"
+                                                >Debes indicar al responsable</hlm-field-error
+                                            >
+                                        </div>
+                                        <div class="pb-2 px-2 w-full">
+                                            <div class="flex justify-stretch items-center">
+                                                <hlm-select
+                                                    id="idCargo"
+                                                    class="inline-block w-full z-10"
+                                                    [formControl]="form.controls['idCargo']"
+                                                    [itemToString]="itemToStringCargo"
+                                                >
+                                                    <hlm-select-trigger class="w-full">
+                                                        @if (cargandoCargosVigentes()) {
+                                                            <hlm-select-placeholder>
+                                                                <hlm-spinner class="text-base md:text-lg" />
+                                                                Cargando...
+                                                            </hlm-select-placeholder>
+                                                        } @else {
+                                                            <hlm-select-value class="text-sm truncate" placeholder="Yo seré el responsable" />
+                                                        }
+                                                    </hlm-select-trigger>
+                                                    <hlm-select-content *hlmSelectPortal [showScroll]="true">
+                                                        <hlm-select-group>
+                                                            @if (!cargandoCargosVigentes()) {
+                                                                <hlm-select-item class="text-sm" [value]="null">Yo seré el responsable</hlm-select-item>
+                                                                @for (cargo of cargosVigentes(); track cargo.id) {
+                                                                    <hlm-select-item [value]="cargo.id" class="text-sm">{{
+                                                                        `${cargo.nombre}`
+                                                                    }}</hlm-select-item>
+                                                                }
+                                                            }
+                                                        </hlm-select-group>
+                                                    </hlm-select-content>
+                                                </hlm-select>
+                                            </div>
+                                            <div class="flex flex-wrap justify-center items-center gap-1">
+                                                @for (empleado of empleadosSeleccionados(); track empleado.id) {
+                                                    @if (empleado.destinatarios.length > 0) {
+                                                        <span hlmBadge class="mt-2 text-xs py-1 flex items-center bg-(--azul) fade-in"
+                                                            >{{ empleado.nombre }}
+                                                        </span>
+                                                    } @else {
+                                                        <a
+                                                            hlmBadge
+                                                            [routerLink]="['/mi-equipo']"
+                                                            class="mt-2 text-xs py-1 flex items-center bg-(--azul) [a&]:hover:bg-(--azul) fade-in"
+                                                            hlmTooltip="No tiene habilitada la recepción de notificaciones"
+                                                            >{{ empleado.nombre }}
+                                                            <ng-icon hlm name="lucideCircleAlert" size="lg" class="ml-1 scale-120" />
+                                                        </a>
+                                                    }
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="flex flex-col md:flex-row justify-center items-center gap-2 w-full">
                                 <div hlmField class="flex flex-col gap-1 w-full md:w-[50%]">
                                     <div hlmInputGroup>
