@@ -305,9 +305,22 @@
                                                             @if (!cargandoCargosVigentes()) {
                                                                 <hlm-select-item class="text-sm" [value]="null">Yo seré el responsable</hlm-select-item>
                                                                 @for (cargo of cargosVigentes(); track cargo.id) {
-                                                                    <hlm-select-item [value]="cargo.id" class="text-sm">{{
-                                                                        `${cargo.nombre}`
-                                                                    }}</hlm-select-item>
+                                                                    @if (tienePlanEmpresa()) {
+                                                                        <hlm-select-item [value]="cargo.id" class="text-sm">
+                                                                            {{ `${cargo.nombre}` }}
+                                                                        </hlm-select-item>
+                                                                    } @else {
+                                                                        <div
+                                                                            hlmTooltip="Tu plan no permite seleccionar a un responsable"
+                                                                            class="w-fit"
+                                                                            routerLink="/mi-plan"
+                                                                        >
+                                                                            <hlm-select-item [value]="cargo.id" class="text-sm" [disabled]="true" class="w-fit">
+                                                                                <ng-icon hlm size="14px" name="lucideGem" class="opacity-80" />
+                                                                                {{ `${cargo.nombre}` }}
+                                                                            </hlm-select-item>
+                                                                        </div>
+                                                                    }
                                                                 }
                                                             }
                                                         </hlm-select-group>

@@ -16,7 +16,7 @@ import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untrac
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideBadgeX, lucideCircleAlert, lucidePlus, lucideSquarePen, lucideX } from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideCircleAlert, lucideGem, lucidePlus, lucideSquarePen, lucideX } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -87,6 +87,7 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
             lucideX,
             lucideSquarePen,
             lucideCircleAlert,
+            lucideGem,
         }),
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,
@@ -234,6 +235,10 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             }
         }
         return [];
+    });
+
+    tienePlanEmpresa = computed(() => {
+        return this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
     });
 
     activado = toSignal(this.form.controls['activado'].valueChanges, {
