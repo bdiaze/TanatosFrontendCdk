@@ -1,5 +1,7 @@
 @if (!safeContent()) {
-    <div #editor class="max-h-[50vh] overflow-y-auto scrollContainer"></div>
+    <div class="focus-within:ring-[3px] focus-within:border-ring focus-within:ring-ring/50 rounded-md transition-[color,box-shadow] outline-none border">
+        <div #editor class="max-h-[50vh] overflow-y-auto scrollContainer"></div>
+    </div>
 } @else {
-    <div [innerHTML]="safeContent()"></div>
+    <div [innerHTML]="safeContent()" class="px-2"></div>
 }

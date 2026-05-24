@@ -15,9 +15,6 @@ import Quill from 'quill';
             multi: true,
         },
     ],
-    host: {
-        class: 'focus-within:ring-[3px] focus-within:border-ring focus-within:ring-ring/50 rounded-md border transition-[color,box-shadow] outline-none',
-    },
 })
 export class EditorTexto implements AfterViewInit, ControlValueAccessor {
     content = input<string | null | undefined>(null);
