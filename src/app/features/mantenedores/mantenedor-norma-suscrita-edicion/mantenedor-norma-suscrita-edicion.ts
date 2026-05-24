@@ -135,8 +135,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 cantAntelacion: FormControl<number | null>;
             }>
         >;
-        fechaProximoVencimiento: FormControl<Date | null>;
-        horaProximoVencimiento: FormControl<string | null>;
+        fechaProximoVencimiento: FormControl<Date | null | undefined>;
+        horaProximoVencimiento: FormControl<string | null | undefined>;
     }> = new FormGroup({
         nombre: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required]),
         descripcion: new FormControl<string | null>({ value: null, disabled: false }),
@@ -156,8 +156,8 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 cantAntelacion: FormControl<number | null>;
             }>
         >([]),
-        fechaProximoVencimiento: new FormControl<Date | null>({ value: null, disabled: false }),
-        horaProximoVencimiento: new FormControl<string | null>({ value: null, disabled: false }),
+        fechaProximoVencimiento: new FormControl<Date | null | undefined>({ value: undefined, disabled: false }),
+        horaProximoVencimiento: new FormControl<string | null | undefined>({ value: undefined, disabled: false }),
     });
 
     item = signal<SalNormaSuscrita | null>(null);
@@ -236,6 +236,10 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
         return [];
     });
 
+    activado = toSignal(this.form.controls['activado'].valueChanges, {
+        initialValue: this.form.controls['activado'].value,
+    });
+
     constructor() {
         effect(() => {
             const cargandoCategoriasVigentes = this.cargandoCategoriasVigentes();
@@ -269,6 +273,53 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
                 } else {
                     this.form.controls['idCargo'].enable();
                 }
+            });
+        });
+
+        effect(() => {
+            const activado = this.activado();
+            const item = this.item();
+
+            untracked(() => {
+                const controlFechaProximoVencimiento = this.form.controls['fechaProximoVencimiento'];
+                const controlHoraProximoVencimiento = this.form.controls['horaProximoVencimiento'];
+                const controlIdCargo = this.form.controls['idCargo'];
+
+                if (activado) {
+                    controlFechaProximoVencimiento.addValidators(Validators.required);
+                    controlHoraProximoVencimiento.addValidators(Validators.required);
+
+                    const fechaVencimiento = item?.proximoVencimiento ? new Date(item!.proximoVencimiento!) : null;
+
+                    let fechaProximoVencimiento = null;
+                    if (fechaVencimiento != null) {
+                        fechaProximoVencimiento = new Date(fechaVencimiento.getFullYear(), fechaVencimiento.getMonth(), fechaVencimiento.getDate());
+                    }
+                    let horaProximoVencimiento = null;
+                    if (fechaVencimiento != null) {
+                        horaProximoVencimiento = new Intl.DateTimeFormat('es-CL', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                        }).format(fechaVencimiento);
+                    }
+
+                    controlIdCargo.setValue(item?.idCargo ?? null);
+                    controlFechaProximoVencimiento.setValue(fechaProximoVencimiento ?? undefined);
+                    controlHoraProximoVencimiento.setValue(horaProximoVencimiento ?? undefined);
+                } else {
+                    controlFechaProximoVencimiento.removeValidators(Validators.required);
+                    controlHoraProximoVencimiento.removeValidators(Validators.required);
+
+                    controlIdCargo.setValue(null);
+                    controlIdCargo.markAsUntouched();
+                    controlFechaProximoVencimiento.setValue(undefined);
+                    controlFechaProximoVencimiento.markAsUntouched();
+                    controlHoraProximoVencimiento.setValue(undefined);
+                    controlHoraProximoVencimiento.markAsUntouched();
+                }
+                controlFechaProximoVencimiento.updateValueAndValidity();
+                controlHoraProximoVencimiento.updateValueAndValidity();
             });
         });
 
@@ -476,21 +527,6 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             } else {
                 this.idNormaSuscrita.set(null);
             }
-        });
-
-        this.form.controls['activado']!.valueChanges.subscribe((activado: boolean | null) => {
-            const fechaProximoVencimiento = this.form.controls['fechaProximoVencimiento'];
-            const horaProximoVencimiento = this.form.controls['horaProximoVencimiento'];
-
-            if (activado) {
-                fechaProximoVencimiento.addValidators(Validators.required);
-                horaProximoVencimiento.addValidators(Validators.required);
-            } else {
-                fechaProximoVencimiento.removeValidators(Validators.required);
-                horaProximoVencimiento.removeValidators(Validators.required);
-            }
-            fechaProximoVencimiento.updateValueAndValidity();
-            horaProximoVencimiento.updateValueAndValidity();
         });
 
         this.cargandoCategoriasVigentes.set(true);

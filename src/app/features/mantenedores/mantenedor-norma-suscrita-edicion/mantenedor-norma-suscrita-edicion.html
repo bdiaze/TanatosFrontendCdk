@@ -262,8 +262,8 @@
                             <hlm-separator />
                         </div>
                     </div>
-                    @if (form.controls['activado'].value!) {
-                        <div class="flex flex-col justify-center items-start gap-2">
+                    @if (activado()) {
+                        <div class="flex flex-col justify-center items-start gap-2 fade-in">
                             <!--<p hlmH4 class="text-base text-center w-full">¿Próximo vencimiento?</p>-->
                             <p hlmP class="text-sm pl-2">
                                 Indícanos quién es el responsable y cuándo sería la próxima fecha límite para cumplir con la obligación:
@@ -392,7 +392,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col md:flex-row items-start gap-3 md:gap-2 mb-1">
+                        <div class="flex flex-col md:flex-row items-start gap-3 md:gap-2 mb-1 fade-in">
                             <div hlmField class="flex justify-center items-center gap-1 w-full widthMitadConGap2">
                                 <div hlmInputGroup>
                                     <div hlmInputGroupAddon align="block-start">
