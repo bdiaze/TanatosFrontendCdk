@@ -8,6 +8,7 @@ import { AuthStore } from './services/auth-store';
 import { RecaptchaHelper } from './helpers/recaptcha-helper';
 import { MobileHelper } from './helpers/mobile-helper';
 import { ListonBeta } from './components/liston-beta/liston-beta';
+import { PaginaSinMenuEstaticoHelper } from './helpers/pagina-sin-menu-estatico-helper';
 @Component({
     selector: 'app-root',
     imports: [RouterOutlet, Header, Footer, Menu, ListonBeta],
@@ -18,9 +19,14 @@ export class App implements OnInit {
     private recaptchHelper = inject(RecaptchaHelper);
     authStore = inject(AuthStore);
     mobileHelper = inject(MobileHelper);
+    paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
 
     mostrarDesktop = computed(() => {
         return !this.mobileHelper.isMobile();
+    });
+
+    paginaSinMenuEstatico = computed(() => {
+        return this.paginaSinMenuEstaticoHelper.paginaSinMenuEstatico();
     });
 
     ngOnInit(): void {

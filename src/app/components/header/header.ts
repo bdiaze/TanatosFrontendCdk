@@ -13,21 +13,11 @@ import { Menu } from '@components/menu/menu';
 import { ClickOutside } from '@/app/directives/click-outside';
 import { CommonModule } from '@angular/common';
 import { MobileHelper } from '@/app/helpers/mobile-helper';
+import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 
 @Component({
     selector: 'app-header',
-    imports: [
-        HlmButtonImports,
-        Login,
-        Logout,
-        RouterLink,
-        HlmSeparatorImports,
-        NgIcon,
-        HlmIcon,
-        Menu,
-        ClickOutside,
-        CommonModule,
-    ],
+    imports: [HlmButtonImports, Login, Logout, RouterLink, HlmSeparatorImports, NgIcon, HlmIcon, Menu, ClickOutside, CommonModule],
     templateUrl: './header.html',
     styleUrl: './header.scss',
     providers: [
@@ -50,6 +40,7 @@ export class Header implements OnInit {
     private authStore = inject(AuthStore);
     private router = inject(Router);
     mobileHelper = inject(MobileHelper);
+    paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
 
     sesionIniciada = this.authStore.sesionIniciada;
     logoutRunning = this.authStore.logoutRunning;
@@ -58,6 +49,10 @@ export class Header implements OnInit {
 
     mostrarMovil = computed(() => {
         return this.mobileHelper.isMobile();
+    });
+
+    paginaSinMenuEstatico = computed(() => {
+        return this.paginaSinMenuEstaticoHelper.paginaSinMenuEstatico();
     });
 
     ngOnInit() {

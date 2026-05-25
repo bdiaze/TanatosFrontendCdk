@@ -1,5 +1,6 @@
+import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { environment } from '@/environments/environment';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCalendarClock, lucideEarth } from '@ng-icons/lucide';
@@ -22,7 +23,9 @@ import { HlmH1, HlmH4, HlmP } from '@spartan-ng/helm/typography';
         }),
     ],
 })
-export class Hero {
+export class Hero implements OnInit, OnDestroy {
+    paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+
     urlFondo1_640 = `${environment.urlImages}/images/contenido-joven-sosteniendo-tableta-digital/640.webp`;
     urlFondo1_960 = `${environment.urlImages}/images/contenido-joven-sosteniendo-tableta-digital/960.webp`;
     urlFondo1_1280 = `${environment.urlImages}/images/contenido-joven-sosteniendo-tableta-digital/1280.webp`;
@@ -40,4 +43,12 @@ export class Hero {
     urlFondo3_960 = `${environment.urlImages}/images/hombre-de-negocios-dueno-de-la-empresa-en-la-oficina/960.webp`;
     urlFondo3_1280 = `${environment.urlImages}/images/hombre-de-negocios-dueno-de-la-empresa-en-la-oficina/1280.webp`;
     urlFondo3_1920 = `${environment.urlImages}/images/hombre-de-negocios-dueno-de-la-empresa-en-la-oficina/1920.webp`;
+
+    ngOnInit(): void {
+        this.paginaSinMenuEstaticoHelper.quitarMenuEstatico();
+    }
+
+    ngOnDestroy(): void {
+        this.paginaSinMenuEstaticoHelper.mostrarMenuEstatico();
+    }
 }

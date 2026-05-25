@@ -283,8 +283,8 @@ export class Menu {
 
             untracked(() => {
                 if (sesionIniciada) {
-                    this.obtenerNegocios();
-                    this.obtenerInformacionUsuario();
+                    if (!this.negocioStore.negociosUsuario() || !this.negocioStore.negocioSeleccionado()) this.obtenerNegocios();
+                    if (!this.negocioStore.informacionUsuario()) this.obtenerInformacionUsuario();
                 }
             });
         });
@@ -333,7 +333,7 @@ export class Menu {
         setCookie('NegocioSeleccionado', `${negocio.id}`);
     }
 
-    cargandoNegocios = signal<boolean>(true);
+    cargandoNegocios = signal<boolean>(false);
 
     restringirSeleccionNegocios = computed(() => {
         const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
@@ -355,7 +355,7 @@ export class Menu {
             });
     }
 
-    cargandoInformacionUsuario = signal<boolean>(true);
+    cargandoInformacionUsuario = signal<boolean>(false);
 
     obtenerInformacionUsuario() {
         this.cargandoInformacionUsuario.set(true);

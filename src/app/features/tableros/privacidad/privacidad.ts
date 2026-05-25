@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideUserLock } from '@ng-icons/lucide';
 import { HlmButton } from '@spartan-ng/helm/button';
@@ -16,4 +17,14 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
         }),
     ],
 })
-export class Privacidad {}
+export class Privacidad implements OnInit, OnDestroy {
+    paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+
+    ngOnInit(): void {
+        this.paginaSinMenuEstaticoHelper.quitarMenuEstatico();
+    }
+
+    ngOnDestroy(): void {
+        this.paginaSinMenuEstaticoHelper.mostrarMenuEstatico();
+    }
+}

@@ -22,14 +22,15 @@
             </ul>
         </nav>
         <div class="flex-1"></div>
-        <div class="hidden md:inline-flex">
-            @if (!sesionIniciada() && !logoutRunning()) {
-                <app-login></app-login>
-            } @else {
-                <app-logout></app-logout>
-            }
-        </div>
-        @if (mostrarMovil()) {
+        @if (!mostrarMovil() && (!paginaSinMenuEstatico() || (!sesionIniciada() && !logoutRunning()))) {
+            <div>
+                @if (!sesionIniciada() && !logoutRunning()) {
+                    <app-login></app-login>
+                } @else {
+                    <app-logout></app-logout>
+                }
+            </div>
+        } @else {
             <div class="flex items-center justify-center">
                 <button hlmBtn hlmsidebartrigger variant="ghost" class="hover:bg-transparent" (click)="toggleMenu()">
                     <ng-icon hlm name="lucideMenu" size="base" class="text-(--negro)/70 scale-100" />
