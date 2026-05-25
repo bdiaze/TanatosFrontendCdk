@@ -33,9 +33,10 @@ import { ChatsWhatsapp } from './features/tableros/chats-whatsapp/chats-whatsapp
 import { MantenedorPlan } from './features/mantenedores/mantenedor-plan/mantenedor-plan';
 import { MantenedorSuscripcion } from './features/mantenedores/mantenedor-suscripcion/mantenedor-suscripcion';
 import { MantenedorEmpleado } from './features/mantenedores/mantenedor-empleado/mantenedor-empleado';
+import { redirectToInicioSesionIniciada } from './helpers/redirect-to-inicio-sesion-iniciada';
 
 export const routes: Routes = [
-    { path: '', component: Inicio },
+    { path: '', component: Inicio, canActivate: [redirectToInicioSesionIniciada] },
     { path: 'cargando-inicio', component: EmptyHero },
     { path: 'callback', component: Callback },
     { path: 'logout', redirectTo: '', pathMatch: 'full' },

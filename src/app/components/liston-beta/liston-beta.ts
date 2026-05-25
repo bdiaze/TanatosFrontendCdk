@@ -9,7 +9,7 @@ import { HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-liston-beta',
-    imports: [HlmP, NgIcon, HlmIcon, NgClass],
+    imports: [HlmP, NgClass],
     templateUrl: './liston-beta.html',
     styleUrl: './liston-beta.scss',
     providers: [provideIcons({})],

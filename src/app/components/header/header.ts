@@ -28,14 +28,6 @@ import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estat
 })
 export class Header implements OnInit {
     urlLogo = `${environment.urlImages}/images/logo.svg`;
-    logoRedirect = computed(() => {
-        /*
-        if (this.sesionIniciada() || this.logoutRunning()) {
-            return '/inicio';
-        }
-        */
-        return '/';
-    });
 
     private authStore = inject(AuthStore);
     private router = inject(Router);
