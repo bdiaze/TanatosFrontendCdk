@@ -7,9 +7,10 @@ import { Menu } from './components/menu/menu';
 import { AuthStore } from './services/auth-store';
 import { RecaptchaHelper } from './helpers/recaptcha-helper';
 import { MobileHelper } from './helpers/mobile-helper';
+import { ListonBeta } from './components/liston-beta/liston-beta';
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, Footer, Menu],
+    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta],
     templateUrl: './app.html',
     styleUrl: './app.scss',
 })
