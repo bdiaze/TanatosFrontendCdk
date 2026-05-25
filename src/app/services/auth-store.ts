@@ -2,13 +2,15 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { AuthClaims } from '@/app/entities/others/auth-claims';
 import { jwtDecode } from 'jwt-decode';
 import { AuthDao } from '@daos/auth-dao';
-import { getCookie } from '@helpers/cookie-helper';
+import { clearCookie, getCookie } from '@helpers/cookie-helper';
+import { NegocioStore } from './negocio-store';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AuthStore {
     private authDao = inject(AuthDao);
+    private negocioStore = inject(NegocioStore);
 
     private _accessToken = signal<string | null>(null);
 
@@ -55,6 +57,10 @@ export class AuthStore {
                 this.sesionIniciada.set(true);
             }
         } else {
+            this.negocioStore.negociosUsuario.set([]);
+            this.negocioStore.negocioSeleccionado.set(null);
+            this.negocioStore.informacionUsuario.set(null);
+            clearCookie('NegocioSeleccionado');
             sessionStorage.removeItem('access_token');
             this.groups.set(new Set<string>());
             this.sesionIniciada.set(false);

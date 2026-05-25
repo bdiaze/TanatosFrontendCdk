@@ -20,7 +20,6 @@ export class Logout {
 
     private authDao = inject(AuthDao);
     private authStore = inject(AuthStore);
-    private negocioStore = inject(NegocioStore);
 
     backgroundRefreshRunning = this.authStore.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;
@@ -44,11 +43,6 @@ export class Logout {
             })
             .add(() => {
                 this.authStore.setAccessToken(null);
-
-                this.negocioStore.negociosUsuario.set([]);
-                this.negocioStore.negocioSeleccionado.set(null);
-                this.negocioStore.informacionUsuario.set(null);
-                clearCookie('NegocioSeleccionado');
 
                 const url =
                     `${environment.cognitoService.baseUrl}/logout?` +
