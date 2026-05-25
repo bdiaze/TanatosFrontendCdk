@@ -190,6 +190,7 @@
                                                 [formatoTelefono]="destinatario.controls['idTipoReceptor'].value === 2"
                                                 [formatoCorreo]="destinatario.controls['idTipoReceptor'].value === 1"
                                                 [placeholder]="obtenerDestinoPlaceholder(destinatario.controls['idTipoReceptor'].value)"
+                                                [autoFocus]="$last && !destinatario.controls['destino'].value"
                                             />
                                         </div>
                                     } @empty {

@@ -37,6 +37,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { PopupFuncionalidadBloqueada } from '../popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { AutoFocus } from '@/app/directives/auto-focus';
 
 @Component({
     selector: 'app-modal-mantenedor-empleado',
@@ -62,6 +63,7 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
         HlmH4,
         FormatoTelefono,
         FormatoCorreo,
+        AutoFocus,
         PopupFuncionalidadBloqueada,
         HlmTooltipImports,
         RouterLink,
