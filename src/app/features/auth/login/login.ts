@@ -1,5 +1,5 @@
 import { AuthStore } from '@/app/services/auth-store';
-import { Component, computed, inject, Inject, Input, signal } from '@angular/core';
+import { Component, computed, inject, Inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { environment } from '@environment';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
@@ -10,7 +10,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
     templateUrl: './login.html',
     styleUrl: './login.scss',
 })
-export class Login {
+export class Login implements OnInit, OnDestroy {
     @Input() vertical: boolean = false;
 
     private authStore = inject(AuthStore);
@@ -22,6 +22,28 @@ export class Login {
     deshabilitarBoton = computed<boolean>(() => {
         return this.iniciandoSesion() || this.backgroundRefreshRunning() || this.callbackRunning();
     });
+
+    ngOnInit() {
+        document.addEventListener('visibilitychange', this.onVisibilityChange);
+        window.addEventListener('pageshow', this.onPageShow);
+    }
+
+    ngOnDestroy() {
+        document.removeEventListener('visibilitychange', this.onVisibilityChange);
+        window.removeEventListener('pageshow', this.onPageShow);
+    }
+
+    onVisibilityChange = () => {
+        if (document.visibilityState === 'visible') {
+            this.iniciandoSesion.set(false);
+        }
+    };
+
+    onPageShow = (event: PageTransitionEvent) => {
+        if (event.persisted) {
+            this.iniciandoSesion.set(false);
+        }
+    };
 
     async iniciarSesion(registrarse: boolean = false) {
         this.iniciandoSesion.set(true);
@@ -74,9 +96,7 @@ export async function redireccionarALogin(registrarse: boolean = false) {
     ];
 
     const url =
-        (!registrarse
-            ? `${environment.cognitoService.baseUrl}/login?`
-            : `${environment.cognitoService.baseUrl}/signup?`) +
+        (!registrarse ? `${environment.cognitoService.baseUrl}/login?` : `${environment.cognitoService.baseUrl}/signup?`) +
         new URLSearchParams({
             response_type: 'code',
             client_id: environment.cognitoService.clientId,
