@@ -64,7 +64,7 @@ export class Header implements OnInit {
     abrirMenu() {
         this.menuAbierto.set(true);
         history.pushState({ menuAbierto: true }, '');
-        document.body.classList.add('overflow-hidden', 'pr-1.25');
+        document.body.classList.add('overflow-hidden', 'md:pr-1.25');
     }
 
     cerrarMenu() {
@@ -73,7 +73,7 @@ export class Header implements OnInit {
             const { menuAbierto, ...rest } = history.state;
             history.replaceState(rest, '');
         }
-        document.body.classList.remove('overflow-hidden', 'pr-1.25');
+        document.body.classList.remove('overflow-hidden', 'md:pr-1.25');
     }
 
     @HostListener('window:popstate', ['$event'])
