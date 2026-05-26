@@ -39,6 +39,7 @@ export class App implements OnInit {
 
     constructor() {
         // Se añade custom scroll para que solo se mueva a top 0 cuando nos movemos a una nueva navigation...
+        history.scrollRestoration = 'manual';
         this.router.events
             .pipe(
                 filter((e) => e instanceof NavigationEnd),
