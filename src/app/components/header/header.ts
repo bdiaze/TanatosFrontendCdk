@@ -1,5 +1,5 @@
 import { AuthStore } from '@services/auth-store';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Login } from '@/app/features/auth/login/login';
 import { Logout } from '@/app/features/auth/logout/logout';
@@ -14,6 +14,7 @@ import { ClickOutside } from '@/app/directives/click-outside';
 import { CommonModule } from '@angular/common';
 import { MobileHelper } from '@/app/helpers/mobile-helper';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
+import { fromEvent, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -53,14 +54,33 @@ export class Header implements OnInit {
     }
 
     toggleMenu() {
-        this.menuAbierto.update((valor) => !valor);
+        if (this.menuAbierto()) {
+            this.cerrarMenu();
+        } else {
+            this.abrirMenu();
+        }
+    }
+
+    abrirMenu() {
+        this.menuAbierto.set(true);
+        history.pushState({ menuAbierto: true }, '');
     }
 
     cerrarMenu() {
         this.menuAbierto.set(false);
+        if (history.state?.menuAbierto) {
+            const { menuAbierto, ...rest } = history.state;
+            history.replaceState(rest, '');
+        }
     }
 
-    cerrarSesionGatillado() {
-        this.menuAbierto.set(false);
+    @HostListener('window:popstate', ['$event'])
+    onPopState(event: PopStateEvent) {
+        if (this.menuAbierto()) {
+            this.cerrarMenu();
+        }
+        if (event.state && Object.keys(event.state).length === 0) {
+            history.back();
+        }
     }
 }
