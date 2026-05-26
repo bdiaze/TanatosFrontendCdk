@@ -24,7 +24,7 @@
         <div class="flex-1"></div>
         @if (!mostrarMovil() && (!paginaSinMenuEstatico() || (!sesionIniciada() && !logoutRunning()))) {
             <div>
-                @if (!sesionIniciada() && !logoutRunning()) {
+                @if (!sesionIniciada() && !logoutRunning() && !callbackRunning()) {
                     <app-login></app-login>
                 } @else {
                     <app-logout></app-logout>

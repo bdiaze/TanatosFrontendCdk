@@ -34,12 +34,14 @@ import { MantenedorPlan } from './features/mantenedores/mantenedor-plan/mantened
 import { MantenedorSuscripcion } from './features/mantenedores/mantenedor-suscripcion/mantenedor-suscripcion';
 import { MantenedorEmpleado } from './features/mantenedores/mantenedor-empleado/mantenedor-empleado';
 import { redirectToInicioSesionIniciada } from './helpers/redirect-to-inicio-sesion-iniciada';
+import { LogoutRunning } from './features/auth/logout-running/logout-running';
 
 export const routes: Routes = [
     { path: '', component: Inicio, canActivate: [redirectToInicioSesionIniciada] },
     { path: 'cargando-inicio', component: EmptyHero },
     { path: 'callback', component: Callback },
     { path: 'logout', redirectTo: '', pathMatch: 'full' },
+    { path: 'logout-running', component: LogoutRunning },
     {
         path: 'inicio',
         component: MenuInicial,

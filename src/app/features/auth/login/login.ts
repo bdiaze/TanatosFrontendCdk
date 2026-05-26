@@ -18,9 +18,18 @@ export class Login implements OnInit, OnDestroy {
     backgroundRefreshRunning = this.authStore.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;
     iniciandoSesion = signal<boolean>(false);
+    registrandose = signal<boolean>(false);
+
+    mostrarCargandoInicioSesion = computed(() => {
+        return this.iniciandoSesion();
+    });
+
+    mostrarCargandoRegistrarse = computed(() => {
+        return this.registrandose();
+    });
 
     deshabilitarBoton = computed<boolean>(() => {
-        return this.iniciandoSesion() || this.backgroundRefreshRunning() || this.callbackRunning();
+        return this.iniciandoSesion() || this.registrandose() || this.backgroundRefreshRunning() || this.callbackRunning();
     });
 
     ngOnInit() {
@@ -36,17 +45,23 @@ export class Login implements OnInit, OnDestroy {
     onVisibilityChange = () => {
         if (document.visibilityState === 'visible') {
             this.iniciandoSesion.set(false);
+            this.registrandose.set(false);
         }
     };
 
     onPageShow = (event: PageTransitionEvent) => {
         if (event.persisted) {
             this.iniciandoSesion.set(false);
+            this.registrandose.set(false);
         }
     };
 
     async iniciarSesion(registrarse: boolean = false) {
-        this.iniciandoSesion.set(true);
+        if (!registrarse) {
+            this.iniciandoSesion.set(true);
+        } else {
+            this.registrandose.set(true);
+        }
         await redireccionarALogin(registrarse);
     }
 }

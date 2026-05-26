@@ -36,6 +36,7 @@ export class Header implements OnInit {
 
     sesionIniciada = this.authStore.sesionIniciada;
     logoutRunning = this.authStore.logoutRunning;
+    callbackRunning = this.authStore.callbackRunning;
 
     menuAbierto = signal<boolean>(false);
 

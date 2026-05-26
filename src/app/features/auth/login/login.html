@@ -5,7 +5,7 @@
         [disabled]="deshabilitarBoton()"
         class="px-4 text-[0.7rem] h-[1.9rem] lg:text-[0.8rem] lg:h-[2.1rem] bg-(--calipso) hover:bg-(--calipso)/80"
     >
-        @if (deshabilitarBoton()) {
+        @if (mostrarCargandoInicioSesion()) {
             <hlm-spinner />
         }
         Inicia Sesión
@@ -17,7 +17,7 @@
         [disabled]="deshabilitarBoton()"
         class="px-4 text-[0.7rem] h-[1.9rem] lg:text-[0.8rem] lg:h-[2.1rem] border-(--calipso) hover:border-(--calipso)/80 text-(--calipso)"
     >
-        @if (deshabilitarBoton()) {
+        @if (mostrarCargandoRegistrarse()) {
             <hlm-spinner />
         }
         Regístrate

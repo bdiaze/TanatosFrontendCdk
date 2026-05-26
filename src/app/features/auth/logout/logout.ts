@@ -20,10 +20,15 @@ export class Logout {
 
     private authDao = inject(AuthDao);
     private authStore = inject(AuthStore);
+    private router = inject(Router);
 
     backgroundRefreshRunning = this.authStore.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;
     cerrandoSesion = this.authStore.logoutRunning;
+
+    mostrarCargando = computed(() => {
+        return this.cerrandoSesion();
+    });
 
     deshabilitarBoton = computed<boolean>(() => {
         return this.cerrandoSesion() || this.backgroundRefreshRunning() || this.callbackRunning();
@@ -31,6 +36,7 @@ export class Logout {
 
     cerrarSesion() {
         this.cerrandoSesion.set(true);
+        this.router.navigate(['/logout-running']);
         this.authDao
             .limpiarAuthCookies()
             .subscribe({
