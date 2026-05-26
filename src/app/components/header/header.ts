@@ -3,7 +3,7 @@ import { Component, computed, HostListener, inject, OnDestroy, OnInit, signal } 
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Login } from '@/app/features/auth/login/login';
 import { Logout } from '@/app/features/auth/logout/logout';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { environment } from '@/environments/environment';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -14,7 +14,7 @@ import { ClickOutside } from '@/app/directives/click-outside';
 import { CommonModule } from '@angular/common';
 import { MobileHelper } from '@/app/helpers/mobile-helper';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
-import { fromEvent, Subscription } from 'rxjs';
+import { filter, fromEvent, Subscription, take } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -64,6 +64,7 @@ export class Header implements OnInit {
     abrirMenu() {
         this.menuAbierto.set(true);
         history.pushState({ menuAbierto: true }, '');
+        document.body.classList.add('overflow-hidden', 'pr-1.25');
     }
 
     cerrarMenu() {
@@ -72,6 +73,7 @@ export class Header implements OnInit {
             const { menuAbierto, ...rest } = history.state;
             history.replaceState(rest, '');
         }
+        document.body.classList.remove('overflow-hidden', 'pr-1.25');
     }
 
     @HostListener('window:popstate', ['$event'])
@@ -79,6 +81,7 @@ export class Header implements OnInit {
         if (this.menuAbierto()) {
             this.cerrarMenu();
         }
+
         if (event.state && Object.keys(event.state).length === 0) {
             history.back();
         }
