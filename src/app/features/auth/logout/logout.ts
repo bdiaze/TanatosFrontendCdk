@@ -36,7 +36,7 @@ export class Logout {
 
     cerrarSesion() {
         this.cerrandoSesion.set(true);
-        this.router.navigate(['/logout-running']);
+        this.router.navigateByUrl('/cargando-inicio');
         this.authDao
             .limpiarAuthCookies()
             .subscribe({

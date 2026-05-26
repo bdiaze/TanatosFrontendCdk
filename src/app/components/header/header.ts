@@ -62,6 +62,5 @@ export class Header implements OnInit {
 
     cerrarSesionGatillado() {
         this.menuAbierto.set(false);
-        this.router.navigateByUrl('/cargando-inicio');
     }
 }
