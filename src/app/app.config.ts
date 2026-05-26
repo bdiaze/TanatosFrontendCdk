@@ -2,13 +2,7 @@ import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from
 import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
-import {
-    HttpBackend,
-    HttpXhrBackend,
-    provideHttpClient,
-    withFetch,
-    withInterceptors,
-} from '@angular/common/http';
+import { HttpBackend, HttpXhrBackend, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from './interceptors/auth-interceptor';
 
 import '@/app/helpers/locales';
@@ -21,7 +15,7 @@ export const appConfig: ApplicationConfig = {
         provideRouter(
             routes,
             withInMemoryScrolling({
-                scrollPositionRestoration: 'top',
+                scrollPositionRestoration: 'disabled',
                 anchorScrolling: 'enabled',
             }),
         ),
@@ -42,25 +36,11 @@ export const appConfig: ApplicationConfig = {
             },
             labelPrevious: () => 'Mes anterior',
             labelNext: () => 'Mes siguiente',
-            labelWeekday: (i) =>
-                ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][i],
+            labelWeekday: (i) => ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'][i],
             firstDayOfWeek: () => 1,
             formatYear: (year) => year.toString(),
             formatMonth: (month) => month.toString(),
-            months: () => [
-                'Enero',
-                'Febrero',
-                'Marzo',
-                'Abril',
-                'Mayo',
-                'Junio',
-                'Julio',
-                'Agosto',
-                'Septiembre',
-                'Octubre',
-                'Noviembre',
-                'Diciembre',
-            ],
+            months: () => ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
             years: (startYear?: number, endYear?: number) => {
                 if (!startYear) {
                     startYear = new Date().getFullYear();
