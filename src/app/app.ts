@@ -37,6 +37,7 @@ export class App implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.recaptchHelper.load();
+        this.authStore.backgroundRefresh();
     }
 
     private observer?: ResizeObserver;

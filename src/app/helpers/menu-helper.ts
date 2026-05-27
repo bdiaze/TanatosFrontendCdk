@@ -1,0 +1,58 @@
+import { DestroyRef, effect, inject, Injectable, signal, untracked } from '@angular/core';
+import { AuthStore } from '../services/auth-store';
+import { NegocioDao } from '../daos/negocio-dao';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class MenuHelper {
+    private destroyRef = inject(DestroyRef);
+
+    private authStore = inject(AuthStore);
+    private negocioDao = inject(NegocioDao);
+
+    private logicaEjecutada = signal(false);
+
+    constructor() {
+        effect(() => {
+            const logicaEjecutada = this.logicaEjecutada();
+            const sesionIniciada = this.authStore.sesionIniciada();
+
+            untracked(() => {
+                if (logicaEjecutada && sesionIniciada) {
+                    this.obtenerNegocios();
+                    this.obtenerInformacionUsuario();
+                }
+            });
+        });
+    }
+
+    ejecutar() {
+        this.logicaEjecutada.set(true);
+    }
+
+    cargandoNegocios = signal<boolean>(false);
+    obtenerNegocios() {
+        this.cargandoNegocios.set(true);
+        this.negocioDao
+            .obtenerVigentes()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({})
+            .add(() => {
+                this.cargandoNegocios.set(false);
+            });
+    }
+
+    cargandoInformacionUsuario = signal<boolean>(false);
+    obtenerInformacionUsuario() {
+        this.cargandoInformacionUsuario.set(true);
+        this.negocioDao
+            .obtenerInformacionUsuario()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({})
+            .add(() => {
+                this.cargandoInformacionUsuario.set(false);
+            });
+    }
+}

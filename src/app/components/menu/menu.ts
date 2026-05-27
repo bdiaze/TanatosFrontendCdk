@@ -1,6 +1,7 @@
 import { NegocioDao } from '@/app/daos/negocio-dao';
 import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { setCookie } from '@/app/helpers/cookie-helper';
+import { MenuHelper } from '@/app/helpers/menu-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, EventEmitter, inject, Input, OnInit, Output, signal, untracked } from '@angular/core';
@@ -76,7 +77,7 @@ import { filter, map } from 'rxjs';
         }),
     ],
 })
-export class Menu {
+export class Menu implements OnInit {
     @Output() onClick = new EventEmitter<void>();
 
     @Input() withClose = false;
@@ -89,6 +90,8 @@ export class Menu {
     authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
     negocioDao = inject(NegocioDao);
+
+    menuHelper = inject(MenuHelper);
 
     accesoAdmin = computed<boolean>(() => {
         const groups = this.authStore.groups();
@@ -270,17 +273,6 @@ export class Menu {
 
     constructor() {
         effect(() => {
-            const sesionIniciada = this.authStore.sesionIniciada();
-
-            untracked(() => {
-                if (sesionIniciada) {
-                    if (!this.negocioStore.negociosUsuario() || !this.negocioStore.negocioSeleccionado()) this.obtenerNegocios();
-                    if (!this.negocioStore.informacionUsuario()) this.obtenerInformacionUsuario();
-                }
-            });
-        });
-
-        effect(() => {
             const url = this.url();
             const opciones = this.opcionesMenu();
 
@@ -298,6 +290,10 @@ export class Menu {
                 }
             });
         });
+    }
+
+    ngOnInit() {
+        this.menuHelper.ejecutar();
     }
 
     tieneUrlHijoActivo(opcion: OpcionMenu, url: string) {
@@ -324,7 +320,7 @@ export class Menu {
         setCookie('NegocioSeleccionado', `${negocio.id}`);
     }
 
-    cargandoNegocios = signal<boolean>(false);
+    cargandoNegocios = this.menuHelper.cargandoNegocios;
 
     restringirSeleccionNegocios = computed(() => {
         const tienePlanEmpresa = this.negocioStore.informacionUsuario()?.tienePlanEmpresa ?? false;
@@ -335,29 +331,7 @@ export class Menu {
         return false;
     });
 
-    obtenerNegocios() {
-        this.cargandoNegocios.set(true);
-        this.negocioDao
-            .obtenerVigentes()
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({})
-            .add(() => {
-                this.cargandoNegocios.set(false);
-            });
-    }
-
-    cargandoInformacionUsuario = signal<boolean>(false);
-
-    obtenerInformacionUsuario() {
-        this.cargandoInformacionUsuario.set(true);
-        this.negocioDao
-            .obtenerInformacionUsuario()
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({})
-            .add(() => {
-                this.cargandoInformacionUsuario.set(false);
-            });
-    }
+    cargandoInformacionUsuario = this.menuHelper.cargandoInformacionUsuario;
 
     click() {
         this.onClick.emit();

@@ -28,7 +28,7 @@ import { FadeIn } from '@/app/directives/fade-in';
         }),
     ],
 })
-export class Header implements OnInit {
+export class Header {
     urlLogo = `${environment.urlImages}/images/logo.svg`;
 
     private authStore = inject(AuthStore);
@@ -48,10 +48,6 @@ export class Header implements OnInit {
     paginaSinMenuEstatico = computed(() => {
         return this.paginaSinMenuEstaticoHelper.paginaSinMenuEstatico();
     });
-
-    ngOnInit() {
-        this.authStore.backgroundRefresh();
-    }
 
     toggleMenu() {
         if (this.menuAbierto()) {
