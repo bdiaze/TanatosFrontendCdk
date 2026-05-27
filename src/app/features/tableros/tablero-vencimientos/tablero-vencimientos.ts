@@ -24,6 +24,7 @@ import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import dayjs from 'dayjs';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -134,11 +135,11 @@ export class TableroVencimientos {
     }
 
     enCuanto(strFecha: string): string {
-        const diferencia = this.diferenciaConFechaActual(strFecha);
-        return `${diferencia.length > 0 ? 'En ' + diferencia : 'Ahora'}`;
+        const diferencia = this.diferenciaConFechaActual(strFecha, true);
+        return `${diferencia.length > 0 ? 'Menos de ' + diferencia : 'Ahora'}`;
     }
 
-    diferenciaConFechaActual(strFecha: string): string {
+    diferenciaConFechaActual(strFecha: string, aproxSuperior = false): string {
         const fecha: Date = new Date(strFecha);
         const ahora: Date = new Date();
 
@@ -147,28 +148,35 @@ export class TableroVencimientos {
         let inicio = fechaFutura ? ahora : fecha;
         let fin = fechaFutura ? fecha : ahora;
 
-        // Se calcula la diferencia en años...
-        let annos = fin.getFullYear() - inicio.getFullYear();
-        const checkAnno = new Date(inicio);
-        checkAnno.setFullYear(inicio.getFullYear() + annos);
-        if (checkAnno > fin) {
-            annos--;
+        const inicioDayJS = dayjs(inicio);
+        const finDayJS = dayjs(fin);
+
+        const diffInYears = finDayJS.diff(inicioDayJS, 'year', true);
+        if (!aproxSuperior) {
+            const annos = Math.floor(diffInYears);
+            if (annos >= 1) {
+                return `${annos} ${annos === 1 ? 'año' : 'años'}`;
+            }
+        } else {
+            const annos = Math.ceil(diffInYears);
+            if (annos > 1) {
+                return `${annos} ${annos === 1 ? 'año' : 'años'}`;
+            }
         }
 
-        if (annos >= 1) {
-            return `${annos} ${annos === 1 ? 'año' : 'años'}`;
-        }
-
-        // Se calcula la diferencia en meses...
-        let meses = (fin.getFullYear() - inicio.getFullYear()) * 12 + (fin.getMonth() - inicio.getMonth());
-        const checkMes = new Date(inicio);
-        checkMes.setMonth(inicio.getMonth() + meses);
-        if (checkMes > fin) {
-            meses--;
-        }
-
-        if (meses >= 1) {
-            return `${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+        const diffInMonths = finDayJS.diff(inicioDayJS, 'month', true);
+        if (!aproxSuperior) {
+            const meses = Math.floor(diffInMonths);
+            if (meses >= 1) {
+                return `${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+            }
+        } else {
+            const meses = Math.ceil(diffInMonths);
+            if (meses == 12) {
+                return `un año`;
+            } else if (meses > 1) {
+                return `${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+            }
         }
 
         // Se calcula la diferencia para semanas, días, horas, minutos y segundos...
@@ -182,10 +190,19 @@ export class TableroVencimientos {
             { unit: 'segundo', ms: 1000 },
         ];
 
-        for (const u of unidades) {
-            const valor = Math.floor(diffMs / u.ms);
-            if (valor >= 1) {
-                return `${valor} ${valor === 1 ? u.unit : u.unit + 's'}`;
+        if (!aproxSuperior) {
+            for (const u of unidades) {
+                const valor = Math.floor(diffMs / u.ms);
+                if (valor >= 1) {
+                    return `${valor} ${valor === 1 ? u.unit : u.unit + 's'}`;
+                }
+            }
+        } else {
+            for (const u of unidades) {
+                const valor = Math.ceil(diffMs / u.ms);
+                if (valor > 1) {
+                    return `${valor} ${valor === 1 ? u.unit : u.unit + 's'}`;
+                }
             }
         }
 
