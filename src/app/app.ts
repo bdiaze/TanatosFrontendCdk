@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, DestroyRef, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { afterNextRender, AfterViewInit, Component, computed, DestroyRef, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Header } from '@components/header/header';
 import { Footer } from '@components/footer/footer';
@@ -10,16 +10,18 @@ import { MobileHelper } from './helpers/mobile-helper';
 import { ListonBeta } from './components/liston-beta/liston-beta';
 import { PaginaSinMenuEstaticoHelper } from './helpers/pagina-sin-menu-estatico-helper';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ViewportScroller } from '@angular/common';
 @Component({
     selector: 'app-root',
     imports: [RouterOutlet, Header, Footer, Menu, ListonBeta],
     templateUrl: './app.html',
     styleUrl: './app.scss',
 })
-export class App implements OnInit {
+export class App implements OnInit, OnDestroy {
     private destroyRef = inject(DestroyRef);
     private recaptchHelper = inject(RecaptchaHelper);
     private router = inject(Router);
+    private viewportScroller = inject(ViewportScroller);
 
     authStore = inject(AuthStore);
     mobileHelper = inject(MobileHelper);
@@ -37,7 +39,23 @@ export class App implements OnInit {
         this.recaptchHelper.load();
     }
 
+    private observer?: ResizeObserver;
+    ngOnDestroy() {
+        this.observer?.disconnect();
+    }
+
     constructor() {
+        afterNextRender(() => {
+            const header = document.querySelector('app-header');
+            if (!header) return;
+
+            this.observer = new ResizeObserver(([entry]) => {
+                this.viewportScroller.setOffset([0, entry.contentRect.height]);
+            });
+
+            this.observer.observe(header);
+        });
+
         // Se añade custom scroll para que solo se mueva a top 0 cuando nos movemos a una nueva navigation...
         history.scrollRestoration = 'manual';
         this.router.events
