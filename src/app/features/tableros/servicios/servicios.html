@@ -13,6 +13,7 @@
     </div>
     <div class="relative w-full md:w-1/2 h-[clamp(16rem,80vw,40rem)] md:h-[clamp(35rem,50vw,40rem)] overflow-hidden object-top-right order-1 md:order-2">
         <img
+            appFadeIn
             [src]="urlFondo1_1280"
             [srcset]="`${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w`"
             sizes="(max-width: 767px) 100vw, 50vw"
@@ -41,7 +42,17 @@
 </section>
 <section class="text-(--blanco) relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw fade-in">
     <div class="relative w-full md:w-1/2 h-[clamp(16rem,90vw,27rem)] md:h-[clamp(30rem,40vw,50rem)] overflow-hidden object-top-right">
-        <video #bgVideo autoplay muted loop playsinline preload="auto" [poster]="urlVideo1_Poster" class="absolute inset-0 w-full h-full object-cover -z-10">
+        <video
+            appFadeIn
+            #bgVideo
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            [poster]="urlVideo1_Poster"
+            class="absolute inset-0 w-full h-full object-cover -z-10"
+        >
             <source [src]="urlVideo1_WebM" type="video/webm" />
             <source [src]="urlVideo1_MP4" type="video/mp4" />
         </video>

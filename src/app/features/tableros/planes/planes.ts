@@ -1,3 +1,4 @@
+import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { environment } from '@/environments/environment';
 import { DecimalPipe } from '@angular/common';
@@ -11,7 +12,7 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-planes',
-    imports: [HlmItemImports, HlmH3, HlmH4, HlmP, HlmIcon, NgIcon, HlmButtonImports, DecimalPipe],
+    imports: [HlmItemImports, HlmH3, HlmH4, HlmP, HlmIcon, NgIcon, HlmButtonImports, DecimalPipe, FadeIn],
     templateUrl: './planes.html',
     styleUrl: './planes.scss',
     providers: [

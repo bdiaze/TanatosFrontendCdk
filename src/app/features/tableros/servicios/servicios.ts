@@ -1,3 +1,4 @@
+import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { environment } from '@/environments/environment';
 import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -17,7 +18,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 
 @Component({
     selector: 'app-servicios',
-    imports: [HlmIcon, NgIcon],
+    imports: [HlmIcon, NgIcon, FadeIn],
     templateUrl: './servicios.html',
     styleUrl: './servicios.scss',
     providers: [

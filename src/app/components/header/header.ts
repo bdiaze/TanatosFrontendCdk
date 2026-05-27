@@ -15,10 +15,11 @@ import { CommonModule } from '@angular/common';
 import { MobileHelper } from '@/app/helpers/mobile-helper';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { filter, fromEvent, Subscription, take } from 'rxjs';
+import { FadeIn } from '@/app/directives/fade-in';
 
 @Component({
     selector: 'app-header',
-    imports: [HlmButtonImports, Login, Logout, RouterLink, HlmSeparatorImports, NgIcon, HlmIcon, Menu, ClickOutside, CommonModule],
+    imports: [HlmButtonImports, Login, Logout, RouterLink, HlmSeparatorImports, NgIcon, HlmIcon, Menu, ClickOutside, CommonModule, FadeIn],
     templateUrl: './header.html',
     styleUrl: './header.scss',
     providers: [
@@ -31,7 +32,6 @@ export class Header implements OnInit {
     urlLogo = `${environment.urlImages}/images/logo.svg`;
 
     private authStore = inject(AuthStore);
-    private router = inject(Router);
     mobileHelper = inject(MobileHelper);
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
 

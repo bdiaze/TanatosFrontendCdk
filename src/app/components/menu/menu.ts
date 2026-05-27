@@ -142,15 +142,6 @@ export class Menu {
                         titulo: 'Mi Equipo',
                         url: '/mi-equipo',
                     },
-                    /*
-                    {
-                        id: 'group-negocio-seleccionado-item-mis-destinatarios',
-                        tipo: 'item',
-                        icon: 'lucideSend',
-                        titulo: 'Mis Destinatarios',
-                        url: '/mis-destinatario',
-                    },
-                    */
                 ],
             });
         }

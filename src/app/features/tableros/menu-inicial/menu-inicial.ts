@@ -6,10 +6,11 @@ import { RouterLink } from '@angular/router';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
+import { FadeIn } from '@/app/directives/fade-in';
 
 @Component({
     selector: 'app-menu-inicial',
-    imports: [HlmH1, HlmP, HlmItemImports, RouterLink, HlmSpinnerImports, HlmSkeletonImports],
+    imports: [HlmH1, HlmP, HlmItemImports, RouterLink, HlmSpinnerImports, HlmSkeletonImports, FadeIn],
     templateUrl: './menu-inicial.html',
     styleUrl: './menu-inicial.scss',
 })

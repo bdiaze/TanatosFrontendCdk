@@ -1,3 +1,4 @@
+import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { environment } from '@/environments/environment';
 import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -17,7 +18,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 
 @Component({
     selector: 'app-nosotros',
-    imports: [HlmIcon, NgIcon],
+    imports: [HlmIcon, NgIcon, FadeIn],
     templateUrl: './nosotros.html',
     styleUrl: './nosotros.scss',
     providers: [

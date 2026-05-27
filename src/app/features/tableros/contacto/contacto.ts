@@ -6,10 +6,11 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMailbox } from '@ng-icons/lucide';
 import { HlmH3 } from '@spartan-ng/helm/typography';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
+import { FadeIn } from '@/app/directives/fade-in';
 
 @Component({
     selector: 'app-contacto',
-    imports: [FormularioContacto, HlmIcon, NgIcon, HlmH3],
+    imports: [FormularioContacto, HlmIcon, NgIcon, HlmH3, FadeIn],
     templateUrl: './contacto.html',
     styleUrl: './contacto.scss',
     providers: [

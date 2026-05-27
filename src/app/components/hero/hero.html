@@ -1,5 +1,6 @@
 <section class="relative h-[clamp(16rem,75vw,35rem)] md:h-[45vw] w-full overflow-hidden flex flex-col items-start justify-center max-w-dvw fade-in">
     <img
+        appFadeIn
         [src]="urlFondo1_1920"
         [srcset]="`${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w, ${urlFondo1_2560} 2560w`"
         sizes="100vw"
@@ -57,12 +58,13 @@
         </button>
     </div>
     <div class="flex flex-col items-center gap-4 order-1 md:order-2 md:w-1/2">
-        <img [src]="urlTarea" alt="Tarea" class="-rotate-12 w-[clamp(7.5rem,25vw,25rem)]" />
+        <img appFadeIn [src]="urlTarea" alt="Tarea" class="-rotate-12 w-[clamp(7.5rem,25vw,25rem)]" />
     </div>
 </section>
 <section class="relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw fade-in">
     <div class="relative w-full md:w-1/2 h-[clamp(16rem,60vw,40rem)] md:h-[clamp(18rem,50vw,40rem)] overflow-hidden object-top-right">
         <img
+            appFadeIn
             [src]="urlFondo2_1280"
             [srcset]="`${urlFondo2_640} 640w, ${urlFondo2_960} 960w, ${urlFondo2_1280} 1280w, ${urlFondo2_1920} 1920w`"
             sizes="(max-width: 767px) 100vw, 50vw"
@@ -108,6 +110,7 @@
     </div>
     <div class="relative w-full md:w-1/2 overflow-hidden flex items-center justify-center order-1 md:order-2">
         <img
+            appFadeIn
             [src]="urlFondo3_1280"
             [srcset]="`${urlFondo3_640} 640w, ${urlFondo3_960} 960w, ${urlFondo3_1280} 1280w, ${urlFondo3_1920} 1920w`"
             sizes="(max-width: 767px) 100vw, 50vw"

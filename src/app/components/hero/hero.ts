@@ -1,3 +1,4 @@
+import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { environment } from '@/environments/environment';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
@@ -10,7 +11,7 @@ import { HlmH1, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-hero',
-    imports: [HlmH4, HlmP, HlmButtonImports, RouterLink, HlmIcon, NgIcon],
+    imports: [HlmH4, HlmP, HlmButtonImports, RouterLink, HlmIcon, NgIcon, FadeIn],
     templateUrl: './hero.html',
     styleUrl: './hero.scss',
     host: {
