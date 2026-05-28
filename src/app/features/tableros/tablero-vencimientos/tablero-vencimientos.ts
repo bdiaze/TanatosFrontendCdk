@@ -160,7 +160,7 @@ export class TableroVencimientos {
         } else {
             const annos = Math.ceil(diffInYears);
             if (annos > 1) {
-                return `${annos} ${annos === 1 ? 'año' : 'años'}`;
+                return `${annos} años`;
             }
         }
 
@@ -175,7 +175,7 @@ export class TableroVencimientos {
             if (meses == 12) {
                 return `un año`;
             } else if (meses > 1) {
-                return `${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+                return `${meses} meses`;
             }
         }
 
@@ -198,10 +198,12 @@ export class TableroVencimientos {
                 }
             }
         } else {
-            for (const u of unidades) {
+            for (const [index, u] of unidades.entries()) {
                 const valor = Math.ceil(diffMs / u.ms);
-                if (valor > 1) {
-                    return `${valor} ${valor === 1 ? u.unit : u.unit + 's'}`;
+                if (index > 0 && valor * u.ms == unidades[index - 1].ms) {
+                    return `un${[0, 2].includes(index - 1) ? 'a' : ''} ${unidades[index - 1].unit}`;
+                } else if (valor > 1) {
+                    return `${valor} ${u.unit + 's'}`;
                 }
             }
         }
