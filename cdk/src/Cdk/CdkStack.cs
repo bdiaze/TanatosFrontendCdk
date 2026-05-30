@@ -40,26 +40,6 @@ namespace Cdk
                 BlockPublicAccess = BlockPublicAccess.BLOCK_ALL,
             });
 
-            // Se crea security headers policy...
-            ResponseHeadersPolicy responseHeadersPolicy = new(this, $"{appName}FrontendSecurityHeadersPolicy", new ResponseHeadersPolicyProps {
-                ResponseHeadersPolicyName = $"{appName}FrontendSecurityHeadersPolicy",
-                Comment = $"Security headers para {appName} frontend",
-                SecurityHeadersBehavior = new ResponseSecurityHeadersBehavior {
-                    StrictTransportSecurity = new ResponseHeadersStrictTransportSecurity {
-                        AccessControlMaxAge = Duration.Days(365),
-                        IncludeSubdomains = true,
-                        Override = true,
-                    },
-                    ContentTypeOptions = new ResponseHeadersContentTypeOptions {
-                        Override = true,
-                    },
-                    FrameOptions = new ResponseHeadersFrameOptions {
-                        FrameOption = HeadersFrameOption.DENY,
-                        Override = true
-                    }
-                }
-            });
-
             // Se crea distribución de cloudfront...
             Distribution distribution = new(this, $"{appName}FrontendDistribution", new DistributionProps {
                 Comment = $"{appName} Frontend Distribution",
@@ -71,7 +51,7 @@ namespace Cdk
                     Compress = true,
                     AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
                     ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                    ResponseHeadersPolicy = responseHeadersPolicy
+                    ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
                 },
                 ErrorResponses = [
                     new ErrorResponse {
