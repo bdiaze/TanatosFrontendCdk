@@ -40,6 +40,22 @@ namespace Cdk
                 BlockPublicAccess = BlockPublicAccess.BLOCK_ALL,
             });
 
+            Function spaRewriteFunction = new(this, $"{appName}FrontendSpaRewriteFunction", new FunctionProps {
+                FunctionName = $"{appName}FrontendSpaRewriteFunction",
+                Comment = "Reescribe rutas Angular SPA a /index.html antes de consultar caché",
+                Runtime = FunctionRuntime.JS_2_0,
+                Code = FunctionCode.FromInline(@"
+                    function handler(event) {
+                        var uri = event.request.uri;
+                        if (uri.match(/\.[a-zA-Z0-9]+$/)) {
+                            return event.request;
+                        }
+                        event.request.uri = '/index.html';
+                        return event.request;
+                    }
+                ")
+            });
+
             // Se crea distribución de cloudfront...
             Distribution distribution = new(this, $"{appName}FrontendDistribution", new DistributionProps {
                 Comment = $"{appName} Frontend Distribution",
@@ -52,6 +68,12 @@ namespace Cdk
                     AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
                     ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                     ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
+                    FunctionAssociations = [
+                        new FunctionAssociation {
+                            Function = spaRewriteFunction,
+                            EventType = FunctionEventType.VIEWER_REQUEST
+                        }
+                    ]
                 },
                 ErrorResponses = [
                     new ErrorResponse {
