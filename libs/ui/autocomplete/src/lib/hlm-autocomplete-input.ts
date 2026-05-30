@@ -1,4 +1,5 @@
 import { BooleanInput } from '@angular/cdk/coercion';
+import { NgClass } from '@angular/common';
 import { booleanAttribute, ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideSearch, lucideX } from '@ng-icons/lucide';
@@ -7,11 +8,11 @@ import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 
 @Component({
     selector: 'hlm-autocomplete-input',
-    imports: [HlmInputGroupImports, NgIcon, BrnAutocompleteAnchor, BrnAutocompleteClear, BrnAutocompleteInput],
+    imports: [HlmInputGroupImports, NgIcon, BrnAutocompleteAnchor, BrnAutocompleteClear, BrnAutocompleteInput, NgClass],
     providers: [provideIcons({ lucideSearch, lucideX })],
     changeDetection: ChangeDetectionStrategy.OnPush,
     template: `
-        <hlm-input-group brnAutocompleteAnchor class="w-auto">
+        <hlm-input-group brnAutocompleteAnchor class="w-auto" [ngClass]="classInputGroup()">
             <input
                 brnAutocompleteInput
                 #autocompleteInput="brnAutocompleteInput"
@@ -19,11 +20,12 @@ import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
                 [id]="inputId()"
                 [placeholder]="placeholder()"
                 [aria-invalid]="ariaInvalidOverride()"
+                [ngClass]="classInput()"
             />
 
             @if (showSearch()) {
                 <hlm-input-group-addon>
-                    <ng-icon name="lucideSearch" [class.opacity-50]="autocompleteInput.disabled()" />
+                    <ng-icon name="lucideSearch" [class.opacity-50]="autocompleteInput.disabled()" [ngClass]="classIcon()" />
                 </hlm-input-group-addon>
             }
 
@@ -37,7 +39,7 @@ import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
                         size="icon-xs"
                         variant="ghost"
                     >
-                        <ng-icon name="lucideX" />
+                        <ng-icon name="lucideX" [ngClass]="classIcon()" />
                     </button>
                 </hlm-input-group-addon>
             }
@@ -54,6 +56,10 @@ export class HlmAutocompleteInput {
 
     public readonly showSearch = input<boolean, BooleanInput>(true, { transform: booleanAttribute });
     public readonly showClear = input<boolean, BooleanInput>(false, { transform: booleanAttribute });
+
+    public readonly classInput = input<string>('');
+    public readonly classInputGroup = input<string>('');
+    public readonly classIcon = input<string>('');
 
     /** Manual override for aria-invalid. When not set, auto-detects from the parent autocomplete error state. */
     public readonly ariaInvalidOverride = input<boolean | undefined, BooleanInput>(undefined, {

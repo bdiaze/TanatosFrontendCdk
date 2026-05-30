@@ -4,22 +4,8 @@ import { App } from './app/app';
 
 const url = new URL(window.location.href);
 
-if (url.pathname === '/callback') {
-    const newUrl = `/#/callback${url.search}`;
-    console.log(`Redirigiendo a ${newUrl}`);
-    window.location.replace(newUrl);
-} else if (url.pathname === '/logout') {
-    const newUrl = `/#/logout${url.search}`;
-    console.log(`Redirigiendo a ${newUrl}`);
-    window.location.replace(newUrl);
-} else if (url.pathname === '/flow-callback') {
-    const newUrl = `/#/mi-plan${url.search}`;
-    console.log(`Redirigiendo a ${newUrl}`);
-    window.location.replace(newUrl);
-} else {
-    bootstrapApplication(App, appConfig)
-        .then(() => {
-            document.querySelector('app-root')?.classList.add('app-ready');
-        })
-        .catch((err) => console.error(err));
-}
+bootstrapApplication(App, appConfig)
+    .then(() => {
+        document.querySelector('app-root')?.classList.add('app-ready');
+    })
+    .catch((err) => console.error(err));

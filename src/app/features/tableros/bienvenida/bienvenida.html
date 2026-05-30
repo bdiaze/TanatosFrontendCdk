@@ -1,0 +1,244 @@
+<div class="w-full h-full bg-(--azul) flex flex-col items-start justify-start">
+    <section class="w-full bg-(--azul) text-(--blanco) fade-in">
+        <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-2 flex flex-col items-center justify-center gap-2">
+            <h3 hlmH3>¡Bienvenid@ a Todo en Orden!</h3>
+            <h4 hlmH4 class="text-center text-balance">La plataforma que te ayudará a gestionar tus obligaciones legales</h4>
+            <hlm-separator class="my-2" />
+        </div>
+    </section>
+    @if (negocioStore.informacionUsuario()?.nombre) {
+        @if (!datosNegocioIngresado()) {
+            <section class="w-full bg-(--azul) text-(--blanco) fade-in">
+                <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-2 pb-4 flex flex-col items-center justify-center">
+                    <div class="flex flex-col items-center justify-center gap-2">
+                        <p hlmP class="text-center text-balance">
+                            Primero que todo {{ negocioStore.informacionUsuario()?.nombre }}, cuentanos sobre tu negocio
+                        </p>
+                        <div class="w-full flex flex-col items-center gap-0.5">
+                            <h4 hlmH4>¿Cómo se llama tu negocio?</h4>
+                            <div
+                                class="w-full flex justify-end transition-all duration-500 ease-out"
+                                [class.opacity-100]="invalid('nombre', formNegocio)"
+                                [class.opacity-0]="!invalid('nombre', formNegocio)"
+                                [class.max-h-10]="invalid('nombre', formNegocio)"
+                                [class.max-h-0]="!invalid('nombre', formNegocio)"
+                            >
+                                <p hlmP class="text-sm flex flex-row items-center gap-1 underline underline-offset-3 decoration-destructive">
+                                    <ng-icon hlm size="sm" name="lucideX" class="text-destructive" />Debes ingresar el nombre de tu negocio
+                                </p>
+                            </div>
+                        </div>
+                        <input
+                            hlmInput
+                            class="text-2xl! h-13 text-center font-semibold focus-visible:border-(--blanco) focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
+                            [formControl]="formNegocio.controls['nombre']"
+                        />
+                        <h4 hlmH4 class="mt-1">¿En qué dirección se encuentra?</h4>
+                        <input
+                            hlmInput
+                            class="text-lg! h-10 text-center focus-visible:border-(--blanco) focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
+                            [formControl]="formNegocio.controls['direccion']"
+                        />
+                        <div class="w-full flex flex-col items-center gap-0.5">
+                            <h4 hlmH4 class="mt-1">¿A qué se dedica el negocio?</h4>
+                            <div
+                                class="w-full flex justify-end transition-all duration-500 ease-out delay-150"
+                                [class.opacity-100]="invalid('idActividad', formNegocio)"
+                                [class.opacity-0]="!invalid('idActividad', formNegocio)"
+                                [class.max-h-10]="invalid('idActividad', formNegocio)"
+                                [class.max-h-0]="!invalid('idActividad', formNegocio)"
+                            >
+                                <p hlmP class="text-sm flex flex-row items-center gap-1 underline underline-offset-3 decoration-destructive">
+                                    <ng-icon hlm size="sm" name="lucideX" class="text-destructive" />Debes ingresar una actividad para tu negocio
+                                </p>
+                            </div>
+                        </div>
+                        <hlm-autocomplete
+                            [(search)]="searchActividad"
+                            [itemToString]="actividadAutocompleteItemToString"
+                            [isItemEqualToValue]="actividadAutocompleteIsItemEqualToValue"
+                            class="w-full"
+                            [formControl]="formNegocio.controls['idActividad']"
+                            [autoHighlight]="true"
+                        >
+                            <hlm-autocomplete-input
+                                [showSearch]="true"
+                                [showClear]="true"
+                                classInput="text-lg! text-center selection:bg-(--blanco)/20"
+                                classInputGroup="h-10! transition-all delay-150 has-[[data-slot=input-group-control]:focus-visible]:border-(--blanco) has-[[data-slot=input-group-control]:focus-visible]:ring-(--blanco)/40 has-[>[data-matches-spartan-invalid=true]]:border-destructive! has-[>[data-matches-spartan-invalid=true]]:ring-destructive/20!"
+                                classIcon="text-(--blanco)"
+                            />
+                            <hlm-autocomplete-content *hlmAutocompletePortal>
+                                <hlm-autocomplete-empty>Actividad no encontrada...</hlm-autocomplete-empty>
+                                <div hlmAutocompleteList>
+                                    @for (grupo of actividadAutocompleteFilteredOptions(); track $index; let last = $last) {
+                                        <div hlmAutocompleteGroup>
+                                            <div hlmAutocompleteLabel>
+                                                {{ grupo.rubro }}
+                                            </div>
+                                            @for (actividad of grupo.items; track $index) {
+                                                <hlm-autocomplete-item [value]="actividad.idActividad">
+                                                    {{ actividad.nombreActividad }}
+                                                </hlm-autocomplete-item>
+                                            }
+                                            @if (!last) {
+                                                <div hlmAutocompleteSeparator></div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            </hlm-autocomplete-content>
+                        </hlm-autocomplete>
+                        <div class="w-full flex items-center justify-end mt-1">
+                            <button hlmBtn variant="link" class="text-base text-(--blanco) font-normal decoration-(--blanco)" (click)="siguienteNegocio()">
+                                Siguiente
+                                <ng-icon hlm size="sm" name="lucideMoveRight" class="text-(--blanco)" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        } @else {
+            <section class="w-full bg-(--azul) text-(--blanco) fade-in">
+                <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-2 pb-6 flex flex-col items-center justify-center">
+                    <div class="w-full px-4 flex flex-row items-center justify-between gap-2 md:gap-6">
+                        <div class="flex flex-col items-start justify-center gap-1">
+                            <p hlmP class="text-xl font-semibold">{{ formNegocio.controls.nombre.value }}</p>
+                            <p hlmP class="text-sm">{{ formNegocio.controls.direccion.value }}</p>
+                        </div>
+                        <div class="flex flex-col items-end justify-center">
+                            <p hlmP class="text-sm text-right">{{ nombreRubro(formNegocio.controls.idActividad.value) }}</p>
+                            <p hlmP class="text-lg font-semibold text-right">{{ nombreActividad(formNegocio.controls.idActividad.value) }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        }
+    }
+    @if (datosNegocioIngresado() && !datosPlantillasIngresado()) {
+        <section class="flex-1 w-full bg-(--calipso) text-(--blanco) fade-in">
+            <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-4 flex flex-col items-center justify-center h-full">
+                <div class="flex flex-col items-center justify-center gap-2">
+                    <p hlmP class="text-center text-balance">Selecciona las plantillas de obligaciones con las que debe cumplir tu negocio</p>
+                    <div class="w-full flex flex-col items-center">
+                        <h4 hlmH4>¿Qué obligaciones debes cumplir?</h4>
+                    </div>
+                    @if (plantillas().length >= 0) {
+                        <div class="flex flex-col items-center justify-center">
+                            <div class="flex flex-wrap items-stretch justify-center gap-2 py-3">
+                                @for (plantilla of plantillas(); track plantilla.id) {
+                                    <div hlmCard class="border-none rounded-none py-3 w-full md:max-w-50 gap-1.5 justify-between shadow-none">
+                                        <div hlmCardHeader>
+                                            <h3 hlmCardTitle class="text-center font-serif">
+                                                <div class="flex flex-col items-center justify-center gap-2">
+                                                    <div class="flex flex-row items-center justify-between gap-2 w-full">
+                                                        @if (plantilla.templateActividades?.find(t => t.idTipoActividad === idActividadSignal())) {
+                                                            <ng-icon
+                                                                hlm
+                                                                size="20px"
+                                                                name="lucideStar"
+                                                                class="text-yellow-400"
+                                                                hlmTooltip="¡Te recomendamos esta plantilla!"
+                                                            />
+                                                        } @else {
+                                                            <div class="size-5"></div>
+                                                        }
+                                                        <hlm-switch
+                                                            [checked]="idPlantillasSeleccionadas().has(plantilla.id)"
+                                                            (checkedChange)="togglePlantilla(plantilla.id, $event)"
+                                                            [disabled]="!tienePlanEmpresa() && plantilla.requierePlanEmpresa"
+                                                        />
+                                                        @if (!tienePlanEmpresa() && plantilla.requierePlanEmpresa) {
+                                                            <ng-icon
+                                                                hlm
+                                                                size="20px"
+                                                                name="lucideGem"
+                                                                class="text-(--negro)/85"
+                                                                hlmTooltip="Tu plan restringe el uso de esta plantilla"
+                                                            />
+                                                        } @else {
+                                                            <div class="size-5"></div>
+                                                        }
+                                                    </div>
+                                                    <div class="flex-1">{{ plantilla.nombre }}</div>
+                                                </div>
+                                            </h3>
+                                            <hlm-separator class="my-1" />
+                                        </div>
+                                        <p hlmCardContent class="text-center text-balance text-xs">{{ plantilla.descripcion | plainText }}</p>
+                                        <div hlmCardFooter class="justify-center text-center text-sm font-serif">
+                                            <div class="flex flex-col">
+                                                <hlm-separator class="my-1" />
+                                                Incluye {{ plantilla.templateNormas?.length }} obligaciones
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    <div class="w-full flex items-center justify-evenly mt-1">
+                        <button hlmBtn variant="link" class="text-base text-(--blanco) font-normal decoration-(--blanco)" (click)="anteriorPlantillas()">
+                            <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-(--blanco)" />
+                            Anterior
+                        </button>
+                        <button hlmBtn variant="link" class="text-base text-(--blanco) font-normal decoration-(--blanco)" (click)="siguientePlantillas()">
+                            Siguiente
+                            <ng-icon hlm size="sm" name="lucideMoveRight" class="text-(--blanco)" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    } @else if (datosPlantillasIngresado()) {
+        <section class="flex-1 w-full bg-(--calipso) text-(--blanco) fade-in">
+            <div class="max-w-screen md:max-w-2xl mx-auto px-6 pt-6 pb-4 flex flex-col items-center justify-center h-full">
+                <div class="w-full flex flex-col items-center text-center">
+                    <h4 hlmH4>Plantillas de obligaciones seleccionadas:</h4>
+                </div>
+                <div class="p-2 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-3">
+                    @for (plantilla of plantillasSeleccionadas(); track plantilla.id) {
+                        <div class="flex flex-row items-center justify-center gap-1.5">
+                            <ng-icon hlm size="base" name="lucideCheck" class="text-(--blanco)" />
+                            <p hlmP>{{ plantilla.nombre }}</p>
+                        </div>
+                    } @empty {
+                        <p hlmP>Ninguna plantilla seleccionada...</p>
+                    }
+                </div>
+            </div>
+        </section>
+    }
+    @if (datosPlantillasIngresado()) {
+        <section class="flex-1 w-full bg-(--naranjo) text-(--blanco) fade-in">
+            <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-6 flex flex-col items-center justify-center">
+                <div class="flex flex-col items-center justify-center gap-2 w-full">
+                    <p hlmP class="text-center text-balance">¡Ya tenemos lo básico!</p>
+                    <div class="w-full flex flex-col items-center">
+                        <h4 hlmH4>¿List@ para continuar?</h4>
+                    </div>
+                    <div class="w-full flex items-center justify-evenly mt-4 gap-12">
+                        <button hlmBtn variant="link" class="text-base text-(--blanco) font-normal decoration-(--blanco)" (click)="anteriorGuardar()">
+                            <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-(--blanco)" />
+                            Anterior
+                        </button>
+                        <button
+                            hlmBtn
+                            class="text-lg text-(--blanco) font-semibold decoration-(--blanco) pl-6! pr-10! py-7!"
+                            (click)="siguienteGuardar()"
+                            [disabled]="procesando()"
+                        >
+                            @if (procesando()) {
+                                <hlm-spinner class="text-2xl" />
+                            } @else {
+                                <ng-icon hlm size="base" name="lucideStore" class="text-(--blanco)" />
+                            }
+                            ¡Sí, registra mi negocio!
+                        </button>
+                        <div class="w-27"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+</div>

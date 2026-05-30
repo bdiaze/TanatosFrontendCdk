@@ -1,5 +1,5 @@
 import { environment } from '@environment';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthStore } from '@services/auth-store';
 import { EntAuthObtenerAccessToken } from '@/app/entities/others/ent-auth-obtener-access-token';
@@ -11,6 +11,8 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
+import { NegocioDao } from '@/app/daos/negocio-dao';
+import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 
 @Component({
     selector: 'app-callback',
@@ -26,15 +28,18 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
         }),
     ],
 })
-export class Callback implements OnInit {
+export class Callback implements OnInit, OnDestroy {
+    private paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
     private route = inject(ActivatedRoute);
     private router = inject(Router);
     private authStore = inject(AuthStore);
     private authDao = inject(AuthDao);
+    private negocioDao = inject(NegocioDao);
 
     error = signal('');
 
     ngOnInit() {
+        this.paginaSinMenuEstaticoHelper.quitarMenuEstatico();
         this.authStore.callbackRunning.set(true);
 
         this.route.queryParams.subscribe((params) => {
@@ -89,7 +94,15 @@ export class Callback implements OnInit {
                         sessionStorage.removeItem('pkce_state');
                         sessionStorage.removeItem('pkce_code_verifier');
 
-                        this.router.navigateByUrl('/inicio');
+                        this.negocioDao.obtenerVigentes().subscribe({
+                            next: (res) => {
+                                if (!res || res.length === 0) {
+                                    this.router.navigateByUrl('/bienvenido');
+                                } else {
+                                    this.router.navigateByUrl('/inicio');
+                                }
+                            },
+                        });
                     },
                     error: (err) => {
                         console.error('Ocurrió un error al obtener tokens', err);
@@ -100,5 +113,9 @@ export class Callback implements OnInit {
                     this.authStore.callbackRunning.set(false);
                 });
         });
+    }
+
+    ngOnDestroy(): void {
+        this.paginaSinMenuEstaticoHelper.mostrarMenuEstatico();
     }
 }

@@ -34,6 +34,7 @@ import { MantenedorPlan } from './features/mantenedores/mantenedor-plan/mantened
 import { MantenedorSuscripcion } from './features/mantenedores/mantenedor-suscripcion/mantenedor-suscripcion';
 import { MantenedorEmpleado } from './features/mantenedores/mantenedor-empleado/mantenedor-empleado';
 import { redirectToInicioSesionIniciada } from './helpers/redirect-to-inicio-sesion-iniciada';
+import { Bienvenida } from './features/tableros/bienvenida/bienvenida';
 
 export const routes: Routes = [
     { path: '', component: Inicio, canActivate: [redirectToInicioSesionIniciada] },
@@ -147,6 +148,10 @@ export const routes: Routes = [
         component: MantenedorSuscripcion,
     },
     {
+        path: 'flow-callback',
+        component: MantenedorSuscripcion,
+    },
+    {
         path: 'mis-obligaciones',
         component: MantenedorNormaSuscrita,
     },
@@ -169,5 +174,9 @@ export const routes: Routes = [
     {
         path: 'mi-equipo',
         component: MantenedorEmpleado,
+    },
+    {
+        path: 'bienvenido',
+        component: Bienvenida,
     },
 ];
