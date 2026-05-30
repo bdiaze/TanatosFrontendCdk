@@ -6,7 +6,7 @@ import { HttpBackend, HttpXhrBackend, provideHttpClient, withFetch, withIntercep
 import { authInterceptor } from './interceptors/auth-interceptor';
 
 import '@/app/helpers/locales';
-import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { provideBrnCalendarI18n } from '@spartan-ng/brain/calendar';
 
 export const appConfig: ApplicationConfig = {
@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
         provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
         { provide: HttpBackend, useClass: HttpXhrBackend },
         { provide: LOCALE_ID, useValue: 'es-CL' },
-        { provide: LocationStrategy, useClass: HashLocationStrategy },
+        { provide: LocationStrategy, useClass: PathLocationStrategy },
         provideBrnCalendarI18n({
             formatWeekdayName: (i) => ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'][i],
             formatHeader: (m, y) => {

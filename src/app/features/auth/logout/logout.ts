@@ -8,6 +8,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { clearCookie } from '@/app/helpers/cookie-helper';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { CommonModule } from '@angular/common';
+import { AuthRefreshService } from '@/app/services/auth-refresh-service';
 
 @Component({
     selector: 'app-logout',
@@ -21,8 +22,9 @@ export class Logout {
     private authDao = inject(AuthDao);
     private authStore = inject(AuthStore);
     private router = inject(Router);
+    private authRefreshService = inject(AuthRefreshService);
 
-    backgroundRefreshRunning = this.authStore.backgroundRefreshRunning;
+    backgroundRefreshRunning = this.authRefreshService.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;
     cerrandoSesion = this.authStore.logoutRunning;
 

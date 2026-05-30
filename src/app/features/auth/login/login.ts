@@ -1,3 +1,4 @@
+import { AuthRefreshService } from '@/app/services/auth-refresh-service';
 import { AuthStore } from '@/app/services/auth-store';
 import { Component, computed, inject, Inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { environment } from '@environment';
@@ -14,8 +15,9 @@ export class Login implements OnInit, OnDestroy {
     @Input() vertical: boolean = false;
 
     private authStore = inject(AuthStore);
+    private authRefreshService = inject(AuthRefreshService);
 
-    backgroundRefreshRunning = this.authStore.backgroundRefreshRunning;
+    backgroundRefreshRunning = this.authRefreshService.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;
     iniciandoSesion = signal<boolean>(false);
     registrandose = signal<boolean>(false);

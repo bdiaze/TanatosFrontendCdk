@@ -18,68 +18,59 @@ export class NegocioDao {
     negocioStore = inject(NegocioStore);
 
     obtenerInformacionUsuario(): Observable<SalNegocioInformacionUsuario> {
-        return this.http
-            .get<SalNegocioInformacionUsuario>(
-                environment.tanatosService.apiUrl + '/Negocio/InformacionUsuario',
-            )
-            .pipe(
-                tap((v) => {
-                    const informacionExistente = this.negocioStore.informacionUsuario();
-                    if (
-                        v.nombre !== informacionExistente?.nombre ||
-                        v.apellido !== informacionExistente?.apellido ||
-                        v.email !== informacionExistente?.email ||
-                        v.tienePlanEmpresa !== informacionExistente?.tienePlanEmpresa
-                    ) {
-                        this.negocioStore.informacionUsuario.set(v);
-                    }
-                }),
-            );
+        return this.http.get<SalNegocioInformacionUsuario>(environment.tanatosService.apiUrl + '/Negocio/InformacionUsuario').pipe(
+            tap((v) => {
+                const informacionExistente = this.negocioStore.informacionUsuario();
+                if (
+                    v.nombre !== informacionExistente?.nombre ||
+                    v.apellido !== informacionExistente?.apellido ||
+                    v.email !== informacionExistente?.email ||
+                    v.tienePlanEmpresa !== informacionExistente?.tienePlanEmpresa
+                ) {
+                    this.negocioStore.informacionUsuario.set(v);
+                }
+            }),
+        );
     }
 
     obtenerVigentes(): Observable<SalNegocio[]> {
-        return this.http
-            .get<SalNegocio[]>(environment.tanatosService.apiUrl + '/Negocio/Vigentes')
-            .pipe(
-                tap((v) => {
-                    v = v.sort(
-                        (a, b) =>
-                            new Date(a.fechaCreacion).getTime() -
-                            new Date(b.fechaCreacion).getTime(),
-                    );
-                    if (!this.arraysIguales(v, this.negocioStore.negociosUsuario())) {
-                        this.negocioStore.negociosUsuario.set(v);
-                    }
+        return this.http.get<SalNegocio[]>(environment.tanatosService.apiUrl + '/Negocio/Vigentes').pipe(
+            tap((v) => {
+                v = v.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
+                if (!this.arraysIguales(v, this.negocioStore.negociosUsuario())) {
+                    this.negocioStore.negociosUsuario.set(v);
+                }
 
-                    // Si ya tiene un negocio seleccionado, se trata de mantener ese...
-                    const cookieSeleccionado = getCookie('NegocioSeleccionado');
-                    if (cookieSeleccionado) {
-                        const encontrado = v.find((x) => x.id === Number(cookieSeleccionado));
-                        if (encontrado) {
-                            const seleccionado = this.negocioStore.negocioSeleccionado();
-                            if (
-                                seleccionado?.id !== encontrado.id ||
-                                seleccionado?.nombre !== encontrado.nombre ||
-                                seleccionado?.idTipoActividad !== encontrado.idTipoActividad ||
-                                seleccionado?.direccion !== encontrado.direccion
-                            ) {
-                                this.negocioStore.negocioSeleccionado.set(encontrado);
-                            }
-                            return;
-                        } else {
-                            clearCookie('NegocioSeleccionado');
+                // Si ya tiene un negocio seleccionado, se trata de mantener ese...
+                const cookieSeleccionado = getCookie('NegocioSeleccionado');
+                if (cookieSeleccionado) {
+                    const encontrado = v.find((x) => x.id === Number(cookieSeleccionado));
+                    if (encontrado) {
+                        const seleccionado = this.negocioStore.negocioSeleccionado();
+                        if (
+                            seleccionado?.id !== encontrado.id ||
+                            seleccionado?.nombre !== encontrado.nombre ||
+                            seleccionado?.idTipoActividad !== encontrado.idTipoActividad ||
+                            seleccionado?.direccion !== encontrado.direccion
+                        ) {
+                            this.negocioStore.negocioSeleccionado.set(encontrado);
                         }
+                        return;
+                    } else {
+                        clearCookie('NegocioSeleccionado');
+                        this.negocioStore.negocioSeleccionado.set(null);
                     }
+                }
 
-                    // Por defecto, siempre se selecciona el negocio más antiguo...
-                    if (v.length > 0) {
-                        if (this.negocioStore.negocioSeleccionado()?.id !== v[0].id) {
-                            this.negocioStore.negocioSeleccionado.set(v[0]);
-                        }
-                        setCookie('NegocioSeleccionado', `${v[0].id}`);
+                // Por defecto, siempre se selecciona el negocio más antiguo...
+                if (v.length > 0) {
+                    if (this.negocioStore.negocioSeleccionado()?.id !== v[0].id) {
+                        this.negocioStore.negocioSeleccionado.set(v[0]);
                     }
-                }),
-            );
+                    setCookie('NegocioSeleccionado', `${v[0].id}`);
+                }
+            }),
+        );
     }
 
     crear(entrada: EntNegocioCrear): Observable<SalNegocio> {
@@ -102,11 +93,7 @@ export class NegocioDao {
             const original = mapA.get(x.id);
             if (!original) return false;
 
-            return (
-                original.nombre === x.nombre &&
-                original.direccion === x.direccion &&
-                original.idTipoActividad === x.idTipoActividad
-            );
+            return original.nombre === x.nombre && original.direccion === x.direccion && original.idTipoActividad === x.idTipoActividad;
         });
     }
 }

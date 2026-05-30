@@ -40,18 +40,18 @@
                             @if (cargandoNegocios()) {
                                 <hlm-skeleton class="h-7 w-32 rounded-xl" />
                             } @else {
-                                {{ negocioStore.negocioSeleccionado()?.nombre ?? 'Seleccionar negocio...' }}
+                                @if (negocioStore.negociosUsuario().length === 0) {
+                                    <a hlmBtn variant="link" routerLink="/mis-negocios" class="p-0 h-fit!">¡Crea tu negocio!</a>
+                                } @else {
+                                    {{ negocioStore.negocioSeleccionado()?.nombre ?? 'Seleccionar negocio...' }}
+                                }
                             }
                         </span>
                         <span class="truncate text-sm flex items-center gap-1 font-normal font-serif w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46">
                             @if (cargandoInformacionUsuario()) {
                                 <hlm-skeleton class="h-5 w-36 rounded-xl mt-1" />
                             } @else {
-                                {{
-                                    cargandoInformacionUsuario()
-                                        ? 'Cargando nombre...'
-                                        : `${negocioStore.informacionUsuario()?.nombre ?? ''} ${negocioStore.informacionUsuario()?.apellido ?? ''}`
-                                }}
+                                {{ `${negocioStore.informacionUsuario()?.nombre ?? ''} ${negocioStore.informacionUsuario()?.apellido ?? ''}` }}
                             }
                         </span>
                     </div>

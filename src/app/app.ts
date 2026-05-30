@@ -11,6 +11,7 @@ import { ListonBeta } from './components/liston-beta/liston-beta';
 import { PaginaSinMenuEstaticoHelper } from './helpers/pagina-sin-menu-estatico-helper';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ViewportScroller } from '@angular/common';
+import { AuthRefreshService } from './services/auth-refresh-service';
 @Component({
     selector: 'app-root',
     imports: [RouterOutlet, Header, Footer, Menu, ListonBeta],
@@ -24,6 +25,7 @@ export class App implements OnInit, OnDestroy {
     private viewportScroller = inject(ViewportScroller);
 
     authStore = inject(AuthStore);
+    authRefreshService = inject(AuthRefreshService);
     mobileHelper = inject(MobileHelper);
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
 
@@ -37,7 +39,7 @@ export class App implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.recaptchHelper.load();
-        this.authStore.backgroundRefresh();
+        this.authRefreshService.backgroundRefresh();
     }
 
     private observer?: ResizeObserver;

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { catchError, map, Observable, ReplaySubject, take, tap, throwError } from 'rxjs';
 import { AuthDao } from '../daos/auth-dao';
 import { AuthStore } from './auth-store';
 import { redireccionarALogin } from '../features/auth/login/login';
+import { Router } from '@angular/router';
 
 @Injectable({
     providedIn: 'root',
@@ -14,13 +15,10 @@ export class AuthRefreshService {
     }
 
     private refreshTokenSubject = new ReplaySubject<string>(1);
+    private authDao = inject(AuthDao);
+    private authStore = inject(AuthStore);
 
-    constructor(
-        private authDao: AuthDao,
-        private authStore: AuthStore,
-    ) {}
-
-    refreshToken(): Observable<string> {
+    refreshToken(sinRedirect: boolean = false): Observable<string> {
         if (!this._isRefreshing) {
             this._isRefreshing = true;
             this.refreshTokenSubject = new ReplaySubject<string>(1);
@@ -38,7 +36,7 @@ export class AuthRefreshService {
                         this._isRefreshing = false;
                         this.authStore.setAccessToken(null);
                         this.refreshTokenSubject.error(err);
-                        redireccionarALogin();
+                        if (!sinRedirect) redireccionarALogin();
                         return throwError(() => err);
                     }),
                 )
@@ -46,5 +44,23 @@ export class AuthRefreshService {
         }
 
         return this.refreshTokenSubject.pipe(take(1));
+    }
+
+    backgroundRefreshRunning = signal<boolean>(false);
+    backgroundRefresh() {
+        if (!this.backgroundRefreshRunning() && !this.authStore.accessToken()) {
+            this.backgroundRefreshRunning.set(true);
+
+            this.refreshToken(true)
+                .subscribe({
+                    next: (res) => {},
+                    error: (err) => {
+                        console.warn('No se logra hacer refresh inicial del access token...');
+                    },
+                })
+                .add(() => {
+                    this.backgroundRefreshRunning.set(false);
+                });
+        }
     }
 }

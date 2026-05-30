@@ -14,13 +14,6 @@ export class AuthStore {
 
     private _accessToken = signal<string | null>(null);
 
-    constructor() {
-        const token = sessionStorage.getItem('access_token');
-        if (token) {
-            this.setAccessToken(token);
-        }
-    }
-
     accessToken() {
         return this._accessToken();
     }
@@ -33,8 +26,6 @@ export class AuthStore {
         this._accessToken.set(token);
 
         if (token) {
-            sessionStorage.setItem('access_token', token);
-
             // Se valida si cambiaron los groups del token...
             let mismosGrupos = true;
             const groupsNuevoToken = new Set<string>(jwtDecode<AuthClaims>(token)['cognito:groups'] ?? []);
@@ -61,31 +52,8 @@ export class AuthStore {
             this.negocioStore.negocioSeleccionado.set(null);
             this.negocioStore.informacionUsuario.set(null);
             clearCookie('NegocioSeleccionado');
-            sessionStorage.removeItem('access_token');
             this.groups.set(new Set<string>());
             this.sesionIniciada.set(false);
-        }
-    }
-
-    backgroundRefreshRunning = signal<boolean>(false);
-
-    backgroundRefresh() {
-        if (!this.backgroundRefreshRunning() && !this._accessToken()) {
-            this.backgroundRefreshRunning.set(true);
-
-            this.authDao
-                .refreshAccessToken()
-                .subscribe({
-                    next: (newToken) => {
-                        this.setAccessToken(newToken.accessToken);
-                    },
-                    error: (err) => {
-                        console.warn('No se logra hacer refresh inicial del access token...');
-                    },
-                })
-                .add(() => {
-                    this.backgroundRefreshRunning.set(false);
-                });
         }
     }
 
