@@ -7,12 +7,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     providedIn: 'root',
 })
 export class MenuHelper {
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
 
-    private authStore = inject(AuthStore);
-    private negocioDao = inject(NegocioDao);
+    private readonly authStore = inject(AuthStore);
+    private readonly negocioDao = inject(NegocioDao);
 
-    private logicaEjecutada = signal(false);
+    private readonly logicaEjecutada = signal(false);
 
     constructor() {
         effect(() => {

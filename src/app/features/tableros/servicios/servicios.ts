@@ -20,7 +20,6 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
     selector: 'app-servicios',
     imports: [HlmIcon, NgIcon, FadeIn],
     templateUrl: './servicios.html',
-    styleUrl: './servicios.scss',
     providers: [
         provideIcons({
             lucideStore,

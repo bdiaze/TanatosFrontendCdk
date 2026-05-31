@@ -11,17 +11,8 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
 @Component({
     selector: 'app-modal-eliminacion',
     standalone: true,
-    imports: [
-        HlmButtonImports,
-        HlmCardImports,
-        HlmP,
-        HlmSeparatorImports,
-        NgIcon,
-        HlmIcon,
-        HlmInputImports,
-    ],
+    imports: [HlmButtonImports, HlmCardImports, HlmP, HlmSeparatorImports, NgIcon, HlmIcon, HlmInputImports],
     templateUrl: './modal-eliminacion.html',
-    styleUrl: './modal-eliminacion.scss',
     providers: [provideIcons({ lucideCircleAlert })],
 })
 export class ModalEliminacion {

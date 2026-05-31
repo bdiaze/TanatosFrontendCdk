@@ -60,7 +60,6 @@ import { forkJoin } from 'rxjs';
         RouterModule,
     ],
     templateUrl: './mantenedor-negocio.html',
-    styleUrl: './mantenedor-negocio.scss',
     providers: [
         provideIcons({
             lucideTriangleAlert,
@@ -75,11 +74,11 @@ import { forkJoin } from 'rxjs';
     ],
 })
 export class MantenedorNegocio implements OnInit {
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
 
-    private dao: NegocioDao = inject(NegocioDao);
-    private tipoRubroDao: TipoRubroDao = inject(TipoRubroDao);
-    private tipoActividadDao: TipoActividadDao = inject(TipoActividadDao);
+    private readonly dao: NegocioDao = inject(NegocioDao);
+    private readonly tipoRubroDao: TipoRubroDao = inject(TipoRubroDao);
+    private readonly tipoActividadDao: TipoActividadDao = inject(TipoActividadDao);
     negocioStore: NegocioStore = inject(NegocioStore);
 
     listado = signal([] as SalNegocio[]);

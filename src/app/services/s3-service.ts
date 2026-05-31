@@ -8,13 +8,9 @@ import { formatCurrency } from '@angular/common';
     providedIn: 'root',
 })
 export class S3Service {
-    constructor(private xhrHttp: XhrHttpClient) {}
+    constructor(private readonly xhrHttp: XhrHttpClient) {}
 
-    subirArchivo(
-        presignedUrl: string,
-        presignedFields: Record<string, string>,
-        file: File,
-    ): Observable<HttpEvent<void>> {
+    subirArchivo(presignedUrl: string, presignedFields: Record<string, string>, file: File): Observable<HttpEvent<void>> {
         const formData = new FormData();
 
         // Se añaden los fields
@@ -38,13 +34,7 @@ export class S3Service {
                 retry({
                     count: 3,
                     delay: (error, retryCount) => {
-                        if (
-                            error.status === 400 ||
-                            error.status === 403 ||
-                            error.status === 401 ||
-                            error.status === 413 ||
-                            error.status === 412
-                        ) {
+                        if (error.status === 400 || error.status === 403 || error.status === 401 || error.status === 413 || error.status === 412) {
                             return throwError(() => error);
                         }
 

@@ -13,7 +13,7 @@ import { SalNegocioInformacionUsuario } from '../entities/others/sal-negocio-inf
     providedIn: 'root',
 })
 export class NegocioDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     negocioStore = inject(NegocioStore);
 

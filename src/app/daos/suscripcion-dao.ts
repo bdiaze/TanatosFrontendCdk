@@ -10,24 +10,17 @@ import { SalSuscripcionCrear } from '../entities/others/sal-suscripcion-crear';
     providedIn: 'root',
 })
 export class SuscripcionDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(): Observable<SalSuscripcion[]> {
-        return this.http.get<SalSuscripcion[]>(
-            environment.tanatosService.apiUrl + `/Suscripcion/Vigentes`,
-        );
+        return this.http.get<SalSuscripcion[]>(environment.tanatosService.apiUrl + `/Suscripcion/Vigentes`);
     }
 
     crear(entrada: EntSuscripcionCrear): Observable<SalSuscripcionCrear> {
-        return this.http.post<SalSuscripcionCrear>(
-            environment.tanatosService.apiUrl + '/Suscripcion/',
-            entrada,
-        );
+        return this.http.post<SalSuscripcionCrear>(environment.tanatosService.apiUrl + '/Suscripcion/', entrada);
     }
 
     cancelar(idSuscripcion: number): Observable<void> {
-        return this.http.delete<void>(
-            environment.tanatosService.apiUrl + `/Suscripcion/${idSuscripcion}`,
-        );
+        return this.http.delete<void>(environment.tanatosService.apiUrl + `/Suscripcion/${idSuscripcion}`);
     }
 }

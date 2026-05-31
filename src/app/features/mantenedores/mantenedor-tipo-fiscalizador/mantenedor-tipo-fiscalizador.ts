@@ -30,12 +30,11 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-fiscalizador.html',
-    styleUrl: './mantenedor-tipo-fiscalizador.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoFiscalizador implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private dao: TipoFiscalizadorDao = inject(TipoFiscalizadorDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly dao: TipoFiscalizadorDao = inject(TipoFiscalizadorDao);
 
     listado = signal([] as TipoFiscalizador[]);
     cargando = signal(true);

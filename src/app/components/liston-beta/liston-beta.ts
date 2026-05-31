@@ -11,11 +11,10 @@ import { HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-liston-beta',
     imports: [HlmP, NgClass],
     templateUrl: './liston-beta.html',
-    styleUrl: './liston-beta.scss',
     providers: [provideIcons({})],
 })
 export class ListonBeta {
-    private authStore = inject(AuthStore);
+    private readonly authStore = inject(AuthStore);
     sesionIniciada = computed(() => {
         return this.authStore.sesionIniciada() || this.authStore.logoutRunning() || this.authStore.callbackRunning();
     });

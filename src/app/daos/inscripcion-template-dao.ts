@@ -10,25 +10,17 @@ import { EntInscripcionTemplateDesactivar } from '../entities/others/ent-inscrip
     providedIn: 'root',
 })
 export class InscripcionTemplateDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(idNegocio: number): Observable<SalInscripcionTemplate[]> {
-        return this.http.get<SalInscripcionTemplate[]>(
-            environment.tanatosService.apiUrl + `/InscripcionTemplate/Vigentes/${idNegocio}`
-        );
+        return this.http.get<SalInscripcionTemplate[]>(environment.tanatosService.apiUrl + `/InscripcionTemplate/Vigentes/${idNegocio}`);
     }
 
     activar(entrada: EntInscripcionTemplateActivar): Observable<void> {
-        return this.http.post<void>(
-            environment.tanatosService.apiUrl + '/InscripcionTemplate/Activar',
-            entrada
-        );
+        return this.http.post<void>(environment.tanatosService.apiUrl + '/InscripcionTemplate/Activar', entrada);
     }
 
     desactivar(entrada: EntInscripcionTemplateDesactivar): Observable<void> {
-        return this.http.post<void>(
-            environment.tanatosService.apiUrl + '/InscripcionTemplate/Desactivar',
-            entrada
-        );
+        return this.http.post<void>(environment.tanatosService.apiUrl + '/InscripcionTemplate/Desactivar', entrada);
     }
 }

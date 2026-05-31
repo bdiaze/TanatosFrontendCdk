@@ -84,13 +84,11 @@ import { interval, merge, startWith, Subscription } from 'rxjs';
     ],
 })
 export class MantenedorSuscripcion implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private suscripcionDao: SuscripcionDao = inject(SuscripcionDao);
-    private planDao: PlanDao = inject(PlanDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly suscripcionDao: SuscripcionDao = inject(SuscripcionDao);
+    private readonly planDao: PlanDao = inject(PlanDao);
     negocioStore: NegocioStore = inject(NegocioStore);
-    private activatedRoute = inject(ActivatedRoute);
-    private datePipe = inject(DatePipe);
-    private router = inject(Router);
+    private readonly datePipe = inject(DatePipe);
 
     suscripciones = signal([] as SalSuscripcion[]);
     planesVigentes = signal([] as SalPlan[]);
@@ -116,7 +114,7 @@ export class MantenedorSuscripcion implements OnInit {
     });
     esPlanEmpresa = computed(() => {
         const ultimaSuscripcion = this.ultimaSuscripcion();
-        if (ultimaSuscripcion && ultimaSuscripcion.fechaExpiracion && new Date(ultimaSuscripcion.fechaExpiracion) > new Date()) {
+        if (ultimaSuscripcion?.fechaExpiracion && new Date(ultimaSuscripcion.fechaExpiracion) > new Date()) {
             return true;
         }
         return false;

@@ -10,7 +10,7 @@ import { getCookie } from '../helpers/cookie-helper';
     providedIn: 'root',
 })
 export class AuthDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerAccessToken(entrada: EntAuthObtenerAccessToken): Observable<SalAuthObtenerAccessToken> {
         return this.http.post<SalAuthObtenerAccessToken>(environment.tanatosService.apiUrl + '/public/Auth/ObtenerAccessToken', entrada, {

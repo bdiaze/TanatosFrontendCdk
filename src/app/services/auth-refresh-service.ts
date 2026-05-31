@@ -15,8 +15,8 @@ export class AuthRefreshService {
     }
 
     private refreshTokenSubject = new ReplaySubject<string>(1);
-    private authDao = inject(AuthDao);
-    private authStore = inject(AuthStore);
+    private readonly authDao = inject(AuthDao);
+    private readonly authStore = inject(AuthStore);
 
     refreshToken(sinRedirect: boolean = false): Observable<string> {
         if (!this._isRefreshing) {

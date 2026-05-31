@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
     providedIn: 'root',
 })
 export class XhrHttpClient {
-    private http: HttpClient;
+    private readonly http: HttpClient;
 
     constructor(backend: HttpBackend) {
         this.http = new HttpClient(backend);

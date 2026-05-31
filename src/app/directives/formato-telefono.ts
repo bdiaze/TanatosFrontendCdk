@@ -6,7 +6,7 @@ import { AfterViewInit, Directive, ElementRef, HostListener, Input } from '@angu
 export class FormatoTelefono implements AfterViewInit {
     @Input('formatoTelefono') habilitado: boolean = true;
 
-    constructor(private el: ElementRef<HTMLInputElement>) {}
+    constructor(private readonly el: ElementRef<HTMLInputElement>) {}
 
     ngAfterViewInit() {
         if (!this.habilitado) return;

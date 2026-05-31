@@ -4,13 +4,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { RecaptchaHelper } from '@/app/helpers/recaptcha-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import {
-    FormControl,
-    FormGroup,
-    FormsModule,
-    ReactiveFormsModule,
-    Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMailCheck, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -23,20 +17,8 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
 @Component({
     selector: 'app-formulario-contacto',
-    imports: [
-        HlmButton,
-        HlmInput,
-        HlmTextarea,
-        FormsModule,
-        ReactiveFormsModule,
-        HlmFieldImports,
-        HlmAlertImports,
-        NgIcon,
-        HlmIcon,
-        HlmSpinnerImports,
-    ],
+    imports: [HlmButton, HlmInput, HlmTextarea, FormsModule, ReactiveFormsModule, HlmFieldImports, HlmAlertImports, NgIcon, HlmIcon, HlmSpinnerImports],
     templateUrl: './formulario-contacto.html',
-    styleUrl: './formulario-contacto.scss',
     providers: [
         provideIcons({
             lucideTriangleAlert,
@@ -54,16 +36,9 @@ export class FormularioContacto {
         correo: FormControl<string | null>;
         contenido: FormControl<string | null>;
     }> = new FormGroup({
-        nombre: new FormControl<string | null>({ value: null, disabled: false }, [
-            Validators.required,
-        ]),
-        correo: new FormControl<string | null>({ value: null, disabled: false }, [
-            Validators.required,
-            Validators.email,
-        ]),
-        contenido: new FormControl<string | null>({ value: null, disabled: false }, [
-            Validators.required,
-        ]),
+        nombre: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required]),
+        correo: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required, Validators.email]),
+        contenido: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required]),
     });
 
     procesando = signal<boolean>(false);

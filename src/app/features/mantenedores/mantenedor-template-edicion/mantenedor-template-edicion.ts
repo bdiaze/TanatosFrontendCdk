@@ -17,7 +17,7 @@ import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
 import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { normalize } from '@/app/helpers/string-comparator';
-import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -93,10 +93,10 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         }),
     ],
 })
-export class MantenedorTemplateEdicion {
-    private destroyRef = inject(DestroyRef);
-    private router = inject(Router);
-    private route = inject(ActivatedRoute);
+export class MantenedorTemplateEdicion implements OnInit {
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly router = inject(Router);
+    private readonly route = inject(ActivatedRoute);
     idTemplate = signal<number | null>(null);
 
     templateDao = inject(TemplateDao);
@@ -773,7 +773,7 @@ export class MantenedorTemplateEdicion {
 
         this.form.controls['templateNormas'].controls.forEach((normaControl) => {
             let cronActivacionAutomatica = normaControl.controls['cronActivacionAutomatica'].value?.trim() ?? null;
-            if (cronActivacionAutomatica && cronActivacionAutomatica.length === 0) {
+            if (cronActivacionAutomatica?.length === 0) {
                 cronActivacionAutomatica = null;
             }
 

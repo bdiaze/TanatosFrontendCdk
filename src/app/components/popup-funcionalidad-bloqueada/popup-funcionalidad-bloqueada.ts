@@ -11,7 +11,6 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-popup-funcionalidad-bloqueada',
     imports: [HlmPopoverImports, RouterModule, HlmButtonImports, NgIcon, HlmIcon, HlmH4, HlmP],
     templateUrl: './popup-funcionalidad-bloqueada.html',
-    styleUrl: './popup-funcionalidad-bloqueada.scss',
     providers: [
         provideIcons({
             lucideArrowRight,

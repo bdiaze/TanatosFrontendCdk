@@ -59,7 +59,7 @@ import { S3Service } from '@/app/services/s3-service';
 export class WhatsappMensajes {
     numeroTelefono = input<string | null>();
 
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
     whatsappDao: WhatsappDao = inject(WhatsappDao);
     s3Service: S3Service = inject(S3Service);
 

@@ -30,12 +30,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-receptor-notificacion.html',
-    styleUrl: './mantenedor-tipo-receptor-notificacion.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoReceptorNotificacion implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private tipoReceptorNotificacionDao: TipoReceptorNotificacionDao = inject(TipoReceptorNotificacionDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly tipoReceptorNotificacionDao: TipoReceptorNotificacionDao = inject(TipoReceptorNotificacionDao);
 
     tiposReceptoresNotificacion = signal([] as TipoReceptorNotificacion[]);
     cargando = signal(true);

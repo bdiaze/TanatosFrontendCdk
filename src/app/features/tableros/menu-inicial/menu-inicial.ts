@@ -12,7 +12,6 @@ import { FadeIn } from '@/app/directives/fade-in';
     selector: 'app-menu-inicial',
     imports: [HlmH1, HlmP, HlmItemImports, RouterLink, HlmSpinnerImports, HlmSkeletonImports, FadeIn],
     templateUrl: './menu-inicial.html',
-    styleUrl: './menu-inicial.scss',
 })
 export class MenuInicial {
     urlCalendario = `${environment.urlImages}/images/calendario-reloj-blanco.png`;

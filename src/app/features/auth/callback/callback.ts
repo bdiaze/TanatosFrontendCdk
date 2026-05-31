@@ -18,7 +18,6 @@ import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estat
     selector: 'app-callback',
     imports: [HlmAlertImports, HlmSpinnerImports, HlmProgressImports, HlmSkeletonImports, NgIcon, HlmIcon],
     templateUrl: './callback.html',
-    styleUrl: './callback.scss',
     host: {
         class: 'inline-block h-full w-full',
     },
@@ -29,12 +28,12 @@ import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estat
     ],
 })
 export class Callback implements OnInit, OnDestroy {
-    private paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
-    private route = inject(ActivatedRoute);
-    private router = inject(Router);
-    private authStore = inject(AuthStore);
-    private authDao = inject(AuthDao);
-    private negocioDao = inject(NegocioDao);
+    private readonly paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+    private readonly route = inject(ActivatedRoute);
+    private readonly router = inject(Router);
+    private readonly authStore = inject(AuthStore);
+    private readonly authDao = inject(AuthDao);
+    private readonly negocioDao = inject(NegocioDao);
 
     error = signal('');
 
@@ -53,17 +52,8 @@ export class Callback implements OnInit, OnDestroy {
             if (!code || !returnedState || !storedState || !codeVerifier) {
                 this.authStore.callbackRunning.set(false);
                 if (!this.authStore.sesionIniciada()) {
-                    console.error(
-                        !code
-                            ? 'No se incluyó code en URL de callback'
-                            : !returnedState
-                              ? 'No se incluyó state en URL de callback'
-                              : !storedState
-                                ? 'No se encontró pkce_state en session storage'
-                                : !codeVerifier
-                                  ? 'No se encontró pkce_code_verifier en session storage'
-                                  : '',
-                    );
+                    const mensajeError = this.getMensajeErrorCallback(code, returnedState, storedState, codeVerifier);
+                    console.error(mensajeError);
                     this.error.set('¡Ups! parece que algo salió mal mientras procesabamos tu inicio de sesión, favor intenta nuevamente.');
                 } else {
                     this.router.navigateByUrl('/inicio');
@@ -117,5 +107,13 @@ export class Callback implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.paginaSinMenuEstaticoHelper.mostrarMenuEstatico();
+    }
+
+    private getMensajeErrorCallback(code: string | null, returnedState: string | null, storedState: string | null, codeVerifier: string | null): string {
+        if (!code) return 'No se incluyó code en URL de callback';
+        if (!returnedState) return 'No se incluyó state en URL de callback';
+        if (!storedState) return 'No se encontró pkce_state en session storage';
+        if (!codeVerifier) return 'No se encontró pkce_code_verifier en session storage';
+        return '';
     }
 }

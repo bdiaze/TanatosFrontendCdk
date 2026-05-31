@@ -9,10 +9,9 @@ import { NegocioStore } from './negocio-store';
     providedIn: 'root',
 })
 export class AuthStore {
-    private authDao = inject(AuthDao);
-    private negocioStore = inject(NegocioStore);
+    private readonly negocioStore = inject(NegocioStore);
 
-    private _accessToken = signal<string | null>(null);
+    private readonly _accessToken = signal<string | null>(null);
 
     accessToken() {
         return this._accessToken();

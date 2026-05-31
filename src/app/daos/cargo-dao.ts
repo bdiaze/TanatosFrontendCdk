@@ -10,7 +10,7 @@ import { EntCargoActualizar } from '../entities/others/ent-cargo-actualizar';
     providedIn: 'root',
 })
 export class CargoDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(idNegocio: number): Observable<SalCargo[]> {
         return this.http.get<SalCargo[]>(environment.tanatosService.apiUrl + `/Cargo/Vigentes/${idNegocio}`);

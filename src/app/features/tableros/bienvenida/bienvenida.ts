@@ -53,13 +53,12 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
         HlmSpinnerImports,
     ],
     templateUrl: './bienvenida.html',
-    styleUrl: './bienvenida.scss',
     providers: [provideIcons({ lucideMoveLeft, lucideMoveRight, lucideX, lucideStar, lucideCheck, lucideGem, lucideStore })],
 })
 export class Bienvenida implements OnInit, OnDestroy {
-    private destroyRef = inject(DestroyRef);
-    private router = inject(Router);
-    private paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly router = inject(Router);
+    private readonly paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
     negocioStore = inject(NegocioStore);
     tipoRubroDao = inject(TipoRubroDao);
     tipoActividadDao = inject(TipoActividadDao);

@@ -18,9 +18,11 @@
             preload="auto"
             [poster]="urlVideo1_Poster"
             class="absolute inset-0 w-full h-full object-cover -z-10"
+            aria-hidden="true"
         >
             <source [src]="urlVideo1_WebM" type="video/webm" />
             <source [src]="urlVideo1_MP4" type="video/mp4" />
+            <track kind="none" />
         </video>
     </div>
     <div class="flex flex-col items-center justify-evenly w-full md:w-1/2 px-8 md:px-12 py-10 md:py-8">

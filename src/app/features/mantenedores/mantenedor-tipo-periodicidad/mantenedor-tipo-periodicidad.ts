@@ -32,12 +32,11 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-periodicidad.html',
-    styleUrl: './mantenedor-tipo-periodicidad.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoPeriodicidad implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private dao: TipoPeriodicidadDao = inject(TipoPeriodicidadDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly dao: TipoPeriodicidadDao = inject(TipoPeriodicidadDao);
 
     listado = signal([] as TipoPeriodicidad[]);
     cargando = signal(true);

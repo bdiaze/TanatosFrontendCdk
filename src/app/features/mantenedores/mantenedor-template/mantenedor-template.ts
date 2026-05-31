@@ -31,12 +31,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-template.html',
-    styleUrl: './mantenedor-template.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTemplate implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private dao: TemplateDao = inject(TemplateDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly dao: TemplateDao = inject(TemplateDao);
 
     listado = signal<Template[]>([]);
     cargando = signal(true);

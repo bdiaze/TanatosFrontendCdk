@@ -6,7 +6,7 @@ import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
 export class AutoFocus implements AfterViewInit {
     @Input('autoFocus') habilitado: boolean = true;
 
-    constructor(private el: ElementRef<HTMLInputElement>) {}
+    constructor(private readonly el: ElementRef<HTMLInputElement>) {}
 
     ngAfterViewInit() {
         if (!this.habilitado) return;

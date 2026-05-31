@@ -10,7 +10,6 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-privacidad',
     imports: [HlmH3, HlmH4, HlmP, HlmButton, HlmIcon, NgIcon],
     templateUrl: './privacidad.html',
-    styleUrl: './privacidad.scss',
     providers: [
         provideIcons({
             lucideUserLock,

@@ -13,26 +13,16 @@ import { HlmH2, HlmH4 } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-validar-destinatario',
-    imports: [
-        HlmButtonImports,
-        HlmH2,
-        HlmH4,
-        HlmAlertImports,
-        NgIcon,
-        HlmIcon,
-        HlmSpinnerImports,
-        HlmSeparatorImports,
-    ],
+    imports: [HlmButtonImports, HlmH2, HlmH4, HlmAlertImports, NgIcon, HlmIcon, HlmSpinnerImports, HlmSeparatorImports],
     templateUrl: './validar-destinatario.html',
-    styleUrl: './validar-destinatario.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideSend })],
     host: {
         class: 'inline-block h-full w-full',
     },
 })
 export class ValidarDestinatario implements OnInit {
-    private route = inject(ActivatedRoute);
-    private destinatarioNotificacionDao = inject(DestinatarioNotificacionDao);
+    private readonly route = inject(ActivatedRoute);
+    private readonly destinatarioNotificacionDao = inject(DestinatarioNotificacionDao);
 
     private codigoValidacion: string | undefined;
 
@@ -64,10 +54,7 @@ export class ValidarDestinatario implements OnInit {
                     this.exito.set(true);
                 },
                 error: (err) => {
-                    this.error.set(
-                        err.error ??
-                            'Ocurrió un error al registrarlo como destinatario, intente nuevamente...'
-                    );
+                    this.error.set(err.error ?? 'Ocurrió un error al registrarlo como destinatario, intente nuevamente...');
                 },
             })
             .add(() => {

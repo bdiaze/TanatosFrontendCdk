@@ -50,7 +50,6 @@ import dayjs from 'dayjs';
         PlainTextPipe,
     ],
     templateUrl: './tablero-vencimientos.html',
-    styleUrl: './tablero-vencimientos.scss',
     providers: [
         provideIcons({
             lucideCalendarRange,
@@ -62,7 +61,7 @@ import dayjs from 'dayjs';
     ],
 })
 export class TableroVencimientos {
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
     normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     negocioStore = inject(NegocioStore);
 

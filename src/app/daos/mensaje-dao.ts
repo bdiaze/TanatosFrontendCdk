@@ -9,12 +9,10 @@ import { EntMensajeIngresar } from '../entities/others/ent-mensaje-ingresar';
     providedIn: 'root',
 })
 export class MensajeDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtener(fechaInicial: string, fechaFinal: string): Observable<Mensaje[]> {
-        return this.http.get<Mensaje[]>(
-            environment.tanatosService.apiUrl + `/Mensaje/${fechaInicial}/${fechaFinal}`,
-        );
+        return this.http.get<Mensaje[]>(environment.tanatosService.apiUrl + `/Mensaje/${fechaInicial}/${fechaFinal}`);
     }
 
     ingresar(entrada: EntMensajeIngresar): Observable<void> {
@@ -22,9 +20,6 @@ export class MensajeDao {
     }
 
     ingresarAnonimo(entrada: EntMensajeIngresar): Observable<void> {
-        return this.http.post<void>(
-            environment.tanatosService.apiUrl + '/public/Mensaje/',
-            entrada,
-        );
+        return this.http.post<void>(environment.tanatosService.apiUrl + '/public/Mensaje/', entrada);
     }
 }

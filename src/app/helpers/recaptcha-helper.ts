@@ -26,7 +26,7 @@ export class RecaptchaHelper {
             script.async = true;
             script.defer = true;
             script.onload = () => resolve();
-            script.onerror = () => reject();
+            script.onerror = () => reject(new Error('No se pudo cargar el script de reCAPTCHA'));
 
             document.head.appendChild(script);
         });

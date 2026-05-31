@@ -76,7 +76,7 @@ export class HtmlSanitizerHelper {
             ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
 
             // Solo http, https
-            ALLOWED_URI_REGEXP: /^(?:(?:https?):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+            ALLOWED_URI_REGEXP: /^(?:(?:https?):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
         });
     }
 }

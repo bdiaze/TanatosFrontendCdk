@@ -10,7 +10,6 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-politica-de-cookies',
     imports: [HlmH3, HlmH4, HlmP, HlmButton, HlmIcon, NgIcon],
     templateUrl: './politica-de-cookies.html',
-    styleUrl: './politica-de-cookies.scss',
     providers: [
         provideIcons({
             lucideCookie,

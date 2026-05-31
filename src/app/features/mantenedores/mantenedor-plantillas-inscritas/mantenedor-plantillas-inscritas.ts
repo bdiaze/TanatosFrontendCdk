@@ -61,7 +61,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         RouterModule,
     ],
     templateUrl: './mantenedor-plantillas-inscritas.html',
-    styleUrl: './mantenedor-plantillas-inscritas.scss',
     providers: [
         provideIcons({
             lucideTriangleAlert,
@@ -79,7 +78,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ],
 })
 export class MantenedorPlantillasInscritas {
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
 
     inscripcionTemplateDao: InscripcionTemplateDao = inject(InscripcionTemplateDao);
     templateDao: TemplateDao = inject(TemplateDao);

@@ -5,6 +5,5 @@ import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
     selector: 'app-empty-hero',
     imports: [HlmSkeletonImports],
     templateUrl: './empty-hero.html',
-    styleUrl: './empty-hero.scss',
 })
 export class EmptyHero {}

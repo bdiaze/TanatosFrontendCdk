@@ -8,12 +8,10 @@ import { environment } from '@/environments/environment';
     providedIn: 'root',
 })
 export class TemplateDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtener(id: number): Observable<Template | null> {
-        return this.http.get<Template | null>(
-            environment.tanatosService.apiUrl + `/Template/${id}`
-        );
+        return this.http.get<Template | null>(environment.tanatosService.apiUrl + `/Template/${id}`);
     }
 
     obtenerVigentes(): Observable<Template[]> {
@@ -21,22 +19,15 @@ export class TemplateDao {
     }
 
     obtenerVigentesConNormas(): Observable<Template[]> {
-        return this.http.get<Template[]>(
-            environment.tanatosService.apiUrl + '/Template/VigentesConNormas'
-        );
+        return this.http.get<Template[]>(environment.tanatosService.apiUrl + '/Template/VigentesConNormas');
     }
 
     obtenerVigentesConNormasYRecomendacion(idTipoActividad: number): Observable<Template[]> {
-        return this.http.get<Template[]>(
-            environment.tanatosService.apiUrl +
-                `/Template/VigentesConNormasYRecomendacion/${idTipoActividad}`
-        );
+        return this.http.get<Template[]>(environment.tanatosService.apiUrl + `/Template/VigentesConNormasYRecomendacion/${idTipoActividad}`);
     }
 
     obtenerPorVigencia(vigencia: boolean | null): Observable<Template[]> {
-        return this.http.get<Template[]>(
-            environment.tanatosService.apiUrl + `/Template/PorVigencia/${vigencia}`
-        );
+        return this.http.get<Template[]>(environment.tanatosService.apiUrl + `/Template/PorVigencia/${vigencia}`);
     }
 
     crear(entrada: Template): Observable<Template> {

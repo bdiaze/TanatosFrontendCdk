@@ -10,16 +10,14 @@ import { EntPlanCrearEditar } from '../entities/others/ent-plan-crear-editar';
     providedIn: 'root',
 })
 export class PlanDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(): Observable<SalPlan[]> {
         return this.http.get<SalPlan[]>(environment.tanatosService.apiUrl + '/Plan/Vigentes');
     }
 
     obtenerPorVigencia(vigencia: boolean | null): Observable<Plan[]> {
-        return this.http.get<Plan[]>(
-            environment.tanatosService.apiUrl + `/Plan/PorVigencia/${vigencia}`,
-        );
+        return this.http.get<Plan[]>(environment.tanatosService.apiUrl + `/Plan/PorVigencia/${vigencia}`);
     }
 
     crear(entrada: EntPlanCrearEditar): Observable<Plan> {

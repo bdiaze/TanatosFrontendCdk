@@ -20,7 +20,7 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor {
     content = input<string | null | undefined>(null);
     placeholder = input<string | null>(null);
 
-    private htmlSanitizerHelper = inject(HtmlSanitizerHelper);
+    private readonly htmlSanitizerHelper = inject(HtmlSanitizerHelper);
 
     safeContent = computed(() => {
         return this.htmlSanitizerHelper.sanitizeQuill(this.content());

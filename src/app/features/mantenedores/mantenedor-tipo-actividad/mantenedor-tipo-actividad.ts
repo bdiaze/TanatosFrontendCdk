@@ -37,13 +37,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-actividad.html',
-    styleUrl: './mantenedor-tipo-actividad.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoActividad implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private dao: TipoActividadDao = inject(TipoActividadDao);
-    private tipoRubroDao: TipoRubroDao = inject(TipoRubroDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly dao: TipoActividadDao = inject(TipoActividadDao);
+    private readonly tipoRubroDao: TipoRubroDao = inject(TipoRubroDao);
 
     listado = signal([] as TipoActividad[]);
     tiposRubros = signal([] as TipoRubro[]);

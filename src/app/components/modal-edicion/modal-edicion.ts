@@ -37,7 +37,6 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
         HlmAutocompleteImports,
     ],
     templateUrl: './modal-edicion.html',
-    styleUrl: './modal-edicion.scss',
     providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideSquarePen })],
 })
 export class ModalEdicion implements OnInit {
@@ -58,7 +57,8 @@ export class ModalEdicion implements OnInit {
     ngOnInit() {
         const camposForm: any = {};
         this.campos.forEach((campo) => {
-            let valorInicial = campo.tipo === 'boolean' ? (this.item ? this.item[campo.llave] : false) : this.item ? this.item[campo.llave] : null;
+            const valorDelItem = this.item ? this.item[campo.llave] : null;
+            let valorInicial = campo.tipo === 'boolean' ? (valorDelItem ?? false) : valorDelItem;
 
             if (valorInicial === '') valorInicial = null;
 

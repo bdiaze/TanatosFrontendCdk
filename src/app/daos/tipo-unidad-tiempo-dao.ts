@@ -8,37 +8,25 @@ import { TipoUnidadTiempo } from '../entities/models/tipo-unidad-tiempo';
     providedIn: 'root',
 })
 export class TipoUnidadTiempoDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(): Observable<TipoUnidadTiempo[]> {
-        return this.http.get<TipoUnidadTiempo[]>(
-            environment.tanatosService.apiUrl + '/TipoUnidadTiempo/Vigentes'
-        );
+        return this.http.get<TipoUnidadTiempo[]>(environment.tanatosService.apiUrl + '/TipoUnidadTiempo/Vigentes');
     }
 
     obtenerPorVigencia(vigencia: boolean | null): Observable<TipoUnidadTiempo[]> {
-        return this.http.get<TipoUnidadTiempo[]>(
-            environment.tanatosService.apiUrl + `/TipoUnidadTiempo/PorVigencia/${vigencia}`
-        );
+        return this.http.get<TipoUnidadTiempo[]>(environment.tanatosService.apiUrl + `/TipoUnidadTiempo/PorVigencia/${vigencia}`);
     }
 
     crear(entrada: TipoUnidadTiempo): Observable<TipoUnidadTiempo> {
-        return this.http.post<TipoUnidadTiempo>(
-            environment.tanatosService.apiUrl + '/TipoUnidadTiempo/',
-            entrada
-        );
+        return this.http.post<TipoUnidadTiempo>(environment.tanatosService.apiUrl + '/TipoUnidadTiempo/', entrada);
     }
 
     actualizar(entrada: TipoUnidadTiempo): Observable<TipoUnidadTiempo> {
-        return this.http.put<TipoUnidadTiempo>(
-            environment.tanatosService.apiUrl + '/TipoUnidadTiempo/',
-            entrada
-        );
+        return this.http.put<TipoUnidadTiempo>(environment.tanatosService.apiUrl + '/TipoUnidadTiempo/', entrada);
     }
 
     eliminar(id: number): Observable<void> {
-        return this.http.delete<void>(
-            environment.tanatosService.apiUrl + `/TipoUnidadTiempo/${id}`
-        );
+        return this.http.delete<void>(environment.tanatosService.apiUrl + `/TipoUnidadTiempo/${id}`);
     }
 }

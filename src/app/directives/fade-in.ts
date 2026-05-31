@@ -5,8 +5,8 @@ import { AfterViewInit, Directive, ElementRef, EventEmitter, HostBinding, HostLi
 })
 export class FadeIn implements AfterViewInit {
     constructor(
-        private el: ElementRef,
-        private renderer: Renderer2,
+        private readonly el: ElementRef,
+        private readonly renderer: Renderer2,
     ) {}
 
     ngAfterViewInit() {

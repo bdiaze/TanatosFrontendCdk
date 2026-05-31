@@ -68,7 +68,6 @@ import { EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso } from '@/app/entiti
         RouterModule,
     ],
     templateUrl: './vencimiento.html',
-    styleUrl: './vencimiento.scss',
     providers: [
         provideIcons({
             lucideCalendarCheck,
@@ -85,9 +84,8 @@ import { EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso } from '@/app/entiti
 export class Vencimiento implements OnInit {
     @ViewChild(PopupFuncionalidadBloqueada) popupFuncionalidadBloqueada?: any;
 
-    private destroyRef = inject(DestroyRef);
-    private route = inject(ActivatedRoute);
-    // negocioStore = inject(NegocioStore);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly route = inject(ActivatedRoute);
 
     codigoAcceso = signal<string | null>(null);
     idNormaSuscrita = signal<number | null>(null);
@@ -142,7 +140,7 @@ export class Vencimiento implements OnInit {
         });
     }
 
-    private refrescarAdjuntos$ = new Subject<void>();
+    private readonly refrescarAdjuntos$ = new Subject<void>();
 
     ngOnInit(): void {
         this.route.paramMap.subscribe((params) => {

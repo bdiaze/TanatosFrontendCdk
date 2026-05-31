@@ -12,7 +12,6 @@ import { FadeIn } from '@/app/directives/fade-in';
     selector: 'app-contacto',
     imports: [FormularioContacto, HlmIcon, NgIcon, HlmH3, FadeIn],
     templateUrl: './contacto.html',
-    styleUrl: './contacto.scss',
     providers: [
         provideIcons({
             lucideMailbox,

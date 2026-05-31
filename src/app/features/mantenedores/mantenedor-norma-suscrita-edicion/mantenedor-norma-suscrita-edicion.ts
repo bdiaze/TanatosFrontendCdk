@@ -102,9 +102,9 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
     ],
 })
 export class MantenedorNormaSuscritaEdicion implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private router = inject(Router);
-    private route = inject(ActivatedRoute);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly router = inject(Router);
+    private readonly route = inject(ActivatedRoute);
     idNormaSuscrita = signal<number | null>(null);
 
     normaSuscritaDao = inject(NormaSuscritaDao);

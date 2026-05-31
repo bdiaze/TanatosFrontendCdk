@@ -15,7 +15,7 @@ import { EntNormaSuscritaCompletarNormaPorCodigoAcceso } from '../entities/other
     providedIn: 'root',
 })
 export class NormaSuscritaDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(idNegocio: number): Observable<SalNormaSuscrita[]> {
         return this.http.get<SalNormaSuscrita[]>(environment.tanatosService.apiUrl + `/NormaSuscrita/Vigentes/${idNegocio}`);

@@ -69,7 +69,6 @@ import { AutoFocus } from '@/app/directives/auto-focus';
         RouterLink,
     ],
     templateUrl: './modal-mantenedor-empleado.html',
-    styleUrl: './modal-mantenedor-empleado.scss',
     providers: [provideIcons({ lucideContactRound, lucidePlus, lucideMail, lucideSmartphone, lucideTrash2, lucideGem })],
 })
 export class ModalMantenedorEmpleado {
@@ -77,7 +76,7 @@ export class ModalMantenedorEmpleado {
     @Output() cerrar = new EventEmitter<void>();
     @Output() postGuardar = new EventEmitter<void>();
 
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
 
     empleadoDao = inject(EmpleadoDao);
     cargoDao = inject(CargoDao);

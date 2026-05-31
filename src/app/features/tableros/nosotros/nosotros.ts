@@ -1,7 +1,7 @@
 import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { environment } from '@/environments/environment';
-import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideHeartHandshake,
@@ -20,7 +20,6 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
     selector: 'app-nosotros',
     imports: [HlmIcon, NgIcon, FadeIn],
     templateUrl: './nosotros.html',
-    styleUrl: './nosotros.scss',
     providers: [
         provideIcons({
             lucideStore,
@@ -35,7 +34,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
         }),
     ],
 })
-export class Nosotros implements OnInit, OnDestroy {
+export class Nosotros implements OnInit, OnDestroy, AfterViewInit {
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
 
     urlFondo1_640 = `${environment.urlImages}/images/latina-morena-posando-en-interiores/640.webp`;

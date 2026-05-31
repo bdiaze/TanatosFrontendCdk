@@ -16,7 +16,7 @@ import { EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso } from '../entities/
     providedIn: 'root',
 })
 export class DocumentoAdjuntoDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(idHistorialNormaSuscrita: number): Observable<SalDocumentoAdjunto[]> {
         return this.http.get<SalDocumentoAdjunto[]>(environment.tanatosService.apiUrl + `/DocumentoAdjunto/Vigentes/${idHistorialNormaSuscrita}`);

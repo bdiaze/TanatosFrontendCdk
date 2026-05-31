@@ -50,7 +50,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmBreadCrumbImports,
     ],
     templateUrl: './mantenedor-norma-suscrita.html',
-    styleUrl: './mantenedor-norma-suscrita.scss',
     providers: [
         provideIcons({
             lucideTriangleAlert,
@@ -67,7 +66,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ],
 })
 export class MantenedorNormaSuscrita {
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
     normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
@@ -82,7 +81,7 @@ export class MantenedorNormaSuscrita {
 
     itemSeleccionado = signal<SalNormaSuscrita | null>(null);
 
-    constructor(private plainTextPipe: PlainTextPipe) {
+    constructor(private readonly plainTextPipe: PlainTextPipe) {
         effect(() => {
             const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
 

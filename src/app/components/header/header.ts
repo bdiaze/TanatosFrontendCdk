@@ -21,7 +21,6 @@ import { FadeIn } from '@/app/directives/fade-in';
     selector: 'app-header',
     imports: [HlmButtonImports, Login, Logout, RouterLink, HlmSeparatorImports, NgIcon, HlmIcon, Menu, ClickOutside, CommonModule, FadeIn],
     templateUrl: './header.html',
-    styleUrl: './header.scss',
     providers: [
         provideIcons({
             lucideMenu,
@@ -31,7 +30,7 @@ import { FadeIn } from '@/app/directives/fade-in';
 export class Header {
     urlLogo = `${environment.urlImages}/images/logo.svg`;
 
-    private authStore = inject(AuthStore);
+    private readonly authStore = inject(AuthStore);
     mobileHelper = inject(MobileHelper);
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
 

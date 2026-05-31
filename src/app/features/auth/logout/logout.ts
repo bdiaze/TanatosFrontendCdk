@@ -14,15 +14,14 @@ import { AuthRefreshService } from '@/app/services/auth-refresh-service';
     selector: 'app-logout',
     imports: [HlmButtonImports, HlmSpinnerImports, CommonModule],
     templateUrl: './logout.html',
-    styleUrl: './logout.scss',
 })
 export class Logout {
     @Input() primary: boolean = false;
 
-    private authDao = inject(AuthDao);
-    private authStore = inject(AuthStore);
-    private router = inject(Router);
-    private authRefreshService = inject(AuthRefreshService);
+    private readonly authDao = inject(AuthDao);
+    private readonly authStore = inject(AuthStore);
+    private readonly router = inject(Router);
+    private readonly authRefreshService = inject(AuthRefreshService);
 
     backgroundRefreshRunning = this.authRefreshService.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;

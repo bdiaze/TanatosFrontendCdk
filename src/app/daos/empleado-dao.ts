@@ -10,7 +10,7 @@ import { EntEmpleadoActualizar } from '../entities/others/ent-empleado-actualiza
     providedIn: 'root',
 })
 export class EmpleadoDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(idNegocio: number): Observable<SalEmpleado[]> {
         return this.http.get<SalEmpleado[]>(environment.tanatosService.apiUrl + `/Empleado/Vigentes/${idNegocio}`);

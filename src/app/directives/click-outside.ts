@@ -4,9 +4,9 @@ import { Directive, ElementRef, EventEmitter, HostListener, Output } from '@angu
     selector: '[clickOutside]',
 })
 export class ClickOutside {
-    @Output() onClickOutside = new EventEmitter<void>();
+    @Output() postClickOutside = new EventEmitter<void>();
 
-    constructor(private el: ElementRef<HTMLElement>) {}
+    constructor(private readonly el: ElementRef<HTMLElement>) {}
 
     @HostListener('document:click', ['$event'])
     onClick(event: MouseEvent) {
@@ -23,7 +23,7 @@ export class ClickOutside {
         if (target.closest('hlm-dropdown-menu[sidebar-dropdown-menu]')) return;
 
         if (!this.el.nativeElement.contains(target)) {
-            this.onClickOutside.emit();
+            this.postClickOutside.emit();
         }
     }
 }

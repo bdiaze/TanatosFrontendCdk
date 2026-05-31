@@ -9,13 +9,12 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
     selector: 'app-login',
     imports: [HlmButtonImports, HlmSpinnerImports],
     templateUrl: './login.html',
-    styleUrl: './login.scss',
 })
 export class Login implements OnInit, OnDestroy {
     @Input() vertical: boolean = false;
 
-    private authStore = inject(AuthStore);
-    private authRefreshService = inject(AuthRefreshService);
+    private readonly authStore = inject(AuthStore);
+    private readonly authRefreshService = inject(AuthRefreshService);
 
     backgroundRefreshRunning = this.authRefreshService.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;

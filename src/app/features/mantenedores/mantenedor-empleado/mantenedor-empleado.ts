@@ -62,7 +62,6 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
         RouterLink,
     ],
     templateUrl: './mantenedor-empleado.html',
-    styleUrl: './mantenedor-empleado.scss',
     providers: [
         provideIcons({
             lucideTriangleAlert,
@@ -78,7 +77,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
     ],
 })
 export class MantenedorEmpleado {
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
 
     empleadoDao: EmpleadoDao = inject(EmpleadoDao);
     cargoDao = inject(CargoDao);

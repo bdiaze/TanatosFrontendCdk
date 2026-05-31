@@ -37,12 +37,11 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
         DecimalPipe,
     ],
     templateUrl: './mantenedor-plan.html',
-    styleUrl: './mantenedor-plan.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorPlan implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private dao: PlanDao = inject(PlanDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly dao: PlanDao = inject(PlanDao);
 
     listado = signal([] as Plan[]);
     cargando = signal(true);

@@ -8,32 +8,22 @@ import { environment } from '@/environments/environment';
     providedIn: 'root',
 })
 export class TipoActividadDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
     obtenerVigentes(): Observable<TipoActividad[]> {
-        return this.http.get<TipoActividad[]>(
-            environment.tanatosService.apiUrl + '/TipoActividad/Vigentes'
-        );
+        return this.http.get<TipoActividad[]>(environment.tanatosService.apiUrl + '/TipoActividad/Vigentes');
     }
 
     obtenerPorVigencia(vigencia: boolean | null): Observable<TipoActividad[]> {
-        return this.http.get<TipoActividad[]>(
-            environment.tanatosService.apiUrl + `/TipoActividad/PorVigencia/${vigencia}`
-        );
+        return this.http.get<TipoActividad[]>(environment.tanatosService.apiUrl + `/TipoActividad/PorVigencia/${vigencia}`);
     }
 
     crear(entrada: TipoActividad): Observable<TipoActividad> {
-        return this.http.post<TipoActividad>(
-            environment.tanatosService.apiUrl + '/TipoActividad/',
-            entrada
-        );
+        return this.http.post<TipoActividad>(environment.tanatosService.apiUrl + '/TipoActividad/', entrada);
     }
 
     actualizar(entrada: TipoActividad): Observable<TipoActividad> {
-        return this.http.put<TipoActividad>(
-            environment.tanatosService.apiUrl + '/TipoActividad/',
-            entrada
-        );
+        return this.http.put<TipoActividad>(environment.tanatosService.apiUrl + '/TipoActividad/', entrada);
     }
 
     eliminar(id: number): Observable<void> {

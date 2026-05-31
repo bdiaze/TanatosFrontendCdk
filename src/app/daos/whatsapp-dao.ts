@@ -12,12 +12,9 @@ import { EntWhatsappEnviar } from '../entities/others/ent-whatsapp-enviar';
     providedIn: 'root',
 })
 export class WhatsappDao {
-    constructor(private http: HttpClient) {}
+    constructor(private readonly http: HttpClient) {}
 
-    obtenerConversaciones(
-        desde: Date | null = null,
-        hasta: Date | null = null,
-    ): Observable<SalWhatsappConversacion[]> {
+    obtenerConversaciones(desde: Date | null = null, hasta: Date | null = null): Observable<SalWhatsappConversacion[]> {
         const params = new HttpParams();
         if (desde) {
             params.set('desde', desde.toISOString());
@@ -26,17 +23,10 @@ export class WhatsappDao {
             params.set('hasta', hasta.toISOString());
         }
 
-        return this.http.get<SalWhatsappConversacion[]>(
-            environment.tanatosService.apiUrl + '/Whatsapp/Conversaciones',
-            { params },
-        );
+        return this.http.get<SalWhatsappConversacion[]>(environment.tanatosService.apiUrl + '/Whatsapp/Conversaciones', { params });
     }
 
-    obtenerMensajes(
-        numeroTelefono: string,
-        desde: Date | null = null,
-        hasta: Date | null = null,
-    ): Observable<SalWhatsappMensaje[]> {
+    obtenerMensajes(numeroTelefono: string, desde: Date | null = null, hasta: Date | null = null): Observable<SalWhatsappMensaje[]> {
         const params = new HttpParams().set('numeroTelefono', numeroTelefono);
         if (desde) {
             params.set('desde', desde.toISOString());
@@ -45,19 +35,13 @@ export class WhatsappDao {
             params.set('hasta', hasta.toISOString());
         }
 
-        return this.http.get<SalWhatsappMensaje[]>(
-            environment.tanatosService.apiUrl + '/Whatsapp/Mensajes',
-            { params },
-        );
+        return this.http.get<SalWhatsappMensaje[]>(environment.tanatosService.apiUrl + '/Whatsapp/Mensajes', { params });
     }
 
     obtenerMedia(whatsappMessageId: string): Observable<SalWhatsappMedia> {
         const params = new HttpParams().set('whatsappMessageId', whatsappMessageId);
 
-        return this.http.get<SalWhatsappMedia>(
-            environment.tanatosService.apiUrl + '/Whatsapp/Media',
-            { params },
-        );
+        return this.http.get<SalWhatsappMedia>(environment.tanatosService.apiUrl + '/Whatsapp/Media', { params });
     }
 
     enviar(para: string, cuerpo: string): Observable<SalWhatsappEnviar> {
@@ -66,9 +50,6 @@ export class WhatsappDao {
             cuerpo,
         };
 
-        return this.http.post<SalWhatsappEnviar>(
-            environment.tanatosService.apiUrl + '/Whatsapp/Enviar',
-            entrada,
-        );
+        return this.http.post<SalWhatsappEnviar>(environment.tanatosService.apiUrl + '/Whatsapp/Enviar', entrada);
     }
 }

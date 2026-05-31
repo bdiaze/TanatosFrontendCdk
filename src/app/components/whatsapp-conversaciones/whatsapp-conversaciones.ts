@@ -31,7 +31,6 @@ import { interval, switchMap } from 'rxjs';
         HlmAlertImports,
     ],
     templateUrl: './whatsapp-conversaciones.html',
-    styleUrl: './whatsapp-conversaciones.scss',
     providers: [provideIcons({ lucideMessageCircleMore, lucideTag, lucideTriangleAlert })],
 })
 export class WhatsappConversaciones implements OnInit {
@@ -39,7 +38,7 @@ export class WhatsappConversaciones implements OnInit {
 
     tres = signal([0, 1, 2]);
 
-    private destroyRef = inject(DestroyRef);
+    private readonly destroyRef = inject(DestroyRef);
     whatsappDao: WhatsappDao = inject(WhatsappDao);
 
     conversaciones = signal([] as SalWhatsappConversacion[]);

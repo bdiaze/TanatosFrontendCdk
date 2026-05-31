@@ -14,7 +14,7 @@
     border-style: var(--tw-border-style);
     border-bottom-left-radius: calc(var(--radius) - 2px);
     border-bottom-right-radius: calc(var(--radius) - 2px);
-    border: none;
+    border-width: 0;
 }
 
 :host ::ng-deep .ql-toolbar .ql-formats button {

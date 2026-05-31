@@ -30,12 +30,11 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-categoria-norma.html',
-    styleUrl: './mantenedor-categoria-norma.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorCategoriaNorma implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private dao: CategoriaNormaDao = inject(CategoriaNormaDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly dao: CategoriaNormaDao = inject(CategoriaNormaDao);
 
     listado = signal([] as CategoriaNorma[]);
     cargando = signal(true);

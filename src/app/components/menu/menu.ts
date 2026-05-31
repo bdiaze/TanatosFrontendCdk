@@ -78,14 +78,13 @@ import { filter, map } from 'rxjs';
     ],
 })
 export class Menu implements OnInit {
-    @Output() onClick = new EventEmitter<void>();
+    @Output() postClickItem = new EventEmitter<void>();
 
     @Input() withClose = false;
     @Input() estatico = false;
-    @Output() onClose = new EventEmitter<void>();
+    @Output() postCerrarMenu = new EventEmitter<void>();
 
-    private destroyRef = inject(DestroyRef);
-    private router = inject(Router);
+    private readonly router = inject(Router);
 
     authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
@@ -297,7 +296,7 @@ export class Menu implements OnInit {
     }
 
     tieneUrlHijoActivo(opcion: OpcionMenu, url: string) {
-        if (opcion.tipo === 'item' && opcion.items && opcion.items.some((subitem) => subitem.url === url)) {
+        if (opcion.tipo === 'item' && opcion.items?.some((subitem) => subitem.url === url)) {
             return true;
         }
         return false;
@@ -334,11 +333,11 @@ export class Menu implements OnInit {
     cargandoInformacionUsuario = this.menuHelper.cargandoInformacionUsuario;
 
     click() {
-        this.onClick.emit();
+        this.postClickItem.emit();
     }
 
     cerrar() {
-        this.onClose.emit();
+        this.postCerrarMenu.emit();
     }
 }
 

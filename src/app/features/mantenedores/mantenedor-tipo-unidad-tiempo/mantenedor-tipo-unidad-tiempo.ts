@@ -32,12 +32,11 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-unidad-tiempo.html',
-    styleUrl: './mantenedor-tipo-unidad-tiempo.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoUnidadTiempo implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private dao: TipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly dao: TipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
 
     listado = signal([] as TipoUnidadTiempo[]);
     cargando = signal(true);

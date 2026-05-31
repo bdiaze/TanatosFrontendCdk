@@ -6,7 +6,7 @@ import { AfterViewInit, Directive, ElementRef, HostListener, Input } from '@angu
 export class FormatoCorreo implements AfterViewInit {
     @Input('formatoCorreo') habilitado: boolean = true;
 
-    constructor(private el: ElementRef<HTMLInputElement>) {}
+    constructor(private readonly el: ElementRef<HTMLInputElement>) {}
 
     ngAfterViewInit() {
         if (!this.habilitado) return;

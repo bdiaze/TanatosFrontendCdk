@@ -10,7 +10,6 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-aviso-legal',
     imports: [HlmH3, HlmP, HlmButton, HlmIcon, NgIcon],
     templateUrl: './aviso-legal.html',
-    styleUrl: './aviso-legal.scss',
     providers: [
         provideIcons({
             lucideScale,

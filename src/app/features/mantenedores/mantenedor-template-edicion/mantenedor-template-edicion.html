@@ -347,7 +347,7 @@
                                                             <div hlmField class="flex justify-center items-center gap-1 cabecera-norma md:w-[30%] order-1">
                                                                 <hlm-input-group>
                                                                     <hlm-input-group-addon align="block-start">
-                                                                        <label for="id" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap"
+                                                                        <label for="idNorma" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap"
                                                                             >ID</label
                                                                         >
                                                                         <hlm-field-error
@@ -363,7 +363,7 @@
                                                                         hlmInputGroupInput
                                                                         type="number"
                                                                         class="text-sm transition-all duration-500 ease-out"
-                                                                        id="id"
+                                                                        id="idNorma"
                                                                         [formControl]="norma.controls['idNorma']"
                                                                     />
                                                                 </hlm-input-group>
@@ -371,7 +371,10 @@
                                                             <div hlmField class="flex justify-center items-center gap-1 order-3 md:order-2">
                                                                 <hlm-input-group>
                                                                     <hlm-input-group-addon align="block-start">
-                                                                        <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap"
+                                                                        <label
+                                                                            for="nombreNorma"
+                                                                            hlmLabel
+                                                                            class="text-xs opacity-80 font-semibold whitespace-nowrap"
                                                                             >Nombre</label
                                                                         >
                                                                         <hlm-field-error
@@ -387,7 +390,7 @@
                                                                         hlmInputGroupInput
                                                                         type="text"
                                                                         class="text-sm transition-all duration-500 ease-out"
-                                                                        id="nombre"
+                                                                        id="nombreNorma"
                                                                         [formControl]="norma.controls['nombre']"
                                                                     />
                                                                 </hlm-input-group>

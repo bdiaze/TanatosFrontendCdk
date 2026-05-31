@@ -31,12 +31,11 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-rubro.html',
-    styleUrl: './mantenedor-tipo-rubro.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoRubro implements OnInit {
-    private destroyRef = inject(DestroyRef);
-    private dao: TipoRubroDao = inject(TipoRubroDao);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly dao: TipoRubroDao = inject(TipoRubroDao);
 
     listado = signal([] as TipoRubro[]);
     cargando = signal(true);

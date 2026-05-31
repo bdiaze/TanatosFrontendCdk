@@ -9,7 +9,6 @@ import { MantenedorTipoPeriodicidad } from './features/mantenedores/mantenedor-t
 import { MantenedorTipoFiscalizador } from './features/mantenedores/mantenedor-tipo-fiscalizador/mantenedor-tipo-fiscalizador';
 import { MantenedorCategoriaNorma } from './features/mantenedores/mantenedor-categoria-norma/mantenedor-categoria-norma';
 import { MantenedorTemplate } from './features/mantenedores/mantenedor-template/mantenedor-template';
-import { MantenedorDestinatarioNotificacion } from './features/mantenedores/mantenedor-destinatario-notificacion/mantenedor-destinatario-notificacion';
 import { ValidarDestinatario } from './features/validadores/validar-destinatario/validar-destinatario';
 import { MantenedorNegocio } from './features/mantenedores/mantenedor-negocio/mantenedor-negocio';
 import { MantenedorNormaSuscrita } from './features/mantenedores/mantenedor-norma-suscrita/mantenedor-norma-suscrita';

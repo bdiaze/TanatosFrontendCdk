@@ -10,7 +10,6 @@ import { WhatsappMensajes } from '@/app/components/whatsapp-mensajes/whatsapp-me
     selector: 'app-chats-whatsapp',
     imports: [WhatsappConversaciones, HlmH3, HlmIcon, NgIcon, WhatsappMensajes],
     templateUrl: './chats-whatsapp.html',
-    styleUrl: './chats-whatsapp.scss',
     providers: [provideIcons({ lucideMessageCircleMore })],
 })
 export class ChatsWhatsapp {

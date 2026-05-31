@@ -16,13 +16,12 @@ import { AuthRefreshService } from './services/auth-refresh-service';
     selector: 'app-root',
     imports: [RouterOutlet, Header, Footer, Menu, ListonBeta],
     templateUrl: './app.html',
-    styleUrl: './app.scss',
 })
 export class App implements OnInit, OnDestroy {
-    private destroyRef = inject(DestroyRef);
-    private recaptchHelper = inject(RecaptchaHelper);
-    private router = inject(Router);
-    private viewportScroller = inject(ViewportScroller);
+    private readonly destroyRef = inject(DestroyRef);
+    private readonly recaptchHelper = inject(RecaptchaHelper);
+    private readonly router = inject(Router);
+    private readonly viewportScroller = inject(ViewportScroller);
 
     authStore = inject(AuthStore);
     authRefreshService = inject(AuthRefreshService);

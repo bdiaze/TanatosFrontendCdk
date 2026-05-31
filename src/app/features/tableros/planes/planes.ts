@@ -14,7 +14,6 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-planes',
     imports: [HlmItemImports, HlmH3, HlmH4, HlmP, HlmIcon, NgIcon, HlmButtonImports, DecimalPipe, FadeIn],
     templateUrl: './planes.html',
-    styleUrl: './planes.scss',
     providers: [
         provideIcons({
             lucideGem,
