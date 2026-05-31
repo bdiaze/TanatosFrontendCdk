@@ -15,14 +15,13 @@ namespace Cdk
     {
         internal CdkStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
-            string appName = System.Environment.GetEnvironmentVariable("APP_NAME") ?? throw new ArgumentNullException("APP_NAME");
-            string regionAws = System.Environment.GetEnvironmentVariable("REGION_AWS") ?? throw new ArgumentNullException("REGION_AWS");
-
-            string certificateArn = System.Environment.GetEnvironmentVariable("CERTIFICATE_ARN") ?? throw new ArgumentNullException("CERTIFICATE_ARN");
-            string domainName = System.Environment.GetEnvironmentVariable("DOMAIN_NAME") ?? throw new ArgumentNullException("DOMAIN_NAME");
-            string buildDirectory = System.Environment.GetEnvironmentVariable("BUILD_DIR") ?? throw new ArgumentNullException("BUILD_DIR");
-            string rootObject = System.Environment.GetEnvironmentVariable("ROOT_OBJECT") ?? throw new ArgumentNullException("ROOT_OBJECT");
-            string subdomainName = System.Environment.GetEnvironmentVariable("SUBDOMAIN_NAME") ?? throw new ArgumentNullException("SUBDOMAIN_NAME");
+            string appName = System.Environment.GetEnvironmentVariable("APP_NAME") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno APP_NAME");
+            
+            string certificateArn = System.Environment.GetEnvironmentVariable("CERTIFICATE_ARN") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno CERTIFICATE_ARN");
+            string domainName = System.Environment.GetEnvironmentVariable("DOMAIN_NAME") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno DOMAIN_NAME");
+            string buildDirectory = System.Environment.GetEnvironmentVariable("BUILD_DIR") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno BUILD_DIR");
+            string rootObject = System.Environment.GetEnvironmentVariable("ROOT_OBJECT") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno ROOT_OBJECT");
+            string subdomainName = System.Environment.GetEnvironmentVariable("SUBDOMAIN_NAME") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno SUBDOMAIN_NAME");
 
             // Se obtiene el certificado existente...
             ICertificate certificate = Certificate.FromCertificateArn(this, $"{appName}FrontendCertificate", certificateArn);
