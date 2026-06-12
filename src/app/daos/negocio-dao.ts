@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { SalNegocio } from '../entities/others/sal-negocio';
-import { Observable, tap } from 'rxjs';
+import { finalize, Observable, share, tap } from 'rxjs';
 import { environment } from '@/environments/environment';
 import { EntNegocioCrear } from '../entities/others/ent-negocio-crear';
 import { EntNegocioActualizar } from '../entities/others/ent-negocio-actualizar';
@@ -33,8 +33,13 @@ export class NegocioDao {
         );
     }
 
+    private obtenerVigentesInFlight$: Observable<SalNegocio[]> | null = null;
     obtenerVigentes(): Observable<SalNegocio[]> {
-        return this.http.get<SalNegocio[]>(environment.tanatosService.apiUrl + '/Negocio/Vigentes').pipe(
+        if (this.obtenerVigentesInFlight$) {
+            return this.obtenerVigentesInFlight$;
+        }
+
+        this.obtenerVigentesInFlight$ = this.http.get<SalNegocio[]>(environment.tanatosService.apiUrl + '/Negocio/Vigentes').pipe(
             tap((v) => {
                 v = v.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
                 if (!this.arraysIguales(v, this.negocioStore.negociosUsuario())) {
@@ -70,7 +75,11 @@ export class NegocioDao {
                     setCookie('NegocioSeleccionado', `${v[0].id}`);
                 }
             }),
+            share(),
+            finalize(() => (this.obtenerVigentesInFlight$ = null)),
         );
+
+        return this.obtenerVigentesInFlight$;
     }
 
     crear(entrada: EntNegocioCrear): Observable<SalNegocio> {
