@@ -33,13 +33,8 @@ export class NegocioDao {
         );
     }
 
-    private obtenerVigentesInFlight$: Observable<SalNegocio[]> | null = null;
     obtenerVigentes(): Observable<SalNegocio[]> {
-        if (this.obtenerVigentesInFlight$) {
-            return this.obtenerVigentesInFlight$;
-        }
-
-        this.obtenerVigentesInFlight$ = this.http.get<SalNegocio[]>(environment.tanatosService.apiUrl + '/Negocio/Vigentes').pipe(
+        return this.http.get<SalNegocio[]>(environment.tanatosService.apiUrl + '/Negocio/Vigentes').pipe(
             tap((v) => {
                 v = v.sort((a, b) => new Date(a.fechaCreacion).getTime() - new Date(b.fechaCreacion).getTime());
                 if (!this.arraysIguales(v, this.negocioStore.negociosUsuario())) {
@@ -75,11 +70,7 @@ export class NegocioDao {
                     setCookie('NegocioSeleccionado', `${v[0].id}`);
                 }
             }),
-            share(),
-            finalize(() => (this.obtenerVigentesInFlight$ = null)),
         );
-
-        return this.obtenerVigentesInFlight$;
     }
 
     crear(entrada: EntNegocioCrear): Observable<SalNegocio> {
