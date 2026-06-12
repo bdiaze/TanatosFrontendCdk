@@ -2,7 +2,7 @@ import { afterNextRender, AfterViewInit, Component, computed, DestroyRef, Elemen
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Header } from '@components/header/header';
 import { Footer } from '@components/footer/footer';
-import { filter } from 'rxjs';
+import { filter, take } from 'rxjs';
 import { Menu } from './components/menu/menu';
 import { AuthStore } from './services/auth-store';
 import { RecaptchaHelper } from './helpers/recaptcha-helper';
@@ -38,7 +38,19 @@ export class App implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.recaptchHelper.load();
-        this.authRefreshService.backgroundRefresh();
+
+        this.router.events
+            .pipe(
+                filter((event) => event instanceof NavigationEnd),
+                take(1),
+            )
+            .subscribe((event: NavigationEnd) => {
+                const skipRefreshRoutes = ['callback'];
+                const currentPath = event.urlAfterRedirects.split('?')[0].split('/').pop() ?? '';
+                if (!skipRefreshRoutes.some((route) => route.toLowerCase() === currentPath.toLowerCase())) {
+                    this.authRefreshService.backgroundRefresh();
+                }
+            });
     }
 
     private observer?: ResizeObserver;
