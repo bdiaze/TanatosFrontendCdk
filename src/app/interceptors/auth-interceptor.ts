@@ -1,11 +1,8 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthStore } from '@services/auth-store';
-import { catchError, filter, Subject, switchMap, take, tap, throwError } from 'rxjs';
-import { AuthDao } from '@daos/auth-dao';
+import { catchError, switchMap, throwError } from 'rxjs';
 import { environment } from '@environment';
-import { Router } from '@angular/router';
-import { redireccionarALogin } from '../features/auth/login/login';
 import { AuthRefreshService } from '../services/auth-refresh-service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
@@ -56,11 +53,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                 return throwError(() => err);
             }
 
-            if (req.headers.has('X-Retry')) {
-                redireccionarALogin();
-                return throwError(() => err);
-            }
-
             return refreshService.refreshToken().pipe(
                 catchError((refreshErr) => {
                     return throwError(() => refreshErr);
@@ -70,7 +62,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                         req.clone({
                             setHeaders: {
                                 Authorization: `Bearer ${newToken}`,
-                                'X-Retry': 'true',
                             },
                         }),
                     ),
