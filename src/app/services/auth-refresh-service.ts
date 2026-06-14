@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { catchError, map, Observable, ReplaySubject, take, tap, throwError } from 'rxjs';
+import { catchError, map, NEVER, Observable, of, ReplaySubject, take, tap, throwError } from 'rxjs';
 import { AuthDao } from '../daos/auth-dao';
 import { AuthStore } from './auth-store';
 import { redireccionarALogin } from '../features/auth/login/login';
@@ -17,6 +17,7 @@ export class AuthRefreshService {
     private refreshTokenSubject = new ReplaySubject<string>(1);
     private readonly authDao = inject(AuthDao);
     private readonly authStore = inject(AuthStore);
+    private readonly router = inject(Router);
 
     refreshToken(sinRedirect: boolean = false): Observable<string> {
         if (!this._isRefreshing) {
@@ -36,7 +37,10 @@ export class AuthRefreshService {
                         this._isRefreshing = false;
                         this.authStore.setAccessToken(null);
                         this.refreshTokenSubject.error(err);
-                        if (!sinRedirect) redireccionarALogin();
+                        if (!sinRedirect) {
+                            redireccionarALogin(false, this.router.url);
+                            return NEVER;
+                        }
                         return throwError(() => err);
                     }),
                 )
@@ -62,5 +66,15 @@ export class AuthRefreshService {
                     this.backgroundRefreshRunning.set(false);
                 });
         }
+    }
+
+    esperarBackgroundRefresh(): Observable<void> {
+        if (this.backgroundRefreshRunning()) {
+            return this.refreshTokenSubject.pipe(
+                take(1),
+                map(() => void 0),
+            );
+        }
+        return of(void 0);
     }
 }
