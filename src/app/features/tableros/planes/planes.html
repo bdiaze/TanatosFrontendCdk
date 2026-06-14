@@ -58,6 +58,7 @@
                     variant="outline"
                     size="lg"
                     class="text-base lg:text-xl lg:py-6 bg-transparent border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
+                    [routerLink]="['/mi-plan']"
                 >
                     Gratuito
                 </button>
@@ -110,6 +111,7 @@
                     variant="outline"
                     size="lg"
                     class="text-base lg:text-xl lg:py-6 bg-transparent border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
+                    [routerLink]="['/mi-plan']"
                 >
                     ${{ valorMensualPlanEmpresa() | number: '1.0-0' }} mensuales
                 </button>
@@ -151,6 +153,7 @@
             variant="outline"
             size="lg"
             class="text-base lg:text-xl lg:py-6 bg-transparent border-(--blanco) hover:text-(--blanco)/80 hover:border-(--blanco)/80"
+            [routerLink]="['/mi-plan']"
         >
             ¡${{ valorMensualPlanEmpresa() * (12 - 2) | number: '1.0-0' }}! anuales
         </button>

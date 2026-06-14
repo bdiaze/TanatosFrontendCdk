@@ -9,10 +9,11 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-planes',
-    imports: [HlmItemImports, HlmH3, HlmH4, HlmP, HlmIcon, NgIcon, HlmButtonImports, DecimalPipe, FadeIn],
+    imports: [HlmItemImports, HlmH3, HlmH4, HlmP, HlmIcon, NgIcon, HlmButtonImports, DecimalPipe, FadeIn, RouterLink],
     templateUrl: './planes.html',
     providers: [
         provideIcons({
