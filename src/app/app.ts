@@ -39,18 +39,11 @@ export class App implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.recaptchHelper.load();
 
-        this.router.events
-            .pipe(
-                filter((event) => event instanceof NavigationEnd),
-                take(1),
-            )
-            .subscribe((event: NavigationEnd) => {
-                const skipRefreshRoutes = ['callback'];
-                const currentPath = event.urlAfterRedirects.split('?')[0].split('/').pop() ?? '';
-                if (!skipRefreshRoutes.some((route) => route.toLowerCase() === currentPath.toLowerCase())) {
-                    this.authRefreshService.backgroundRefresh();
-                }
-            });
+        const skipRefreshRoutes = ['callback'];
+        const currentPath = window.location.pathname.split('/').pop() ?? '';
+        if (!skipRefreshRoutes.some((route) => route.toLowerCase() === currentPath.toLowerCase())) {
+            this.authRefreshService.backgroundRefresh();
+        }
     }
 
     private observer?: ResizeObserver;
