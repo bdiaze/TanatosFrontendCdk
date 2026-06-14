@@ -87,14 +87,18 @@ export async function generateCodeChallenge(verifier: string): Promise<string> {
 
 let isRedirectingToLogin = false;
 
-export async function redireccionarALogin(registrarse: boolean = false) {
+export async function redireccionarALogin(registrarse: boolean = false, redirectAfterLogin?: string) {
     if (isRedirectingToLogin) return;
     isRedirectingToLogin = true;
 
-    const state = generateRandomString(32);
     const codeVerifier = generateRandomString(64);
     const codeChallenge = await generateCodeChallenge(codeVerifier);
 
+    const statePayload = {
+        nonce: generateRandomString(32),
+        redirect: redirectAfterLogin,
+    };
+    const state = btoa(JSON.stringify(statePayload));
     sessionStorage.setItem('pkce_state', state);
     sessionStorage.setItem('pkce_code_verifier', codeVerifier);
 
