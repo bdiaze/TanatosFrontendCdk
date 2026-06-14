@@ -68,6 +68,12 @@ export class Callback implements OnInit, OnDestroy {
                 return;
             }
 
+            const statePayload = JSON.parse(atob(returnedState));
+            let redirectUrl: string | undefined = statePayload.redirect;
+            if (redirectUrl && (!redirectUrl.startsWith('/') || redirectUrl.startsWith('//'))) {
+                redirectUrl = undefined;
+            }
+
             // Se obtiene access token...
             const parametros: EntAuthObtenerAccessToken = {
                 code,
@@ -84,15 +90,19 @@ export class Callback implements OnInit, OnDestroy {
                         sessionStorage.removeItem('pkce_state');
                         sessionStorage.removeItem('pkce_code_verifier');
 
-                        this.negocioDao.obtenerVigentes().subscribe({
-                            next: (res) => {
-                                if (!res || res.length === 0) {
-                                    this.router.navigateByUrl('/bienvenido');
-                                } else {
-                                    this.router.navigateByUrl('/inicio');
-                                }
-                            },
-                        });
+                        if (redirectUrl) {
+                            this.router.navigateByUrl(redirectUrl);
+                        } else {
+                            this.negocioDao.obtenerVigentes().subscribe({
+                                next: (res) => {
+                                    if (!res || res.length === 0) {
+                                        this.router.navigateByUrl('/bienvenido');
+                                    } else {
+                                        this.router.navigateByUrl('/inicio');
+                                    }
+                                },
+                            });
+                        }
                     },
                     error: (err) => {
                         console.error('Ocurrió un error al obtener tokens', err);
