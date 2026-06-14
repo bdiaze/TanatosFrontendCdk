@@ -32,29 +32,22 @@ import { ChatsWhatsapp } from './features/tableros/chats-whatsapp/chats-whatsapp
 import { MantenedorPlan } from './features/mantenedores/mantenedor-plan/mantenedor-plan';
 import { MantenedorSuscripcion } from './features/mantenedores/mantenedor-suscripcion/mantenedor-suscripcion';
 import { MantenedorEmpleado } from './features/mantenedores/mantenedor-empleado/mantenedor-empleado';
-import { redirectToInicioSesionIniciada } from './helpers/redirect-to-inicio-sesion-iniciada';
 import { Bienvenida } from './features/tableros/bienvenida/bienvenida';
+import { sesionIniciada } from './can-activate/sesion-iniciada';
 
 export const routes: Routes = [
-    { path: '', component: Inicio, canActivate: [redirectToInicioSesionIniciada] },
-    { path: 'cargando-inicio', component: EmptyHero },
-    { path: 'callback', component: Callback },
-    { path: 'logout', redirectTo: '', pathMatch: 'full' },
+    { path: '', component: Inicio },
     {
-        path: 'inicio',
-        component: MenuInicial,
-    },
-    {
-        path: 'nosotros',
-        component: Nosotros,
+        path: 'servicios',
+        component: Servicios,
     },
     {
         path: 'planes',
         component: Planes,
     },
     {
-        path: 'servicios',
-        component: Servicios,
+        path: 'nosotros',
+        component: Nosotros,
     },
     {
         path: 'contacto',
@@ -72,110 +65,135 @@ export const routes: Routes = [
         path: 'politica-de-cookies',
         component: PoliticaDeCookies,
     },
-    {
-        path: 'mi-calendario',
-        component: TableroVencimientos,
-    },
-    {
-        path: 'obligacion/:codigoAccesoOIdNormaSuscrita',
-        component: Vencimiento,
-    },
-    {
-        path: 'obligacion/:codigoAccesoOIdNormaSuscrita/:idHistorialNormaSuscrita',
-        component: Vencimiento,
-    },
-    {
-        path: 'administracion/servicio-cliente/chats-whatsapp',
-        component: ChatsWhatsapp,
-    },
-    {
-        path: 'administracion/mantenedores/tipo-receptor-notificacion',
-        component: MantenedorTipoReceptorNotificacion,
-    },
-    {
-        path: 'administracion/mantenedores/tipo-unidad-tiempo',
-        component: MantenedorTipoUnidadTiempo,
-    },
-    {
-        path: 'administracion/mantenedores/tipo-periodicidad',
-        component: MantenedorTipoPeriodicidad,
-    },
-    {
-        path: 'administracion/mantenedores/tipo-fiscalizador',
-        component: MantenedorTipoFiscalizador,
-    },
-    {
-        path: 'administracion/mantenedores/tipo-rubro',
-        component: MantenedorTipoRubro,
-    },
-    {
-        path: 'administracion/mantenedores/tipo-actividad',
-        component: MantenedorTipoActividad,
-    },
-    {
-        path: 'administracion/mantenedores/categoria-norma',
-        component: MantenedorCategoriaNorma,
-    },
-    {
-        path: 'administracion/mantenedores/template',
-        component: MantenedorTemplate,
-    },
-    {
-        path: 'administracion/mantenedores/template/:idTemplate',
-        component: MantenedorTemplateEdicion,
-    },
-    {
-        path: 'administracion/mantenedores/template/nuevo',
-        component: MantenedorTemplateEdicion,
-    },
-    {
-        path: 'administracion/mantenedores/plan',
-        component: MantenedorPlan,
-    },
-    /*
-    {
-        path: 'mis-destinatario',
-        component: MantenedorDestinatarioNotificacion,
-    },
-    */
-    {
-        path: 'mis-negocios',
-        component: MantenedorNegocio,
-    },
-    {
-        path: 'mi-plan',
-        component: MantenedorSuscripcion,
-    },
+    { path: 'callback', component: Callback },
+    { path: 'cargando-inicio', component: EmptyHero },
+    { path: 'logout', redirectTo: '', pathMatch: 'full' },
     {
         path: 'flow-callback',
         component: MantenedorSuscripcion,
-    },
-    {
-        path: 'mis-obligaciones',
-        component: MantenedorNormaSuscrita,
-    },
-    {
-        path: 'editar-obligacion/:idNormaSuscrita',
-        component: MantenedorNormaSuscritaEdicion,
-    },
-    {
-        path: 'crear-obligacion',
-        component: MantenedorNormaSuscritaEdicion,
-    },
-    {
-        path: 'plantillas-inscritas',
-        component: MantenedorPlantillasInscritas,
     },
     {
         path: 'validar-destinatario',
         component: ValidarDestinatario,
     },
     {
-        path: 'mi-equipo',
-        component: MantenedorEmpleado,
+        path: 'obligacion/:codigoAccesoOIdNormaSuscrita',
+        component: Vencimiento,
     },
     {
         path: 'bienvenido',
         component: Bienvenida,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'inicio',
+        component: MenuInicial,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'mi-calendario',
+        component: TableroVencimientos,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'obligacion/:codigoAccesoOIdNormaSuscrita/:idHistorialNormaSuscrita',
+        component: Vencimiento,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'mis-obligaciones',
+        component: MantenedorNormaSuscrita,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'crear-obligacion',
+        component: MantenedorNormaSuscritaEdicion,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'editar-obligacion/:idNormaSuscrita',
+        component: MantenedorNormaSuscritaEdicion,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'plantillas-inscritas',
+        component: MantenedorPlantillasInscritas,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'mi-equipo',
+        component: MantenedorEmpleado,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'mis-negocios',
+        component: MantenedorNegocio,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'mi-plan',
+        component: MantenedorSuscripcion,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/servicio-cliente/chats-whatsapp',
+        component: ChatsWhatsapp,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/plan',
+        component: MantenedorPlan,
+        canActivate: [sesionIniciada],
+    },
+
+    {
+        path: 'administracion/mantenedores/template',
+        component: MantenedorTemplate,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/template/nuevo',
+        component: MantenedorTemplateEdicion,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/template/:idTemplate',
+        component: MantenedorTemplateEdicion,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/categoria-norma',
+        component: MantenedorCategoriaNorma,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/tipo-rubro',
+        component: MantenedorTipoRubro,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/tipo-actividad',
+        component: MantenedorTipoActividad,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/tipo-receptor-notificacion',
+        component: MantenedorTipoReceptorNotificacion,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/tipo-fiscalizador',
+        component: MantenedorTipoFiscalizador,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/tipo-periodicidad',
+        component: MantenedorTipoPeriodicidad,
+        canActivate: [sesionIniciada],
+    },
+    {
+        path: 'administracion/mantenedores/tipo-unidad-tiempo',
+        component: MantenedorTipoUnidadTiempo,
+        canActivate: [sesionIniciada],
     },
 ];
