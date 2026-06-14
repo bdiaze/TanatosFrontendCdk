@@ -70,7 +70,8 @@ export const routes: Routes = [
     { path: 'logout', redirectTo: '', pathMatch: 'full' },
     {
         path: 'flow-callback',
-        component: MantenedorSuscripcion,
+        redirectTo: 'mi-plan',
+        pathMatch: 'full',
     },
     {
         path: 'validar-destinatario',
