@@ -41,7 +41,7 @@
                                 <hlm-skeleton class="h-7 w-32 rounded-xl" />
                             } @else {
                                 @if (negocioStore.negociosUsuario().length === 0) {
-                                    <a hlmBtn variant="link" routerLink="/mis-negocios" class="p-0 h-fit!">¡Crea tu negocio!</a>
+                                    <a hlmBtn variant="link" routerLink="/bienvenido" class="p-0 h-fit!">¡Crea tu negocio!</a>
                                 } @else {
                                     {{ negocioStore.negocioSeleccionado()?.nombre ?? 'Seleccionar negocio...' }}
                                 }
