@@ -103,6 +103,8 @@ export async function redireccionarALogin(registrarse: boolean = false, redirect
     sessionStorage.setItem('pkce_code_verifier', codeVerifier);
 
     const publicScopes = [
+        'api/perfil.read.self',
+        'api/perfil.write.self',
         'api/negocios.read.self',
         'api/negocios.write.self',
         'api/obligaciones.read.self',
