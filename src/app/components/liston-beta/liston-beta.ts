@@ -20,6 +20,6 @@ export class ListonBeta {
     });
 
     async unirseBeta() {
-        await redireccionarALogin(true);
+        await redireccionarALogin('signup');
     }
 }

@@ -63,7 +63,7 @@ export class Login implements OnInit, OnDestroy {
         } else {
             this.registrandose.set(true);
         }
-        await redireccionarALogin(registrarse);
+        await redireccionarALogin(registrarse ? 'signup' : 'login');
     }
 }
 
@@ -87,7 +87,7 @@ export async function generateCodeChallenge(verifier: string): Promise<string> {
 
 let isRedirectingToLogin = false;
 
-export async function redireccionarALogin(registrarse: boolean = false, redirectAfterLogin?: string) {
+export async function redireccionarALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string) {
     if (isRedirectingToLogin) return;
     isRedirectingToLogin = true;
 
@@ -117,8 +117,13 @@ export async function redireccionarALogin(registrarse: boolean = false, redirect
         'api/sistema.read.public',
     ];
 
+    let urlBase = `${environment.cognitoService.baseUrl}/login?`;
+    if (accion === 'signup') {
+        urlBase = `${environment.cognitoService.baseUrl}/signup?`;
+    }
+
     const url =
-        (!registrarse ? `${environment.cognitoService.baseUrl}/login?` : `${environment.cognitoService.baseUrl}/signup?`) +
+        urlBase +
         new URLSearchParams({
             response_type: 'code',
             client_id: environment.cognitoService.clientId,

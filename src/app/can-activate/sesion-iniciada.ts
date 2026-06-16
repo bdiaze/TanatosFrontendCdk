@@ -15,11 +15,11 @@ export const sesionIniciada: CanActivateFn = (route: ActivatedRouteSnapshot, sta
                 return true;
             }
 
-            redireccionarALogin(false, state.url);
+            redireccionarALogin('login', state.url);
             return false;
         }),
         catchError(() => {
-            redireccionarALogin(false, state.url);
+            redireccionarALogin('login', state.url);
             return NEVER;
         }),
     );

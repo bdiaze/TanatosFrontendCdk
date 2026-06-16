@@ -38,7 +38,7 @@ export class AuthRefreshService {
                         this.authStore.setAccessToken(null);
                         this.refreshTokenSubject.error(err);
                         if (!sinRedirect) {
-                            redireccionarALogin(false, this.router.url);
+                            redireccionarALogin('login', this.router.url);
                             return NEVER;
                         }
                         return throwError(() => err);
