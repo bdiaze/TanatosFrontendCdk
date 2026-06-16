@@ -60,8 +60,8 @@ importers:
         specifier: 7.8.0
         version: 7.8.0
       tailwind-merge:
-        specifier: 3.3.1
-        version: 3.3.1
+        specifier: ^3.5.0
+        version: 3.6.0
       tailwindcss:
         specifier: 4.1.17
         version: 4.1.17
@@ -6102,8 +6102,8 @@ packages:
     resolution: {integrity: sha512-gAQ9qrUN/UCypHtGFbbe7Rc/f9bzO88IwrG8TDo/aMKAApKyD6E3W4Cm0EfhfBb6Z6SKt59tTCTfD+n1xmAvMg==}
     engines: {node: '>=16.0.0'}
 
-  tailwind-merge@3.3.1:
-    resolution: {integrity: sha512-gBXpgUm/3rp1lMZZrM/w7D8GKqshif0zAymAhbCyIt8KMe+0v9DQ7cdYLR4FHH/cKpdTXb+A/tKKU3eolfsI+g==}
+  tailwind-merge@3.6.0:
+    resolution: {integrity: sha512-uxL7qAVQriqRQPAyK3pj66VqskWqoZ37PW94jwOTwNfq/z9oyu1V+eqrZqtR2+fCiXdYOZe/Modt8GtvqNzu+w==}
 
   tailwindcss@4.1.17:
     resolution: {integrity: sha512-j9Ee2YjuQqYT9bbRTfTZht9W/ytp5H+jJpZKiYdP/bpnXARAuELt9ofP0lPnmHjbga7SNQIxdTAXCmtKVYjN+Q==}
@@ -9594,7 +9594,7 @@ snapshots:
       postcss: 8.5.13
       postcss-selector-parser: 7.1.1
       semver: 7.5.4
-      tailwind-merge: 3.3.1
+      tailwind-merge: 3.6.0
       ts-morph: 25.0.1
       tslib: 2.3.0
       typescript: 5.9.2
@@ -13562,7 +13562,7 @@ snapshots:
 
   sync-message-port@1.2.0: {}
 
-  tailwind-merge@3.3.1: {}
+  tailwind-merge@3.6.0: {}
 
   tailwindcss@4.1.17: {}
 
