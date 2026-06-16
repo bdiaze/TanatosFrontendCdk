@@ -1,0 +1,28 @@
+<section class="w-full h-full flex items-center justify-center bg-(--gris)">
+    <div class="w-full md:w-100.5 bg-(--blanco) p-6.25">
+        <form hlmCardContent id="otp-form" [formGroup]="form" (ngSubmit)="verificarCodigo()">
+            <p hlmP class="font-bold text-2xl text-(--negro)/80 py-1.25">Confirme su cuenta</p>
+            <div class="flex flex-row items-start justify-center mt-4">
+                <img [src]="urlImagen" class="size-14" />
+                <p hlmP class="text-sm text-(--negro)/80 pl-1">
+                    Hemos enviado un código mediante un mensaje de Correo electrónico a {{ ocultarCorreo() }}. Para confirmar su cuenta, ingrese el código.
+                </p>
+            </div>
+            <div class="flex flex-col mt-4 gap-1">
+                <p hlmP class="font-bold text-sm text-(--negro)/80">Código</p>
+                <input
+                    hlmInput
+                    formControlName="codigo"
+                    class="placeholder:italic h-8 text-sm border-(--negro)/80 focus-visible:border-transparent focus-visible:ring-0 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-(--calipso) transition-none"
+                    placeholder="Ingrese el código"
+                />
+                <button hlmBtn variant="link" class="font-bold p-0 h-fit w-fit text-(--azul) hover:no-underline hover:text-(--azul)/80">
+                    Reenviar el código
+                </button>
+            </div>
+            <button hlmBtn type="submit" class="w-full mt-5 h-8 text-sm font-bold bg-(--calipso) border-[1.6px] border-(--calipso) hover:bg-(--calipso)/80">
+                Confirmar cuenta
+            </button>
+        </form>
+    </div>
+</section>

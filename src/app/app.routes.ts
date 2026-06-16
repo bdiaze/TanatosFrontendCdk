@@ -34,6 +34,7 @@ import { MantenedorSuscripcion } from './features/mantenedores/mantenedor-suscri
 import { MantenedorEmpleado } from './features/mantenedores/mantenedor-empleado/mantenedor-empleado';
 import { Bienvenida } from './features/tableros/bienvenida/bienvenida';
 import { sesionIniciada } from './can-activate/sesion-iniciada';
+import { CodigoVerificacion } from './features/validadores/codigo-verificacion/codigo-verificacion';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -65,6 +66,7 @@ export const routes: Routes = [
         path: 'politica-de-cookies',
         component: PoliticaDeCookies,
     },
+    { path: 'codigo-verificacion', component: CodigoVerificacion },
     { path: 'callback', component: Callback },
     { path: 'cargando-inicio', component: EmptyHero },
     { path: 'logout', redirectTo: '', pathMatch: 'full' },
@@ -197,4 +199,5 @@ export const routes: Routes = [
         component: MantenedorTipoUnidadTiempo,
         canActivate: [sesionIniciada],
     },
+    { path: '**', redirectTo: '' },
 ];
