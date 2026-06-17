@@ -1,5 +1,5 @@
 <div class="w-full h-full bg-(--azul) flex flex-col items-start justify-start">
-    <section class="w-full bg-(--azul) text-(--blanco) fade-in">
+    <section id="negocio" class="w-full bg-(--azul) text-(--blanco) fade-in">
         <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-2 flex flex-col items-center justify-center gap-2">
             <h3 hlmH3>¡Bienvenid@ a Todo en Orden!</h3>
             <h4 hlmH4 class="text-center text-balance">La plataforma que te ayudará a gestionar tus obligaciones legales</h4>
@@ -125,7 +125,7 @@
         </section>
     }
     @if (datosNegocioIngresado() && !datosPlantillasIngresado()) {
-        <section class="flex-1 w-full bg-(--calipso) text-(--blanco) fade-in">
+        <section id="plantillas" class="flex-1 w-full bg-(--calipso) text-(--blanco) fade-in">
             <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-4 flex flex-col items-center justify-center h-full">
                 <div class="flex flex-col items-center justify-center gap-2">
                     <p hlmP class="text-center text-balance">Selecciona las plantillas de obligaciones con las que debe cumplir tu negocio</p>
@@ -205,7 +205,7 @@
             </div>
         </section>
     } @else if (datosPlantillasIngresado()) {
-        <section class="flex-1 w-full bg-(--calipso) text-(--blanco) fade-in">
+        <section id="plantillas" class="flex-1 w-full bg-(--calipso) text-(--blanco) fade-in">
             <div class="max-w-screen md:max-w-2xl mx-auto px-6 pt-6 pb-4 flex flex-col items-center justify-center h-full">
                 <div class="w-full flex flex-col items-center text-center">
                     <h4 hlmH4>Plantillas de obligaciones seleccionadas:</h4>
@@ -224,15 +224,20 @@
         </section>
     }
     @if (datosPlantillasIngresado()) {
-        <section class="flex-1 w-full bg-(--naranjo) text-(--blanco) fade-in">
+        <section id="confirmar" class="flex-1 w-full bg-(--naranjo) text-(--blanco) fade-in">
             <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-6 flex flex-col items-center justify-center">
                 <div class="flex flex-col items-center justify-center gap-2 w-full">
                     <p hlmP class="text-center text-balance">¡Ya tenemos lo básico!</p>
                     <div class="w-full flex flex-col items-center">
                         <h4 hlmH4>¿List@ para continuar?</h4>
                     </div>
-                    <div class="w-full flex items-center justify-evenly mt-4 gap-12">
-                        <button hlmBtn variant="link" class="text-base text-(--blanco) font-normal decoration-(--blanco)" (click)="anteriorGuardar()">
+                    <div class="w-full flex flex-col md:flex-row items-center justify-evenly mt-1 md:mt-4 gap-4 md:gap-12">
+                        <button
+                            hlmBtn
+                            variant="link"
+                            class="text-base text-(--blanco) font-normal decoration-(--blanco) self-start md:self-auto"
+                            (click)="anteriorGuardar()"
+                        >
                             <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-(--blanco)" />
                             Anterior
                         </button>
@@ -249,7 +254,7 @@
                             }
                             ¡Sí, registra mi negocio!
                         </button>
-                        <div class="w-27"></div>
+                        <div class="w-27 hidden md:block"></div>
                     </div>
                 </div>
             </div>

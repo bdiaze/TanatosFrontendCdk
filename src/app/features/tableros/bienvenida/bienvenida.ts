@@ -8,7 +8,7 @@ import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estat
 import { normalize } from '@/app/helpers/string-comparator';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, inject, OnDestroy, OnInit, signal, untracked } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, effect, inject, Injector, OnDestroy, OnInit, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -59,6 +59,7 @@ export class Bienvenida implements OnInit, OnDestroy {
     private readonly destroyRef = inject(DestroyRef);
     private readonly router = inject(Router);
     private readonly paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+    private readonly injector = inject(Injector);
     negocioStore = inject(NegocioStore);
     tipoRubroDao = inject(TipoRubroDao);
     tipoActividadDao = inject(TipoActividadDao);
@@ -255,19 +256,27 @@ export class Bienvenida implements OnInit, OnDestroy {
             return;
         }
         this.datosNegocioIngresado.set(true);
+
+        this.scrollToSection('plantillas');
     }
 
     datosPlantillasIngresado = signal(false);
     anteriorPlantillas() {
         this.datosNegocioIngresado.set(false);
+
+        this.scrollToSection('negocio');
     }
     siguientePlantillas() {
         this.datosPlantillasIngresado.set(true);
+
+        this.scrollToSection('confirmar');
     }
 
     procesando = signal(false);
     anteriorGuardar() {
         this.datosPlantillasIngresado.set(false);
+
+        this.scrollToSection('plantillas');
     }
     siguienteGuardar() {
         this.procesando.set(true);
@@ -300,5 +309,26 @@ export class Bienvenida implements OnInit, OnDestroy {
                 },
                 error: (err) => {},
             });
+    }
+
+    private scrollToSection(idSection: string) {
+        afterNextRender(
+            () => {
+                const el = document.getElementById(idSection);
+                if (!el) return;
+
+                const header = document.querySelector('app-header');
+                const offset = header?.scrollHeight ?? 0;
+
+                console.log('offset:', offset);
+
+                const top = el.getBoundingClientRect().top + window.scrollY - offset;
+                console.log('getBoundingClientRect.top:', el.getBoundingClientRect().top);
+                console.log('window.scrollY:', window.scrollY);
+
+                window.scrollTo({ top, behavior: 'instant' });
+            },
+            { injector: this.injector },
+        );
     }
 }
