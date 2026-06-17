@@ -3,7 +3,7 @@ import { EntPerfilConfirmarRegistro } from '@/app/entities/others/ent-perfil-con
 import { EntPerfilReenviarCodigoVerificacion } from '@/app/entities/others/ent-perfil-reenviar-codigo-verificacion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { environment } from '@/environments/environment';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -17,6 +17,7 @@ import { HlmP } from '@spartan-ng/helm/typography';
 import { redireccionarALogin } from '../../auth/login/login';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { BgImageFadeIn } from '@/app/directives/bg-image-fade-in';
+import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 
 @Component({
     selector: 'app-codigo-verificacion',
@@ -36,7 +37,8 @@ import { BgImageFadeIn } from '@/app/directives/bg-image-fade-in';
     styleUrl: './codigo-verificacion.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideCircleX })],
 })
-export class CodigoVerificacion implements OnInit {
+export class CodigoVerificacion implements OnInit, OnDestroy {
+    private readonly paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
     private readonly route = inject(ActivatedRoute);
     private readonly perfilDao = inject(PerfilDao);
 
@@ -55,6 +57,7 @@ export class CodigoVerificacion implements OnInit {
     vienenCorreoElectronico = signal<boolean>(false);
 
     ngOnInit(): void {
+        this.paginaSinMenuEstaticoHelper.quitarMenuEstatico();
         this.route.queryParams.subscribe((params) => {
             let correo: string | null = null;
             let codigo: string | null = null;
@@ -72,6 +75,10 @@ export class CodigoVerificacion implements OnInit {
             this.form.controls.correo.setValue(correo);
             this.form.controls.codigo.setValue(codigo);
         });
+    }
+
+    ngOnDestroy(): void {
+        this.paginaSinMenuEstaticoHelper.mostrarMenuEstatico();
     }
 
     ocultarCorreo() {
