@@ -1,7 +1,4 @@
-<section
-    class="w-full h-full md:py-24 flex items-center justify-center bg-(--gris) bg-cover bg-center bg-no-repeat"
-    [style.background-image]="`url(${urlFondo})`"
->
+<section class="w-full h-full md:py-24 flex items-center justify-center bg-(--gris) fade-in" [bgImageFadeIn]="urlFondo">
     <div class="w-full md:w-100.5 bg-(--blanco) p-6.25">
         <form hlmCardContent id="otp-form" [formGroup]="form" (ngSubmit)="verificarCodigo()">
             <p hlmP class="font-bold text-2xl text-(--negro)/80 py-1.25">Confirme su cuenta</p>
@@ -11,6 +8,24 @@
                     Hemos enviado un código mediante un mensaje de Correo electrónico a {{ ocultarCorreo() }}. Para confirmar su cuenta, ingrese el código.
                 </p>
             </div>
+            @if (!vienenCorreoElectronico()) {
+                <div class="flex flex-col mt-4 gap-1 -mb-2">
+                    <p hlmP class="font-bold text-sm text-(--negro)/80">Correo Electrónico</p>
+                    <input
+                        hlmInput
+                        formControlName="correo"
+                        type="email"
+                        class="placeholder:italic h-8 text-sm border-(--negro)/80 focus-visible:border-transparent focus-visible:ring-0 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-(--calipso) focus-visible:data-[matches-spartan-invalid=true]:outline-0 transition-none"
+                        placeholder="Ingrese su correo electrónico"
+                    />
+                    @if (form.controls.correo.invalid && form.controls.correo.touched) {
+                        <p hlmP class="text-xs text-destructive flex flex-row items-center gap-1 fade-in">
+                            <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="16px" />
+                            correo no válido.
+                        </p>
+                    }
+                </div>
+            }
             <div class="flex flex-col mt-4 gap-1">
                 <p hlmP class="font-bold text-sm text-(--negro)/80">Código</p>
                 <input
@@ -20,7 +35,7 @@
                     placeholder="Ingrese el código"
                 />
                 @if (form.controls.codigo.invalid && form.controls.codigo.touched) {
-                    <p hlmP class="text-xs text-destructive flex flex-row items-center gap-1">
+                    <p hlmP class="text-xs text-destructive flex flex-row items-center gap-1 fade-in">
                         <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="16px" />
                         código no válido.
                     </p>

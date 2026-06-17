@@ -16,10 +16,22 @@ import { HlmInputOtpImports } from '@spartan-ng/helm/input-otp';
 import { HlmP } from '@spartan-ng/helm/typography';
 import { redireccionarALogin } from '../../auth/login/login';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
+import { BgImageFadeIn } from '@/app/directives/bg-image-fade-in';
 
 @Component({
     selector: 'app-codigo-verificacion',
-    imports: [ReactiveFormsModule, BrnInputOtpImports, HlmInputOtpImports, NgIcon, HlmIcon, HlmP, HlmInputImports, HlmButtonImports, HlmSpinnerImports],
+    imports: [
+        ReactiveFormsModule,
+        BrnInputOtpImports,
+        HlmInputOtpImports,
+        NgIcon,
+        HlmIcon,
+        HlmP,
+        HlmInputImports,
+        HlmButtonImports,
+        HlmSpinnerImports,
+        BgImageFadeIn,
+    ],
     templateUrl: './codigo-verificacion.html',
     styleUrl: './codigo-verificacion.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideCircleX })],
@@ -35,19 +47,27 @@ export class CodigoVerificacion implements OnInit {
         correo: FormControl<string | null>;
         codigo: FormControl<string | null>;
     }> = new FormGroup({
-        correo: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required]),
+        correo: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required, Validators.email]),
         codigo: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required]),
     });
 
     error = signal<string>('');
+    vienenCorreoElectronico = signal<boolean>(false);
 
     ngOnInit(): void {
         this.route.queryParams.subscribe((params) => {
-            const payload = params['p'];
+            let correo: string | null = null;
+            let codigo: string | null = null;
 
-            const jsonPayload = JSON.parse(atob(payload));
-            const correo: string | null = jsonPayload.correo ?? null;
-            const codigo: string | null = jsonPayload.codigo ?? null;
+            const payload = params['p'];
+            if (payload) {
+                const jsonPayload = JSON.parse(atob(payload));
+                correo = jsonPayload.correo ?? null;
+                codigo = jsonPayload.codigo ?? null;
+            }
+
+            if (correo) this.vienenCorreoElectronico.set(true);
+            else this.vienenCorreoElectronico.set(false);
 
             this.form.controls.correo.setValue(correo);
             this.form.controls.codigo.setValue(codigo);
@@ -56,10 +76,10 @@ export class CodigoVerificacion implements OnInit {
 
     ocultarCorreo() {
         const correo = this.form.controls.correo.value;
-        if (!correo || !correo.includes('@')) return '***@***';
+        if (!correo || !correo.includes('@')) return '****@****';
         const partes = correo.split('@');
-        const preArroba = partes[0].length > 0 ? partes[0].substring(0, 1) : '';
-        const postArroba = partes[1].length > 0 ? partes[1].substring(0, 1) : '';
+        const preArroba = partes[0].length > 0 ? partes[0].substring(0, 1) : '*';
+        const postArroba = partes[1].length > 0 ? partes[1].substring(0, 1) : '*';
         return `${preArroba}***@${postArroba}***`;
     }
 
