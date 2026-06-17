@@ -461,6 +461,8 @@
                                                                     />
                                                                 </hlm-input-group>
                                                             </div>
+                                                        </div>
+                                                        <div class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
                                                             <div hlmField class="flex justify-center items-center gap-1">
                                                                 <hlm-input-group>
                                                                     <hlm-input-group-addon align="block-start">
@@ -477,6 +479,25 @@
                                                                         class="text-sm transition-all duration-500 ease-out"
                                                                         id="cronActivacionAutomatica"
                                                                         [formControl]="norma.controls['cronActivacionAutomatica']"
+                                                                    />
+                                                                </hlm-input-group>
+                                                            </div>
+                                                            <div hlmField class="flex justify-center items-center gap-1">
+                                                                <hlm-input-group>
+                                                                    <hlm-input-group-addon align="block-start">
+                                                                        <label
+                                                                            for="diasActivacionAutomatica"
+                                                                            hlmLabel
+                                                                            class="text-xs opacity-80 font-semibold whitespace-nowrap"
+                                                                            >Días Activación Automática</label
+                                                                        >
+                                                                    </hlm-input-group-addon>
+                                                                    <input
+                                                                        hlmInputGroupInput
+                                                                        type="number"
+                                                                        class="text-sm transition-all duration-500 ease-out"
+                                                                        id="diasActivacionAutomatica"
+                                                                        [formControl]="norma.controls['diasActivacionAutomatica']"
                                                                     />
                                                                 </hlm-input-group>
                                                             </div>

@@ -123,6 +123,7 @@ export class MantenedorTemplateEdicion implements OnInit {
                 multa: FormControl<string>;
                 idCategoriaNorma: FormControl<number | null>;
                 cronActivacionAutomatica: FormControl<string | null>;
+                diasActivacionAutomatica: FormControl<number | null>;
                 templateNormaFiscalizadores: FormArray<
                     FormGroup<{
                         idTipoFiscalizador: FormControl<number | null>;
@@ -176,6 +177,7 @@ export class MantenedorTemplateEdicion implements OnInit {
                 multa: FormControl<string>;
                 idCategoriaNorma: FormControl<number | null>;
                 cronActivacionAutomatica: FormControl<string | null>;
+                diasActivacionAutomatica: FormControl<number | null>;
                 templateNormaFiscalizadores: FormArray<
                     FormGroup<{
                         idTipoFiscalizador: FormControl<number | null>;
@@ -610,6 +612,7 @@ export class MantenedorTemplateEdicion implements OnInit {
                     validators: [Validators.required],
                 }),
                 cronActivacionAutomatica: new FormControl(null),
+                diasActivacionAutomatica: new FormControl(null),
                 templateNormaFiscalizadores: this.buildFiscalizadores([]),
                 templateNormaNotificaciones: this.buildNotificaciones([]),
                 isOpened: new FormControl(true, { nonNullable: true }),
@@ -716,6 +719,7 @@ export class MantenedorTemplateEdicion implements OnInit {
                 validators: [Validators.required],
             }),
             cronActivacionAutomatica: new FormControl(norma.cronActivacionAutomatica),
+            diasActivacionAutomatica: new FormControl(norma.diasActivacionAutomatica),
             templateNormaFiscalizadores: this.buildFiscalizadores(norma.templateNormaFiscalizadores ?? []),
             templateNormaNotificaciones: this.buildNotificaciones(norma.templateNormaNotificaciones ?? []),
             isOpened: new FormControl(false, { nonNullable: true }),
@@ -786,6 +790,7 @@ export class MantenedorTemplateEdicion implements OnInit {
                 multa: normaControl.controls['multa'].value,
                 idCategoriaNorma: normaControl.controls['idCategoriaNorma'].value!,
                 cronActivacionAutomatica: cronActivacionAutomatica,
+                diasActivacionAutomatica: normaControl.controls['diasActivacionAutomatica'].value,
                 templateNormaFiscalizadores: [],
                 templateNormaNotificaciones: [],
             } as TemplateNorma;

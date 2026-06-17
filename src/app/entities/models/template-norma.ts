@@ -10,6 +10,7 @@ export interface TemplateNorma {
     multa: string | null;
     idCategoriaNorma: number;
     cronActivacionAutomatica: string | null;
+    diasActivacionAutomatica: number | null;
 
     templateNormaFiscalizadores: TemplateNormaFiscalizador[] | null;
     templateNormaNotificaciones: TemplateNormaNotificacion[] | null;
