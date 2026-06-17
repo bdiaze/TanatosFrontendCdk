@@ -1,3 +1,7 @@
+import { PerfilDao } from '@/app/daos/perfil-dao';
+import { EntPerfilConfirmarRegistro } from '@/app/entities/others/ent-perfil-confirmar-registro';
+import { EntPerfilReenviarCodigoVerificacion } from '@/app/entities/others/ent-perfil-reenviar-codigo-verificacion';
+import { getErrorMessage } from '@/app/helpers/error-message';
 import { environment } from '@/environments/environment';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -10,16 +14,19 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmInputOtpImports } from '@spartan-ng/helm/input-otp';
 import { HlmP } from '@spartan-ng/helm/typography';
+import { redireccionarALogin } from '../../auth/login/login';
+import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 
 @Component({
     selector: 'app-codigo-verificacion',
-    imports: [ReactiveFormsModule, BrnInputOtpImports, HlmInputOtpImports, NgIcon, HlmIcon, HlmP, HlmInputImports, HlmButtonImports],
+    imports: [ReactiveFormsModule, BrnInputOtpImports, HlmInputOtpImports, NgIcon, HlmIcon, HlmP, HlmInputImports, HlmButtonImports, HlmSpinnerImports],
     templateUrl: './codigo-verificacion.html',
     styleUrl: './codigo-verificacion.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideCircleX })],
 })
 export class CodigoVerificacion implements OnInit {
     private readonly route = inject(ActivatedRoute);
+    private readonly perfilDao = inject(PerfilDao);
 
     urlImagen = `${environment.urlImages}/images/cognito-image-graphic-email-light.svg`;
     urlFondo = `${environment.urlImages}/images/joven-sosteniendo-tableta-blured.jpeg`;
@@ -32,12 +39,15 @@ export class CodigoVerificacion implements OnInit {
         codigo: new FormControl<string | null>({ value: null, disabled: false }, [Validators.required]),
     });
 
+    error = signal<string>('');
+
     ngOnInit(): void {
         this.route.queryParams.subscribe((params) => {
-            const correo = params['correo'];
-            const codigo = params['codigo'];
+            const payload = params['p'];
 
-            console.log('codigo:', codigo);
+            const jsonPayload = JSON.parse(atob(payload));
+            const correo: string | null = jsonPayload.correo ?? null;
+            const codigo: string | null = jsonPayload.codigo ?? null;
 
             this.form.controls.correo.setValue(correo);
             this.form.controls.codigo.setValue(codigo);
@@ -53,12 +63,47 @@ export class CodigoVerificacion implements OnInit {
         return `${preArroba}***@${postArroba}***`;
     }
 
+    verificandoCodigo = signal<boolean>(false);
     verificarCodigo() {
         if (this.form.invalid) {
             this.form.markAllAsTouched();
             return;
         }
+
+        this.verificandoCodigo.set(true);
+        this.perfilDao
+            .confirmarRegistro({
+                username: this.form.controls.correo.value,
+                codigo: this.form.controls.codigo.value,
+            } as EntPerfilConfirmarRegistro)
+            .subscribe({
+                next: () => {
+                    redireccionarALogin('login');
+                },
+                error: (err) => {
+                    console.error('Error al validar código de verificación', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al validar código de verificación');
+                    this.verificandoCodigo.set(false);
+                },
+            });
     }
 
-    reenviarCodigo() {}
+    reenviandoCodigo = signal<boolean>(false);
+    reenviarCodigo() {
+        this.reenviandoCodigo.set(true);
+        this.perfilDao
+            .reenviarCodigoVerificacion({
+                username: this.form.controls.correo.value,
+            } as EntPerfilReenviarCodigoVerificacion)
+            .subscribe({
+                next: () => {},
+                error: (err) => {
+                    console.error('Error al reenviar código de verificación', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al reenviar código de verificación');
+                },
+            })
+            .add(() => {
+                this.reenviandoCodigo.set(false);
+            });
+    }
 }

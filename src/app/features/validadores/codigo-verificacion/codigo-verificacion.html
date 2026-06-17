@@ -28,15 +28,36 @@
                 <button
                     hlmBtn
                     variant="link"
-                    class="font-bold p-0 h-fit w-fit text-(--azul) hover:no-underline hover:text-(--azul)/80"
+                    type="button"
+                    class="font-bold p-0 h-fit w-fit text-(--azul) hover:no-underline hover:text-(--azul)/80 flex items-center gap-1"
                     (click)="reenviarCodigo()"
+                    [disabled]="reenviandoCodigo()"
                 >
+                    @if (reenviandoCodigo()) {
+                        <hlm-spinner class="text-base" />
+                    }
                     Reenviar el código
                 </button>
             </div>
-            <button hlmBtn type="submit" class="w-full mt-5 h-8 text-sm font-bold bg-(--calipso) border-[1.6px] border-(--calipso) hover:bg-(--calipso)/80">
+            <button
+                hlmBtn
+                type="submit"
+                class="w-full mt-5 h-8 text-sm font-bold bg-(--calipso) border-[1.6px] border-(--calipso) hover:bg-(--calipso)/80 flex items-center gap-1"
+                [disabled]="verificandoCodigo()"
+            >
+                @if (verificandoCodigo()) {
+                    <hlm-spinner class="text-base" />
+                }
                 Confirmar cuenta
             </button>
+            @if (error()) {
+                <div class="flex flex-row items-start gap-2 p-3.5 mt-5 bg-destructive/5 border-destructive border-2 rounded-xl">
+                    <div class="size-5">
+                        <ng-icon hlm hlmAlertIcon name="lucideCircleX" size="18px" class="text-destructive" />
+                    </div>
+                    <p hlmP class="text-sm">{{ error() }}</p>
+                </div>
+            }
         </form>
     </div>
 </section>
