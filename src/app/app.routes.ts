@@ -35,6 +35,7 @@ import { MantenedorEmpleado } from './features/mantenedores/mantenedor-empleado/
 import { Bienvenida } from './features/tableros/bienvenida/bienvenida';
 import { sesionIniciada } from './can-activate/sesion-iniciada';
 import { CodigoVerificacion } from './features/validadores/codigo-verificacion/codigo-verificacion';
+import { esAdmin } from './can-activate/es-admin';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -141,63 +142,63 @@ export const routes: Routes = [
     {
         path: 'administracion/servicio-cliente/chats-whatsapp',
         component: ChatsWhatsapp,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/plan',
         component: MantenedorPlan,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
 
     {
         path: 'administracion/mantenedores/template',
         component: MantenedorTemplate,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/template/nuevo',
         component: MantenedorTemplateEdicion,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/template/:idTemplate',
         component: MantenedorTemplateEdicion,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/categoria-norma',
         component: MantenedorCategoriaNorma,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/tipo-rubro',
         component: MantenedorTipoRubro,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/tipo-actividad',
         component: MantenedorTipoActividad,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/tipo-receptor-notificacion',
         component: MantenedorTipoReceptorNotificacion,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/tipo-fiscalizador',
         component: MantenedorTipoFiscalizador,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/tipo-periodicidad',
         component: MantenedorTipoPeriodicidad,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     {
         path: 'administracion/mantenedores/tipo-unidad-tiempo',
         component: MantenedorTipoUnidadTiempo,
-        canActivate: [sesionIniciada],
+        canActivate: [sesionIniciada, esAdmin],
     },
     { path: '**', redirectTo: '' },
 ];
