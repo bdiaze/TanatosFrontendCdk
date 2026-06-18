@@ -14,11 +14,6 @@ import { HlmP } from '@spartan-ng/helm/typography';
     providers: [provideIcons({})],
 })
 export class ListonBeta {
-    private readonly authStore = inject(AuthStore);
-    sesionIniciada = computed(() => {
-        return this.authStore.sesionIniciada() || this.authStore.logoutRunning() || this.authStore.callbackRunning();
-    });
-
     async unirseBeta() {
         await redireccionarALogin('signup');
     }

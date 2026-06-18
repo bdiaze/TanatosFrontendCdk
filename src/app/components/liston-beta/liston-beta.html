@@ -1,19 +1,9 @@
 <div
-    class="bg-(--azul) rotate-45 w-80 h-18 md:h-20 fixed bottom-4 -left-26 z-10 transform-gpu antialiased group faster-fade-in"
-    [ngClass]="{
-        'cursor-pointer': !sesionIniciada(),
-    }"
-    (click)="!sesionIniciada() && unirseBeta()"
+    class="bg-(--azul) rotate-45 w-80 h-18 md:h-20 fixed bottom-4 -left-26 z-10 transform-gpu antialiased group faster-fade-in cursor-pointer"
+    (click)="unirseBeta()"
 >
-    <div
-        class="transition-all flex flex-col items-center justify-center w-full h-full"
-        [ngClass]="{
-            'group-hover:scale-110': !sesionIniciada(),
-        }"
-    >
+    <div class="transition-all flex flex-col items-center justify-center w-full h-full group-hover:scale-110">
         <p hlmP class="text-(--blanco) text-lg md:text-xl font-semibold text-center font-serif">Beta Abierta</p>
-        @if (!sesionIniciada()) {
-            <p hlmP class="text-(--blanco) text-base text-center font-serif">¡Únete ya!</p>
-        }
+        <p hlmP class="text-(--blanco) text-base text-center font-serif">¡Únete ya!</p>
     </div>
 </div>
