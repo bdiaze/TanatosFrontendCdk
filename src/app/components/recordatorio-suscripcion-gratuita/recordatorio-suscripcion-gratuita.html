@@ -1,0 +1,28 @@
+@if (suscripcionGratuita()) {
+    <div
+        class="z-10 fixed transition-[right] duration-1000 -right-37 top-22 md:top-26 lg:top-30 rounded-l-lg shadow-md bg-(--azul) p-0 text-(--blanco) flex flex-row items-stretch justify-center"
+        (mouseenter)="expanded.set(true)"
+        (mouseleave)="expanded.set(false)"
+        (touchstart)="expanded.set(true)"
+        (touchend)="expanded.set(true)"
+        [class.right-0]="expanded()"
+    >
+        <div class="flex flex-col items-center justify-center gap-1 pl-5 pr-4 border-r border-r-(--blanco)/10">
+            <ng-icon hlm name="lucideGem" [size]="!expanded() ? 'sm' : 'base'" class="transition-[height] duration-300" />
+            <div class="overflow-hidden transition-[max-height] duration-300" [class.max-h-5]="!expanded()" [class.max-h-0]="expanded()">
+                <p hlmP class="text-sm">{{ diasRestantes() }}</p>
+            </div>
+        </div>
+        <div
+            class="w-37 flex flex-col items-center justify-center transition-opacity duration-800 opacity-0 py-2.5 cursor-pointer"
+            [class.opacity-100]="expanded()"
+            [routerLink]="['/mi-plan']"
+        >
+            <p hlmP class="text-base text-balance text-center underline underline-offset-2 font-serif">Mes de Prueba</p>
+            <div class="flex flex-row items-center justify-center gap-1 mt-1">
+                <p hlmP class="text-sm text-center font-semibold">{{ diasRestantes() }}</p>
+                <p hlmP class="text-xs text-center">dias restantes</p>
+            </div>
+        </div>
+    </div>
+}

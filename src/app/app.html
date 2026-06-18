@@ -12,6 +12,11 @@
             </div>
         </div>
         <app-footer />
-        <app-liston-beta />
+        @if (!authStore.sesionIniciada()) {
+            <app-liston-beta />
+        }
+        @if (authStore.sesionIniciada()) {
+            <app-recordatorio-suscripcion-gratuita />
+        }
     </div>
 </div>

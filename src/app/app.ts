@@ -12,9 +12,10 @@ import { PaginaSinMenuEstaticoHelper } from './helpers/pagina-sin-menu-estatico-
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ViewportScroller } from '@angular/common';
 import { AuthRefreshService } from './services/auth-refresh-service';
+import { RecordatorioSuscripcionGratuita } from './components/recordatorio-suscripcion-gratuita/recordatorio-suscripcion-gratuita';
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta],
+    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionGratuita],
     templateUrl: './app.html',
 })
 export class App implements OnInit, OnDestroy {
