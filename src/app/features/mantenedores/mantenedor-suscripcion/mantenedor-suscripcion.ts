@@ -90,22 +90,9 @@ export class MantenedorSuscripcion implements OnInit {
     negocioStore: NegocioStore = inject(NegocioStore);
     private readonly datePipe = inject(DatePipe);
 
-    suscripciones = signal([] as SalSuscripcion[]);
+    suscripciones = this.negocioStore.suscripcionesUsuario;
+    ultimaSuscripcion = this.negocioStore.suscripcionActualUsuario;
     planesVigentes = signal([] as SalPlan[]);
-    ultimaSuscripcion = computed(() => {
-        const suscripciones = this.suscripciones();
-
-        // Buscamos la suscripción con mayor expiración...
-        const suscripcionesConFechaExpiracion = suscripciones.filter((s) => s.fechaExpiracion && new Date(s.fechaExpiracion) > new Date());
-        if (suscripcionesConFechaExpiracion.length > 0) {
-            const mayorExpiracion = suscripcionesConFechaExpiracion.reduce((max, actual) =>
-                new Date(actual.fechaExpiracion!) > new Date(max.fechaExpiracion!) ? actual : max,
-            );
-            if (mayorExpiracion) return mayorExpiracion;
-        }
-
-        return null;
-    });
     fechaExpiracionFormateada = computed(() => {
         if (this.ultimaSuscripcion()) {
             return this.datePipe.transform(this.ultimaSuscripcion()?.fechaExpiracion, "EEEE d 'de' MMMM 'de' yyyy");
@@ -161,16 +148,12 @@ export class MantenedorSuscripcion implements OnInit {
     obtenerSuscripciones(oculto: boolean = false) {
         if (!oculto) {
             this.cargandoSuscripciones.set(true);
-            this.suscripciones.set([]);
         }
 
         this.suscripcionDao
             .obtenerVigentes()
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
-                next: (res) => {
-                    this.suscripciones.set(res);
-                },
                 error: (err) => {
                     console.error('Error al obtener las suscripciones del cliente', err);
                     this.error.set(getErrorMessage(err) ?? 'Error al obtener las suscripciones del cliente');
