@@ -1,15 +1,11 @@
 import { redireccionarALogin } from '@/app/features/auth/login/login';
-import { AuthStore } from '@/app/services/auth-store';
-import { NgClass } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucidePartyPopper, lucideThumbsUp } from '@ng-icons/lucide';
-import { HlmIcon } from '@spartan-ng/helm/icon';
+import { Component } from '@angular/core';
+import { provideIcons } from '@ng-icons/core';
 import { HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-liston-beta',
-    imports: [HlmP, NgClass],
+    imports: [HlmP],
     templateUrl: './liston-beta.html',
     providers: [provideIcons({})],
 })

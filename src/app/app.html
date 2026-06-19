@@ -4,7 +4,7 @@
         <div class="flex-1 flex flex-row">
             @if (authStore.sesionIniciada() && mostrarDesktop() && !paginaSinMenuEstatico() && !authStore.logoutRunning()) {
                 <div class="md:min-w-1/4 lg:min-w-1/4 xl:min-w-1/5 2xl:min-w-1/6">
-                    <app-menu [estatico]="true" class="w-full"> </app-menu>
+                    <app-menu id="menu-estatico" [estatico]="true" class="w-full"> </app-menu>
                 </div>
             }
             <div class="flex-1 min-w-0">
@@ -12,10 +12,10 @@
             </div>
         </div>
         <app-footer />
-        @if (!authStore.sesionIniciada()) {
+        @if (!authStore.sesionIniciada() && !authStore.callbackRunning() && !authStore.logoutRunning()) {
             <app-liston-beta />
         }
-        @if (authStore.sesionIniciada()) {
+        @if (authStore.sesionIniciada() && !authStore.callbackRunning() && !authStore.logoutRunning()) {
             <app-recordatorio-suscripcion-gratuita />
         }
     </div>
