@@ -4,8 +4,8 @@ import { setCookie } from '@/app/helpers/cookie-helper';
 import { MenuHelper } from '@/app/helpers/menu-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, EventEmitter, inject, Input, OnInit, Output, signal, untracked } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, untracked } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
