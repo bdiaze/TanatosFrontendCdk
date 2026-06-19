@@ -7,10 +7,12 @@ import { NegocioStore } from '@/app/services/negocio-store';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { FadeIn } from '@/app/directives/fade-in';
+import { TourService } from '@/app/helpers/tour-service';
+import { HlmButton } from '@spartan-ng/helm/button';
 
 @Component({
     selector: 'app-menu-inicial',
-    imports: [HlmH1, HlmP, HlmItemImports, RouterLink, HlmSpinnerImports, HlmSkeletonImports, FadeIn],
+    imports: [HlmH1, HlmP, HlmItemImports, RouterLink, HlmSpinnerImports, HlmSkeletonImports, FadeIn, HlmButton],
     templateUrl: './menu-inicial.html',
 })
 export class MenuInicial {
@@ -22,4 +24,10 @@ export class MenuInicial {
     negocioStore = inject(NegocioStore);
     negocioSeleccionado = this.negocioStore.negocioSeleccionado;
     informacionUsuario = this.negocioStore.informacionUsuario;
+
+    private readonly tourService = inject(TourService);
+
+    ayudaClick(): void {
+        this.tourService.iniciarTour('Inicio');
+    }
 }

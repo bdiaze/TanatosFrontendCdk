@@ -1,5 +1,8 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-6 pt-4 pb-6 fade-in">
-    <div class="flex flex-col gap-2">
+    <div class="flex flex-col gap-2 relative">
+        <div class="absolute right-1 flex items-center justify-end">
+            <button hlmBtn variant="link" type="button" class="z-10 p-0 m-0" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
         <div class="flex flex-col justify-start items-start gap-1 pt-1 pb-5 fade-in">
             <h1 hlmH1>
                 Bienvenid@
@@ -19,6 +22,7 @@
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 items-stretch gap-3 w-full">
             <a
+                id="acceso-rapido-mi-calendario"
                 hlmItem
                 routerLink="/mi-calendario"
                 class="bg-(--celeste) [a]:hover:bg-(--celeste)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
@@ -32,6 +36,7 @@
                 </div>
             </a>
             <a
+                id="acceso-rapido-mis-obligaciones"
                 hlmItem
                 routerLink="/mis-obligaciones"
                 class="bg-(--naranjo) [a]:hover:bg-(--naranjo)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
@@ -45,6 +50,7 @@
                 </div>
             </a>
             <a
+                id="acceso-rapido-mis-negocios"
                 hlmItem
                 routerLink="/mis-negocios"
                 class="bg-(--calipso) [a]:hover:bg-(--calipso)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
@@ -58,6 +64,7 @@
                 </div>
             </a>
             <a
+                id="acceso-rapido-mi-plan"
                 hlmItem
                 routerLink="/mi-plan"
                 class="bg-(--azul) [a]:hover:bg-(--azul)/80 w-full h-full flex flex-row items-start justify-center gap-3 p-8 font-serif text-(--blanco) rounded-none"
