@@ -1,15 +1,15 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-6 pt-4 pb-6 fade-in">
     <div class="flex flex-col gap-2 relative">
-        <div class="absolute right-1 flex items-center justify-end">
-            <button hlmBtn variant="link" type="button" class="z-10 p-0 m-0" (click)="ayudaClick()">¿Necesitas ayuda?</button>
-        </div>
         <div class="flex flex-col justify-start items-start gap-1 pt-1 pb-5 fade-in">
-            <h1 hlmH1>
-                Bienvenid@
-                @if (informacionUsuario()?.nombre) {
-                    <span class="font-bold">{{ informacionUsuario()?.nombre }}</span>
-                }
-            </h1>
+            <div class="flex flex-col items-start justify-between w-full">
+                <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2.5" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+                <h1 hlmH1>
+                    Bienvenid@
+                    @if (informacionUsuario()?.nombre) {
+                        <span class="font-bold">{{ informacionUsuario()?.nombre }}</span>
+                    }
+                </h1>
+            </div>
             @if (!negocioSeleccionado()) {
                 <hlm-skeleton class="h-7 w-64 rounded-xl" />
             } @else {

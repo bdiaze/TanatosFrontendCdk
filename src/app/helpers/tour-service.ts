@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Config, driver, Driver } from 'driver.js';
-import { ObtenerSteps, TourModule } from './tour-steps';
+import { Config, driver, Driver, DriveStep } from 'driver.js';
 import { MenuHelper } from './menu-helper';
 
 @Injectable({
@@ -28,26 +27,14 @@ export class TourService {
         },
     };
 
-    iniciarTour(modulo: TourModule): void {
+    iniciarTour(pasos: DriveStep[]): void {
         this.driverInstance?.destroy();
 
-        const pasos = ObtenerSteps(this.menuHelper)[modulo];
         if (!pasos?.length) return;
-
-        const pasosValidos = pasos.filter((paso) => {
-            if (!paso.element) return true;
-            const existe = !!document.querySelector(paso.element as string);
-            if (!existe) {
-                console.warn(`[TourService] Elemento no encontrado, paso omitido: ${paso.element as string}`);
-            }
-            return existe;
-        });
-
-        if (!pasosValidos.length) return;
 
         this.driverInstance = driver({
             ...this.config,
-            steps: pasosValidos,
+            steps: pasos,
         });
 
         this.driverInstance.drive();
