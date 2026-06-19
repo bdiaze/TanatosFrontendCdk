@@ -55,4 +55,24 @@ export class MenuHelper {
                 this.cargandoInformacionUsuario.set(false);
             });
     }
+
+    private onAbrirMenu?: () => void;
+
+    registrarAbrirMenu(fn: (() => void) | undefined): void {
+        this.onAbrirMenu = fn;
+    }
+
+    abrirMenu(): void {
+        this.onAbrirMenu?.();
+    }
+
+    private onCerrarMenu?: () => void;
+
+    registrarCerrarMenu(fn: (() => void) | undefined): void {
+        this.onCerrarMenu = fn;
+    }
+
+    cerrarMenu(): void {
+        this.onCerrarMenu?.();
+    }
 }

@@ -16,6 +16,7 @@ import { MobileHelper } from '@/app/helpers/mobile-helper';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { filter, fromEvent, Subscription, take } from 'rxjs';
 import { FadeIn } from '@/app/directives/fade-in';
+import { MenuHelper } from '@/app/helpers/menu-helper';
 
 @Component({
     selector: 'app-header',
@@ -27,12 +28,13 @@ import { FadeIn } from '@/app/directives/fade-in';
         }),
     ],
 })
-export class Header {
+export class Header implements OnInit, OnDestroy {
     urlLogo = `${environment.urlImages}/images/logo.svg`;
 
     private readonly authStore = inject(AuthStore);
     mobileHelper = inject(MobileHelper);
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+    menuHelper = inject(MenuHelper);
 
     sesionIniciada = this.authStore.sesionIniciada;
     logoutRunning = this.authStore.logoutRunning;
@@ -47,6 +49,16 @@ export class Header {
     paginaSinMenuEstatico = computed(() => {
         return this.paginaSinMenuEstaticoHelper.paginaSinMenuEstatico();
     });
+
+    ngOnInit(): void {
+        this.menuHelper.registrarAbrirMenu(() => this.abrirMenu());
+        this.menuHelper.registrarCerrarMenu(() => this.cerrarMenu());
+    }
+
+    ngOnDestroy(): void {
+        this.menuHelper.registrarAbrirMenu(undefined);
+        this.menuHelper.registrarCerrarMenu(undefined);
+    }
 
     toggleMenu() {
         if (this.menuAbierto()) {
