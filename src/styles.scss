@@ -188,9 +188,13 @@ app-root.app-ready {
 .driver-popover.popover-tour .driver-popover-progress-text {
     @apply font-sans;
 }
+
+.driver-popover.popover-tour .driver-popover-btn-disabled {
+    @apply hidden!;
+}
 .driver-popover.popover-tour .driver-popover-prev-btn {
-    @apply text-(--blanco) border-(--azul) bg-(--azul) rounded-full py-1.5 px-4 text-sm font-sans font-normal text-shadow-none;
+    @apply text-(--azul) border-2 border-(--azul) bg-(--blanco)/80 rounded-full py-1.5 px-4 text-sm font-sans font-normal text-shadow-none;
 }
 .driver-popover.popover-tour .driver-popover-next-btn {
-    @apply text-(--blanco) border-(--azul) bg-(--azul) rounded-full py-1.5 px-4 text-sm font-sans font-normal text-shadow-none;
+    @apply text-(--blanco) border-2 border-(--azul) bg-(--azul) rounded-full py-1.5 px-4 text-sm font-sans font-normal text-shadow-none ml-2;
 }
