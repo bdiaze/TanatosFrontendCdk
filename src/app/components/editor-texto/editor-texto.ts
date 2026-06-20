@@ -1,6 +1,7 @@
 import { HtmlSanitizerHelper } from '@/app/helpers/html-sanitizer-helper';
 import { AfterViewInit, Component, computed, ElementRef, forwardRef, inject, input, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import Quill from 'quill';
 
 @Component({
@@ -21,9 +22,14 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor {
     placeholder = input<string | null>(null);
 
     private readonly htmlSanitizerHelper = inject(HtmlSanitizerHelper);
+    private readonly sanitizer = inject(DomSanitizer);
 
     safeContent = computed(() => {
-        return this.htmlSanitizerHelper.sanitizeQuill(this.content());
+        const contentSanitizadoConQuill = this.htmlSanitizerHelper.sanitizeQuill(this.content());
+        if (contentSanitizadoConQuill) {
+            return this.sanitizer.bypassSecurityTrustHtml(contentSanitizadoConQuill);
+        }
+        return contentSanitizadoConQuill;
     });
 
     @ViewChild('editor', { static: false }) editorElement!: ElementRef;

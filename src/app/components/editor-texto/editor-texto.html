@@ -3,5 +3,7 @@
         <div #editor class="max-h-[30vh] overflow-y-auto scrollContainer"></div>
     </div>
 } @else {
-    <div [innerHTML]="safeContent()" class="px-2"></div>
+    <div class="ql-container ql-snow" style="border: none">
+        <div class="ql-editor" [innerHTML]="safeContent()"></div>
+    </div>
 }

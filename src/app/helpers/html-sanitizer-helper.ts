@@ -16,7 +16,7 @@ export class HtmlSanitizerHelper {
 
         DOMPurify.addHook('uponSanitizeAttribute', (node, data) => {
             if (data.attrName === 'class') {
-                const allowed = /^ql-indent-[1-8]$/;
+                const allowed = /^(ql-indent-[1-8]|ql-ui)$/;
 
                 if (!allowed.test(data.attrValue)) {
                     data.keepAttr = false;
@@ -42,6 +42,7 @@ export class HtmlSanitizerHelper {
                 // base
                 'p',
                 'br',
+                'span',
 
                 // texto
                 'strong',
@@ -73,7 +74,7 @@ export class HtmlSanitizerHelper {
                 'a',
             ],
 
-            ALLOWED_ATTR: ['href', 'target', 'rel', 'class'],
+            ALLOWED_ATTR: ['href', 'target', 'rel', 'class', 'data-list', 'contenteditable'],
 
             // Solo http, https
             ALLOWED_URI_REGEXP: /^(?:(?:https?):|[^a-z]|[a-z+.-]+(?:[^a-z+.\-:]|$))/i,
