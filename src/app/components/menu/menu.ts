@@ -198,6 +198,12 @@ export class Menu implements OnInit {
                         icon: 'lucideSettings',
                         items: [
                             {
+                                id: 'group-administracion-item-mantenedores-subitem-pregunta-frecuente',
+                                tipo: 'subitem',
+                                titulo: 'Preguntas Frecuentes',
+                                url: '/administracion/mantenedores/preguntas-frecuentes',
+                            },
+                            {
                                 id: 'group-administracion-item-mantenedores-subitem-plan',
                                 tipo: 'subitem',
                                 titulo: 'Planes',

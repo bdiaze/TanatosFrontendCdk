@@ -37,6 +37,7 @@ import { sesionIniciada } from './can-activate/sesion-iniciada';
 import { CodigoVerificacion } from './features/validadores/codigo-verificacion/codigo-verificacion';
 import { esAdmin } from './can-activate/es-admin';
 import { chainActivateGuards } from './can-activate/chain-activate-guards';
+import { MantenedorPreguntaFrecuente } from './features/mantenedores/mantenedor-pregunta-frecuente/mantenedor-pregunta-frecuente';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -143,6 +144,11 @@ export const routes: Routes = [
     {
         path: 'administracion/servicio-cliente/chats-whatsapp',
         component: ChatsWhatsapp,
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
+    },
+    {
+        path: 'administracion/mantenedores/preguntas-frecuentes',
+        component: MantenedorPreguntaFrecuente,
         canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
