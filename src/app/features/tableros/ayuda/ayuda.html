@@ -17,20 +17,26 @@
                 <hlm-skeleton class="h-12.75 w-full rounded-none" />
             </div>
         } @else {
-            <hlm-accordion type="multiple" class="fade-in">
-                @for (preguntaFrecuente of preguntasFrecuentes(); track $index) {
-                    <hlm-accordion-item class="border-b last:border-b-0 border-(--calipso)/60">
-                        <hlm-accordion-trigger class="p-4">
-                            <app-editor-texto [content]="preguntaFrecuente.pregunta"></app-editor-texto>
-                        </hlm-accordion-trigger>
-                        <hlm-accordion-content>
-                            <div class="px-4 pb-4">
-                                <app-editor-texto [content]="preguntaFrecuente.respuesta"></app-editor-texto>
-                            </div>
-                        </hlm-accordion-content>
-                    </hlm-accordion-item>
-                }
-            </hlm-accordion>
+            @if (preguntasFrecuentes().length === 0) {
+                <div class="w-full flex justify-center py-3">
+                    <p hlmP class="text-(--negro)/85">¡Ups! aún no tenemos preguntas frecuentes...</p>
+                </div>
+            } @else {
+                <hlm-accordion type="multiple" class="fade-in">
+                    @for (preguntaFrecuente of preguntasFrecuentes(); track $index) {
+                        <hlm-accordion-item class="border-b last:border-b-0 border-(--calipso)/60">
+                            <hlm-accordion-trigger class="p-4">
+                                <app-editor-texto [content]="preguntaFrecuente.pregunta"></app-editor-texto>
+                            </hlm-accordion-trigger>
+                            <hlm-accordion-content>
+                                <div class="px-4 pb-4">
+                                    <app-editor-texto [content]="preguntaFrecuente.respuesta"></app-editor-texto>
+                                </div>
+                            </hlm-accordion-content>
+                        </hlm-accordion-item>
+                    }
+                </hlm-accordion>
+            }
         }
     </div>
     @if (authStore.sesionIniciada()) {
