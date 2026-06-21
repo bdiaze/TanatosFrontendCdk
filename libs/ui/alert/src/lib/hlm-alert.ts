@@ -10,7 +10,7 @@ const alertVariants = cva(
             variant: {
                 default: 'bg-card text-card-foreground',
                 destructive:
-                    'text-destructive bg-card [&>[hlmAlertDescription]]:text-destructive/90 [&>[hlmAlertDesc]]:text-destructive/90 [&>[hlmAlertIcon]]:text-current',
+                    'text-destructive bg-destructive/5 [&>[hlmAlertDescription]]:text-destructive/90 [&>[hlmAlertDesc]]:text-destructive/90 [&>[hlmAlertIcon]]:text-current border-destructive',
             },
         },
         defaultVariants: {
@@ -30,9 +30,7 @@ export type AlertVariants = VariantProps<typeof alertVariants>;
 })
 export class HlmAlert {
     public readonly userClass = input<ClassValue>('', { alias: 'class' });
-    protected readonly _computedClass = computed(() =>
-        hlm(alertVariants({ variant: this.variant() }), this.userClass()),
-    );
+    protected readonly _computedClass = computed(() => hlm(alertVariants({ variant: this.variant() }), this.userClass()));
 
     public readonly variant = input<AlertVariants['variant']>('default');
 }
