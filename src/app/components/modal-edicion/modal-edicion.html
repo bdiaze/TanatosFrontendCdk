@@ -1,5 +1,10 @@
-<div class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50" (pointerdown)="cerrar.emit()">
-    <div hlmCard (pointerdown)="$event.stopPropagation()" (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md">
+<div class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50 p-5" (pointerdown)="cerrar.emit()">
+    <div
+        hlmCard
+        (pointerdown)="$event.stopPropagation()"
+        (click)="$event.stopPropagation()"
+        class="min-w-xs md:min-w-md max-w-full max-h-full overflow-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4"
+    >
         <div hlmCardHeader class="faster-fade-in">
             <div class="flex items-center gap-4">
                 <ng-icon hlm name="lucideSquarePen" />
@@ -185,9 +190,9 @@
                 </div>
             </fieldset>
         </div>
-        <div hlmCardFooter class="flex items-center justify-end gap-6 faster-fade-in">
-            <button hlmBtn variant="outlineAzul" (click)="cerrar.emit()">Cancelar</button>
-            <button hlmBtn variant="azul" (click)="confirmar()" [disabled]="form.invalid">
+        <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-6 faster-fade-in">
+            <button hlmBtn variant="outlineAzul" (click)="cerrar.emit()" class="px-4 md:px-6">Cancelar</button>
+            <button hlmBtn variant="azul" (click)="confirmar()" [disabled]="form.invalid" class="px-4 md:px-6">
                 {{ textoBotonGuardar }}
             </button>
         </div>
@@ -199,7 +204,7 @@
                 }
             </div>
             <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-4 faster-fade-in">
-                <button hlmBtn variant="azul" (click)="funcionSecundaria.emit(this.form.getRawValue())" [disabled]="form.invalid">
+                <button hlmBtn variant="azul" (click)="funcionSecundaria.emit(this.form.getRawValue())" [disabled]="form.invalid" class="px-4 md:px-6">
                     {{ textoBotonSecundario }}
                 </button>
             </div>
