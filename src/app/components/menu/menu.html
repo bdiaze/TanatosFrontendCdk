@@ -1,10 +1,4 @@
-<section
-    class="relative bg-(--gris) text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden pb-4"
-    [class.h-lvh]="!estatico"
-    [class.h-full]="estatico"
-    [class.z-50]="!estatico"
-    [class.z-10]="estatico"
->
+<section class="relative bg-(--gris) text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden h-full" [class.z-50]="!estatico" [class.z-10]="estatico">
     <div class="sticky flex flex-row w-full items-center justify-between">
         @if (authStore.sesionIniciada()) {
             <button
