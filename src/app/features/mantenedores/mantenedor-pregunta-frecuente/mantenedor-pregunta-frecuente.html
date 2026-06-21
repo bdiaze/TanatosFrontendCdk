@@ -83,7 +83,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar una pregunta frecuente:"
-        [descripcion]="`¿Seguro que deseas eliminar la pregunta <b>${itemSeleccionado()?.pregunta}</b>?`"
+        [descripcion]="`¿Seguro que deseas eliminar la siguiente pregunta?<br/><b>${(itemSeleccionado()?.pregunta | plainText)}</b>`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >
