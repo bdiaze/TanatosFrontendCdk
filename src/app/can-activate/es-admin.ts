@@ -1,18 +1,15 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, GuardResult, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthStore } from '../services/auth-store';
 
-export const esAdmin: CanActivateFn = (_) => {
+export const esAdmin: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): GuardResult => {
     const authStore = inject(AuthStore);
-
-    if (!authStore.sesionIniciada()) {
-        return false;
-    }
+    const router = inject(Router);
 
     const groups = authStore.groups();
     if (groups.has('Admin')) {
         return true;
     }
 
-    return false;
+    return router.parseUrl('/inicio');
 };

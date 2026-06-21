@@ -1,11 +1,11 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivateFn, GuardResult, RouterStateSnapshot } from '@angular/router';
 import { AuthStore } from '../services/auth-store';
 import { redireccionarALogin } from '../features/auth/login/login';
-import { catchError, map, NEVER, startWith } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 import { AuthRefreshService } from '../services/auth-refresh-service';
 
-export const sesionIniciada: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+export const sesionIniciada: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<GuardResult> => {
     const refreshService = inject(AuthRefreshService);
     const authStore = inject(AuthStore);
 
@@ -20,7 +20,7 @@ export const sesionIniciada: CanActivateFn = (route: ActivatedRouteSnapshot, sta
         }),
         catchError(() => {
             redireccionarALogin('login', state.url);
-            return NEVER;
+            return of(false);
         }),
     );
 };

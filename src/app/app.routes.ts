@@ -36,6 +36,7 @@ import { Bienvenida } from './features/tableros/bienvenida/bienvenida';
 import { sesionIniciada } from './can-activate/sesion-iniciada';
 import { CodigoVerificacion } from './features/validadores/codigo-verificacion/codigo-verificacion';
 import { esAdmin } from './can-activate/es-admin';
+import { chainActivateGuards } from './can-activate/chain-activate-guards';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -87,118 +88,118 @@ export const routes: Routes = [
     {
         path: 'bienvenido',
         component: Bienvenida,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'inicio',
         component: MenuInicial,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'mi-calendario',
         component: TableroVencimientos,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'obligacion/:codigoAccesoOIdNormaSuscrita/:idHistorialNormaSuscrita',
         component: Vencimiento,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'mis-obligaciones',
         component: MantenedorNormaSuscrita,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'crear-obligacion',
         component: MantenedorNormaSuscritaEdicion,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'editar-obligacion/:idNormaSuscrita',
         component: MantenedorNormaSuscritaEdicion,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'plantillas-inscritas',
         component: MantenedorPlantillasInscritas,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'mi-equipo',
         component: MantenedorEmpleado,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'mis-negocios',
         component: MantenedorNegocio,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'mi-plan',
         component: MantenedorSuscripcion,
-        canActivate: [sesionIniciada],
+        canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
         path: 'administracion/servicio-cliente/chats-whatsapp',
         component: ChatsWhatsapp,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/plan',
         component: MantenedorPlan,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
 
     {
         path: 'administracion/mantenedores/template',
         component: MantenedorTemplate,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/template/nuevo',
         component: MantenedorTemplateEdicion,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/template/:idTemplate',
         component: MantenedorTemplateEdicion,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/categoria-norma',
         component: MantenedorCategoriaNorma,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/tipo-rubro',
         component: MantenedorTipoRubro,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/tipo-actividad',
         component: MantenedorTipoActividad,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/tipo-receptor-notificacion',
         component: MantenedorTipoReceptorNotificacion,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/tipo-fiscalizador',
         component: MantenedorTipoFiscalizador,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/tipo-periodicidad',
         component: MantenedorTipoPeriodicidad,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
         path: 'administracion/mantenedores/tipo-unidad-tiempo',
         component: MantenedorTipoUnidadTiempo,
-        canActivate: [sesionIniciada, esAdmin],
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     { path: '**', redirectTo: '' },
 ];
