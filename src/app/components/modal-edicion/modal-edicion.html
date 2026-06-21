@@ -3,7 +3,8 @@
         hlmCard
         (pointerdown)="$event.stopPropagation()"
         (click)="$event.stopPropagation()"
-        class="min-w-xs md:min-w-md max-w-full max-h-full overflow-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4"
+        class="max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4"
+        [ngClass]="contieneCampoEditorTexto() ? 'min-w-full md:min-w-160' : 'min-w-xs md:min-w-md'"
     >
         <div hlmCardHeader class="faster-fade-in">
             <div class="flex items-center gap-4">
@@ -17,7 +18,7 @@
             }
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
-                    @for (campo of campos; track campo.llave) {
+                    @for (campo of campos(); track campo.llave) {
                         @if (campo.tipo !== 'oculto') {
                             <div hlmField class="gap-1">
                                 @if (campo.tipo === 'string' || campo.tipo === 'number') {
@@ -183,6 +184,9 @@
                                             </div>
                                         </hlm-input-group>
                                     </div>
+                                }
+                                @if (campo.tipo === 'editor-texto') {
+                                    <app-editor-texto [formControl]="form.controls[campo.llave]"></app-editor-texto>
                                 }
                             </div>
                         }

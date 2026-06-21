@@ -1,4 +1,4 @@
-import { Component, computed, EventEmitter, Input, OnInit, Output, Signal, signal, WritableSignal } from '@angular/core';
+import { Component, computed, EventEmitter, input, Input, OnInit, Output, Signal, signal, WritableSignal } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -16,6 +16,8 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
 import { normalize } from '@/app/helpers/string-comparator';
 import { HlmH3 } from '@spartan-ng/helm/typography';
+import { EditorTexto } from '../editor-texto/editor-texto';
+import { NgClass } from '@angular/common';
 
 @Component({
     selector: 'app-modal-edicion',
@@ -35,12 +37,14 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
         HlmH3,
         HlmSelectImports,
         HlmAutocompleteImports,
+        EditorTexto,
+        NgClass,
     ],
     templateUrl: './modal-edicion.html',
     providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideSquarePen })],
 })
 export class ModalEdicion implements OnInit {
-    @Input() campos: CampoDinamico[] = [];
+    campos = input<CampoDinamico[]>([]);
     @Input() item: any;
     @Input() titulo: string = 'Editar';
     @Input() descripcion?: string;
@@ -54,9 +58,13 @@ export class ModalEdicion implements OnInit {
 
     form: FormGroup<{ [key: string]: FormControl<any> }> = new FormGroup({});
 
+    contieneCampoEditorTexto = computed(() => {
+        return this.campos().some((c) => c.tipo === 'editor-texto');
+    });
+
     ngOnInit() {
         const camposForm: any = {};
-        this.campos.forEach((campo) => {
+        this.campos().forEach((campo) => {
             const valorDelItem = this.item ? this.item[campo.llave] : null;
             let valorInicial = campo.tipo === 'boolean' ? (valorDelItem ?? false) : valorDelItem;
 
@@ -121,7 +129,7 @@ export class ModalEdicion implements OnInit {
 export interface CampoDinamico {
     llave: string;
     nombre?: string;
-    tipo: 'string' | 'number' | 'boolean' | 'select' | 'autocomplete' | 'oculto';
+    tipo: 'string' | 'number' | 'boolean' | 'select' | 'autocomplete' | 'oculto' | 'editor-texto';
     requerido: boolean;
     deshabilitado: boolean;
     posiblesValores?: PosiblesValores[];
