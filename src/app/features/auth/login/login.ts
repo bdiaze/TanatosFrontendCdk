@@ -87,10 +87,7 @@ export async function generateCodeChallenge(verifier: string): Promise<string> {
 
 let isRedirectingToLogin = false;
 
-export async function redireccionarALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string) {
-    if (isRedirectingToLogin) return;
-    isRedirectingToLogin = true;
-
+export async function generarUrlALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string): Promise<string> {
     const codeVerifier = generateRandomString(64);
     const codeChallenge = await generateCodeChallenge(codeVerifier);
 
@@ -122,7 +119,7 @@ export async function redireccionarALogin(accion: 'login' | 'signup' = 'login', 
         urlBase = `${environment.cognitoService.baseUrl}/signup?`;
     }
 
-    const url =
+    return (
         urlBase +
         new URLSearchParams({
             response_type: 'code',
@@ -133,7 +130,15 @@ export async function redireccionarALogin(accion: 'login' | 'signup' = 'login', 
             code_challenge_method: 'S256',
             code_challenge: codeChallenge,
             lang: 'es',
-        });
+        })
+    );
+}
+
+export async function redireccionarALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string) {
+    if (isRedirectingToLogin) return;
+    isRedirectingToLogin = true;
+
+    const url: string = await generarUrlALogin(accion, redirectAfterLogin);
 
     window.location.href = url;
 }
