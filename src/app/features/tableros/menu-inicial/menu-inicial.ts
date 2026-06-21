@@ -1,8 +1,8 @@
 import { environment } from '@/environments/environment';
-import { Component, inject } from '@angular/core';
+import { afterNextRender, Component, effect, inject, Injector, untracked } from '@angular/core';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmH1, HlmP } from '@spartan-ng/helm/typography';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
@@ -11,6 +11,8 @@ import { TourService } from '@/app/helpers/tour-service';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { MenuHelper } from '@/app/helpers/menu-helper';
 import { DriveStep } from 'driver.js';
+import { map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-menu-inicial',
@@ -29,6 +31,20 @@ export class MenuInicial {
 
     private readonly menuHelper = inject(MenuHelper);
     private readonly tourService = inject(TourService);
+
+    private readonly route = inject(ActivatedRoute);
+    ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
+
+    constructor() {
+        effect(() => {
+            const ayuda = this.ayuda();
+            untracked(() => {
+                if (ayuda === '1') {
+                    setTimeout(() => this.ayudaClick(), 300);
+                }
+            });
+        });
+    }
 
     ayudaClick(): void {
         const steps: DriveStep[] = [

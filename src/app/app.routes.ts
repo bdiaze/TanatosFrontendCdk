@@ -38,6 +38,7 @@ import { CodigoVerificacion } from './features/validadores/codigo-verificacion/c
 import { esAdmin } from './can-activate/es-admin';
 import { chainActivateGuards } from './can-activate/chain-activate-guards';
 import { MantenedorPreguntaFrecuente } from './features/mantenedores/mantenedor-pregunta-frecuente/mantenedor-pregunta-frecuente';
+import { Ayuda } from './features/tableros/ayuda/ayuda';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -68,6 +69,10 @@ export const routes: Routes = [
     {
         path: 'politica-de-cookies',
         component: PoliticaDeCookies,
+    },
+    {
+        path: 'ayuda',
+        component: Ayuda,
     },
     { path: 'codigo-verificacion', component: CodigoVerificacion },
     { path: 'callback', component: Callback },

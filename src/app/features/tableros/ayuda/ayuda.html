@@ -1,0 +1,55 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4 flex flex-col gap-6">
+    <div class="flex flex-col justify-center-safe items-center gap-1.5 py-1 fade-in">
+        <div class="flex items-center gap-2">
+            <h3 hlmH3>¿Necesitas Ayuda?</h3>
+        </div>
+        <h4 hlmH4 class="font-normal">Aquí toda la información que necesitas</h4>
+    </div>
+    <div class="flex flex-col">
+        <h4 hlmH4 class="font-normal bg-(--calipso) text-(--blanco) px-4 py-2 flex flex-row items-center gap-2">
+            <ng-icon hlm name="lucideCircleQuestionMark" size="20px" />
+            Preguntas Frecuentes
+        </h4>
+        @if (cargandoPreguntasFrecuentes()) {
+            <div class="flex flex-col gap-1 mt-1">
+                <hlm-skeleton class="h-12.75 w-full rounded-none" />
+                <hlm-skeleton class="h-12.75 w-full rounded-none" />
+                <hlm-skeleton class="h-12.75 w-full rounded-none" />
+            </div>
+        } @else {
+            <hlm-accordion type="multiple" class="fade-in">
+                @for (preguntaFrecuente of preguntasFrecuentes(); track $index) {
+                    <hlm-accordion-item class="border-b last:border-b-0 border-(--calipso)/60">
+                        <hlm-accordion-trigger class="p-4">
+                            <app-editor-texto [content]="preguntaFrecuente.pregunta"></app-editor-texto>
+                        </hlm-accordion-trigger>
+                        <hlm-accordion-content>
+                            <div class="px-4 pb-4">
+                                <app-editor-texto [content]="preguntaFrecuente.respuesta"></app-editor-texto>
+                            </div>
+                        </hlm-accordion-content>
+                    </hlm-accordion-item>
+                }
+            </hlm-accordion>
+        }
+    </div>
+    @if (authStore.sesionIniciada()) {
+        <div class="flex flex-col gap-3">
+            <h4 hlmH4 class="font-normal bg-(--azul) text-(--blanco) px-4 py-2 flex flex-row items-center gap-2">
+                <ng-icon hlm name="lucideCircleQuestionMark" size="20px" />
+                Información Módulos
+            </h4>
+            <div class="flex flex-wrap items-stretch justify-center gap-3">
+                @for (modulo of modulos(); track $index) {
+                    <div
+                        class="px-4 py-2 border border-(--azul) text-(--azul) cursor-pointer rounded-full"
+                        [routerLink]="[modulo.link]"
+                        [queryParams]="{ ayuda: 1 }"
+                    >
+                        <p hlmP class="font-serif">{{ modulo.nombre }}</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</section>

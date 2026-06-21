@@ -14,6 +14,7 @@ import {
     lucideCalendarRange,
     lucideChevronRight,
     lucideChevronsUpDown,
+    lucideCircleQuestionMark,
     lucideClipboardPaste,
     lucideContactRound,
     lucideCreditCard,
@@ -74,6 +75,7 @@ import { filter, map } from 'rxjs';
             lucideCreditCard,
             lucideGem,
             lucideContactRound,
+            lucideCircleQuestionMark,
         }),
     ],
 })
@@ -166,6 +168,13 @@ export class Menu implements OnInit {
                     titulo: 'Mi Plan',
                     icon: 'lucideGem',
                     url: '/mi-plan',
+                },
+                {
+                    id: 'group-general-item-ayuda',
+                    tipo: 'item',
+                    titulo: 'Ayuda',
+                    icon: 'lucideCircleQuestionMark',
+                    url: '/ayuda',
                 },
             ],
         });
