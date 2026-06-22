@@ -21,13 +21,9 @@ export class TourService {
         popoverClass: 'popover-tour',
         showButtons: ['next', 'previous'],
         disableActiveInteraction: true,
-        onHighlightStarted: () => {},
-        onDestroyed: () => {
-            this.driverInstance = null;
-        },
     };
 
-    iniciarTour(pasos: DriveStep[]): void {
+    iniciarTour(pasos: DriveStep[], onFinish?: () => void): void {
         this.driverInstance?.destroy();
 
         if (!pasos?.length) return;
@@ -35,6 +31,10 @@ export class TourService {
         this.driverInstance = driver({
             ...this.config,
             steps: pasos,
+            onDestroyed: () => {
+                this.driverInstance = null;
+                onFinish?.();
+            },
         });
 
         this.driverInstance.drive();
