@@ -1,5 +1,5 @@
 import { AuthStore } from '@services/auth-store';
-import { Component, computed, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Login } from '@/app/features/auth/login/login';
 import { Logout } from '@/app/features/auth/logout/logout';
@@ -17,6 +17,8 @@ import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estat
 import { filter, fromEvent, Subscription, take } from 'rxjs';
 import { FadeIn } from '@/app/directives/fade-in';
 import { MenuHelper } from '@/app/helpers/menu-helper';
+import { HistoryService } from '@/app/services/history-service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-header',
@@ -31,10 +33,12 @@ import { MenuHelper } from '@/app/helpers/menu-helper';
 export class Header implements OnInit, OnDestroy {
     urlLogo = `${environment.urlImages}/images/logo.svg`;
 
+    private readonly destroyRef = inject(DestroyRef);
     private readonly authStore = inject(AuthStore);
-    mobileHelper = inject(MobileHelper);
-    paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
-    menuHelper = inject(MenuHelper);
+    private readonly mobileHelper = inject(MobileHelper);
+    private readonly paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+    private readonly menuHelper = inject(MenuHelper);
+    private readonly historyService = inject(HistoryService);
 
     sesionIniciada = this.authStore.sesionIniciada;
     logoutRunning = this.authStore.logoutRunning;
@@ -49,6 +53,14 @@ export class Header implements OnInit, OnDestroy {
     paginaSinMenuEstatico = computed(() => {
         return this.paginaSinMenuEstaticoHelper.paginaSinMenuEstatico();
     });
+
+    constructor() {
+        this.historyService.popState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((_) => {
+            if (this.menuAbierto()) {
+                this.cerrarMenu();
+            }
+        });
+    }
 
     ngOnInit(): void {
         this.menuHelper.registrarAbrirMenu(() => this.abrirMenu());
@@ -70,27 +82,13 @@ export class Header implements OnInit, OnDestroy {
 
     abrirMenu() {
         this.menuAbierto.set(true);
-        history.pushState({ menuAbierto: true }, '');
+        this.historyService.registrarEstado('menuAbierto');
         document.body.classList.add('overflow-hidden', 'md:pr-1.25');
     }
 
     cerrarMenu() {
         this.menuAbierto.set(false);
-        if (history.state?.menuAbierto) {
-            const { menuAbierto, ...rest } = history.state;
-            history.replaceState(rest, '');
-        }
+        this.historyService.removerEstado('menuAbierto');
         document.body.classList.remove('overflow-hidden', 'md:pr-1.25');
-    }
-
-    @HostListener('window:popstate', ['$event'])
-    onPopState(event: PopStateEvent) {
-        if (this.menuAbierto()) {
-            this.cerrarMenu();
-        }
-
-        if (event.state && Object.keys(event.state).length === 0) {
-            history.back();
-        }
     }
 }
