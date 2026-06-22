@@ -12,7 +12,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { DatePipe } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
@@ -23,8 +23,11 @@ import { normalize } from '@/app/helpers/string-comparator';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import dayjs from 'dayjs';
+import { TourService } from '@/app/helpers/tour-service';
+import { map } from 'rxjs';
+import { DriveStep } from 'driver.js';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -62,23 +65,63 @@ import dayjs from 'dayjs';
 })
 export class TableroVencimientos {
     private readonly destroyRef = inject(DestroyRef);
+    private readonly tourService = inject(TourService);
     normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     negocioStore = inject(NegocioStore);
 
+    private readonly route = inject(ActivatedRoute);
+    ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
+
     normasVencidas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
+    normasVencidasMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    fechaVencimiento: new Date(Date.now() - 12 * 60 * 60 * 1000).toISOString(),
+                    nombreNorma: 'Obligación de ejemplo',
+                    descripcionNorma: 'Esta es una obligación vencida',
+                } as SalNormaSuscritaObtenerConVencimiento,
+            ];
+        }
+        return this.normasVencidas();
+    });
+
     normasFuturas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
+    normasFuturasMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    fechaVencimiento: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
+                    nombreNorma: 'Obligación de ejemplo',
+                    descripcionNorma: 'Esta es una obligación futura',
+                } as SalNormaSuscritaObtenerConVencimiento,
+            ];
+        }
+        return this.normasFuturas();
+    });
+
     normasCompletadas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
 
-    readonly initialMostrarMas = 6;
-    readonly deltaMostrarMas = 3;
-
     filtroCompletadas = signal<string>('');
-    cuantosMostrarCompletadas = signal<number>(this.initialMostrarMas);
+    cuantosMostrarCompletadas = signal<number>(6);
     normasCompletadasFiltradas = computed(() => {
         return this.normasCompletadas().filter((n) => normalize(n.nombreNorma!).includes(normalize(this.filtroCompletadas())));
     });
     normasCompletadasFiltradasPaginadas = computed(() => {
         return this.normasCompletadasFiltradas().slice(0, this.cuantosMostrarCompletadas());
+    });
+    normasCompletadasMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    fechaVencimiento: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
+                    fechaCompletitud: new Date(Date.now() - 36 * 60 * 60 * 1000).toISOString(),
+                    nombreNorma: 'Obligación de ejemplo',
+                    descripcionNorma: 'Esta es una obligación completada',
+                } as SalNormaSuscritaObtenerConVencimiento,
+            ];
+        }
+        return this.normasCompletadasFiltradasPaginadas();
     });
 
     cargando = signal(true);
@@ -91,6 +134,15 @@ export class TableroVencimientos {
             untracked(() => {
                 if (negocioSeleccionado) {
                     this.obtenerTodos();
+                }
+            });
+        });
+
+        effect(() => {
+            const ayuda = this.ayuda();
+            untracked(() => {
+                if (ayuda === '1') {
+                    this.ayudaClick();
                 }
             });
         });
@@ -212,7 +264,45 @@ export class TableroVencimientos {
 
     mostrarMasCompletadas() {
         this.cuantosMostrarCompletadas.update((v) => {
-            return v + this.deltaMostrarMas;
+            return v + 3;
+        });
+    }
+
+    ayudaRunning = signal<boolean>(false);
+    ayudaClick(): void {
+        const steps: DriveStep[] = [
+            {
+                popover: {
+                    title: 'Estás en tu calendario de obligaciones',
+                    description: 'Aquí podrás encontrar toda la información asociada al vencimiento de tus obligaciones.',
+                },
+            },
+            {
+                element: '#obligaciones-vencidas',
+                popover: {
+                    title: 'Obligaciones vencidas',
+                    description: 'Por acá tienes las obligaciones cuyo vencimiento ya pasó ¡Ten precaución con ellas!',
+                },
+            },
+            {
+                element: '#proximas-obligaciones',
+                popover: {
+                    title: 'Las próximas obligaciones',
+                    description: 'Luego tenemos tus obligaciones a futuro, comenzando por la más cercana.',
+                },
+            },
+            {
+                element: '#obligaciones-completadas',
+                popover: {
+                    title: 'Y las completadas',
+                    description: 'Al final encontrarás el historial de obligaciones que ya fueron completadas.',
+                },
+            },
+        ];
+
+        this.ayudaRunning.set(true);
+        this.tourService.iniciarTour(steps, () => {
+            this.ayudaRunning.set(false);
         });
     }
 }
