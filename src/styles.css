@@ -1,0 +1,54 @@
+@layer components {
+    .fade-in {
+        @apply opacity-0 transition-opacity duration-1000 ease-out;
+        animation: fadeIn 1s forwards;
+    }
+
+    .faster-fade-in {
+        @apply opacity-0 transition-opacity duration-300 ease-out;
+        animation: fadeIn 0.3s forwards;
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+}
+
+app-root {
+    opacity: 0;
+    transition: opacity 120ms ease-in;
+}
+
+app-root.app-ready {
+    opacity: 1;
+}
+
+.scrollContainer::-webkit-scrollbar {
+    width: 5px;
+}
+
+.scrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollContainer::-webkit-scrollbar-thumb {
+    background: color-mix(in oklch, var(--negro) 50%, transparent);
+    border-radius: 999px;
+    background-clip: content-box;
+}
+
+.scrollContainerHorizontal::-webkit-scrollbar {
+    height: 5px;
+}
+
+.scrollContainerHorizontal::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollContainerHorizontal::-webkit-scrollbar-thumb {
+    background: color-mix(in oklch, var(--negro) 50%, transparent);
+    border-radius: 999px;
+    background-clip: content-box;
+}
