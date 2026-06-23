@@ -28,6 +28,7 @@ export class TourService {
         popoverClass: 'popover-tour',
         showButtons: ['next', 'previous', 'close'],
         disableActiveInteraction: true,
+        overlayClickBehavior: () => {},
     };
 
     iniciarTour({
