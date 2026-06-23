@@ -10,18 +10,24 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthStore } from '@/app/services/auth-store';
+import { TourService } from '@/app/helpers/tour-service';
+import { DriveStep } from 'driver.js';
+import { MenuHelper } from '@/app/helpers/menu-helper';
 
 @Component({
     selector: 'app-ayuda',
-    imports: [HlmP, HlmH3, HlmH4, NgIcon, HlmIcon, HlmAccordionImports, EditorTexto, HlmSkeletonImports, RouterLink],
+    imports: [HlmP, HlmH3, HlmH4, NgIcon, HlmIcon, HlmAccordionImports, EditorTexto, HlmSkeletonImports],
     templateUrl: './ayuda.html',
     styleUrl: './ayuda.scss',
     providers: [provideIcons({ lucideCircleQuestionMark })],
 })
 export class Ayuda implements OnInit {
     private readonly destroyRef = inject(DestroyRef);
+    private readonly router = inject(Router);
+    private readonly menuHelper = inject(MenuHelper);
+    private readonly tourService = inject(TourService);
     private readonly preguntaFrecuenteDao = inject(PreguntaFrecuenteDao);
     authStore = inject(AuthStore);
 
@@ -60,37 +66,170 @@ export class Ayuda implements OnInit {
         {
             id: 'inicio',
             nombre: 'Inicio',
-            link: '/inicio',
+            link: ['/inicio'],
+            steps: [
+                {
+                    element: '#group-negocio-seleccionado-item-inicio',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Inicio deberás hacer click aquí.',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
         },
         {
             id: 'mi-calendario',
             nombre: 'Mi Calendario',
-            link: '/mi-calendario',
+            link: ['/mi-calendario'],
+            steps: [
+                {
+                    element: '#group-negocio-seleccionado-item-mi-calendario',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Mi Calendario deberás hacer click aquí.',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
         },
         {
             id: 'mis-obligaciones',
             nombre: 'Mis Obligaciones',
-            link: '/mis-obligaciones',
+            link: ['/mis-obligaciones'],
+            steps: [
+                {
+                    element: '#group-negocio-seleccionado-item-mis-obligaciones',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Mis Obligaciones deberás hacer click aquí.',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
         },
         {
             id: 'plantillas-inscritas',
             nombre: 'Plantillas Inscritas',
-            link: '/plantillas-inscritas',
+            link: ['/plantillas-inscritas'],
+            steps: [
+                {
+                    element: '#group-negocio-seleccionado-item-plantillas-inscritas',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Plantillas Inscritas deberás hacer click aquí.',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
         },
         {
             id: 'mi-equipo',
             nombre: 'Mi Equipo',
-            link: '/mi-equipo',
+            link: ['/mi-equipo'],
+            steps: [
+                {
+                    element: '#group-negocio-seleccionado-item-mi-equipo',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Mi Equipo deberás hacer click aquí.',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
         },
         {
             id: 'mis-negocios',
             nombre: 'Mis Negocios',
-            link: '/mis-negocios',
+            link: ['/mis-negocios'],
+            steps: [
+                {
+                    element: '#group-general-item-mis-negocios',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Mis Negocios deberás hacer click aquí.',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
         },
         {
             id: 'mi-plan',
             nombre: 'Mi Plan',
-            link: '/mi-plan',
+            link: ['/mi-plan'],
+            steps: [
+                {
+                    element: '#group-general-item-mi-plan',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Mi Plan deberás hacer click aquí.',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
         },
     ]);
+
+    ayudaClick(modulo: { nombre: string; link: readonly any[]; steps: DriveStep[] }): void {
+        const steps = [
+            {
+                popover: {
+                    title: 'Te tenemos un recorrido guiado',
+                    description: `Para que conozcas mejor el módulo ${modulo.nombre}, te mostraremos un recorrido guiado por sus funciones más importantes.`,
+                },
+            },
+            ...modulo.steps,
+        ];
+
+        this.tourService.iniciarTour({
+            pasos: steps,
+            showProgress: false,
+            doneBtnText: 'Siguiente',
+            onNextFromLast: () => {
+                this.router.navigate(modulo.link, { queryParams: { ayuda: 1 } });
+            },
+        });
+    }
 }

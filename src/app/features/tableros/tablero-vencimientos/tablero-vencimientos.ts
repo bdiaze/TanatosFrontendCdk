@@ -12,7 +12,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
@@ -66,6 +66,7 @@ import { DriveStep } from 'driver.js';
 export class TableroVencimientos {
     private readonly destroyRef = inject(DestroyRef);
     private readonly tourService = inject(TourService);
+    private readonly router = inject(Router);
     normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     negocioStore = inject(NegocioStore);
 
@@ -105,12 +106,6 @@ export class TableroVencimientos {
     filtroCompletadas = signal<string>('');
     cuantosMostrarCompletadas = signal<number>(6);
     normasCompletadasFiltradas = computed(() => {
-        return this.normasCompletadas().filter((n) => normalize(n.nombreNorma!).includes(normalize(this.filtroCompletadas())));
-    });
-    normasCompletadasFiltradasPaginadas = computed(() => {
-        return this.normasCompletadasFiltradas().slice(0, this.cuantosMostrarCompletadas());
-    });
-    normasCompletadasMostrar = computed(() => {
         if (this.ayudaRunning()) {
             return [
                 {
@@ -121,7 +116,10 @@ export class TableroVencimientos {
                 } as SalNormaSuscritaObtenerConVencimiento,
             ];
         }
-        return this.normasCompletadasFiltradasPaginadas();
+        return this.normasCompletadas().filter((n) => normalize(n.nombreNorma!).includes(normalize(this.filtroCompletadas())));
+    });
+    normasCompletadasFiltradasPaginadas = computed(() => {
+        return this.normasCompletadasFiltradas().slice(0, this.cuantosMostrarCompletadas());
     });
 
     cargando = signal(true);
@@ -270,39 +268,91 @@ export class TableroVencimientos {
 
     ayudaRunning = signal<boolean>(false);
     ayudaClick(): void {
-        const steps: DriveStep[] = [
-            {
+        const steps: DriveStep[] = [];
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                popover: {
+                    title: '¡Ya estamos en Mi Calendario!',
+                    description: 'Ahora que ya estamos en Mi Calendario, te mostraremos sus principales funciones.',
+                },
+            });
+        } else {
+            steps.push({
                 popover: {
                     title: 'Estás en tu calendario de obligaciones',
                     description: 'Aquí podrás encontrar toda la información asociada al vencimiento de tus obligaciones.',
                 },
-            },
-            {
-                element: '#obligaciones-vencidas',
-                popover: {
-                    title: 'Obligaciones vencidas',
-                    description: 'Por acá tienes las obligaciones cuyo vencimiento ya pasó ¡Ten precaución con ellas!',
+            });
+        }
+
+        steps.push(
+            ...([
+                {
+                    element: '#obligaciones-vencidas',
+                    popover: {
+                        title: 'Obligaciones vencidas',
+                        description: 'Por acá tienes las obligaciones cuyo vencimiento ya pasó ¡Ten precaución con ellas!',
+                    },
                 },
-            },
-            {
-                element: '#proximas-obligaciones',
-                popover: {
-                    title: 'Las próximas obligaciones',
-                    description: 'Luego tenemos tus obligaciones a futuro, comenzando por la más cercana.',
+                {
+                    element: '#proximas-obligaciones',
+                    popover: {
+                        title: 'Las próximas obligaciones',
+                        description: 'Luego tenemos tus obligaciones a futuro, comenzando por la más cercana.',
+                    },
                 },
-            },
-            {
-                element: '#obligaciones-completadas',
-                popover: {
-                    title: 'Y las completadas',
-                    description: 'Al final encontrarás el historial de obligaciones que ya fueron completadas.',
+                {
+                    element: '#obligaciones-completadas',
+                    popover: {
+                        title: 'Y las completadas',
+                        description: 'Al final encontrarás el historial de obligaciones que ya fueron completadas.',
+                    },
                 },
+                {
+                    element: '#obligacion-prueba',
+                    popover: {
+                        title: 'Selecciona un vencimiento',
+                        description: 'Puedes seleccionar cualquier obligación para obtener más información del vencimiento de ella.',
+                        side: 'bottom',
+                    },
+                },
+            ] as DriveStep[]),
+        );
+
+        let cambiandoASiguiente = false;
+
+        let config: {
+            pasos: DriveStep[];
+            onFinish?: (element: Element | undefined, step: DriveStep, options: any) => void;
+            showProgress?: boolean;
+            doneBtnText?: string;
+            onNextFromLast?: (element: Element | undefined, step: DriveStep, options: any) => void;
+        } = {
+            pasos: steps,
+            onFinish: () => {
+                this.ayudaRunning.set(false);
+                if (!cambiandoASiguiente && this.ayuda() === '1') {
+                    this.router.navigate(['/ayuda']);
+                }
             },
-        ];
+            onNextFromLast: () => {
+                if (this.ayuda() === '1') {
+                    cambiandoASiguiente = true;
+                    this.router.navigate(['/obligacion', 0, 0], { queryParams: { ayuda: 1 } });
+                }
+            },
+        };
+
+        if (this.ayuda() === '1') {
+            config = {
+                ...config,
+                showProgress: false,
+                doneBtnText: 'Siguiente',
+            };
+        }
 
         this.ayudaRunning.set(true);
-        this.tourService.iniciarTour(steps, () => {
-            this.ayudaRunning.set(false);
-        });
+        this.tourService.iniciarTour(config);
     }
 }

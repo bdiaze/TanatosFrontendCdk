@@ -31,6 +31,7 @@
                     } @else {
                         @for (vencido of normasVencidasMostrar(); track vencido.idHistorialNormaSuscrita) {
                             <a
+                                [id]="ayudaRunning() ? 'obligacion-prueba' : null"
                                 hlmItem
                                 variant="outline"
                                 [routerLink]="['/obligacion', vencido.idNormaSuscrita, vencido.idHistorialNormaSuscrita]"
@@ -170,7 +171,7 @@
                         <hlm-skeleton class="h-50 rounded-xl" />
                         <hlm-skeleton class="h-50 rounded-xl" />
                     } @else {
-                        @for (completada of normasCompletadasMostrar(); track completada.idHistorialNormaSuscrita) {
+                        @for (completada of normasCompletadasFiltradasPaginadas(); track completada.idHistorialNormaSuscrita) {
                             <a
                                 hlmItem
                                 variant="outline"

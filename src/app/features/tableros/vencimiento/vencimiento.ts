@@ -24,21 +24,22 @@ import { HttpEventType } from '@angular/common/http';
 import { HlmProgressImports } from '@spartan-ng/helm/progress';
 import { EntDocumentoAdjuntoGenerarUrlBajada } from '@/app/entities/others/ent-documento-adjunto-generar-url-bajada';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
-import { debounceTime, Subject, switchMap } from 'rxjs';
+import { debounceTime, map, Subject, switchMap } from 'rxjs';
 import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-suscrita-completar-norma';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
 import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { EntNormaSuscritaCompletarNormaPorCodigoAcceso } from '@/app/entities/others/ent-norma-suscrita-completar-norma-por-codigo-acceso';
-import { SalDocumentoAdjuntoGenerarUrlBajada } from '@/app/entities/others/sal-documento-adjunto-generar-url-bajada';
 import { SalDocumentoAdjuntoGenerarUrlSubida } from '@/app/entities/others/sal-documento-adjunto-generar-url-subida';
 import { EntDocumentoAdjuntoGenerarUrlSubidaPorCodigoAcceso } from '@/app/entities/others/ent-documento-adjunto-generar-url-subida-por-codigo-acceso';
 import { EntDocumentoAdjuntoGenerarUrlSubida } from '@/app/entities/others/ent-documento-adjunto-generar-url-subida';
 import { EntDocumentoAdjuntoConfirmarSubidaPorCodigoAcceso } from '@/app/entities/others/ent-documento-adjunto-confirmar-subida-por-codigo-acceso';
 import { EntDocumentoAdjuntoConfirmarSubida } from '@/app/entities/others/ent-documento-adjunto-confirmar-subida';
 import { EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso } from '@/app/entities/others/ent-documento-adjunto-generar-url-bajada-por-codigo-acceso';
+import { DriveStep } from 'driver.js';
+import { TourService } from '@/app/helpers/tour-service';
 
 @Component({
     selector: 'app-vencimiento',
@@ -85,17 +86,20 @@ export class Vencimiento implements OnInit {
     @ViewChild(PopupFuncionalidadBloqueada) popupFuncionalidadBloqueada?: any;
 
     private readonly destroyRef = inject(DestroyRef);
+    private readonly tourService = inject(TourService);
+    private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
+    ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
 
     codigoAcceso = signal<string | null>(null);
-    idNormaSuscrita = signal<number | null>(null);
-    idHistorialNormaSuscrita = signal<number | null>(null);
+    private readonly idNormaSuscrita = signal<number | null>(null);
+    private readonly idHistorialNormaSuscrita = signal<number | null>(null);
 
-    datePipe = inject(DatePipe);
+    private readonly datePipe = inject(DatePipe);
 
-    normaSuscritaDao = inject(NormaSuscritaDao);
-    documentoAdjuntoDao = inject(DocumentoAdjuntoDao);
-    s3Service = inject(S3Service);
+    private readonly normaSuscritaDao = inject(NormaSuscritaDao);
+    private readonly documentoAdjuntoDao = inject(DocumentoAdjuntoDao);
+    private readonly s3Service = inject(S3Service);
 
     error = signal<string>('');
 
@@ -103,10 +107,30 @@ export class Vencimiento implements OnInit {
     itemSeleccionado = signal<DocumentoAdjunto | null>(null);
 
     item = signal<SalNormaSuscritaObtenerPorIdConVencimiento | null>(null);
+    itemMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return {
+                tienePlanEmpresa: true,
+                nombreNegocio: 'Mi Negocio',
+                nombre: 'Obligación de ejemplo',
+                descripcion: `<h2>Una obligación de ejemplo</h2><p>Esta es una <strong>obligación de ejemplo</strong> para explicar como funciona esta pantalla.</p><br/><h3>1. Con un primer paso de ejemplo</h3><h3>2. Y un segundo paso para completar</h3>`,
+                nombreCategoriaNorma: 'Tributación, SII y facturación',
+                nombreTipoPeriodicidad: 'Mensual',
+                multa: 'Una multa de ejemplo',
+                fechaVencimiento: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+                fiscalizadores: [
+                    {
+                        nombreTipoFiscalizador: 'Servicio de Impuestos Internos',
+                    },
+                ] as SalFiscalizadorNormaSuscrita[],
+            } as SalNormaSuscritaObtenerPorIdConVencimiento;
+        }
+        return this.item();
+    });
     fiscalizadores = computed<SalFiscalizadorNormaSuscrita[]>(() => {
-        let listado = this.item()?.fiscalizadores;
+        let listado = this.itemMostrar()?.fiscalizadores;
         if (!listado || listado.length == 0) {
-            listado = this.item()?.templateNorma?.fiscalizadores;
+            listado = this.itemMostrar()?.templateNorma?.fiscalizadores;
         }
 
         if (!listado) {
@@ -116,9 +140,20 @@ export class Vencimiento implements OnInit {
         return listado;
     });
     documentosAdjuntos = signal<DocumentoAdjunto[]>([]);
+    documentosAdjunstoMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    nombreArchivo: 'Un_archivo_de_ejemplo.pdf',
+                    fechaSubida: new Date().toISOString(),
+                },
+            ] as DocumentoAdjunto[];
+        }
+        return this.documentosAdjuntos();
+    });
     documentosEnProgreso = signal<DocumentoEnProgreso[]>([]);
 
-    cargandoNormaSuscritaConVencimiento = signal<boolean>(true);
+    cargandoNormaSuscritaConVencimiento = signal<boolean>(false);
 
     constructor() {
         effect(() => {
@@ -138,15 +173,21 @@ export class Vencimiento implements OnInit {
                 }
             });
         });
+
+        effect(() => {
+            const ayuda = this.ayuda();
+            untracked(() => {
+                if (ayuda === '1') {
+                    this.ayudaClick();
+                }
+            });
+        });
     }
 
     private readonly refrescarAdjuntos$ = new Subject<void>();
 
     ngOnInit(): void {
         this.route.paramMap.subscribe((params) => {
-            this.error.set('');
-            this.item.set(null);
-
             const paramCodigoAccesoOIdNormaSuscrita = params.get('codigoAccesoOIdNormaSuscrita');
             const paramIdHistorialNormaSuscrita = params.get('idHistorialNormaSuscrita');
 
@@ -285,7 +326,7 @@ export class Vencimiento implements OnInit {
     }
 
     puedeSubirArchivos = computed(() => {
-        return this.item()?.tienePlanEmpresa ?? false;
+        return this.itemMostrar()?.tienePlanEmpresa ?? false;
     });
 
     draggingFile = signal<boolean>(false);
@@ -584,18 +625,18 @@ export class Vencimiento implements OnInit {
 
     showModalConfirmar = signal<boolean>(false);
     textoModalConfirmar = computed(() => {
-        const nombre = this.item()?.nombre ?? this.item()?.templateNorma?.nombre;
+        const nombre = this.itemMostrar()?.nombre ?? this.itemMostrar()?.templateNorma?.nombre;
         let texto = `<p class='text-center'>¿Seguro que deseas dar por completada la obligación <b>${nombre}</b>?</p>`;
 
-        const vencimiento = this.item()?.fechaVencimiento;
+        const vencimiento = this.itemMostrar()?.fechaVencimiento;
         let vencimientoTexto = this.datePipe.transform(vencimiento, "EEEE d 'de' MMMM 'de' yyyy 'a las' HH:mm") ?? '';
         vencimientoTexto = vencimientoTexto.charAt(0).toLocaleUpperCase() + vencimientoTexto.slice(1);
         texto += `<p class='mt-2 text-left'><b>Vencimiento:</b> ${vencimientoTexto}</p>`;
 
         let listadoDocumentos = '';
-        if (this.documentosAdjuntos().length > 0) {
+        if (this.documentosAdjunstoMostrar().length > 0) {
             listadoDocumentos += `<br/><span class='mt-2 text-left text-sm'><ul class='list-disc ml-7'>`;
-            this.documentosAdjuntos().forEach((doc) => {
+            this.documentosAdjunstoMostrar().forEach((doc) => {
                 const nombreArchivo = doc.nombreArchivo;
                 listadoDocumentos += `<li>${nombreArchivo}</li>`;
             });
@@ -668,6 +709,94 @@ export class Vencimiento implements OnInit {
                     this.completando.set(false);
                 });
         }
+    }
+
+    ayudaRunning = signal<boolean>(false);
+    ayudaClick(): void {
+        const steps: DriveStep[] = [];
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                popover: {
+                    title: '¡Vencimiento seleccionado!',
+                    description: 'Ahora que ya seleccionamos un vencimiento, te mostraremos sus principales funciones.',
+                },
+            });
+        } else {
+            steps.push({
+                popover: {
+                    title: 'Completa tu obligación',
+                    description:
+                        'Aquí podrás ver los detalles asociados al vencimiento de una de tus obligaciones, y más importante aún, darla por completada.',
+                },
+            });
+        }
+
+        steps.push(
+            ...[
+                {
+                    element: '#cabecera_vencimiento',
+                    popover: {
+                        title: '¿Vencimiento asociado a qué obligación?',
+                        description: 'Primero te mostramos cuál es la obligación, a qué categoría pertenece y quién la fiscaliza.',
+                    },
+                },
+                {
+                    element: '#periodicidad_multa',
+                    popover: {
+                        title: 'Periodicidad y multa',
+                        description: 'Luego te indicamos cada cuánto se repite, y qué multa arriesgas en caso de no cumplirla a tiempo.',
+                    },
+                },
+                {
+                    element: '#descripcion',
+                    popover: {
+                        title: '¿En qué consiste la obligación?',
+                        description: 'Además, te entregamos una descripción de la obligación, explicando de qué se trata y cómo se completa.',
+                    },
+                },
+                {
+                    element: '#subida_archivos',
+                    popover: {
+                        title: '¿Y mis documentos?',
+                        description: '¡Los podrás adjuntar! Comprobantes, certificados, o cualquier otro documento asociado a la obligación.',
+                    },
+                },
+                {
+                    element: '#vencimiento_completar',
+                    popover: {
+                        title: '¡Dar por completada!',
+                        description: 'Y por último, tienes la fecha en que vence tu obligación, además del botón para darla por completada.',
+                    },
+                },
+            ],
+        );
+
+        let config: {
+            pasos: DriveStep[];
+            onFinish?: (element: Element | undefined, step: DriveStep, options: any) => void;
+            showProgress?: boolean;
+            doneBtnText?: string;
+            onNextFromLast?: (element: Element | undefined, step: DriveStep, options: any) => void;
+        } = {
+            pasos: steps,
+            onFinish: () => {
+                this.ayudaRunning.set(false);
+                if (this.ayuda() === '1') {
+                    this.router.navigate(['/ayuda']);
+                }
+            },
+        };
+
+        if (this.ayuda() === '1') {
+            config = {
+                ...config,
+                showProgress: false,
+            };
+        }
+
+        this.ayudaRunning.set(true);
+        this.tourService.iniciarTour(config);
     }
 }
 

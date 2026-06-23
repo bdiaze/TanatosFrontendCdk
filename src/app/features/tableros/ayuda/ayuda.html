@@ -47,11 +47,7 @@
             </h4>
             <div class="flex flex-wrap items-stretch justify-center gap-3">
                 @for (modulo of modulos(); track $index) {
-                    <div
-                        class="px-4 py-2 border border-(--azul) text-(--azul) cursor-pointer rounded-full"
-                        [routerLink]="[modulo.link]"
-                        [queryParams]="{ ayuda: 1 }"
-                    >
+                    <div class="px-4 py-1 md:py-2 border border-(--azul) text-(--azul) cursor-pointer rounded-full" (click)="ayudaClick(modulo)">
                         <p hlmP class="font-serif">{{ modulo.nombre }}</p>
                     </div>
                 }

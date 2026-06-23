@@ -1,29 +1,36 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
     @if (!codigoAcceso()) {
-        <nav hlmBreadcrumb class="mb-4 pl-2">
-            <ol hlmBreadcrumbList>
-                <li hlmBreadcrumbItem>
-                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
-                </li>
-                <li hlmBreadcrumbSeparator></li>
-                <li hlmBreadcrumbItem>
-                    <a hlmBreadcrumbLink link="/mi-calendario">Mi Calendario</a>
-                </li>
-                <li hlmBreadcrumbSeparator></li>
-                <li hlmBreadcrumbItem>
-                    <span hlmBreadcrumbPage>
-                        @if (cargandoNormaSuscritaConVencimiento()) {
-                            <hlm-skeleton class="h-5 w-30 rounded-xl" />
-                        } @else {
-                            {{ item()?.nombre ?? item()?.templateNorma?.nombre }}
-                        }
-                    </span>
-                </li>
-            </ol>
-        </nav>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/mi-calendario">Mi Calendario</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>
+                            @if (cargandoNormaSuscritaConVencimiento() && !ayudaRunning()) {
+                                <hlm-skeleton class="h-5 w-30 rounded-xl" />
+                            } @else {
+                                {{ itemMostrar()?.nombre ?? itemMostrar()?.templateNorma?.nombre }}
+                            }
+                        </span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
+    } @else {
+        <div class="flex flex-row items-start justify-end">
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
     }
 
-    @if (cargandoNormaSuscritaConVencimiento()) {
+    @if (cargandoNormaSuscritaConVencimiento() && !ayudaRunning()) {
         <div class="flex flex-col gap-4 justify-center-safe items-start fade-in w-full">
             <div class="flex flex-col items-center justify-center w-full pt-3 gap-2">
                 <hlm-skeleton class="h-7 w-42 rounded-xl" />
@@ -47,38 +54,40 @@
         </div>
     } @else {
         <div class="fade-in">
-            <h4 hlmH4 class="text-center">
-                {{ item()?.nombreNegocio }}
-            </h4>
-            <div class="flex justify-center-safe items-center gap-3 pt-1 pb-2">
-                <ng-icon hlm name="lucideCalendarCheck" />
-                <h3 hlmH3>{{ item()?.nombre ?? item()?.templateNorma?.nombre }}</h3>
-            </div>
-            <div class="flex flex-col items-center justify-center pb-5">
-                @if (item()?.nombreCategoriaNorma || item()?.templateNorma?.nombreCategoriaNorma) {
-                    <p HlmP>
-                        {{ item()?.nombreCategoriaNorma ?? item()?.templateNorma?.nombreCategoriaNorma }}
-                    </p>
-                }
-                @if (fiscalizadores().length > 0) {
-                    <div class="flex flex-row items-center justify-center gap-3 pt-2">
-                        <div class="flex flex-wrap justify-center items-center gap-1 pt-1">
-                            @for (fiscalizador of fiscalizadores(); track fiscalizador.id) {
-                                <span hlmBadge variant="azul">
-                                    {{ fiscalizador.nombreTipoFiscalizador }}
-                                </span>
-                            }
+            <div id="cabecera_vencimiento">
+                <h4 hlmH4 class="text-center">
+                    {{ itemMostrar()?.nombreNegocio }}
+                </h4>
+                <div class="flex justify-center-safe items-center gap-3 pt-1 pb-2">
+                    <ng-icon hlm name="lucideCalendarCheck" />
+                    <h3 hlmH3>{{ itemMostrar()?.nombre ?? itemMostrar()?.templateNorma?.nombre }}</h3>
+                </div>
+                <div class="flex flex-col items-center justify-center pb-5">
+                    @if (itemMostrar()?.nombreCategoriaNorma || itemMostrar()?.templateNorma?.nombreCategoriaNorma) {
+                        <p HlmP>
+                            {{ itemMostrar()?.nombreCategoriaNorma ?? itemMostrar()?.templateNorma?.nombreCategoriaNorma }}
+                        </p>
+                    }
+                    @if (fiscalizadores().length > 0) {
+                        <div class="flex flex-row items-center justify-center gap-3 pt-2">
+                            <div class="flex flex-wrap justify-center items-center gap-1 pt-1">
+                                @for (fiscalizador of fiscalizadores(); track fiscalizador.id) {
+                                    <span hlmBadge variant="azul">
+                                        {{ fiscalizador.nombreTipoFiscalizador }}
+                                    </span>
+                                }
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
             <div class="flex flex-col gap-6">
-                <div class="flex flex-row items-stretch gap-4 w-full">
+                <div id="periodicidad_multa" class="flex flex-row items-stretch gap-4 w-full">
                     <div hlmItem variant="outline" size="sm" class="md:px-8">
                         <div hlmItemContent>
                             <div hlmItemTitle>Periodicidad</div>
                             <div hlmItemDescription class="whitespace-nowrap">
-                                {{ item()?.nombreTipoPeriodicidad ?? item()?.templateNorma?.nombreTipoPeriodicidad }}
+                                {{ itemMostrar()?.nombreTipoPeriodicidad ?? itemMostrar()?.templateNorma?.nombreTipoPeriodicidad }}
                             </div>
                         </div>
                     </div>
@@ -86,16 +95,16 @@
                         <div hlmItemContent>
                             <div hlmItemTitle>Multa</div>
                             <div hlmItemDescription>
-                                {{ item()?.multa ?? item()?.templateNorma?.multa ?? 'Sin multa registrada' }}
+                                {{ itemMostrar()?.multa ?? itemMostrar()?.templateNorma?.multa ?? 'Sin multa registrada' }}
                             </div>
                         </div>
                     </div>
                 </div>
-                @if (item()?.descripcion || item()?.templateNorma?.descripcion) {
-                    <div class="flex flex-col items-center justify-start">
+                @if (itemMostrar()?.descripcion || itemMostrar()?.templateNorma?.descripcion) {
+                    <div id="descripcion" class="flex flex-col items-center justify-start">
                         <div class="relative w-full">
                             <div #contenedorDescripcion class="overflow-y-hidden px-2" [class.max-h-60]="!expandido()" [class.max-h-1000]="expandido()">
-                                <app-editor-texto [content]="item()?.descripcion ?? item()?.templateNorma?.descripcion"></app-editor-texto>
+                                <app-editor-texto [content]="itemMostrar()?.descripcion ?? itemMostrar()?.templateNorma?.descripcion"></app-editor-texto>
                             </div>
                             @if (!expandido() && mostrarBotonExpandir()) {
                                 <div class="absolute bottom-0 left-0 right-0 h-60 bg-linear-to-t from-white to-transparent pointer-events-none"></div>
@@ -110,12 +119,12 @@
                         }
                     </div>
                 }
-                @if (!item()?.fechaCompletitud || (documentosAdjuntos() && documentosAdjuntos().length > 0)) {
+                @if (!itemMostrar()?.fechaCompletitud || (documentosAdjunstoMostrar() && documentosAdjunstoMostrar().length > 0)) {
                     <div hlmItem variant="outline" size="sm" class="w-full">
                         <div hlmItemContent>
                             <div hlmItemTitle>Documentos Adjuntos</div>
                             <div hlmItemDescription>
-                                @if (!item()?.fechaCompletitud) {
+                                @if (!itemMostrar()?.fechaCompletitud) {
                                     <div class="mb-2">
                                         No olvides adjuntar los documentos asociados al cumplimiento de la obligación.
                                         <ul class="list-disc ml-6">
@@ -127,10 +136,10 @@
                                         </ul>
                                     </div>
                                 }
-                                <div hlmTableContainer>
+                                <div id="subida_archivos" hlmTableContainer>
                                     <table hlmTable>
                                         @if (
-                                            (documentosAdjuntos() && documentosAdjuntos().length > 0) ||
+                                            (documentosAdjunstoMostrar() && documentosAdjunstoMostrar().length > 0) ||
                                             (documentosEnProgreso() && documentosEnProgreso().length > 0)
                                         ) {
                                             <thead hlmTHead>
@@ -142,7 +151,7 @@
                                             </thead>
                                         }
                                         <tbody hlmTBody>
-                                            @for (documento of documentosAdjuntos(); track documento.id) {
+                                            @for (documento of documentosAdjunstoMostrar(); track documento.id) {
                                                 <tr hlmTr class="fade-in">
                                                     <td hlmTd class="whitespace-normal wrap-break-word break-all">
                                                         {{ documento.nombreArchivo }}
@@ -173,7 +182,7 @@
                                                                     <ng-icon hlm size="sm" name="lucideDownload" />
                                                                 }
                                                             </button>
-                                                            @if (!item()?.fechaCompletitud) {
+                                                            @if (!itemMostrar()?.fechaCompletitud) {
                                                                 <button
                                                                     hlmBtn
                                                                     size="icon"
@@ -204,7 +213,7 @@
                                                 </tr>
                                             }
                                         </tbody>
-                                        @if (!item()?.fechaCompletitud) {
+                                        @if (!itemMostrar()?.fechaCompletitud) {
                                             <tfoot hlmTFoot>
                                                 <tr hlmTr>
                                                     <td
@@ -283,17 +292,17 @@
                         <p hlmAlertDescription class="whitespace-pre-line">{{ error() }}</p>
                     </div>
                 }
-                <div class="flex flex-row items-stretch gap-4 w-full">
+                <div id="vencimiento_completar" class="flex flex-row items-stretch gap-4 w-full">
                     <div hlmItem variant="outline" size="sm" class="md:px-8">
                         <div hlmItemContent>
                             <div hlmItemTitle>Vencimiento</div>
                             <div hlmItemDescription class="text-center">
-                                {{ item()?.fechaVencimiento | date: 'd MMM yyyy' }}<br />
-                                {{ item()?.fechaVencimiento | date: 'HH:mm' }}
+                                {{ itemMostrar()?.fechaVencimiento | date: 'd MMM yyyy' }}<br />
+                                {{ itemMostrar()?.fechaVencimiento | date: 'HH:mm' }}
                             </div>
                         </div>
                     </div>
-                    @if (item()?.fechaCompletitud) {
+                    @if (itemMostrar()?.fechaCompletitud) {
                         <div hlmItem variant="outline" size="sm" class="w-full bg-(--azul) border-(--azul) rounded-full justify-center">
                             <div hlmItemMedia>
                                 <ng-icon hlm name="lucideBadgeCheck" size="30px" class="text-(--blanco)" />
@@ -301,7 +310,7 @@
                             <div hlmItemContent class="flex-none max-w-full">
                                 <div hlmItemTitle class="text-base md:text-lg text-(--blanco) text-center">
                                     ¡Completada el
-                                    {{ item()?.fechaCompletitud | date: "d 'de' MMMM 'de' yyyy" }}!
+                                    {{ itemMostrar()?.fechaCompletitud | date: "d 'de' MMMM 'de' yyyy" }}!
                                 </div>
                             </div>
                         </div>

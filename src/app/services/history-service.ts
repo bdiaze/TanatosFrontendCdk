@@ -13,7 +13,6 @@ export class HistoryService {
     constructor() {
         window.addEventListener('popstate', (event) => {
             // Nota: event.state corresponde al nuevo state...
-            console.log(event);
             let state = event.state;
 
             // Si es un state con atributo del service, se quitan todos los estados que estén marcados con false...

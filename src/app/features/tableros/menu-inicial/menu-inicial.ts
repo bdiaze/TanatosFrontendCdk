@@ -1,8 +1,8 @@
 import { environment } from '@/environments/environment';
-import { afterNextRender, Component, effect, inject, Injector, untracked } from '@angular/core';
+import { Component, effect, inject, untracked } from '@angular/core';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmH1, HlmP } from '@spartan-ng/helm/typography';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
@@ -30,6 +30,7 @@ export class MenuInicial {
     informacionUsuario = this.negocioStore.informacionUsuario;
 
     private readonly menuHelper = inject(MenuHelper);
+    private readonly router = inject(Router);
     private readonly tourService = inject(TourService);
 
     private readonly route = inject(ActivatedRoute);
@@ -40,21 +41,30 @@ export class MenuInicial {
             const ayuda = this.ayuda();
             untracked(() => {
                 if (ayuda === '1') {
-                    setTimeout(() => this.ayudaClick(), 300);
+                    this.ayudaClick();
                 }
             });
         });
     }
 
     ayudaClick(): void {
-        const steps: DriveStep[] = [
-            {
+        const steps: DriveStep[] = [];
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                popover: {
+                    title: '¡Ya estamos en Inicio!',
+                    description: 'Ahora que ya estamos en Inicio, te mostraremos sus principales funciones.',
+                },
+            });
+        } else {
+            steps.push({
                 popover: {
                     title: '¿Necesitas ayuda? Aquí estamos para guiarte',
                     description: 'Todo en Orden te ayudará a administrar tus negocios y gestionar tus obligaciones legales.',
                 },
-            },
-        ];
+            });
+        }
 
         if (!document.getElementById('menu-header')) {
             steps.push({
@@ -93,14 +103,14 @@ export class MenuInicial {
                     element: '#group-negocio-seleccionado',
                     popover: {
                         title: 'Menú del negocio seleccionado',
-                        description: 'Por acá encuentras los menús asociados al negocio seleccionado.',
+                        description: 'Por acá encontrarás los menús asociados al negocio seleccionado.',
                     },
                 },
                 {
                     element: '#group-general',
                     popover: {
                         title: 'Menú general',
-                        description: 'Y por acá encuentras los menús asociados a tu cuenta en general.',
+                        description: 'Y por acá encontrarás los menús asociados a tu cuenta en general.',
                     },
                 },
             ],
@@ -155,6 +165,29 @@ export class MenuInicial {
             ],
         );
 
-        this.tourService.iniciarTour(steps);
+        let config: {
+            pasos: DriveStep[];
+            onFinish?: (element: Element | undefined, step: DriveStep, options: any) => void;
+            showProgress?: boolean;
+            doneBtnText?: string;
+            onNextFromLast?: (element: Element | undefined, step: DriveStep, options: any) => void;
+        } = {
+            pasos: steps,
+            onFinish: () => {
+                this.menuHelper.cerrarMenu();
+                if (this.ayuda() === '1') {
+                    this.router.navigate(['/ayuda']);
+                }
+            },
+        };
+
+        if (this.ayuda() === '1') {
+            config = {
+                ...config,
+                showProgress: false,
+            };
+        }
+
+        this.tourService.iniciarTour(config);
     }
 }
