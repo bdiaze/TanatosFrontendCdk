@@ -15,7 +15,7 @@
     color-scheme: light;
 
     --font-sans:
-        Roboto, 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
+        'Open Sans', Roboto, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans', sans-serif, 'Apple Color Emoji',
         'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
     --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 
@@ -197,4 +197,8 @@ app-root.app-ready {
 }
 .driver-popover.popover-tour .driver-popover-next-btn {
     @apply text-(--blanco) border-2 border-(--azul) bg-(--azul) rounded-full py-1.5 px-4 text-sm font-sans font-normal text-shadow-none ml-2;
+}
+
+.driver-popover.popover-tour .driver-popover-close-btn {
+    @apply size-9 text-2xl;
 }
