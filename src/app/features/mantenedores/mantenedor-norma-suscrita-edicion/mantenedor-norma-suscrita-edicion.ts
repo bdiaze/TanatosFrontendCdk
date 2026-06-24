@@ -32,7 +32,7 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
-import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
 import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
@@ -44,6 +44,9 @@ import { CargoDao } from '@/app/daos/cargo-dao';
 import { EmpleadoDao } from '@/app/daos/empleado-dao';
 import { SalEmpleado, SalEmpleadoDestinatario } from '@/app/entities/others/sal-empleado';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { map } from 'rxjs';
+import { TourService } from '@/app/helpers/tour-service';
+import { DriveStep } from 'driver.js';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita-edicion',
@@ -103,19 +106,22 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 })
 export class MantenedorNormaSuscritaEdicion implements OnInit {
     private readonly destroyRef = inject(DestroyRef);
+    private readonly tourService = inject(TourService);
     private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
-    idNormaSuscrita = signal<number | null>(null);
+    private readonly ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
 
-    normaSuscritaDao = inject(NormaSuscritaDao);
-    categoriaNormaDao = inject(CategoriaNormaDao);
-    tipoPeriodicidadDao = inject(TipoPeriodicidadDao);
-    tipoFiscalizadorDao = inject(TipoFiscalizadorDao);
-    tipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
-    cargoDao = inject(CargoDao);
-    empleadoDao = inject(EmpleadoDao);
+    private readonly idNormaSuscrita = signal<number | null>(null);
 
-    negocioStore = inject(NegocioStore);
+    private readonly normaSuscritaDao = inject(NormaSuscritaDao);
+    private readonly categoriaNormaDao = inject(CategoriaNormaDao);
+    private readonly tipoPeriodicidadDao = inject(TipoPeriodicidadDao);
+    private readonly tipoFiscalizadorDao = inject(TipoFiscalizadorDao);
+    private readonly tipoUnidadTiempoDao = inject(TipoUnidadTiempoDao);
+    private readonly cargoDao = inject(CargoDao);
+    private readonly empleadoDao = inject(EmpleadoDao);
+
+    private readonly negocioStore = inject(NegocioStore);
 
     form: FormGroup<{
         nombre: FormControl<string | null>;
@@ -196,7 +202,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
     minDate = signal<Date>(new Date());
 
-    cargoSeleccionado = toSignal(this.form.controls['idCargo'].valueChanges, {
+    private readonly cargoSeleccionado = toSignal(this.form.controls['idCargo'].valueChanges, {
         initialValue: this.form.controls['idCargo'].value,
     });
     empleadosSeleccionados = computed(() => {
@@ -516,6 +522,15 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
 
                     (this.form.get('fiscalizadores') as FormArray).clear();
                     (this.form.get('notificaciones') as FormArray).clear();
+                }
+            });
+        });
+
+        effect(() => {
+            const ayuda = this.ayuda();
+            untracked(() => {
+                if (ayuda === '1') {
+                    this.ayudaClick();
                 }
             });
         });
@@ -865,4 +880,134 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
     itemToStringCargo = (value: number) => {
         return this.cargosVigentes().find((c) => c.id === value)?.nombre ?? '';
     };
+
+    ayudaRunning = signal<boolean>(false);
+    ayudaClick(): void {
+        const steps: DriveStep[] = [];
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                popover: {
+                    title: '¡Mi primera obligación!',
+                    description: 'Y ahora veamos como crear una primera obligación con notificaciones activadas.',
+                },
+            });
+        } else {
+            steps.push({
+                popover: {
+                    title: '¿Cómo crear o editar una obligación?',
+                    description: 'Aquí podrás crear o editar una obligación, indicando descripciones, multas e incluso activar notificaciones.',
+                },
+            });
+        }
+
+        steps.push(
+            ...([
+                {
+                    element: '#input-nombre',
+                    popover: {
+                        title: 'Nombre de la obligación',
+                        description: 'Comienza por darle un nombre a la obligación, te recomendamos algo claro y breve.',
+                    },
+                },
+                {
+                    element: '#input-descripcion',
+                    popover: {
+                        title: '¿En qué consiste la obligación?',
+                        description:
+                            'Ahora describe la obligación. Aquí añade todo lo necesario, pasos a seguir, condiciones de cumplimiento, lo que tu quieras.',
+                    },
+                },
+                {
+                    element: '#input-multa',
+                    popover: {
+                        title: 'Y posibles multas',
+                        description:
+                            'Y aquí uno de los aspectos más importantes, ¿Qué pasa si no cumples? ¿Tendrás que pagar una multa? ¿Una posible clausura?',
+                    },
+                },
+                {
+                    element: '#categorias_fiscalizadores',
+                    popover: {
+                        title: 'Clasifica y fiscaliza',
+                        description: 'Acá puedes clasificar la obligación e indicar quiénes fiscalizan el cumplimiento de esta.',
+                    },
+                },
+                {
+                    element: '#activar_notificacion',
+                    popover: {
+                        title: '¿Y ahora? las notificaciones',
+                        description: 'Y por último, activar las notificaciones.',
+                    },
+                    onHighlightStarted: () => {
+                        this.form.controls.activado.setValue(true);
+                    },
+                },
+                {
+                    element: '#responsable-obligacion',
+                    popover: {
+                        title: 'El responsable',
+                        description:
+                            'Primero, indica quién es el responsable de la obligación. Los recordatorios serán enviados a este responsable, ya seas tu o alguien de tu equipo.',
+                    },
+                },
+                {
+                    element: '#proximo_vencimiento',
+                    popover: {
+                        title: '¿Próximo vencimiento?',
+                        description: 'Segundo, indica para cuándo debe estar completada la obligación, ¿Mañana? ¿Próximo mes?',
+                    },
+                },
+                {
+                    element: '#periodicidad',
+                    popover: {
+                        title: '¿Cada cuánto?',
+                        description:
+                            'Tercero, ¿Cada cuánto se repite la obligación? nosotros te volveremos a calendarizar la obligación según esta periodicidad.',
+                    },
+                },
+                {
+                    element: '#recordatorios',
+                    popover: {
+                        title: 'Recordatorios previos',
+                        description: 'Y cuarto, ¿Cuándo te recordamos? ¿10 días antes de que venza? indícanos la cantidad y la unidad de tiempo deseada. ',
+                    },
+                },
+                {
+                    element: '#boton_guardar',
+                    popover: {
+                        title: '¡Y no te olvides de guardar!',
+                    },
+                },
+            ] as DriveStep[]),
+        );
+
+        let config: {
+            pasos: DriveStep[];
+            onFinish?: (element: Element | undefined, step: DriveStep, options: any) => void;
+            showProgress?: boolean;
+            doneBtnText?: string;
+            onNextFromLast?: (element: Element | undefined, step: DriveStep, options: any) => void;
+        } = {
+            pasos: steps,
+            onFinish: () => {
+                this.ayudaRunning.set(false);
+                this.form.controls.activado.setValue(valorActivacionPrevioTour);
+                if (this.ayuda() === '1') {
+                    this.router.navigate(['/ayuda']);
+                }
+            },
+        };
+
+        if (this.ayuda() === '1') {
+            config = {
+                ...config,
+                showProgress: false,
+            };
+        }
+
+        let valorActivacionPrevioTour = this.form.controls.activado.value;
+        this.ayudaRunning.set(true);
+        this.tourService.iniciarTour(config);
+    }
 }

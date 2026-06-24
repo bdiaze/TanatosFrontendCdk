@@ -1,16 +1,19 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
     <div>
-        <nav hlmBreadcrumb class="mb-4 pl-2">
-            <ol hlmBreadcrumbList>
-                <li hlmBreadcrumbItem>
-                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
-                </li>
-                <li hlmBreadcrumbSeparator></li>
-                <li hlmBreadcrumbItem>
-                    <span hlmBreadcrumbPage>Mis Obligaciones</span>
-                </li>
-            </ol>
-        </nav>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Mis Obligaciones</span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
         <h4 hlmH4 class="text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
         </h4>
@@ -20,7 +23,7 @@
         </div>
     </div>
     <div hlmTableContainer class="fade-in">
-        <table hlmTable>
+        <table id="obligaciones-propias" hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
@@ -31,7 +34,7 @@
                 </tr>
             </thead>
             <tbody hlmTBody>
-                @if (cargando()) {
+                @if (cargando() && !ayudaRunning()) {
                     <tr hlmTr>
                         <td hlmTd>
                             <hlm-skeleton class="h-8 rounded-xl" />
@@ -98,7 +101,7 @@
                             </td>
                             <td hlmTd class="px-0">
                                 <div class="flex items-center justify-center-safe">
-                                    <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
+                                    <button [id]="ayudaRunning() ? 'boton-opciones' : null" hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
@@ -122,7 +125,7 @@
                 }
             </tbody>
         </table>
-        <a hlmBtn variant="azul" [routerLink]="['/crear-obligacion']" class="m-4">Nueva Obligación</a>
+        <a id="creacion-obligacion" hlmBtn variant="azul" [routerLink]="['/crear-obligacion']" class="m-4">Nueva Obligación</a>
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
@@ -133,14 +136,20 @@
     }
 
     <!-- Sección de templates inscritos -->
-    @if (!cargando()) {
+    @if (!cargando() || ayudaRunning()) {
         <div class="fade-in w-full flex flex-col md:flex-row items-start justify-end-safe md:justify-center mt-4">
             <div class="w-full flex-1 flex justify-center-safe items-center order-2 md:order-1 gap-3 mt-3 md:mt-0 mb-2">
                 <ng-icon hlm name="lucideClipboardList" />
                 <h3 hlmH3>Según Plantillas</h3>
             </div>
             <div class="w-full flex justify-end-safe items-center md:relative md:w-0 order-1 md:order-2">
-                <a hlmBtn variant="outlineAzul" routerLink="/plantillas-inscritas" class="text-xs md:text-sm md:absolute md:-top-1 md:right-0">
+                <a
+                    id="inscripcion-plantilla"
+                    hlmBtn
+                    variant="outlineAzul"
+                    routerLink="/plantillas-inscritas"
+                    class="text-xs md:text-sm md:absolute md:-top-1 md:right-0"
+                >
                     <ng-icon hlm size="sm" name="lucideClipboardPaste" />
                     Plantillas Inscritas
                 </a>
@@ -148,62 +157,66 @@
         </div>
         @for (template of obtenerTemplatesSuscritos(); track template) {
             <hlm-separator class="fade-in" />
-            <div class="fade-in">
-                <div class="flex justify-center-safe items-center gap-3 py-2">
-                    <h4 hlmH4 class="text-lg">Obligaciones - {{ template }}</h4>
+            <div id="obligaciones-plantillas">
+                <div class="fade-in">
+                    <div class="flex justify-center-safe items-center gap-3 py-2">
+                        <h4 hlmH4 class="text-lg">Obligaciones - {{ template }}</h4>
+                    </div>
                 </div>
-            </div>
-            <div hlmTableContainer class="fade-in">
-                <table hlmTable>
-                    <thead hlmTHead>
-                        <tr hlmTr>
-                            <th hlmTh class="text-xs md:text-sm">Nombre</th>
-                            <th hlmTh class="text-xs md:text-sm">Descripción</th>
-                            <th hlmTh class="text-xs md:text-sm">Periodicidad</th>
-                            <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">¿Activa?</th>
-                            <th hlmTh class="w-10 md:w-16"></th>
-                        </tr>
-                    </thead>
-                    <tbody hlmTBody>
-                        @for (item of obtenerNormasSegunTemplate()[template]; track item.id) {
+                <div hlmTableContainer class="fade-in">
+                    <table hlmTable>
+                        <thead hlmTHead>
                             <tr hlmTr>
-                                <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                                    {{ item.nombre ?? item.templateNorma?.nombre }}
-                                </td>
-                                <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                                    {{ truncarDescripcion(item.descripcion ?? item.templateNorma?.descripcion) }}
-                                </td>
-                                <td hlmTd class="whitespace-normal text-xs md:text-sm">
-                                    {{ item.nombreTipoPeriodicidad ?? item.templateNorma?.nombreTipoPeriodicidad }}
-                                </td>
-                                <td hlmTd class="text-center px-0">
-                                    @if (item.activado) {
-                                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
-                                    } @else {
-                                        <ng-icon hlmTooltipTrigger hlm name="lucideBadgeX" class="text-destructive" />
-                                    }
-                                </td>
-                                <td hlmTd class="px-0">
-                                    <div class="flex items-center justify-center-safe">
-                                        <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
-                                            <ng-icon hlm size="xs" name="lucideEllipsis" />
-                                        </button>
-                                        <ng-template #menu>
-                                            <hlm-dropdown-menu>
-                                                <hlm-dropdown-menu-group>
-                                                    <button hlmDropdownMenuItem [routerLink]="['/editar-obligacion', item.id]">Editar</button>
-                                                    @if (item.editable) {
-                                                        <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
-                                                    }
-                                                </hlm-dropdown-menu-group>
-                                            </hlm-dropdown-menu>
-                                        </ng-template>
-                                    </div>
-                                </td>
+                                <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                                <th hlmTh class="text-xs md:text-sm">Descripción</th>
+                                <th hlmTh class="text-xs md:text-sm">Periodicidad</th>
+                                <th hlmTh class="text-center w-14 md:w-24 text-xs md:text-sm px-0">¿Activa?</th>
+                                <th hlmTh class="w-10 md:w-16"></th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody hlmTBody>
+                            @for (item of obtenerNormasSegunTemplate()[template]; track item.id) {
+                                <tr hlmTr>
+                                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                                        {{ item.nombre ?? item.templateNorma?.nombre }}
+                                    </td>
+                                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                                        {{ truncarDescripcion(item.descripcion ?? item.templateNorma?.descripcion) }}
+                                    </td>
+                                    <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                                        {{ item.nombreTipoPeriodicidad ?? item.templateNorma?.nombreTipoPeriodicidad }}
+                                    </td>
+                                    <td hlmTd class="text-center px-0">
+                                        @if (item.activado) {
+                                            <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                                        } @else {
+                                            <ng-icon hlmTooltipTrigger hlm name="lucideBadgeX" class="text-destructive" />
+                                        }
+                                    </td>
+                                    <td hlmTd class="px-0">
+                                        <div class="flex items-center justify-center-safe">
+                                            <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
+                                                <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                            </button>
+                                            <ng-template #menu>
+                                                <hlm-dropdown-menu>
+                                                    <hlm-dropdown-menu-group>
+                                                        <button hlmDropdownMenuItem [routerLink]="['/editar-obligacion', item.id]">Editar</button>
+                                                        @if (item.editable) {
+                                                            <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">
+                                                                Eliminar
+                                                            </button>
+                                                        }
+                                                    </hlm-dropdown-menu-group>
+                                                </hlm-dropdown-menu>
+                                            </ng-template>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         } @empty {
             <div hlmAlert class="col-span-1 md:col-span-3 fade-in my-3">

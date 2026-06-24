@@ -2,10 +2,9 @@ import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-elimi
 import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
 import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -29,7 +28,10 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { DriveStep } from 'driver.js';
+import { TourService } from '@/app/helpers/tour-service';
+import { map } from 'rxjs';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita',
@@ -67,11 +69,39 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class MantenedorNormaSuscrita {
     private readonly destroyRef = inject(DestroyRef);
-    normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
-    authStore = inject(AuthStore);
+    private readonly tourService = inject(TourService);
+    private readonly router = inject(Router);
+    private readonly normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     negocioStore = inject(NegocioStore);
 
-    listado = signal([] as SalNormaSuscrita[]);
+    private readonly route = inject(ActivatedRoute);
+    private readonly ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
+
+    private readonly listado = signal([] as SalNormaSuscrita[]);
+    listadoMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    nombre: 'Obligación de ejemplo',
+                    descripcion: 'Esta es la descripcion de una obligación de ejemplo...',
+                    nombreTipoPeriodicidad: 'Mensual',
+                    activado: true,
+                    editable: true,
+                },
+                {
+                    templateNorma: {
+                        nombreTemplate: 'Plantilla de ejemplo',
+                        nombre: 'Obligación de plantilla',
+                        descripcion: 'Esta es una obligación de ejemplo asociada a una plantilla...',
+                        nombreTipoPeriodicidad: 'Semestral',
+                    },
+                    activado: true,
+                    editable: true,
+                } as SalNormaSuscrita,
+            ] as SalNormaSuscrita[];
+        }
+        return this.listado();
+    });
     cargando = signal(true);
     error = signal('');
 
@@ -88,6 +118,15 @@ export class MantenedorNormaSuscrita {
             untracked(() => {
                 if (negocioSeleccionado) {
                     this.obtenerTodos();
+                }
+            });
+        });
+
+        effect(() => {
+            const ayuda = this.ayuda();
+            untracked(() => {
+                if (ayuda === '1') {
+                    this.ayudaClick();
                 }
             });
         });
@@ -187,7 +226,7 @@ export class MantenedorNormaSuscrita {
     }
 
     obtenerNormasPropias = computed(() => {
-        return this.listado()
+        return this.listadoMostrar()
             .filter((x) => x.templateNorma == null)
             .sort((a, b) => (a.nombre && b.nombre ? a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase()) : a.id - b.id));
     });
@@ -195,7 +234,7 @@ export class MantenedorNormaSuscrita {
     obtenerNormasSegunTemplate = computed(() => {
         const resultado: Record<string, SalNormaSuscrita[]> = {};
 
-        for (const norma of this.listado()) {
+        for (const norma of this.listadoMostrar()) {
             const template = norma.templateNorma?.nombreTemplate;
             if (!template) continue;
 
@@ -214,9 +253,117 @@ export class MantenedorNormaSuscrita {
     });
 
     obtenerTemplatesSuscritos = computed(() => {
-        const normasConTemplate = this.listado().filter((x) => x.templateNorma != null);
+        const normasConTemplate = this.listadoMostrar().filter((x) => x.templateNorma != null);
 
         const templates: string[] = [...new Set(normasConTemplate.map((n) => n.templateNorma?.nombreTemplate!))];
         return templates.sort((a, b) => a.toLocaleLowerCase().localeCompare(b.toLocaleLowerCase()));
     });
+
+    ayudaRunning = signal<boolean>(false);
+    ayudaClick(): void {
+        const steps: DriveStep[] = [];
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                popover: {
+                    title: '¡Ya estamos en Mis Obligaciones!',
+                    description: 'Ahora que ya estamos en Mis Obligaciones, te mostraremos sus principales funciones.',
+                },
+            });
+        } else {
+            steps.push({
+                popover: {
+                    title: 'Acá están tus obligaciones',
+                    description: 'Aquí podrás configurar todas tus obligaciones, crear nuevas, modificar existentes e incluso eliminarlas.',
+                },
+            });
+        }
+
+        steps.push(
+            ...([
+                {
+                    element: '#obligaciones-propias',
+                    popover: {
+                        title: 'Tus propias obligaciones',
+                        description: 'Comenzamos mostrándote las obligaciones que tu has creado.',
+                    },
+                },
+                {
+                    element: '#obligaciones-plantillas',
+                    popover: {
+                        title: 'Obligaciones de plantillas',
+                        description: 'En la parte inferior, te mostramos todas las obligaciones asociadas a las plantillas que tienes inscritas.',
+                    },
+                },
+                {
+                    element: '#inscripcion-plantilla',
+                    popover: {
+                        title: '¿Más plantillas?',
+                        description: 'Si deseas inscribirte a más plantillas de obligaciones ¡Por acá!',
+                    },
+                    onHighlightStarted: (element) => {
+                        const parent = element?.parentElement;
+                        if (parent) {
+                            parent.style.setProperty('overflow', 'visible', 'important');
+                        }
+                    },
+                    onDeselected: (element) => {
+                        const parent = element?.parentElement;
+                        if (parent) {
+                            parent.style.removeProperty('overflow');
+                        }
+                    },
+                },
+                {
+                    element: '#boton-opciones',
+                    popover: {
+                        title: '¿Y cómo modifico una obligación?',
+                        description: 'Con este botón puedes acceder a modificar o eliminar la obligación.',
+                    },
+                },
+                {
+                    element: '#creacion-obligacion',
+                    popover: {
+                        title: 'Click aquí para crear',
+                        description: 'Y con este botón podrás crear las obligaciones que tu desees.',
+                    },
+                },
+            ] as DriveStep[]),
+        );
+
+        let cambiandoASiguiente = false;
+
+        let config: {
+            pasos: DriveStep[];
+            onFinish?: (element: Element | undefined, step: DriveStep, options: any) => void;
+            showProgress?: boolean;
+            doneBtnText?: string;
+            onNextFromLast?: (element: Element | undefined, step: DriveStep, options: any) => void;
+        } = {
+            pasos: steps,
+            onFinish: () => {
+                this.ayudaRunning.set(false);
+                if (!cambiandoASiguiente && this.ayuda() === '1') {
+                    this.router.navigate(['/ayuda']);
+                }
+            },
+            onNextFromLast: () => {
+                if (this.ayuda() === '1') {
+                    cambiandoASiguiente = true;
+                    this.router.navigate(['/crear-obligacion'], { queryParams: { ayuda: 1 } });
+                }
+            },
+        };
+
+        if (this.ayuda() === '1') {
+            config = {
+                ...config,
+                showProgress: false,
+                doneBtnText: 'Siguiente',
+            };
+        }
+
+        this.ayudaRunning.set(true);
+        this.tourService.iniciarTour(config);
+    }
 }

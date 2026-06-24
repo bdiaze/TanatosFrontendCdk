@@ -1,25 +1,28 @@
 <div class="max-w-screen md:max-w-2xl mx-auto px-6 py-4 flex flex-col justify-center items-center gap-4">
-    <nav hlmBreadcrumb class="mb-4 w-full">
-        <ol hlmBreadcrumbList>
-            <li hlmBreadcrumbItem>
-                <a hlmBreadcrumbLink link="/inicio">Inicio</a>
-            </li>
-            <li hlmBreadcrumbSeparator></li>
-            <li hlmBreadcrumbItem>
-                <a hlmBreadcrumbLink link="/mis-obligaciones">Mis Obligaciones</a>
-            </li>
-            <li hlmBreadcrumbSeparator></li>
-            <li hlmBreadcrumbItem>
-                <span hlmBreadcrumbPage>
-                    @if (cargandoNormaSuscrita()) {
-                        <hlm-skeleton class="h-5 w-30 rounded-xl" />
-                    } @else {
-                        {{ form.controls['nombre'].value }}
-                    }
-                </span>
-            </li>
-        </ol>
-    </nav>
+    <div class="flex flex-row items-start justify-between w-full">
+        <nav hlmBreadcrumb class="mb-4 w-full">
+            <ol hlmBreadcrumbList>
+                <li hlmBreadcrumbItem>
+                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                </li>
+                <li hlmBreadcrumbSeparator></li>
+                <li hlmBreadcrumbItem>
+                    <a hlmBreadcrumbLink link="/mis-obligaciones">Mis Obligaciones</a>
+                </li>
+                <li hlmBreadcrumbSeparator></li>
+                <li hlmBreadcrumbItem>
+                    <span hlmBreadcrumbPage>
+                        @if (cargandoNormaSuscrita()) {
+                            <hlm-skeleton class="h-5 w-30 rounded-xl" />
+                        } @else {
+                            {{ form.controls['nombre'].value }}
+                        }
+                    </span>
+                </li>
+            </ol>
+        </nav>
+        <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+    </div>
     @if (cargandoNormaSuscrita()) {
         <div class="flex flex-col gap-4 justify-center-safe items-start fade-in w-full">
             <hlm-skeleton class="h-10 w-2/3 rounded-xl" />
@@ -50,7 +53,7 @@
         <div class="w-full fade-in">
             <fieldset hlmFieldSet>
                 <div hlmFieldGroup class="gap-3">
-                    <div hlmField class="flex justify-center items-center gap-1">
+                    <div id="input-nombre" hlmField class="flex justify-center items-center gap-1">
                         <div hlmInputGroup class="px-1">
                             <div hlmInputGroupAddon align="block-start">
                                 <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Nombre</label>
@@ -72,7 +75,7 @@
                             />
                         </div>
                     </div>
-                    <div hlmField class="flex justify-center items-center gap-0">
+                    <div id="input-descripcion" hlmField class="flex justify-center items-center gap-0">
                         <app-editor-texto [formControl]="form.controls['descripcion']" class="text-sm"></app-editor-texto>
                         <hlm-field-error
                             class="transition-all duration-500 ease-out text-xs"
@@ -83,7 +86,7 @@
                             >Debes ingresar la "Descripción"</hlm-field-error
                         >
                     </div>
-                    <div class="flex flex-col md:flex-row justify-stretch items-start md:items-center gap-3">
+                    <div id="input-multa" class="flex flex-col md:flex-row justify-stretch items-start md:items-center gap-3">
                         <div hlmField class="flex justify-center items-center gap-1">
                             <div hlmInputGroup>
                                 <div hlmInputGroupAddon align="block-start">
@@ -107,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
+                    <div id="categorias_fiscalizadores" class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
                         <div hlmField class="flex justify-center items-center gap-1 w-full widthMitadConGap2">
                             <div hlmInputGroup>
                                 <div hlmInputGroupAddon align="block-start">
@@ -245,7 +248,7 @@
                         <div class="flex-1 flex items-center justify-center">
                             <hlm-separator />
                         </div>
-                        <div hlmField class="flex justify-center items-center gap-1 w-fit mx-5 h-7">
+                        <div id="activar_notificacion" hlmField class="flex justify-center items-center gap-1 w-fit mx-5 h-7">
                             <div class="flex flex-row justify-center items-center gap-4">
                                 <label for="activado" hlmLabel class="text-sm font-normal text-muted-foreground">¿Activar Notificaciones?</label>
                                 <div class="flex flex-row items-center justify-center gap-4">
@@ -268,7 +271,7 @@
                                 Indícanos quién es el responsable y cuándo sería la próxima fecha límite para cumplir con la obligación:
                             </p>
                             <div class="flex flex-col md:flex-row justify-center items-center gap-2 w-full">
-                                <div hlmField class="flex justify-center items-center gap-1 w-full">
+                                <div id="responsable-obligacion" hlmField class="flex justify-center items-center gap-1 w-full">
                                     <div hlmInputGroup>
                                         <div hlmInputGroupAddon align="block-start">
                                             <label for="idCargo" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Cargo Responsable</label>
@@ -348,7 +351,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-col md:flex-row justify-center items-center gap-2 w-full">
+                            <div id="proximo_vencimiento" class="flex flex-col md:flex-row justify-center items-center gap-2 w-full">
                                 <div hlmField class="flex flex-col gap-1 w-full md:w-[50%]">
                                     <div hlmInputGroup>
                                         <div hlmInputGroupAddon align="block-start">
@@ -405,7 +408,7 @@
                             </div>
                         </div>
                         <div class="flex flex-col md:flex-row items-start gap-3 md:gap-2 mb-1 fade-in">
-                            <div hlmField class="flex justify-center items-center gap-1 w-full widthMitadConGap2">
+                            <div id="periodicidad" hlmField class="flex justify-center items-center gap-1 w-full widthMitadConGap2">
                                 <div hlmInputGroup>
                                     <div hlmInputGroupAddon align="block-start">
                                         <label for="idTipoPeriodicidad" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Periodicidad</label>
@@ -451,7 +454,7 @@
                                 </div>
                             </div>
                             <div hlmField class="flex flex-col justify-center-safe items-center w-full widthMitadConGap2 gap-2">
-                                <div hlmInputGroup>
+                                <div id="recordatorios" hlmInputGroup>
                                     <div hlmInputGroupAddon align="block-start">
                                         <label hlmLabel for="formNotifCantTiempo" class="text-xs opacity-80 font-semibold">Recordatorios Previos</label>
                                     </div>
@@ -585,7 +588,7 @@
                 class="border-(--azul) hover:border-(--azul)/80 text-(--azul) hover:text-(--azul)/80"
                 >Cancelar</a
             >
-            <button hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()" class="bg-(--azul) hover:bg-(--azul)/80">
+            <button id="boton_guardar" hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()" class="bg-(--azul) hover:bg-(--azul)/80">
                 @if (procesando()) {
                     <hlm-spinner />
                 }
