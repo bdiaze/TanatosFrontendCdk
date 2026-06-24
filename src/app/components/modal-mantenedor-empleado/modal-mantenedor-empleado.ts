@@ -34,7 +34,7 @@ import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH4, HlmP, HlmH3 } from '@spartan-ng/helm/typography';
 import { PopupFuncionalidadBloqueada } from '../popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { AutoFocus } from '@/app/directives/auto-focus';
@@ -67,6 +67,7 @@ import { AutoFocus } from '@/app/directives/auto-focus';
         PopupFuncionalidadBloqueada,
         HlmTooltipImports,
         RouterLink,
+        HlmH3,
     ],
     templateUrl: './modal-mantenedor-empleado.html',
     providers: [provideIcons({ lucideContactRound, lucidePlus, lucideMail, lucideSmartphone, lucideTrash2, lucideGem })],

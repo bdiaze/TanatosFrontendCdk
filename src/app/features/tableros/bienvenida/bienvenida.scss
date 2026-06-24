@@ -1,0 +1,58 @@
+.autocompleteBienvenida ::ng-deep ng-icon {
+    color: var(--blanco);
+}
+
+.autocompleteBienvenida ::ng-deep hlm-autocomplete-input {
+    height: calc(var(--spacing) * 10);
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function) /* cubic-bezier(0.4, 0, 0.2, 1) */);
+    transition-duration: var(--tw-duration, var(--default-transition-duration) /* 150ms */);
+    transition-delay: 150ms;
+    animation-delay: calc(150 * 1ms) /* 150ms */;
+    animation-delay: 0.15s;
+    --tw-animation-delay: calc(150 * 1ms) /* 150ms */;
+    --tw-animation-delay: 0.15s;
+}
+
+.autocompleteBienvenida ::ng-deep hlm-autocomplete-input {
+    height: calc(var(--spacing) * 10);
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function) /* cubic-bezier(0.4, 0, 0.2, 1) */);
+    transition-duration: var(--tw-duration, var(--default-transition-duration) /* 150ms */);
+    transition-delay: 150ms;
+    animation-delay: calc(150 * 1ms) /* 150ms */;
+    animation-delay: 0.15s;
+    --tw-animation-delay: calc(150 * 1ms) /* 150ms */;
+    --tw-animation-delay: 0.15s;
+
+    &:has(*:is([data-slot='input-group-control']:focus-visible)) {
+        border-color: var(--blanco);
+    }
+
+    &:has(*:is([data-slot='input-group-control']:focus-visible)) {
+        --tw-ring-color: color-mix(in oklab, var(--blanco) 40%, transparent);
+    }
+
+    &:has(> [data-matches-spartan-invalid='true']) {
+        border-color: var(--destructive) !important;
+    }
+
+    &:has(> [data-matches-spartan-invalid='true']) {
+        --tw-ring-color: color-mix(in oklab, var(--destructive) 20%, transparent) !important;
+    }
+}
+
+.autocompleteBienvenida ::ng-deep hlm-autocomplete-input input[hlminputgroupinput] {
+    font-size: var(--text-lg) /* 1.125rem = 18px */ !important;
+    line-height: var(--tw-leading, var(--text-lg--line-height) /* calc(1.75 / 1.125) ≈ 1.555556 */) !important;
+    text-align: center;
+    & *::selection {
+        background-color: color-mix(in oklab, var(--blanco) 20%, transparent);
+    }
+    &::selection {
+        background-color: color-mix(in oklab, var(--blanco) 20%, transparent);
+    }
+    &::placeholder {
+        color: var(--blanco);
+    }
+}

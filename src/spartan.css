@@ -229,3 +229,11 @@ a[hlmbtn][variant='destructive'],
 button[hlmBtn][variant='destructive'] {
     @apply bg-destructive hover:bg-destructive/80 text-blanco rounded-full;
 }
+
+h3[hlmcardtitle] {
+    @apply text-xl;
+}
+
+div[hlmcardcontent] {
+    @apply text-base;
+}

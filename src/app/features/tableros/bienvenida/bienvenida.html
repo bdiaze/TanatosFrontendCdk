@@ -1,5 +1,5 @@
-<div class="w-full h-full bg-(--azul) flex flex-col items-start justify-start">
-    <section id="negocio" class="w-full bg-(--azul) text-(--blanco) fade-in">
+<div class="w-full h-full bg-azul flex flex-col items-start justify-start">
+    <section id="negocio" class="w-full bg-azul text-blanco fade-in">
         <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-2 flex flex-col items-center justify-center gap-2">
             <h3 hlmH3>¡Bienvenid@ a Todo en Orden!</h3>
             <h4 hlmH4 class="text-center text-balance">La plataforma que te ayudará a gestionar tus obligaciones legales</h4>
@@ -7,7 +7,7 @@
         </div>
     </section>
     @if (!datosNegocioIngresado()) {
-        <section class="w-full bg-(--azul) text-(--blanco) fade-in">
+        <section class="w-full bg-azul text-blanco fade-in">
             <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-2 pb-4 flex flex-col items-center justify-center">
                 <div class="flex flex-col items-center justify-center gap-2">
                     @if (negocioStore.informacionUsuario()?.nombre) {
@@ -33,13 +33,13 @@
                     </div>
                     <input
                         hlmInput
-                        class="text-2xl! h-13 text-center font-semibold focus-visible:border-(--blanco) focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
+                        class="text-2xl! h-13 text-center font-semibold focus-visible:border-blanco focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
                         [formControl]="formNegocio.controls['nombre']"
                     />
                     <h4 hlmH4 class="mt-1">¿En qué dirección se encuentra?</h4>
                     <input
                         hlmInput
-                        class="text-lg! h-10 text-center focus-visible:border-(--blanco) focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
+                        class="text-lg! h-10 text-center focus-visible:border-blanco focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
                         [formControl]="formNegocio.controls['direccion']"
                     />
                     <div class="w-full flex flex-col items-center gap-0.5">
@@ -65,17 +65,11 @@
                         <hlm-autocomplete
                             [(search)]="searchActividad"
                             [itemToString]="actividadAutocompleteItemToString"
-                            class="w-full fade-in"
+                            class="w-full! fade-in! autocompleteBienvenida"
                             [formControl]="formNegocio.controls['idActividad']"
                             [autoHighlight]="true"
                         >
-                            <hlm-autocomplete-input
-                                [showSearch]="true"
-                                [showClear]="true"
-                                classInput="text-lg! text-center selection:bg-(--blanco)/20 placeholder:text-(--blanco)"
-                                classInputGroup="h-10! transition-all delay-150 has-[[data-slot=input-group-control]:focus-visible]:border-(--blanco) has-[[data-slot=input-group-control]:focus-visible]:ring-(--blanco)/40 has-[>[data-matches-spartan-invalid=true]]:border-destructive! has-[>[data-matches-spartan-invalid=true]]:ring-destructive/20!"
-                                classIcon="text-(--blanco)"
-                            />
+                            <hlm-autocomplete-input [showSearch]="true" [showClear]="true" />
                             <hlm-autocomplete-content *hlmAutocompletePortal>
                                 <hlm-autocomplete-empty>Actividad no encontrada...</hlm-autocomplete-empty>
                                 <div hlmAutocompleteList>
@@ -99,7 +93,7 @@
                         </hlm-autocomplete>
                     }
                     <div class="w-full flex items-center justify-end mt-1">
-                        <button hlmBtn variant="link" class="text-base text-blanco font-normal decoration-blanco" (click)="siguienteNegocio()">
+                        <button hlmBtn variant="link" class="text-base! text-blanco! font-normal! decoration-blanco!" (click)="siguienteNegocio()">
                             Siguiente
                             <ng-icon hlm size="sm" name="lucideMoveRight" class="text-blanco" />
                         </button>
@@ -124,7 +118,7 @@
         </section>
     }
     @if (datosNegocioIngresado() && !datosPlantillasIngresado()) {
-        <section id="plantillas" class="flex-1 w-full bg-(--calipso) text-(--blanco) fade-in">
+        <section id="plantillas" class="flex-1 w-full bg-calipso text-blanco fade-in">
             <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-4 flex flex-col items-center justify-center h-full">
                 <div class="flex flex-col items-center justify-center gap-2">
                     <p hlmP class="text-center text-balance">Selecciona las plantillas de obligaciones con las que debe cumplir tu negocio</p>
@@ -142,7 +136,7 @@
                                 @for (plantilla of plantillas(); track plantilla.id) {
                                     <div hlmCard class="border-none rounded-none py-3 w-full md:max-w-50 gap-1.5 justify-between shadow-none fade-in">
                                         <div hlmCardHeader>
-                                            <h3 hlmCardTitle class="text-center font-serif">
+                                            <h3 hlmCardTitle class="text-center font-serif text-base! leading-none!">
                                                 <div class="flex flex-col items-center justify-center gap-2">
                                                     <div class="flex flex-row items-center justify-between gap-2 w-full">
                                                         @if (plantilla.templateActividades?.find(t => t.idTipoActividad === idActividadSignal())) {
@@ -191,11 +185,11 @@
                         </div>
                     }
                     <div class="w-full flex items-center justify-evenly mt-1">
-                        <button hlmBtn variant="link" class="text-base text-blanco font-normal decoration-blanco" (click)="anteriorPlantillas()">
+                        <button hlmBtn variant="link" class="text-base! text-blanco! font-normal! decoration-blanco!" (click)="anteriorPlantillas()">
                             <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-blanco" />
                             Anterior
                         </button>
-                        <button hlmBtn variant="link" class="text-base text-blanco font-normal decoration-blanco" (click)="siguientePlantillas()">
+                        <button hlmBtn variant="link" class="text-base! text-blanco! font-normal! decoration-blanco!" (click)="siguientePlantillas()">
                             Siguiente
                             <ng-icon hlm size="sm" name="lucideMoveRight" class="text-blanco" />
                         </button>
@@ -204,7 +198,7 @@
             </div>
         </section>
     } @else if (datosPlantillasIngresado()) {
-        <section id="plantillas" class="flex-1 w-full bg-(--calipso) text-(--blanco) fade-in">
+        <section id="plantillas" class="flex-1 w-full bg-calipso text-blanco fade-in">
             <div class="max-w-screen md:max-w-2xl mx-auto px-6 pt-6 pb-4 flex flex-col items-center justify-center h-full">
                 <div class="w-full flex flex-col items-center text-center">
                     <h4 hlmH4>Plantillas de obligaciones seleccionadas:</h4>
@@ -212,7 +206,7 @@
                 <div class="p-2 flex flex-wrap items-stretch justify-center gap-x-8 gap-y-3">
                     @for (plantilla of plantillasSeleccionadas(); track plantilla.id) {
                         <div class="flex flex-row items-center justify-center gap-1.5">
-                            <ng-icon hlm size="base" name="lucideCheck" class="text-(--blanco)" />
+                            <ng-icon hlm size="base" name="lucideCheck" class="text-blanco" />
                             <p hlmP>{{ plantilla.nombre }}</p>
                         </div>
                     } @empty {
@@ -234,7 +228,7 @@
                         <button
                             hlmBtn
                             variant="link"
-                            class="text-base text-blanco font-normal decoration-blanco self-start md:self-auto"
+                            class="text-base! text-blanco! font-normal! decoration-blanco! self-start! md:self-auto!"
                             (click)="anteriorGuardar()"
                         >
                             <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-blanco" />
@@ -242,7 +236,7 @@
                         </button>
                         <button
                             hlmBtn
-                            class="text-lg text-blanco font-semibold decoration-blanco pl-6! pr-10! py-7!"
+                            class="text-lg! text-blanco! font-semibold! decoration-blanco! pl-6! pr-10! py-7!"
                             (click)="siguienteGuardar()"
                             [disabled]="procesando()"
                         >

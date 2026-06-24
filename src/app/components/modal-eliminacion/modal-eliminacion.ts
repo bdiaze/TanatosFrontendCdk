@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
-import { HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCircleAlert } from '@ng-icons/lucide';
@@ -11,7 +11,7 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
 @Component({
     selector: 'app-modal-eliminacion',
     standalone: true,
-    imports: [HlmButtonImports, HlmCardImports, HlmP, HlmSeparatorImports, NgIcon, HlmIcon, HlmInputImports],
+    imports: [HlmButtonImports, HlmCardImports, HlmP, HlmH3, HlmSeparatorImports, NgIcon, HlmIcon, HlmInputImports],
     templateUrl: './modal-eliminacion.html',
     providers: [provideIcons({ lucideCircleAlert })],
 })

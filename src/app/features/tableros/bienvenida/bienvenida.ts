@@ -53,6 +53,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
         HlmSpinnerImports,
     ],
     templateUrl: './bienvenida.html',
+    styleUrl: './bienvenida.scss',
     providers: [provideIcons({ lucideMoveLeft, lucideMoveRight, lucideX, lucideStar, lucideCheck, lucideGem, lucideStore })],
 })
 export class Bienvenida implements OnInit, OnDestroy {

@@ -30,7 +30,10 @@
                                 "input": "public"
                             }
                         ],
-                        "styles": ["src/index.css"]
+                        "styles": ["src/index.css"],
+                        "stylePreprocessorOptions": {
+                            "includePaths": ["src"]
+                        }
                     },
                     "configurations": {
                         "production": {
