@@ -24,7 +24,7 @@
         "class-variance-authority": "0.7.0",
         "clsx": "2.1.1",
         "dayjs": "1.11.20",
-        "dompurify": "3.4.2",
+        "dompurify": "3.4.11",
         "driver.js": "1.4.0",
         "jwt-decode": "4.0.0",
         "quill": "2.0.3",
