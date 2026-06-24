@@ -99,9 +99,6 @@ export class ModalEdicion implements OnInit {
                     const item = campo.posiblesValores?.find((x) => x.id === id);
                     return `${item?.valor}`;
                 };
-                campo.autocompleteIsItemEqualToValue = (itemValue: number, idSelectedValue: number | null) => {
-                    return itemValue === idSelectedValue;
-                };
             }
 
             if (campo.tipo === 'select') {
@@ -136,7 +133,6 @@ export interface CampoDinamico {
     autocompleteSearch?: WritableSignal<string>;
     autocompleteFilteredOptions?: Signal<PosiblesValoresCategorizados[]>;
     autocompleteItemToString?: (id: number) => string;
-    autocompleteIsItemEqualToValue?: (itemValue: number, idSelectedValue: number | null) => boolean;
     selectItemToString?: (id: number) => string;
 }
 

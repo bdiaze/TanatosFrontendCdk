@@ -170,9 +170,6 @@ export class Bienvenida implements OnInit, OnDestroy {
         const item = this.actividades().find((x) => x.idActividad === id);
         return `${item?.nombreActividad}`;
     };
-    actividadAutocompleteIsItemEqualToValue = (itemValue: number, idSelectedValue: number | null) => {
-        return itemValue === idSelectedValue;
-    };
     nombreActividad(idActividad: number | null): string {
         return this.actividades().find((a) => a.idActividad === idActividad).nombreActividad;
     }

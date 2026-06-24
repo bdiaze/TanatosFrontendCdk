@@ -87,7 +87,7 @@
 }
 
 button[brnselecttrigger] {
-    width: 100%;
+    @apply shadow-none w-full;
 }
 
 button[brnselecttrigger] > div {

@@ -650,9 +650,6 @@ export class MantenedorTemplateEdicion implements OnInit {
         const item = this.actividadesExistentes().find((x) => x.id === idTipoActividad);
         return `${item?.nombre}`;
     };
-    isItemEqualToValueActividades = (itemValue: number, idSelectedActividad: number | null) => {
-        return itemValue === idSelectedActividad;
-    };
 
     crearActividad() {
         const idTipoActividad = this.formActividad();

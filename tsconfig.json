@@ -46,19 +46,18 @@
             "@spartan-ng/helm/progress": ["./libs/ui/progress/src/index.ts"],
             "@spartan-ng/helm/alert": ["./libs/ui/alert/src/index.ts"],
             "@spartan-ng/helm/dropdown-menu": ["./libs/ui/dropdown-menu/src/index.ts"],
-            "@spartan-ng/helm/select": ["./libs/ui/select/src/index.ts"],
             "@spartan-ng/helm/badge": ["./libs/ui/badge/src/index.ts"],
             "@spartan-ng/helm/accordion": ["./libs/ui/accordion/src/index.ts"],
             "@spartan-ng/helm/scroll-area": ["./libs/ui/scroll-area/src/index.ts"],
             "@spartan-ng/helm/radio-group": ["./libs/ui/radio-group/src/index.ts"],
             "@spartan-ng/helm/calendar": ["./libs/ui/calendar/src/index.ts"],
             "@spartan-ng/helm/date-picker": ["./libs/ui/date-picker/src/index.ts"],
-            "@spartan-ng/helm/popover": ["./libs/ui/popover/src/index.ts"],
-            "@spartan-ng/helm/autocomplete": ["./libs/ui/autocomplete/src/index.ts"],
-            "@spartan-ng/helm/command": ["./libs/ui/command/src/index.ts"],
             "@spartan-ng/helm/item": ["./libs/ui/item/src/index.ts"],
             "@spartan-ng/helm/breadcrumb": ["./libs/ui/breadcrumb/src/index.ts"],
-            "@spartan-ng/helm/input-otp": ["./libs/ui/input-otp/src/index.ts"]
+            "@spartan-ng/helm/input-otp": ["./libs/ui/input-otp/src/index.ts"],
+            "@spartan-ng/helm/autocomplete": ["./libs/ui/autocomplete/src/index.ts"],
+            "@spartan-ng/helm/popover": ["./libs/ui/popover/src/index.ts"],
+            "@spartan-ng/helm/select": ["./libs/ui/select/src/index.ts"]
         }
     },
     "angularCompilerOptions": {
