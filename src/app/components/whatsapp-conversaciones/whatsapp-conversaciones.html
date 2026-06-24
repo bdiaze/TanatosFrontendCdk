@@ -38,7 +38,7 @@
                         {{ conversacion.numeroTelefono | formatearTelefono }}
                     </div>
                     @if (conversacion.cantidadNoLeidos != 0) {
-                        <span hlmBadge class="rounded-full">{{ conversacion.cantidadNoLeidos }}</span>
+                        <span hlmBadge class="rounded-full!">{{ conversacion.cantidadNoLeidos }}</span>
                     }
                 </div>
                 <div hlmItemContent>
@@ -63,10 +63,9 @@
                     <div hlmItemFooter>
                         <span
                             hlmBadge
-                            variant="azul"
                             [hlmTooltip]="'Responde gratuitamente hasta el ' + (conversacion.puedeResponderGratuitoHasta | date: formatoFechaRespuestaGratuita)"
                             position="bottom"
-                            class="mx-auto flex flex-row items-center justify-end pr-3 text-xs"
+                            class="badgeAzul mx-auto flex flex-row items-center justify-end pr-3 text-xs"
                         >
                             <ng-icon hlm name="lucideTag" />
                             @if (fueHoy(conversacion.puedeResponderGratuitoHasta)) {

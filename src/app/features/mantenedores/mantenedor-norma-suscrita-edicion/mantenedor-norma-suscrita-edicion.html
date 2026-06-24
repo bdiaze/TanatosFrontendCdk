@@ -332,7 +332,7 @@
                                             <div class="flex flex-wrap justify-center items-center gap-1">
                                                 @for (empleado of empleadosSeleccionados(); track empleado.id) {
                                                     @if (empleado.destinatarios.length > 0) {
-                                                        <span hlmBadge class="mt-2 text-xs py-1 flex items-center bg-(--azul) fade-in"
+                                                        <span hlmBadge class="mt-2 text-xs py-1! flex items-center bg-(--azul) fade-in"
                                                             >{{ empleado.nombre }}
                                                         </span>
                                                     } @else {

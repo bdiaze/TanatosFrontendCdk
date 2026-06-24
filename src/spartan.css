@@ -1,6 +1,16 @@
 @import '@spartan-ng/brain/hlm-tailwind-preset.css';
 
 :root {
+    --calipso: oklch(70.1% 0.122 212.27);
+    --blanco: oklch(100% 0 0);
+    --azul: oklch(48.25% 0.154 254.11);
+    --celeste: oklch(68.77% 0.137 248.65);
+    --naranjo: oklch(76.79% 0.153 51.03);
+    --negro: oklch(29.7% 0.013 267.1);
+    --gris: oklch(97.02% 0 0);
+}
+
+:root {
     color-scheme: light;
 
     --font-sans:
@@ -9,25 +19,16 @@
     --font-serif: 'Source Serif 4', Georgia, 'Times New Roman', serif;
 
     --radius: 0.625rem;
-    --background: oklch(100% 0 0);
-    --foreground: oklch(29.7% 0.013 267.1 / 0.9);
-    --card: oklch(100% 0 0);
-    --card-foreground: oklch(29.7% 0.013 267.1 / 0.9);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(29.7% 0.013 267.1);
-    --primary: oklch(48.25% 0.154 254.11);
-    --primary-foreground: oklch(100% 0 0);
-    --secondary: oklch(100% 0 0);
-    --secondary-foreground: oklch(48.25% 0.154 254.11);
-
-    --calipso: oklch(70.1% 0.122 212.27);
-    --blanco: oklch(100% 0 0);
-    --azul: oklch(48.25% 0.154 254.11);
-    --celeste: oklch(68.77% 0.137 248.65);
-    --naranjo: oklch(76.79% 0.153 51.03);
-    --negro: oklch(29.7% 0.013 267.1);
-    --gris: oklch(97.02% 0 0);
-
+    --background: var(--blanco);
+    --foreground: oklch(from var(--negro) l c h / 0.9);
+    --card: var(--blanco);
+    --card-foreground: oklch(from var(--negro) l c h / 0.9);
+    --popover: var(--blanco);
+    --popover-foreground: var(--negro);
+    --primary: var(--azul);
+    --primary-foreground: var(--blanco);
+    --secondary: var(--blanco);
+    --secondary-foreground: var(--azul);
     --muted: oklch(0.97 0 0);
     --muted-foreground: oklch(0.556 0 0);
     --accent: oklch(0.92 0 0);
@@ -35,7 +36,7 @@
     --destructive: oklch(53.665% 0.21721 28.015);
     --border: oklch(0.922 0 0);
     --input: oklch(0.922 0 0);
-    --ring: oklch(48.25% 0.154 254.11);
+    --ring: var(--azul);
     --sidebar: oklch(0.985 0 0);
     --sidebar-foreground: oklch(0.145 0 0);
     --sidebar-primary: oklch(0.205 0 0);
@@ -77,6 +78,15 @@
     --sidebar-ring: oklch(0.556 0 0);
 }
 
+@theme inline {
+    --color-calipso: var(--calipso);
+    --color-blanco: var(--blanco);
+    --color-azul: var(--azul);
+    --color-celeste: var(--celeste);
+    --color-naranjo: var(--naranjo);
+    --color-gris: var(--gris);
+}
+
 @layer base {
     * {
         @apply border-border outline-ring/50;
@@ -92,4 +102,41 @@ button[brnselecttrigger] {
 
 button[brnselecttrigger] > div {
     width: calc(100% - 16px - var(--spacing) * 2 - var(--spacing) * 3);
+}
+
+span[hlmBadge] {
+    @apply rounded-sm h-auto py-0.5;
+}
+
+span[hlmBadge] ng-icon {
+    --ng-icon__size: 12px !important;
+}
+
+span[hlmBadge][variant='destructive'] {
+    @apply text-blanco bg-destructive;
+}
+
+button[brnaccordiontrigger] {
+    @apply py-0 hover:no-underline;
+}
+
+[data-slot='accordion-content'] > div {
+    @apply pb-0;
+}
+
+div[hlmalert] {
+    @apply rounded-none;
+}
+
+ng-icon[hlmalerticon] {
+    --ng-icon__size: 16px !important;
+}
+
+div[hlmalert][variant='destructive'] {
+    @apply border-destructive bg-destructive/5;
+}
+
+div[hlmalertdescription],
+p[hlmalertdescription] {
+    @apply text-pretty [&_a]:no-underline [&_a]:hover:text-primary;
 }

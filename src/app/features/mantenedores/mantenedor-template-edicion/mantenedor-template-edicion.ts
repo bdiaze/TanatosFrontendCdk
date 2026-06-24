@@ -21,7 +21,7 @@ import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untrac
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideBadgeX, lucideChevronDown, lucidePlus, lucideSquarePen, lucideTrash2, lucideX } from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideChevronDown, lucidePlus, lucideSquarePen, lucideTrash2, lucideTriangleAlert, lucideX } from '@ng-icons/lucide';
 import { HlmAccordionImports } from '@spartan-ng/helm/accordion';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
@@ -90,6 +90,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
             lucidePlus,
             lucideX,
             lucideSquarePen,
+            lucideTriangleAlert,
         }),
     ],
 })

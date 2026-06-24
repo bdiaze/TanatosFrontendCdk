@@ -92,20 +92,15 @@
                                 <div class="flex flex-wrap justify-center items-center gap-2">
                                     @for (norma of item.templateNormas.slice(0, 3); track norma.idNorma) {
                                         @if (norma.nombreNorma.length > 20) {
-                                            <span
-                                                hlmBadge
-                                                variant="azul"
-                                                [hlmTooltip]="norma.nombreNorma"
-                                                position="bottom"
-                                                class="text-[0.65rem] md:text-xs"
-                                                >{{ norma.nombreNorma.substring(0, 17).trim() + '...' }}</span
-                                            >
+                                            <span hlmBadge [hlmTooltip]="norma.nombreNorma" position="bottom" class="badgeAzul text-[0.65rem] md:text-xs">{{
+                                                norma.nombreNorma.substring(0, 17).trim() + '...'
+                                            }}</span>
                                         } @else {
-                                            <span hlmBadge variant="azul" class="text-[0.65rem] md:text-xs">{{ norma.nombreNorma }}</span>
+                                            <span hlmBadge class="badgeAzul text-[0.65rem] md:text-xs">{{ norma.nombreNorma }}</span>
                                         }
                                     }
                                     @if (item.templateNormas.length > 3) {
-                                        <span hlmBadge variant="azul" [hlmTooltip]="tooltip" position="bottom" class="text-[0.65rem] md:text-xs">...</span>
+                                        <span hlmBadge [hlmTooltip]="tooltip" position="bottom" class="badgeAzul text-[0.65rem] md:text-xs">...</span>
                                         <ng-template #tooltip>
                                             <span>
                                                 @for (norma of item.templateNormas.slice(3); track norma.idNorma) {
