@@ -35,7 +35,7 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { forkJoin } from 'rxjs';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { RouterModule } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
@@ -57,7 +57,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         BrnTooltipImports,
         HlmTooltipImports,
         HlmSkeletonImports,
-        HlmBreadCrumbImports,
+        HlmBreadcrumbImports,
         RouterModule,
     ],
     templateUrl: './mantenedor-plantillas-inscritas.html',

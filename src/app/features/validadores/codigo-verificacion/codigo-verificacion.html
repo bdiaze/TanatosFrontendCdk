@@ -44,7 +44,7 @@
                     hlmBtn
                     variant="link"
                     type="button"
-                    class="font-bold p-0 h-fit w-fit text-(--azul) hover:no-underline hover:text-(--azul)/80 flex items-center gap-1"
+                    class="font-bold p-0! h-fit! w-fit! text-azul hover:no-underline hover:text-azul/80 flex items-center gap-1"
                     (click)="reenviarCodigo()"
                     [disabled]="reenviandoCodigo()"
                 >
@@ -57,7 +57,7 @@
             <button
                 hlmBtn
                 type="submit"
-                class="w-full mt-5 h-8 text-sm font-bold bg-(--calipso) border-[1.6px] border-(--calipso) hover:bg-(--calipso)/80 flex items-center gap-1"
+                class="w-full mt-5! h-8! text-sm font-bold bg-calipso border-[1.6px] border-calipso hover:bg-(--calipso)/80 flex items-center gap-1"
                 [disabled]="verificandoCodigo()"
             >
                 @if (verificandoCodigo()) {

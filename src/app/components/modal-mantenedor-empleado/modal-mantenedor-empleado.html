@@ -93,7 +93,7 @@
                                         <button
                                             hlmBtn
                                             size="icon"
-                                            class="ml-auto size-7 absolute right-1.5"
+                                            class="ml-auto! size-7! absolute right-1.5!"
                                             type="button"
                                             [hlmDropdownMenuTrigger]="menuReceptores"
                                         >
@@ -125,7 +125,7 @@
                                         </ng-template>
                                     } @else {
                                         <app-popup-funcionalidad-bloqueada class="ml-auto size-7 absolute right-1.5">
-                                            <button hlmBtn size="icon" class="size-7" type="button">
+                                            <button hlmBtn size="icon" class="size-7!" type="button">
                                                 <ng-icon name="lucidePlus" class="text-base" />
                                             </button>
                                         </app-popup-funcionalidad-bloqueada>
@@ -212,8 +212,8 @@
                     </div>
                 }
                 <div class="w-full flex items-center justify-end gap-6">
-                    <button hlmBtn type="button" variant="outlineAzul" (click)="cerrar.emit()">Cancelar</button>
-                    <button hlmBtn variant="azul" type="submit" [disabled]="form.invalid || cargando()">
+                    <button hlmBtn type="button" (click)="cerrar.emit()" class="btnOutlineAzul">Cancelar</button>
+                    <button hlmBtn type="submit" [disabled]="form.invalid || cargando()" class="btnAzul">
                         @if (procesando()) {
                             <hlm-spinner />
                         }

@@ -52,11 +52,7 @@
                             <td hlmTd class="text-center px-0">
                                 <div class="flex justify-center items-center">
                                     @if (item.vigencia) {
-                                        <ng-icon
-                                            hlm
-                                            name="lucideBadgeCheck"
-                                            class="text-green-700"
-                                        />
+                                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
                                     } @else {
                                         <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
                                     }
@@ -64,30 +60,14 @@
                             </td>
                             <td hlmTd class="px-0">
                                 <div class="flex items-center justify-center-safe">
-                                    <button
-                                        hlmBtn
-                                        size="sm"
-                                        variant="outline"
-                                        [hlmDropdownMenuTrigger]="menu"
-                                    >
+                                    <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
                                         <hlm-dropdown-menu>
                                             <hlm-dropdown-menu-group>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    (click)="openModalEditar(item)"
-                                                >
-                                                    Editar
-                                                </button>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    variant="destructive"
-                                                    (click)="openModalEliminar(item)"
-                                                >
-                                                    Eliminar
-                                                </button>
+                                                <button hlmDropdownMenuItem (click)="openModalEditar(item)">Editar</button>
+                                                <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
                                             </hlm-dropdown-menu-group>
                                         </hlm-dropdown-menu>
                                     </ng-template>
@@ -96,15 +76,13 @@
                         </tr>
                     } @empty {
                         <tr hlmTr class="fade-in">
-                            <td hlmTd colspan="6" class="text-center">
-                                No existen tipos de periodicidad registrados
-                            </td>
+                            <td hlmTd colspan="6" class="text-center">No existen tipos de periodicidad registrados</td>
                         </tr>
                     }
                 }
             </tbody>
         </table>
-        <button hlmBtn (click)="openModalCrear()" class="m-4">Crear Nuevo</button>
+        <button hlmBtn (click)="openModalCrear()" class="m-4!">Crear Nuevo</button>
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
@@ -119,9 +97,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar una periodicidad:"
-        [descripcion]="
-            `¿Seguro que deseas eliminar la periodicidad (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`
-        "
+        [descripcion]="`¿Seguro que deseas eliminar la periodicidad (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

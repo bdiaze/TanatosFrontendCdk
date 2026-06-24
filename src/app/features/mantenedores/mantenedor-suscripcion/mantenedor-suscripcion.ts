@@ -29,7 +29,7 @@ import {
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmItemImports } from '@spartan-ng/helm/item';
@@ -59,7 +59,7 @@ import { interval, merge, startWith, Subscription } from 'rxjs';
         BrnTooltipImports,
         HlmTooltipImports,
         HlmSkeletonImports,
-        HlmBreadCrumbImports,
+        HlmBreadcrumbImports,
         HlmButtonImports,
         ModalEliminacion,
         HlmTableImports,

@@ -194,8 +194,8 @@
             </fieldset>
         </div>
         <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-6 faster-fade-in">
-            <button hlmBtn variant="outlineAzul" (click)="cerrar.emit()" class="px-4 md:px-6">Cancelar</button>
-            <button hlmBtn variant="azul" (click)="confirmar()" [disabled]="form.invalid" class="px-4 md:px-6">
+            <button hlmBtn (click)="cerrar.emit()" class="btnOutlineAzul px-4! md:px-6!">Cancelar</button>
+            <button hlmBtn (click)="confirmar()" [disabled]="form.invalid" class="btnAzul px-4! md:px-6!">
                 {{ textoBotonGuardar }}
             </button>
         </div>
@@ -207,7 +207,7 @@
                 }
             </div>
             <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-4 faster-fade-in">
-                <button hlmBtn variant="azul" (click)="funcionSecundaria.emit(this.form.getRawValue())" [disabled]="form.invalid" class="px-4 md:px-6">
+                <button hlmBtn (click)="funcionSecundaria.emit(this.form.getRawValue())" [disabled]="form.invalid" class="btnAzul px-4! md:px-6!">
                     {{ textoBotonSecundario }}
                 </button>
             </div>

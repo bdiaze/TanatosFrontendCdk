@@ -85,6 +85,7 @@
     --color-celeste: var(--celeste);
     --color-naranjo: var(--naranjo);
     --color-gris: var(--gris);
+    --color-negro: var(--negro);
 }
 
 @layer base {
@@ -106,6 +107,9 @@ button[brnselecttrigger] > div {
 
 span[hlmBadge] {
     @apply rounded-sm h-auto py-0.5;
+}
+
+span[hlmBadge].badgeAzul {
 }
 
 span[hlmBadge] ng-icon {
@@ -139,4 +143,89 @@ div[hlmalert][variant='destructive'] {
 div[hlmalertdescription],
 p[hlmalertdescription] {
     @apply text-pretty [&_a]:no-underline [&_a]:hover:text-primary;
+}
+
+a[hlmbreadcrumblink],
+span[hlmbreadcrumbpage] {
+    @apply font-serif;
+}
+
+span[hlmbreadcrumbpage] {
+    @apply font-semibold text-negro/80;
+}
+
+a[hlmbtn]:not([size]),
+button[hlmbtn]:not([size]) {
+    @apply h-8 px-6 py-2 has-[>ng-icon]:px-3;
+}
+
+a[hlmbtn][size='sm'],
+button[hlmbtn][size='sm'] {
+    @apply h-8 gap-1.5 rounded-full px-3 has-[>ng-icon]:px-2.5;
+}
+
+a[hlmbtn][size='lg'],
+button[hlmbtn][size='lg'] {
+    @apply h-10 rounded-full px-10 has-[>ng-icon]:px-4;
+}
+
+a[hlmbtn][size='icon'],
+button[hlmbtn][size='icon'] {
+    @apply size-9;
+}
+
+a[hlmbtn][size='icon-sm'],
+button[hlmbtn][size='icon-sm'] {
+    @apply size-8;
+}
+
+a[hlmbtn][size='icon-lg'],
+button[hlmbtn][size='icon-lg'] {
+    @apply size-10;
+}
+
+a[hlmbtn],
+button[hlmbtn] {
+    @apply cursor-pointer shadow-none;
+}
+a[hlmbtn][variant='default'],
+button[hlmbtn][variant='default'],
+a[hlmbtn]:not([variant]):not(.btnAzul):not(.btnOutlineAzul),
+button[hlmbtn]:not([variant]):not(.btnAzul):not(.btnOutlineAzul) {
+    @apply bg-primary text-primary-foreground hover:bg-primary/80 rounded-full border-0;
+}
+
+a[hlmbtn].btnAzul,
+button[hlmbtn].btnAzul {
+    @apply bg-azul text-blanco hover:bg-azul/80 rounded-full border-0;
+}
+
+a[hlmbtn].btnOutlineAzul,
+button[hlmbtn].btnOutlineAzul {
+    @apply bg-transparent hover:bg-transparent border-azul hover:border-azul/80 text-azul hover:text-azul/80 border-2 rounded-full has-[>ng-icon]:gap-2;
+}
+
+a[hlmbtn][variant='outline'],
+button[hlmbtn][variant='outline'] {
+    @apply bg-transparent hover:bg-transparent hover:text-accent-foreground border rounded-full;
+}
+
+a[hlmbtn][variant='secondary'],
+button[hlmbtn][variant='secondary'] {
+    @apply bg-transparent hover:bg-accent/20 text-secondary-foreground rounded-full border-2 border-primary hover:border-primary/80;
+}
+
+a[hlmbtn][variant='ghost'],
+button[hlmbtn][variant='ghost'] {
+    @apply hover:bg-accent hover:text-accent-foreground;
+}
+
+a[hlmbtn][variant='link'],
+button[hlmbtn][variant='link'] {
+    @apply text-negro/80 decoration-azul border-0  has-[>ng-icon]:gap-2;
+}
+
+a[hlmbtn][variant='destructive'],
+button[hlmBtn][variant='destructive'] {
+    @apply bg-destructive hover:bg-destructive/80 text-blanco rounded-full;
 }

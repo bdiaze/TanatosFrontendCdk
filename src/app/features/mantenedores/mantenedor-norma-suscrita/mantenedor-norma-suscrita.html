@@ -12,7 +12,7 @@
                     </li>
                 </ol>
             </nav>
-            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
         </div>
         <h4 hlmH4 class="text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
@@ -125,7 +125,7 @@
                 }
             </tbody>
         </table>
-        <a id="creacion-obligacion" hlmBtn variant="azul" [routerLink]="['/crear-obligacion']" class="m-4">Nueva Obligación</a>
+        <a id="creacion-obligacion" hlmBtn [routerLink]="['/crear-obligacion']" class="btnAzul m-4!">Nueva Obligación</a>
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
@@ -146,9 +146,8 @@
                 <a
                     id="inscripcion-plantilla"
                     hlmBtn
-                    variant="outlineAzul"
                     routerLink="/plantillas-inscritas"
-                    class="text-xs md:text-sm md:absolute md:-top-1 md:right-0"
+                    class="btnOutlineAzul text-xs md:text-sm md:absolute md:-top-1 md:right-0"
                 >
                     <ng-icon hlm size="sm" name="lucideClipboardPaste" />
                     Plantillas Inscritas

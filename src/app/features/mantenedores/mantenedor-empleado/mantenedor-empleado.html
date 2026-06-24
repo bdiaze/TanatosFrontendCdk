@@ -30,7 +30,7 @@
                             hlmBtn
                             variant="link"
                             size="icon"
-                            class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                            class="size-5! p-0! m-0! text-primary-foreground! scale-110 hover:scale-130 active:scale-90"
                             (click)="openModalEliminarCargo(cargo)"
                         >
                             <ng-icon hlm name="lucideX" />
@@ -159,7 +159,7 @@
                 }
             </tbody>
         </table>
-        <button hlmBtn variant="azul" (click)="openModalCrearEmpleado()" class="m-4" [disabled]="cargando()">Nuevo Integrante</button>
+        <button hlmBtn (click)="openModalCrearEmpleado()" class="btnAzul m-4!" [disabled]="cargando()">Nuevo Integrante</button>
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">

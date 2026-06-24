@@ -26,7 +26,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { DriveStep } from 'driver.js';
@@ -49,7 +49,7 @@ import { map } from 'rxjs';
         RouterLink,
         HlmSeparatorImports,
         HlmSkeletonImports,
-        HlmBreadCrumbImports,
+        HlmBreadcrumbImports,
     ],
     templateUrl: './mantenedor-norma-suscrita.html',
     providers: [

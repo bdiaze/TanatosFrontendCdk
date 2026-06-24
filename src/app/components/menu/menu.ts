@@ -4,6 +4,7 @@ import { setCookie } from '@/app/helpers/cookie-helper';
 import { MenuHelper } from '@/app/helpers/menu-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
+import { NgClass } from '@angular/common';
 import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, untracked } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
@@ -54,6 +55,7 @@ import { filter, map } from 'rxjs';
         HlmSkeletonImports,
         HlmScrollAreaImports,
         HlmTooltipImports,
+        NgClass,
     ],
     templateUrl: './menu.html',
     styleUrl: './menu.scss',

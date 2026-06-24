@@ -18,7 +18,7 @@ import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { normalize } from '@/app/helpers/string-comparator';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmInputImports } from '@spartan-ng/helm/input';
@@ -49,7 +49,7 @@ import { DriveStep } from 'driver.js';
         BrnTooltipImports,
         HlmTooltipImports,
         HlmSkeletonImports,
-        HlmBreadCrumbImports,
+        HlmBreadcrumbImports,
         PlainTextPipe,
     ],
     templateUrl: './tablero-vencimientos.html',

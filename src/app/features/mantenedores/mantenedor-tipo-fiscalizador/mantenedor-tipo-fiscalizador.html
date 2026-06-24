@@ -10,9 +10,7 @@
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
-                    <th hlmTh class="text-xs md:text-sm w-20 whitespace-break-spaces text-center">
-                        Nombre Corto
-                    </th>
+                    <th hlmTh class="text-xs md:text-sm w-20 whitespace-break-spaces text-center">Nombre Corto</th>
                     <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
@@ -42,11 +40,7 @@
                             <td hlmTd class="text-center px-0">
                                 <div class="flex justify-center items-center">
                                     @if (item.vigencia) {
-                                        <ng-icon
-                                            hlm
-                                            name="lucideBadgeCheck"
-                                            class="text-green-700"
-                                        />
+                                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
                                     } @else {
                                         <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
                                     }
@@ -54,30 +48,14 @@
                             </td>
                             <td hlmTd>
                                 <div class="flex items-center justify-center-safe">
-                                    <button
-                                        hlmBtn
-                                        size="sm"
-                                        variant="outline"
-                                        [hlmDropdownMenuTrigger]="menu"
-                                    >
+                                    <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
                                         <hlm-dropdown-menu>
                                             <hlm-dropdown-menu-group>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    (click)="openModalEditar(item)"
-                                                >
-                                                    Editar
-                                                </button>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    variant="destructive"
-                                                    (click)="openModalEliminar(item)"
-                                                >
-                                                    Eliminar
-                                                </button>
+                                                <button hlmDropdownMenuItem (click)="openModalEditar(item)">Editar</button>
+                                                <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
                                             </hlm-dropdown-menu-group>
                                         </hlm-dropdown-menu>
                                     </ng-template>
@@ -86,15 +64,13 @@
                         </tr>
                     } @empty {
                         <tr hlmTr class="fade-in">
-                            <td hlmTd colspan="5" class="text-center">
-                                No existen tipos de fiscalizadores registrados
-                            </td>
+                            <td hlmTd colspan="5" class="text-center">No existen tipos de fiscalizadores registrados</td>
                         </tr>
                     }
                 }
             </tbody>
         </table>
-        <button hlmBtn (click)="openModalCrear()" class="m-4">Crear Nuevo</button>
+        <button hlmBtn (click)="openModalCrear()" class="m-4!">Crear Nuevo</button>
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
@@ -109,9 +85,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un fiscalizador:"
-        [descripcion]="
-            `¿Seguro que deseas eliminar el fiscalizador (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`
-        "
+        [descripcion]="`¿Seguro que deseas eliminar el fiscalizador (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

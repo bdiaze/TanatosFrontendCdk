@@ -21,7 +21,7 @@
                 </li>
             </ol>
         </nav>
-        <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
     </div>
     @if (cargandoNormaSuscrita()) {
         <div class="flex flex-col gap-4 justify-center-safe items-start fade-in w-full">
@@ -196,7 +196,7 @@
                                                 hlmBtn
                                                 size="icon"
                                                 variant="default"
-                                                class="size-9 bg-(--azul) hover:bg-(--azul)/80"
+                                                class="size-9! bg-azul hover:bg-(--azul)/80"
                                                 (click)="agregarFiscalizador()"
                                                 [disabled]="(formFiscalizador.controls.idFiscalizador.value ?? 0) <= 0"
                                             >
@@ -206,13 +206,13 @@
 
                                         <div class="flex flex-wrap justify-center items-center gap-1">
                                             @for (fiscalizador of form.controls['fiscalizadores'].controls; track $index) {
-                                                <span hlmBadge variant="default" class="mt-2 text-xs pr-1 flex items-center bg-(--azul)"
+                                                <span hlmBadge variant="default" class="mt-2 text-xs pr-1 flex items-center bg-azul"
                                                     >{{ nombreFiscalizador(fiscalizador.controls['idTipoFiscalizador'].value!) }}
                                                     <button
                                                         hlmBtn
                                                         size="icon"
                                                         variant="link"
-                                                        class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                                        class="size-5! p-0! m-0! text-primary-foreground scale-110 hover:scale-130 active:scale-90"
                                                         [hlmDropdownMenuTrigger]="menuFiscalizador"
                                                     >
                                                         <ng-icon hlm name="lucideX" />
@@ -506,7 +506,7 @@
                                                 hlmBtn
                                                 size="icon"
                                                 variant="default"
-                                                class="size-9 bg-(--azul) hover:bg-(--azul)/80"
+                                                class="size-9! bg-azul hover:bg-(--azul)/80"
                                                 (click)="agregarNotificacionPrevia()"
                                                 [disabled]="
                                                     (formNotificacion.controls.idUnidadTiempo.value ?? 0) <= 0 ||
@@ -530,7 +530,7 @@
                                                         hlmBtn
                                                         size="icon"
                                                         variant="link"
-                                                        class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                                        class="size-5! p-0! m-0! text-primary-foreground scale-110 hover:scale-130 active:scale-90"
                                                         [hlmDropdownMenuTrigger]="menuNotificacion"
                                                     >
                                                         <ng-icon hlm name="lucideX" />
@@ -581,14 +581,10 @@
             </div>
         }
         <div class="w-full flex items-center justify-end gap-6">
-            <a
-                hlmBtn
-                variant="secondary"
-                [routerLink]="['/mis-obligaciones']"
-                class="border-(--azul) hover:border-(--azul)/80 text-(--azul) hover:text-(--azul)/80"
+            <a hlmBtn variant="secondary" [routerLink]="['/mis-obligaciones']" class="border-azul hover:border-azul/80 text-azul hover:text-azul/80"
                 >Cancelar</a
             >
-            <button id="boton_guardar" hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()" class="bg-(--azul) hover:bg-(--azul)/80">
+            <button id="boton_guardar" hlmBtn (click)="clickConfirmar()" [disabled]="form.invalid || procesando()" class="bg-azul hover:bg-(--azul)/80">
                 @if (procesando()) {
                     <hlm-spinner />
                 }

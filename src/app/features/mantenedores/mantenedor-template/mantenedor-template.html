@@ -40,27 +40,15 @@
                             </td>
                             <td hlmTd class="text-xs md:text-sm text-center">
                                 @if (item.idTemplatePadre) {
-                                    <span
-                                        hlmBadge
-                                        class="text-[0.7rem] md:text-xs whitespace-normal text-center"
-                                        variant="default"
-                                    >
-                                        {{
-                                            item.idTemplatePadre
-                                                ? obtenerPadre(item.idTemplatePadre!)?.nombre
-                                                : ''
-                                        }}
+                                    <span hlmBadge class="text-[0.7rem] md:text-xs whitespace-normal text-center" variant="default">
+                                        {{ item.idTemplatePadre ? obtenerPadre(item.idTemplatePadre!)?.nombre : '' }}
                                     </span>
                                 }
                             </td>
                             <td hlmTd class="text-center px-0">
                                 <div class="flex justify-center items-center">
                                     @if (item.vigencia) {
-                                        <ng-icon
-                                            hlm
-                                            name="lucideBadgeCheck"
-                                            class="text-green-700"
-                                        />
+                                        <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
                                     } @else {
                                         <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
                                     }
@@ -68,33 +56,14 @@
                             </td>
                             <td hlmTd>
                                 <div class="flex items-center justify-center-safe">
-                                    <button
-                                        hlmBtn
-                                        size="sm"
-                                        variant="outline"
-                                        [hlmDropdownMenuTrigger]="menu"
-                                    >
+                                    <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
                                         <hlm-dropdown-menu>
                                             <hlm-dropdown-menu-group>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    [routerLink]="[
-                                                        '/administracion/mantenedores/template',
-                                                        item.id,
-                                                    ]"
-                                                >
-                                                    Editar
-                                                </button>
-                                                <button
-                                                    hlmDropdownMenuItem
-                                                    variant="destructive"
-                                                    (click)="openModalEliminar(item)"
-                                                >
-                                                    Eliminar
-                                                </button>
+                                                <button hlmDropdownMenuItem [routerLink]="['/administracion/mantenedores/template', item.id]">Editar</button>
+                                                <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
                                             </hlm-dropdown-menu-group>
                                         </hlm-dropdown-menu>
                                     </ng-template>
@@ -103,17 +72,13 @@
                         </tr>
                     } @empty {
                         <tr hlmTr class="fade-in">
-                            <td hlmTd colspan="5" class="text-center">
-                                No existen templates registrados
-                            </td>
+                            <td hlmTd colspan="5" class="text-center">No existen templates registrados</td>
                         </tr>
                     }
                 }
             </tbody>
         </table>
-        <a hlmBtn [routerLink]="['/administracion/mantenedores/template/nuevo']" class="m-4"
-            >Crear Nuevo</a
-        >
+        <a hlmBtn [routerLink]="['/administracion/mantenedores/template/nuevo']" class="m-4!">Crear Nuevo</a>
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
@@ -128,9 +93,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un template:"
-        [descripcion]="
-            `¿Seguro que deseas eliminar el template (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`
-        "
+        [descripcion]="`¿Seguro que deseas eliminar el template (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     ></app-modal-eliminacion>

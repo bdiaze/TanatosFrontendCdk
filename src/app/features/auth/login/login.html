@@ -3,7 +3,7 @@
         hlmBtn
         (click)="iniciarSesion()"
         [disabled]="deshabilitarBoton()"
-        class="px-4 text-[0.7rem] h-[1.9rem] lg:text-[0.8rem] lg:h-[2.1rem] bg-(--calipso) hover:bg-(--calipso)/80"
+        class="px-4! text-[0.7rem] h-[1.9rem]! lg:text-[0.8rem]! lg:h-[2.1rem]! bg-calipso hover:bg-(--calipso)/80"
     >
         @if (mostrarCargandoInicioSesion()) {
             <hlm-spinner />
@@ -15,7 +15,7 @@
         variant="secondary"
         (click)="iniciarSesion(true)"
         [disabled]="deshabilitarBoton()"
-        class="px-4 text-[0.7rem] h-[1.9rem] lg:text-[0.8rem] lg:h-[2.1rem] border-(--calipso) hover:border-(--calipso)/80 text-(--calipso)"
+        class="px-4! text-[0.7rem] h-[1.9rem]! lg:text-[0.8rem]! lg:h-[2.1rem]! border-calipso hover:border-(--calipso)/80 text-calipso"
     >
         @if (mostrarCargandoRegistrarse()) {
             <hlm-spinner />

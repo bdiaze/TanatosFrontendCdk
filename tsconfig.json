@@ -49,9 +49,6 @@
       "@spartan-ng/helm/utils": [
         "./libs/ui/utils/src/index.ts"
       ],
-      "@spartan-ng/helm/button": [
-        "./libs/ui/button/src/index.ts"
-      ],
       "@spartan-ng/helm/icon": [
         "./libs/ui/icon/src/index.ts"
       ],
@@ -97,9 +94,6 @@
       "@spartan-ng/helm/textarea": [
         "./libs/ui/textarea/src/index.ts"
       ],
-      "@spartan-ng/helm/button-group": [
-        "./libs/ui/button-group/src/index.ts"
-      ],
       "@spartan-ng/helm/spinner": [
         "./libs/ui/spinner/src/index.ts"
       ],
@@ -124,9 +118,6 @@
       "@spartan-ng/helm/item": [
         "./libs/ui/item/src/index.ts"
       ],
-      "@spartan-ng/helm/breadcrumb": [
-        "./libs/ui/breadcrumb/src/index.ts"
-      ],
       "@spartan-ng/helm/input-otp": [
         "./libs/ui/input-otp/src/index.ts"
       ],
@@ -147,6 +138,15 @@
       ],
       "@spartan-ng/helm/badge": [
         "./libs/ui/badge/src/index.ts"
+      ],
+      "@spartan-ng/helm/breadcrumb": [
+        "./libs/ui/breadcrumb/src/index.ts"
+      ],
+      "@spartan-ng/helm/button": [
+        "./libs/ui/button/src/index.ts"
+      ],
+      "@spartan-ng/helm/button-group": [
+        "./libs/ui/button-group/src/index.ts"
       ]
     }
   },

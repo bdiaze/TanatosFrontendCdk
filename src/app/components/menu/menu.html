@@ -1,4 +1,4 @@
-<section class="relative bg-(--gris) text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden h-full" [class.z-50]="!estatico" [class.z-10]="estatico">
+<section class="relative bg-gris text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden h-full" [class.z-50]="!estatico" [class.z-10]="estatico">
     <div class="sticky flex flex-row w-full items-center justify-between">
         @if (authStore.sesionIniciada()) {
             <button
@@ -6,17 +6,16 @@
                 hlmBtn
                 variant="outline"
                 [hlmDropdownMenuTrigger]="menuNegocios"
-                class="h-full border-none border-0 rounded-xs hover:text-(--negro)/80 shadow-none p-0"
-                [class.pl-4]="!estatico"
-                [class.pr-0]="!estatico"
-                [class.px-4]="estatico"
-                [class.py-4]="estatico"
-                [class.w-full]="estatico"
+                class="h-full! border-none border-0 rounded-xs hover:text-negro/80 shadow-none p-0!"
+                [ngClass]="{
+                    'pl-4! pr-0!': !estatico,
+                    'px-4! py-4! w-full': estatico,
+                }"
                 [disabled]="cargandoNegocios()"
             >
                 <div class="flex flex-row justify-center items-center gap-2 md:gap-3 w-full">
                     @if (!withClose) {
-                        <div class="text-(--negro)/80 flex aspect-square size-6 items-center justify-center rounded-lg">
+                        <div class="text-negro/80 flex aspect-square size-6 items-center justify-center rounded-lg">
                             <ng-icon name="lucideStore" class="text-2xl" />
                         </div>
                     } @else {
@@ -36,7 +35,7 @@
                                 <hlm-skeleton class="h-7 w-32 rounded-xl" />
                             } @else {
                                 @if (negocioStore.negociosUsuario().length === 0) {
-                                    <a hlmBtn variant="link" routerLink="/bienvenido" class="p-0 h-fit!">¡Crea tu negocio!</a>
+                                    <a hlmBtn variant="link" routerLink="/bienvenido" class="p-0! h-fit!">¡Crea tu negocio!</a>
                                 } @else {
                                     {{ negocioStore.negocioSeleccionado()?.nombre ?? 'Seleccionar negocio...' }}
                                 }
@@ -99,7 +98,7 @@
         <div class="flex-1"></div>
         @if (withClose) {
             <div class="flex items-center justify-center h-19 md:h-23 lg:h-27 pr-2">
-                <button hlmBtn hlmsidebartrigger variant="ghost" class="hover:bg-transparent py-4" (click)="cerrar()">
+                <button hlmBtn hlmsidebartrigger variant="ghost" class="hover:bg-transparent py-4!" (click)="cerrar()">
                     <ng-icon hlm name="lucideX" size="base" class="text-(--negro)/70 scale-100" />
                 </button>
             </div>
@@ -120,7 +119,7 @@
                                     [routerLink]="item.url"
                                     routerLinkActive="active"
                                     [routerLinkActiveOptions]="{ exact: true }"
-                                    class="w-full"
+                                    class="w-full!"
                                     (click)="click()"
                                 >
                                     @if (item.icon) {
@@ -151,7 +150,7 @@
                                                 [routerLink]="subItem.url"
                                                 routerLinkActive="active"
                                                 [routerLinkActiveOptions]="{ exact: true }"
-                                                class="w-full"
+                                                class="w-full!"
                                                 (click)="click()"
                                             >
                                                 @if (subItem.icon) {
@@ -187,7 +186,7 @@
                                                 [routerLink]="groupItem.url"
                                                 routerLinkActive="active"
                                                 [routerLinkActiveOptions]="{ exact: true }"
-                                                class="w-full items-center justify-start text-(--negro)/80 font-normal ml-2 my-0.5"
+                                                class="w-full! items-center justify-start text-negro/80 font-normal ml-2! my-0.5!"
                                                 (click)="click()"
                                             >
                                                 @if (groupItem.icon) {
@@ -210,7 +209,7 @@
                                                     hlmBtn
                                                     variant="link"
                                                     hlmCollapsibleTrigger
-                                                    class="w-full flex items-center justify-start gap-2 text-(--negro)/80 py- text-sm font-normal my-0.5"
+                                                    class="w-full! flex items-center justify-start gap-2 text-negro/80 text-sm font-normal my-0.5!"
                                                 >
                                                     @if (groupItem.icon) {
                                                         <ng-icon hlm [name]="groupItem.icon" size="sm" />
@@ -237,7 +236,7 @@
                                                                 [routerLinkActiveOptions]="{
                                                                     exact: true,
                                                                 }"
-                                                                class="w-full items-center justify-start text-(--negro)/80 font-normal my-0.5"
+                                                                class="w-full! items-center justify-start text-negro/80 font-normal my-0.5!"
                                                                 (click)="click()"
                                                             >
                                                                 @if (subItem.icon) {

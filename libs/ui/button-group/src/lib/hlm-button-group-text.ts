@@ -1,20 +1,14 @@
-import { computed, Directive, input } from '@angular/core';
-import { hlm } from '@spartan-ng/helm/utils';
-import { ClassValue } from 'clsx';
+import { Directive } from '@angular/core';
+import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({
-    selector: '[hlmButtonGroupText],hlm-button-group-text',
-    host: {
-        '[class]': '_computedClass()',
-    },
+	selector: '[hlmButtonGroupText],hlm-button-group-text',
+	host: {
+		'data-slot': 'button-group-text',
+	},
 })
 export class HlmButtonGroupText {
-    public readonly userClass = input<ClassValue>('', { alias: 'class' });
-
-    protected readonly _computedClass = computed(() =>
-        hlm(
-            "bg-(--ring) flex items-center gap-2 rounded-md border px-4 text-sm font-medium shadow-xs [&_ng-icon]:pointer-events-none [&_ng-icon:not([class*='text-'])]:text-base",
-            this.userClass(),
-        ),
-    );
+	constructor() {
+		classes(() => 'bg-muted gap-2 rounded-md border px-2.5 text-sm font-medium shadow-xs [&_ng-icon:not([class*=\'text-\'])]:text-[length:--spacing(4)] flex items-center [&_ng-icon]:pointer-events-none');
+	}
 }

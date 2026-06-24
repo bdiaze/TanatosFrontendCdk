@@ -22,11 +22,11 @@
                     </li>
                 </ol>
             </nav>
-            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
         </div>
     } @else {
         <div class="flex flex-row items-start justify-end">
-            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0 m-0 -mt-2" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
         </div>
     }
 
@@ -112,9 +112,9 @@
                         </div>
                         @if (mostrarBotonExpandir()) {
                             @if (!expandido()) {
-                                <button hlmBtn variant="link" (click)="mostrarMasMenos(true)" class="mt-2">Mostrar más...</button>
+                                <button hlmBtn variant="link" (click)="mostrarMasMenos(true)" class="mt-2!">Mostrar más...</button>
                             } @else {
-                                <button hlmBtn variant="link" (click)="mostrarMasMenos(false)" class="mt-2">Mostrar menos...</button>
+                                <button hlmBtn variant="link" (click)="mostrarMasMenos(false)" class="mt-2!">Mostrar menos...</button>
                             }
                         }
                     </div>
@@ -171,8 +171,7 @@
                                                             <button
                                                                 hlmBtn
                                                                 size="icon"
-                                                                variant="outlineAzul"
-                                                                class="size-8"
+                                                                class="btnOutlineAzul size-8!"
                                                                 (click)="descargaArchivo(documento.id)"
                                                                 [disabled]="documento.descargando"
                                                             >
@@ -187,7 +186,7 @@
                                                                     hlmBtn
                                                                     size="icon"
                                                                     variant="destructive"
-                                                                    class="size-8"
+                                                                    class="size-8!"
                                                                     (click)="openModalEliminar(documento)"
                                                                     [disabled]="documento.borrando"
                                                                 >
@@ -231,7 +230,7 @@
                                                                 (drop)="onDropFile($event)"
                                                                 class="py-6"
                                                             >
-                                                                <button hlmBtn size="icon" variant="link" class="size-8" (click)="fileInput.click()">
+                                                                <button hlmBtn size="icon" variant="link" class="size-8!" (click)="fileInput.click()">
                                                                     <ng-icon hlm size="sm" name="lucidePlus" />
                                                                     <div>Click aquí para adjuntar tu documento</div>
                                                                     <br />
@@ -256,7 +255,7 @@
                                                                 (drop)="onDropRestringido($event)"
                                                             >
                                                                 <app-popup-funcionalidad-bloqueada class="w-full" #pop>
-                                                                    <button hlmBtn size="icon" variant="link" class="size-8">
+                                                                    <button hlmBtn size="icon" variant="link" class="size-8!">
                                                                         <ng-icon hlm size="sm" name="lucideGem" />
                                                                         <div>Click aquí para adjuntar tu documento</div>
                                                                         <br />
@@ -321,8 +320,7 @@
                                     <div class="flex flex-col md:flex-row items-center gap-2 md:gap-3 w-full">
                                         <button
                                             hlmBtn
-                                            variant="outlineAzul"
-                                            class="w-full py-7 gap-4 text-lg"
+                                            class="btnOutlineAzul w-full py-7! gap-4! text-lg"
                                             (click)="openModalConfirmar()"
                                             [disabled]="completando() || (documentosEnProgreso() && documentosEnProgreso().length > 0)"
                                         >

@@ -3,6 +3,7 @@ import { EntMensajeIngresar } from '@/app/entities/others/ent-mensaje-ingresar';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { RecaptchaHelper } from '@/app/helpers/recaptcha-helper';
 import { AuthStore } from '@/app/services/auth-store';
+import { NgClass } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -17,7 +18,19 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
 
 @Component({
     selector: 'app-formulario-contacto',
-    imports: [HlmButton, HlmInput, HlmTextarea, FormsModule, ReactiveFormsModule, HlmFieldImports, HlmAlertImports, NgIcon, HlmIcon, HlmSpinnerImports],
+    imports: [
+        HlmButton,
+        HlmInput,
+        HlmTextarea,
+        FormsModule,
+        ReactiveFormsModule,
+        HlmFieldImports,
+        HlmAlertImports,
+        NgIcon,
+        HlmIcon,
+        HlmSpinnerImports,
+        NgClass,
+    ],
     templateUrl: './formulario-contacto.html',
     providers: [
         provideIcons({

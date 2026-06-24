@@ -15,24 +15,12 @@ import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angula
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import {
-    lucideArrowLeft,
-    lucideArrowRight,
-    lucideBadgeCheck,
-    lucideBadgeX,
-    lucideEllipsis,
-    lucideGem,
-    lucideSquarePen,
-    lucideStore,
-    lucideTrash2,
-    lucideTriangleAlert,
-} from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideGem, lucideSquarePen, lucideStore, lucideTrash2, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
-import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
@@ -54,7 +42,7 @@ import { forkJoin } from 'rxjs';
         HlmDropdownMenuImports,
         HlmSpinnerImports,
         HlmSkeletonImports,
-        HlmBreadCrumbImports,
+        HlmBreadcrumbImports,
         HlmTooltipImports,
         PopupFuncionalidadBloqueada,
         RouterModule,

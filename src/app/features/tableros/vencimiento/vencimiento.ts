@@ -26,7 +26,7 @@ import { EntDocumentoAdjuntoGenerarUrlBajada } from '@/app/entities/others/ent-d
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { debounceTime, map, Subject, switchMap } from 'rxjs';
 import { EntNormaSuscritaCompletarNorma } from '@/app/entities/others/ent-norma-suscrita-completar-norma';
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
 import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
@@ -62,7 +62,7 @@ import { TourService } from '@/app/helpers/tour-service';
         HlmTableImports,
         HlmProgressImports,
         CommonModule,
-        HlmBreadCrumbImports,
+        HlmBreadcrumbImports,
         RouterLink,
         EditorTexto,
         PopupFuncionalidadBloqueada,

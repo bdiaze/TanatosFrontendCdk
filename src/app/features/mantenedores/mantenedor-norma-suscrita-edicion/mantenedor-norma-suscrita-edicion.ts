@@ -36,7 +36,7 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
 import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { SalCargo } from '@/app/entities/others/sal-cargo';
@@ -76,7 +76,7 @@ import { DriveStep } from 'driver.js';
         HlmDatePickerImports,
         HlmPopoverImports,
         HlmSkeletonImports,
-        HlmBreadCrumbImports,
+        HlmBreadcrumbImports,
         EditorTexto,
         HlmTooltipImports,
     ],

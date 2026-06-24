@@ -217,7 +217,7 @@
                                                 </div>
                                             </hlm-autocomplete-content>
                                         </hlm-autocomplete>
-                                        <button hlmBtn size="icon" variant="default" class="size-9" (click)="crearActividad()" [disabled]="!formActividad()">
+                                        <button hlmBtn size="icon" variant="default" class="size-9!" (click)="crearActividad()" [disabled]="!formActividad()">
                                             <ng-icon hlm size="sm" name="lucidePlus" />
                                         </button>
                                     </div>
@@ -236,7 +236,7 @@
                                                     hlmBtn
                                                     size="icon"
                                                     variant="link"
-                                                    class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                                    class="size-5! p-0! m-0! text-primary-foreground! scale-110 hover:scale-130 active:scale-90"
                                                     [hlmDropdownMenuTrigger]="menuActividad"
                                                 >
                                                     <ng-icon hlm name="lucideX" />
@@ -398,7 +398,7 @@
                                                                 hlmBtn
                                                                 size="icon"
                                                                 variant="destructive"
-                                                                class="size-9 hover:scale-105 active:scale-95 order-2 md:order-3"
+                                                                class="size-9! hover:scale-105 active:scale-95 order-2 md:order-3"
                                                                 [hlmDropdownMenuTrigger]="menu"
                                                             >
                                                                 <ng-icon hlm size="sm" name="lucideTrash2" />
@@ -664,7 +664,7 @@
                                                                                 hlmBtn
                                                                                 size="icon"
                                                                                 variant="default"
-                                                                                class="size-9"
+                                                                                class="size-9!"
                                                                                 (click)="agregarFiscalizador(norma)"
                                                                                 [disabled]="(formFiscalizador.controls.idFiscalizador.value ?? 0) <= 0"
                                                                             >
@@ -685,7 +685,7 @@
                                                                                         hlmBtn
                                                                                         size="icon"
                                                                                         variant="link"
-                                                                                        class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                                                                        class="size-5! p-0! m-0! text-primary-foreground! scale-110 hover:scale-130 active:scale-90"
                                                                                         [hlmDropdownMenuTrigger]="menuFiscalizador"
                                                                                     >
                                                                                         <ng-icon hlm name="lucideX" />
@@ -775,7 +775,7 @@
                                                                                 hlmBtn
                                                                                 size="icon"
                                                                                 variant="default"
-                                                                                class="size-9"
+                                                                                class="size-9!"
                                                                                 (click)="agregarNotificacionPrevia(norma)"
                                                                                 [disabled]="
                                                                                     (formNotificacion.controls.idUnidadTiempo.value ?? 0) <= 0 ||
@@ -802,7 +802,7 @@
                                                                                         hlmBtn
                                                                                         size="icon"
                                                                                         variant="link"
-                                                                                        class="size-5 p-0 m-0 text-primary-foreground scale-110 hover:scale-130 active:scale-90"
+                                                                                        class="size-5! p-0! m-0! text-primary-foreground! scale-110 hover:scale-130 active:scale-90"
                                                                                         [hlmDropdownMenuTrigger]="menuNotificacion"
                                                                                     >
                                                                                         <ng-icon hlm name="lucideX" />

@@ -1,15 +1,11 @@
-import { CampoDinamico, ModalEdicion, PosiblesValores } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { ModalMantenedorEmpleado } from '@/app/components/modal-mantenedor-empleado/modal-mantenedor-empleado';
 import { CargoDao } from '@/app/daos/cargo-dao';
 import { EmpleadoDao } from '@/app/daos/empleado-dao';
-import { EntEmpleadoActualizar } from '@/app/entities/others/ent-empleado-actualizar';
-import { EntEmpleadoCrear } from '@/app/entities/others/ent-empleado-crear';
 import { SalCargo } from '@/app/entities/others/sal-cargo';
 import { SalEmpleado } from '@/app/entities/others/sal-empleado';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
-import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -28,7 +24,7 @@ import {
 } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
-import { HlmBreadCrumbImports } from '@spartan-ng/helm/breadcrumb';
+import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -54,7 +50,7 @@ import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
         HlmDropdownMenuImports,
         HlmSpinnerImports,
         HlmSkeletonImports,
-        HlmBreadCrumbImports,
+        HlmBreadcrumbImports,
         HlmSeparatorImports,
         HlmBadgeImports,
         FormatearTelefonoPipe,

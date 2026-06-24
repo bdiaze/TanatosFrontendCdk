@@ -99,16 +99,16 @@
                         </hlm-autocomplete>
                     }
                     <div class="w-full flex items-center justify-end mt-1">
-                        <button hlmBtn variant="link" class="text-base text-(--blanco) font-normal decoration-(--blanco)" (click)="siguienteNegocio()">
+                        <button hlmBtn variant="link" class="text-base text-blanco font-normal decoration-blanco" (click)="siguienteNegocio()">
                             Siguiente
-                            <ng-icon hlm size="sm" name="lucideMoveRight" class="text-(--blanco)" />
+                            <ng-icon hlm size="sm" name="lucideMoveRight" class="text-blanco" />
                         </button>
                     </div>
                 </div>
             </div>
         </section>
     } @else {
-        <section class="w-full bg-(--azul) text-(--blanco) fade-in">
+        <section class="w-full bg-azul text-blanco fade-in">
             <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-2 pb-6 flex flex-col items-center justify-center">
                 <div class="w-full px-4 flex flex-row items-center justify-between gap-2 md:gap-6">
                     <div class="flex flex-col items-start justify-center gap-1">
@@ -191,13 +191,13 @@
                         </div>
                     }
                     <div class="w-full flex items-center justify-evenly mt-1">
-                        <button hlmBtn variant="link" class="text-base text-(--blanco) font-normal decoration-(--blanco)" (click)="anteriorPlantillas()">
-                            <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-(--blanco)" />
+                        <button hlmBtn variant="link" class="text-base text-blanco font-normal decoration-blanco" (click)="anteriorPlantillas()">
+                            <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-blanco" />
                             Anterior
                         </button>
-                        <button hlmBtn variant="link" class="text-base text-(--blanco) font-normal decoration-(--blanco)" (click)="siguientePlantillas()">
+                        <button hlmBtn variant="link" class="text-base text-blanco font-normal decoration-blanco" (click)="siguientePlantillas()">
                             Siguiente
-                            <ng-icon hlm size="sm" name="lucideMoveRight" class="text-(--blanco)" />
+                            <ng-icon hlm size="sm" name="lucideMoveRight" class="text-blanco" />
                         </button>
                     </div>
                 </div>
@@ -223,7 +223,7 @@
         </section>
     }
     @if (datosPlantillasIngresado()) {
-        <section id="confirmar" class="flex-1 w-full bg-(--naranjo) text-(--blanco) fade-in">
+        <section id="confirmar" class="flex-1 w-full bg-naranjo text-blanco fade-in">
             <div class="max-w-screen md:max-w-2xl mx-auto px-4 pt-6 pb-6 flex flex-col items-center justify-center">
                 <div class="flex flex-col items-center justify-center gap-2 w-full">
                     <p hlmP class="text-center text-balance">¡Ya tenemos lo básico!</p>
@@ -234,22 +234,22 @@
                         <button
                             hlmBtn
                             variant="link"
-                            class="text-base text-(--blanco) font-normal decoration-(--blanco) self-start md:self-auto"
+                            class="text-base text-blanco font-normal decoration-blanco self-start md:self-auto"
                             (click)="anteriorGuardar()"
                         >
-                            <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-(--blanco)" />
+                            <ng-icon hlm size="sm" name="lucideMoveLeft" class="text-blanco" />
                             Anterior
                         </button>
                         <button
                             hlmBtn
-                            class="text-lg text-(--blanco) font-semibold decoration-(--blanco) pl-6! pr-10! py-7!"
+                            class="text-lg text-blanco font-semibold decoration-blanco pl-6! pr-10! py-7!"
                             (click)="siguienteGuardar()"
                             [disabled]="procesando()"
                         >
                             @if (procesando()) {
                                 <hlm-spinner class="text-2xl" />
                             } @else {
-                                <ng-icon hlm size="base" name="lucideStore" class="text-(--blanco)" />
+                                <ng-icon hlm size="base" name="lucideStore" class="text-blanco" />
                             }
                             ¡Sí, registra mi negocio!
                         </button>
