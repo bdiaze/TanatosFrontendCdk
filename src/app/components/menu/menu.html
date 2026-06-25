@@ -7,22 +7,28 @@
                 variant="outline"
                 #dropdownTrigger
                 [hlmDropdownMenuTrigger]="menuNegocios"
-                class="h-full! border-none border-0 rounded-xs hover:text-negro/80 shadow-none p-0!"
+                class="h-full! border-none border-0 rounded-xs hover:text-negro/80 shadow-none p-0! group"
                 [ngClass]="{
                     'pl-4! pr-0!': !estatico,
-                    'px-4! py-4! w-full': estatico,
+                    'px-3! py-4! w-full': estatico,
+                    'hover:cursor-default! hover:text-(--negro)/90!': negocioStore.negociosUsuario().length <= 1,
+                    'hover:text-negro! transition-[color]!': negocioStore.negociosUsuario().length > 1,
                 }"
                 [disabled]="cargandoNegocios()"
             >
-                <div class="flex flex-row justify-center items-center gap-2 md:gap-3 w-full">
+                <div class="flex flex-row justify-center items-center gap-1 md:gap-2 w-full">
                     @if (!withClose) {
                         <div class="text-negro/80 flex aspect-square size-6 items-center justify-center rounded-lg">
-                            <ng-icon name="lucideStore" class="text-2xl" />
+                            <ng-icon
+                                name="lucideStore"
+                                class="text-2xl"
+                                [ngClass]="{ 'group-hover:text-negro! transition-[color]!': negocioStore.negociosUsuario().length > 1 }"
+                            />
                         </div>
                     } @else {
                         @if (negocioStore.negociosUsuario().length > 1) {
-                            <div class="size-6">
-                                <ng-icon hlm name="lucideChevronsUpDown" class="ml-auto opacity-80" size="base" />
+                            <div class="size-5 flex items-center justify-center -ml-1">
+                                <ng-icon hlm name="lucideChevronsUpDown" class="opacity-80 group-hover:scale-115 transition-transform" size="sm" />
                             </div>
                         }
                     }
@@ -53,7 +59,12 @@
                     @if (estatico) {
                         @if (negocioStore.negociosUsuario().length > 1) {
                             <div class="flex items-center justify-end">
-                                <ng-icon hlm name="lucideChevronsUpDown" class="opacity-80" size="sm" />
+                                <ng-icon
+                                    hlm
+                                    name="lucideChevronsUpDown"
+                                    class="opacity-80 group-hover:scale-115! group-hover:text-negro! transition-[scale,color]!"
+                                    size="sm"
+                                />
                             </div>
                         }
                     }
