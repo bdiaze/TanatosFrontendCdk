@@ -259,3 +259,17 @@ input[hlminput] {
 button[hlminputgroupbutton] {
     @apply cursor-pointer;
 }
+
+[hlmh1],
+[hlmh2],
+[hlmh3],
+[hlmh4] {
+    @apply font-serif;
+}
+[hlmh1] {
+    @apply font-semibold;
+}
+
+[hlmp] {
+    @apply font-sans not-first:mt-0;
+}
