@@ -110,7 +110,7 @@
                             </div>
                         </div>
                     </div>
-                    <div id="categorias_fiscalizadores" class="flex flex-col md:flex-row items-start gap-2 mt-2 w-full">
+                    <div id="categorias_fiscalizadores" class="flex flex-col md:flex-row items-start gap-3 md:gap-2 w-full">
                         <div hlmField class="flex justify-center items-center gap-1 w-full widthMitadConGap2">
                             <div hlmInputGroup>
                                 <div hlmInputGroupAddon align="block-start">
@@ -332,14 +332,14 @@
                                             <div class="flex flex-wrap justify-center items-center gap-1">
                                                 @for (empleado of empleadosSeleccionados(); track empleado.id) {
                                                     @if (empleado.destinatarios.length > 0) {
-                                                        <span hlmBadge class="mt-2 text-xs py-1! flex items-center bg-(--azul) fade-in"
+                                                        <span hlmBadge class="mt-2 text-xs py-1! flex items-center bg-azul fade-in"
                                                             >{{ empleado.nombre }}
                                                         </span>
                                                     } @else {
                                                         <a
                                                             hlmBadge
                                                             [routerLink]="['/mi-equipo']"
-                                                            class="mt-2 text-xs py-1 flex items-center bg-(--azul) [a&]:hover:bg-(--azul) fade-in"
+                                                            class="mt-2 text-xs py-1 flex items-center bg-azul [a&]:hover:bg-azul fade-in"
                                                             hlmTooltip="No tiene habilitada la recepción de notificaciones"
                                                             >{{ empleado.nombre }}
                                                             <ng-icon hlm name="lucideCircleAlert" size="lg" class="ml-1 scale-120" />
@@ -375,7 +375,12 @@
                                                 [date]="form.controls['fechaProximoVencimiento'].value!"
                                                 (dateChange)="form.controls['fechaProximoVencimiento'].setValue($event)"
                                             >
-                                                <span class="text-sm">Seleccionar fecha...</span>
+                                                <hlm-date-picker-trigger
+                                                    buttonId="proximoVencimientoFecha"
+                                                    class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal!"
+                                                >
+                                                    Seleccionar fecha...
+                                                </hlm-date-picker-trigger>
                                             </hlm-date-picker>
                                         </div>
                                     </div>

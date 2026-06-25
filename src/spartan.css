@@ -114,6 +114,7 @@ span[hlmBadge].badgeAzul {
 
 span[hlmBadge] ng-icon {
     --ng-icon__size: 12px !important;
+    @apply text-blanco;
 }
 
 span[hlmBadge][variant='destructive'] {
@@ -236,4 +237,25 @@ h3[hlmcardtitle] {
 
 div[hlmcardcontent] {
     @apply text-base;
+}
+
+hlm-dropdown-menu-label:not(.text-xs) {
+    @apply text-xs;
+}
+
+button[brncalendarcellbutton] {
+    @apply cursor-pointer;
+}
+
+hlm-input-group:not(.shadow-none),
+div[hlminputgroup] {
+    @apply shadow-none;
+}
+
+input[hlminput] {
+    @apply shadow-none;
+}
+
+button[hlminputgroupbutton] {
+    @apply cursor-pointer;
 }

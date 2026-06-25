@@ -16,7 +16,7 @@ import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untrac
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideBadgeX, lucideCircleAlert, lucideGem, lucidePlus, lucideSquarePen, lucideX } from '@ng-icons/lucide';
+import { lucideBadgeCheck, lucideBadgeX, lucideCircleAlert, lucideGem, lucidePlus, lucideSquarePen, lucideTrash2, lucideX } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -91,6 +91,7 @@ import { DriveStep } from 'driver.js';
             lucideSquarePen,
             lucideCircleAlert,
             lucideGem,
+            lucideTrash2,
         }),
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,

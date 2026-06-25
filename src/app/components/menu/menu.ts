@@ -4,8 +4,9 @@ import { setCookie } from '@/app/helpers/cookie-helper';
 import { MenuHelper } from '@/app/helpers/menu-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
+import { CdkMenuTrigger } from '@angular/cdk/menu';
 import { NgClass } from '@angular/common';
-import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, untracked } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, untracked, ViewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -331,9 +332,11 @@ export class Menu implements OnInit {
         return this.groupsAbiertos.has(groupId);
     }
 
+    @ViewChild('dropdownTrigger', { read: CdkMenuTrigger }) dropdownTrigger?: CdkMenuTrigger;
     cambiarNegocio(negocio: SalNegocio) {
         this.negocioStore.negocioSeleccionado.set(negocio);
         setCookie('NegocioSeleccionado', `${negocio.id}`);
+        this.dropdownTrigger?.close();
     }
 
     cargandoNegocios = this.menuHelper.cargandoNegocios;

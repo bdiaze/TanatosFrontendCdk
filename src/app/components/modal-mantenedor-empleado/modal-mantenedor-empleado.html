@@ -93,7 +93,7 @@
                                         <button
                                             hlmBtn
                                             size="icon"
-                                            class="ml-auto! size-7! absolute right-1.5!"
+                                            class="ml-auto! size-7! absolute! right-1.5!"
                                             type="button"
                                             [hlmDropdownMenuTrigger]="menuReceptores"
                                         >
@@ -159,7 +159,7 @@
                                                         El correo electrónico ingresado no es válido.
                                                     }
                                                 </hlm-field-error>
-                                                <button hlmInputGroupButton size="icon-xs" [hlmDropdownMenuTrigger]="borrarDestinatario" class="group">
+                                                <button hlmInputGroupButton size="icon-xs" [hlmDropdownMenuTrigger]="borrarDestinatario" class="ml-auto group">
                                                     <ng-icon name="lucideTrash2" class="group-hover:text-destructive transition-colors" />
                                                 </button>
                                                 <ng-template #borrarDestinatario>
