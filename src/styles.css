@@ -25,6 +25,10 @@ app-root.app-ready {
     opacity: 1;
 }
 
+.scrollContainer {
+    @apply overflow-y-auto;
+}
+
 .scrollContainer::-webkit-scrollbar {
     width: 5px;
 }
