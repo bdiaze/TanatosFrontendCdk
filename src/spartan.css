@@ -281,3 +281,7 @@ ng-component[role='tooltip'] span svg {
 ng-component[role='tooltip'] {
     @apply bg-negro;
 }
+
+textarea[hlminputgrouptextarea] {
+    @apply shadow-none;
+}
