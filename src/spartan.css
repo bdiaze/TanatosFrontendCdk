@@ -273,3 +273,11 @@ button[hlminputgroupbutton] {
 [hlmp] {
     @apply font-sans not-first:mt-0;
 }
+
+ng-component[role='tooltip'] span svg {
+    @apply bg-negro fill-negro;
+}
+
+ng-component[role='tooltip'] {
+    @apply bg-negro;
+}
