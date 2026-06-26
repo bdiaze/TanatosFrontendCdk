@@ -298,3 +298,8 @@ textarea[hlminputgrouptextarea] {
 [hlmitemdescription]:has(ul) {
     @apply line-clamp-none overflow-visible;
 }
+
+th[hlmth],
+th[hlmtablehead] {
+    @apply font-semibold;
+}
