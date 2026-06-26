@@ -1,4 +1,4 @@
-<section class="relative h-[clamp(16rem,75vw,35rem)] md:h-[45vw] w-full overflow-hidden flex flex-col items-start justify-center max-w-dvw fade-in">
+<section class="relative h-90 sm:h-105 md:h-115 lg:h-143 xl:h-172 2xl:h-215 w-full overflow-hidden flex flex-col items-start justify-center max-w-dvw fade-in">
     <img
         appFadeIn
         [src]="urlFondo1_1920"
@@ -8,8 +8,8 @@
         class="absolute inset-0 h-full w-full object-cover object-[1rem_1rem] scale-120 md:object-[0%_50%] md:scale-100"
     />
     <div class="absolute inset-0 bg-linear-to-r from-black/40 to-black/0"></div>
-    <div class="relative z-10 h-full flex flex-col items-start justify-center gap-2 pl-[clamp(2.5rem,7vw,7rem)]">
-        <h4 hlmH4 class="text-blanco text-balance font-serif text-[clamp(1.6rem,5vw,7rem)] font-light leading-[clamp(2.1rem,5.5vw,7.8rem)]">
+    <div class="relative z-10 h-full flex flex-col items-start justify-center gap-2 pl-12 sm:pl-16 md:pl-17 lg:pl-21 xl:pl-27 2xl:pl-28">
+        <h4 hlmH4 class="text-blanco text-balance font-serif! font-light text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-7xl 2xl:text-8xl">
             Evita multas y<br />
             malos ratos.<br />
             <p class="font-semibold">
@@ -22,16 +22,20 @@
 </section>
 <section class="relative w-full flex flex-col items-center justify-center my-10 md:my-14 px-8 md:px-12 max-w-dvw fade-in">
     <div class="flex flex-col md:flex-row justify-evenly w-full gap-8 md:gap-8">
-        <div class="flex flex-col items-center gap-4 md:gap-[2.5vw] w-full md:w-1/2">
+        <div class="flex flex-col items-center gap-4 md:gap-8 w-full md:w-1/2">
             <ng-icon hlm size="xl" name="lucideCalendarClock" class="text-azul" />
-            <p hlmP class="text-azul font-serif text-center text-[clamp(1.25rem,2.0vw,1.8rem)] text-balance">
+            <p
+                class="text-azul font-serif! text-center text-balance leading-7 sm:leading-8 md:leading-8 lg:leading-9 xl:leading-10 2xl:leading-11 text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl"
+            >
                 Somos una plataforma de gestión diseñada para ayudar a microempresarios a organizar y cumplir todas sus obligaciones, según el rubro de su
                 negocio
             </p>
         </div>
-        <div class="flex flex-col items-center gap-4 md:gap-[2.5vw] w-full md:w-1/2">
+        <div class="flex flex-col items-center gap-4 md:gap-8 w-full md:w-1/2">
             <ng-icon hlm size="xl" name="lucideEarth" class="text-azul" />
-            <p hlmP class="text-azul font-serif text-center text-[clamp(1.25rem,2.0vw,1.8rem)] text-balance">
+            <p
+                class="text-azul font-serif text-center text-balance leading-7 sm:leading-8 md:leading-8 lg:leading-9 xl:leading-10 2xl:leading-11 text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl"
+            >
                 Estas obligaciones pueden provenir de la normativa chilena vigente, así como de requerimientos específicos según la operación de cada empresa
             </p>
         </div>
@@ -39,10 +43,12 @@
 </section>
 <section class="relative w-full flex flex-col md:flex-row items-center justify-evenly bg-celeste max-w-dvw py-10 md:py-12 px-8 md:px-12 gap-8 md:gap-6 fade-in">
     <div class="flex flex-col items-center md:justify-center gap-4 md:gap-2 order-2 md:order-1 md:w-1/2">
-        <p hlmP class="text-blanco font-serif text-center text-[clamp(1.2rem,2.8vw,2.3rem)] font-semibold text-balance">
+        <p class="text-blanco font-serif text-center text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-semibold text-balance">
             Conoce los servicios que tenemos para tu negocio
         </p>
-        <p hlmP class="text-blanco font-serif text-center text-[clamp(.9rem,2.0vw,1.8rem)] text-balance">
+        <p
+            class="text-blanco font-serif text-center mt-0 md:mt-3 lg:mt-3.5 xl:mt-4 2xl:mt-5 text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl text-balance"
+        >
             Nuestra plataforma te permite organizar, programar y gestionar tus tareas de acuerdo con las regulaciones locales
         </p>
         <button
@@ -50,17 +56,17 @@
             variant="outline"
             routerLink="/servicios"
             size="lg"
-            class="mt-[1.5vw]! text-[clamp(0.95rem,1.8vw,1.3rem)]! h-[clamp(2.3rem,5vw,3.2rem)]! bg-transparent! text-blanco! border-blanco! hover:text-(--blanco)/80! hover:border-(--blanco)/80!"
+            class="mt-3! sm:mt-3! md:mt-4! lg:mt-6! xl:mt-6! 2xl:mt-10! text-base! sm:text-lg! md:text-lg! lg:text-lg! xl:text-xl! 2xl:text-xl! py-5! sm:py-5.5! md:py-5.5! lg:py-6! xl:py-6.5! 2xl:py-7!"
         >
             Nuestros Servicios
         </button>
     </div>
     <div class="flex flex-col items-center gap-4 order-1 md:order-2 md:w-1/2">
-        <img appFadeIn [src]="urlTarea" alt="Tarea" class="-rotate-12 w-[clamp(7.5rem,25vw,25rem)]" />
+        <img appFadeIn [src]="urlTarea" alt="Tarea" class="-rotate-12 w-35 sm:w-50 md:w-60 lg:w-80 xl:w-90 2xl:w-100" />
     </div>
 </section>
-<section class="relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-(--naranjo) p-0 max-w-dvw fade-in">
-    <div class="relative w-full md:w-1/2 h-[clamp(16rem,60vw,40rem)] md:h-[clamp(18rem,50vw,40rem)] overflow-hidden object-top-right">
+<section class="relative w-full flex flex-col md:flex-row items-stretch justify-start md:justify-center bg-naranjo p-0 max-w-dvw fade-in">
+    <div class="relative w-full md:w-1/2 h-100 sm:h-110 md:h-110 lg:h-120 xl:h-140 2xl:h-160 overflow-hidden object-top-right">
         <img
             appFadeIn
             [src]="urlFondo2_1280"
@@ -71,10 +77,12 @@
         />
     </div>
     <div class="flex-1 flex flex-col items-center justify-center gap-4 md:gap-2 px-8 md:px-12 py-10 md:py-16">
-        <p hlmP class="text-blanco font-serif text-center text-[clamp(1.1rem,2.8vw,2.3rem)] font-semibold text-balance">
+        <p class="text-blanco font-serif! text-center text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-semibold text-balance">
             Descubre los planes que crecen contigo
         </p>
-        <p hlmP class="text-blanco font-serif text-center text-[clamp(.9rem,2.1vw,1.8rem)] text-balance px-8">
+        <p
+            class="text-blanco font-serif! text-center mt-0 md:mt-3 lg:mt-3.5 xl:mt-4 2xl:mt-5 text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl text-balance px-8!"
+        >
             Ofrecemos opciones flexibles que se adaptan a tus necesidades y presupuesto.
         </p>
         <button
@@ -82,7 +90,7 @@
             variant="outline"
             routerLink="/planes"
             size="lg"
-            class="mt-[1.5vw]! text-[clamp(0.95rem,1.8vw,1.3rem)]! h-[clamp(2.3rem,5vw,3.2rem)]! bg-transparent! text-blanco! border-blanco! hover:text-(--blanco)/80! hover:border-(--blanco)/80!"
+            class="mt-3! sm:mt-3! md:mt-4! lg:mt-6! xl:mt-6! 2xl:mt-10! text-base! sm:text-lg! md:text-lg! lg:text-lg! xl:text-xl! 2xl:text-xl! py-5! sm:py-5.5! md:py-5.5! lg:py-6! xl:py-6.5! 2xl:py-7!"
         >
             Nuestros Planes
         </button>
@@ -92,8 +100,10 @@
     class="relative w-full overflow-hidden flex flex-col md:flex-row items-center justify-evenly max-w-dvw py-10 md:py-16 px-8 md:px-12 gap-8 md:gap-8 fade-in"
 >
     <div class="flex-1 flex flex-col items-center md:justify-center gap-2 order-2 md:order-1">
-        <p hlmP class="text-azul font-serif text-center text-[clamp(1.2rem,2.8vw,2.3rem)] font-semibold">Somos Todo En Orden</p>
-        <p hlmP class="text-azul font-serif text-center text-[clamp(.95rem,2.1vw,1.8rem)] text-balance">
+        <p class="text-azul font-serif! text-center text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-semibold">Somos Todo En Orden</p>
+        <p
+            class="text-azul font-serif! text-center mt-0 md:mt-3 lg:mt-3.5 xl:mt-4 2xl:mt-5 text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl text-balance"
+        >
             Conoce nuestra plataforma, nuestro equipo y el compromiso que nos impulsa a mejorar cada día
         </p>
         <button
@@ -101,7 +111,7 @@
             variant="default"
             routerLink="/nosotros"
             size="lg"
-            class="mt-[1.5vw]! px-[8vw]! text-[clamp(0.95rem,1.8vw,1.3rem)]! h-[clamp(2.3rem,5vw,3.2rem)]! bg-azul! text-blanco! hover:bg-(--azul)/80!"
+            class="px-14! sm:px-15! md:px-16! lg:px-20! xl:px-22! 2xl:px-25! mt-3! sm:mt-3! md:mt-4! lg:mt-6! xl:mt-6! 2xl:mt-10! text-base! sm:text-lg! md:text-lg! lg:text-lg! xl:text-xl! 2xl:text-xl! py-5! sm:py-5.5! md:py-5.5! lg:py-6! xl:py-6.5! 2xl:py-7! bg-azul! text-blanco! hover:bg-azul/80!"
         >
             Nosotros
         </button>
@@ -113,15 +123,19 @@
             [srcset]="`${urlFondo3_640} 640w, ${urlFondo3_960} 960w, ${urlFondo3_1280} 1280w, ${urlFondo3_1920} 1920w`"
             sizes="(max-width: 767px) 100vw, 50vw"
             alt="Hombre de negocios"
-            class="inset-0 h-[clamp(11.1rem,35vw,30rem)] w-[clamp(11.1rem,35vw,30rem)] object-cover rounded-full"
+            class="inset-0 size-65! sm:size-75! md:size-85! lg:size-110! xl:size-115! 2xl:size-120! object-cover rounded-full"
         />
     </div>
 </section>
 <section class="relative h-[clamp(14rem,30vw,25rem)] w-full overflow-hidden flex flex-col items-center justify-center bg-calipso max-w-dvw p-0 fade-in">
     <div class="flex flex-row items-center justify-evenly h-full w-full">
         <div class="flex-1 flex flex-col items-center justify-center gap-2 px-6">
-            <p hlmP class="text-blanco font-serif text-center text-[clamp(1.8rem,2.8vw,2.2rem)] font-semibold">¿Necesitas ayuda?</p>
-            <p hlmP class="text-blanco font-serif text-center text-[clamp(.95rem,2.3vw,1.8rem)] text-balance">
+            <p class="text-blanco font-serif! text-center text-xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-4xl font-semibold">
+                ¿Necesitas ayuda?
+            </p>
+            <p
+                class="text-blanco font-serif! text-center mt-0 md:mt-3 lg:mt-3.5 xl:mt-4 2xl:mt-5 text-lg sm:text-xl md:text-xl lg:text-2xl xl:text-2xl 2xl:text-3xl text-balance"
+            >
                 Recibe asesoría personalizada para entender cómo nuestra plataforma puede aportar valor a tu negocio
             </p>
             <button
@@ -129,7 +143,7 @@
                 variant="outline"
                 routerLink="/contacto"
                 size="lg"
-                class="mt-[1.5vw]! px-[8vw]! text-[clamp(0.95rem,1.8vw,1.3rem)]! h-[clamp(2.3rem,5vw,3.2rem)]! border-blanco! hover:border-(--blanco)/80! text-blanco! hover:text-(--blanco)/80!"
+                class="px-14! sm:px-15! md:px-16! lg:px-20! xl:px-22! 2xl:px-25! mt-3! sm:mt-3! md:mt-4! lg:mt-6! xl:mt-6! 2xl:mt-10! text-base! sm:text-lg! md:text-lg! lg:text-lg! xl:text-xl! 2xl:text-xl! py-5! sm:py-5.5! md:py-5.5! lg:py-6! xl:py-6.5! 2xl:py-7!"
             >
                 Contáctanos
             </button>

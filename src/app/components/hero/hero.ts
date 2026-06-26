@@ -13,6 +13,7 @@ import { HlmH1, HlmH4, HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-hero',
     imports: [HlmH4, HlmP, HlmButtonImports, RouterLink, HlmIcon, NgIcon, FadeIn],
     templateUrl: './hero.html',
+    styleUrl: './hero.scss',
     host: {
         class: 'inline-block h-full w-full',
     },

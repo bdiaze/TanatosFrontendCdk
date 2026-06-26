@@ -25,7 +25,7 @@
                                             [class.opacity-0]="!invalid('nombre')"
                                             [class.max-h-10]="invalid('nombre')"
                                             [class.max-h-0]="!invalid('nombre')"
-                                            >Debes ingresar el nombre del empleado</hlm-field-error
+                                            >Debes ingresar el nombre</hlm-field-error
                                         >
                                     </div>
                                     <input hlmInputGroupInput class="transition-all duration-500 ease-out text-sm" id="nombre" formControlName="nombre" />
@@ -50,23 +50,28 @@
                                             [class.opacity-0]="!invalid('cargo')"
                                             [class.max-h-10]="invalid('cargo')"
                                             [class.max-h-0]="!invalid('cargo')"
-                                            >Debes ingresar un cargo para el empleado</hlm-field-error
+                                            >Debes ingresar el cargo</hlm-field-error
                                         >
                                     </div>
                                     <div class="pb-2 px-2 w-full">
                                         <hlm-autocomplete-search formControlName="cargo" [(search)]="search" class="w-full" autoHighlight>
-                                            <hlm-autocomplete-input inputId="cargo" />
-                                            <hlm-autocomplete-content *hlmAutocompletePortal>
-                                                <hlm-autocomplete-empty>Se creará el cargo {{ search() }}</hlm-autocomplete-empty>
+                                            <hlm-autocomplete-input inputId="cargo" class="[&_input]:text-sm!" />
+
+                                            <hlm-autocomplete-content *hlmAutocompletePortal [class.hidden]="filteredOptions().length === 0">
                                                 <div hlmAutocompleteList>
                                                     @for (cargo of filteredOptions(); track $index) {
-                                                        <hlm-autocomplete-item [value]="cargo.nombre">
+                                                        <hlm-autocomplete-item [value]="cargo.nombre" class="text-sm!">
                                                             {{ cargo.nombre }}
                                                         </hlm-autocomplete-item>
                                                     }
                                                 </div>
                                             </hlm-autocomplete-content>
                                         </hlm-autocomplete-search>
+                                        @if (cargoSeleccionado() && !cargoExistente()) {
+                                            <div>
+                                                <p hlmP class="text-sm text-center mt-2 mr-2 text-negro/90">Se creará el cargo {{ cargoSeleccionado() }}</p>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             }
@@ -87,7 +92,7 @@
                                                 routerLink="/mi-plan"
                                             />
                                         }
-                                        <h4 hlmH4 class="text-center text-base">Enviar notificaciones por:</h4>
+                                        <h4 hlmH4 class="text-center text-base text-negro/90!">Enviar notificaciones por:</h4>
                                     </div>
                                     @if (tienePlanEmpresa()) {
                                         <button
@@ -103,8 +108,8 @@
                                             <hlm-dropdown-menu>
                                                 <hlm-dropdown-menu-group>
                                                     @for (tipoReceptor of tiposReceptores(); track tipoReceptor.id) {
-                                                        <button hlmDropdownMenuItem (click)="crearDestinatario(tipoReceptor.id)">
-                                                            <span class="opacity-85">{{ tipoReceptor.nombre }}</span>
+                                                        <button hlmDropdownMenuItem (click)="crearDestinatario(tipoReceptor.id)" class="w-42!">
+                                                            <span>{{ tipoReceptor.nombre }}</span>
                                                             @if (tipoReceptor.id === 1) {
                                                                 <hlm-dropdown-menu-shortcut>
                                                                     <div class="flex items-center justify-center">
@@ -172,11 +177,11 @@
                                                             <button
                                                                 hlmDropdownMenuItem
                                                                 variant="destructive"
-                                                                class="hover:cursor-pointer"
+                                                                class="hover:cursor-pointer w-33"
                                                                 (click)="eliminarDestinatario($index)"
                                                             >
                                                                 ¡Sí, eliminalo!
-                                                                <ng-icon hlm size="sm" name="lucideTrash2" />
+                                                                <ng-icon hlm size="sm" name="lucideTrash2" class="ml-auto" />
                                                             </button>
                                                         </hlm-dropdown-menu-group>
                                                     </hlm-dropdown-menu>
@@ -195,7 +200,7 @@
                                         </div>
                                     } @empty {
                                         <hlm-separator />
-                                        <p hlmP class="text-sm mt-1.5">Sin envío de notificaciones</p>
+                                        <p hlmP class="text-sm mt-1.5! text-negro/90!">Sin envío de notificaciones</p>
                                     }
                                 </div>
                             }

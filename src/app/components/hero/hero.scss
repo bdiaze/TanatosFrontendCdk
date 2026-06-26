@@ -1,0 +1,12 @@
+button[variant='outline'] {
+    background-color: transparent !important;
+    border-color: var(--blanco) !important;
+    color: var(--blanco) !important;
+
+    &:hover {
+        @media (hover: hover) {
+            border-color: color-mix(in oklab, var(--blanco) 80%, transparent) !important;
+            color: color-mix(in oklab, var(--blanco) 80%, transparent) !important;
+        }
+    }
+}

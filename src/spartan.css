@@ -303,3 +303,8 @@ th[hlmth],
 th[hlmtablehead] {
     @apply font-semibold;
 }
+
+hlm-autocomplete-search[data-slot='autocomplete'] hlm-autocomplete-input[data-slot='input-group'],
+hlm-autocomplete[data-slot='autocomplete'] hlm-autocomplete-input[data-slot='input-group'] {
+    @apply shadow-none;
+}

@@ -27,7 +27,7 @@
                                             <input
                                                 hlmInputGroupInput
                                                 type="text"
-                                                class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                                class="transition-all duration-500 ease-out text-sm"
                                                 [id]="campo.llave"
                                                 [formControl]="form.controls[campo.llave]"
                                             />
@@ -36,7 +36,7 @@
                                             <input
                                                 hlmInputGroupInput
                                                 type="number"
-                                                class="transition-all duration-500 ease-out text-xs md:text-sm"
+                                                class="transition-all duration-500 ease-out text-sm"
                                                 [id]="campo.llave"
                                                 [formControl]="form.controls[campo.llave]"
                                             />
@@ -108,15 +108,15 @@
                                                     [formControl]="form.controls[campo.llave]"
                                                     [itemToString]="campo.selectItemToString"
                                                 >
-                                                    <hlm-select-trigger class="">
+                                                    <hlm-select-trigger>
                                                         <div class="flex justify-start items-center gap-2">
-                                                            <hlm-select-value class="text-xs md:text-sm truncate" />
+                                                            <hlm-select-value class="text-sm! truncate" />
                                                         </div>
                                                     </hlm-select-trigger>
-                                                    <hlm-select-content *hlmSelectPortal>
+                                                    <hlm-select-content *hlmSelectPortal showScroll>
                                                         <hlm-select-group>
                                                             @for (posibleValor of campo.posiblesValores; track posibleValor.id) {
-                                                                <hlm-select-item [value]="posibleValor.id" class="text-xs md:text-sm">{{
+                                                                <hlm-select-item [value]="posibleValor.id" class="text-sm!">{{
                                                                     `${posibleValor.valor}`
                                                                 }}</hlm-select-item>
                                                             }
@@ -156,7 +156,7 @@
                                                     <hlm-autocomplete-input
                                                         [id]="campo.llave"
                                                         [placeholder]="`Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`"
-                                                        class="text-xs md:text-sm"
+                                                        class="[&_input]:text-sm!"
                                                         showClear
                                                     />
                                                     <hlm-autocomplete-content *hlmAutocompletePortal>
@@ -164,11 +164,14 @@
                                                         <div hlmAutocompleteList>
                                                             @for (grupo of campo.autocompleteFilteredOptions!(); track $index; let last = $last) {
                                                                 <div hlmAutocompleteGroup>
-                                                                    <div hlmAutocompleteLabel>
+                                                                    <div hlmAutocompleteLabel class="text-negro/90">
                                                                         {{ grupo.categoria }}
                                                                     </div>
                                                                     @for (option of grupo.items; track $index) {
-                                                                        <hlm-autocomplete-item [value]="option.id">
+                                                                        <hlm-autocomplete-item
+                                                                            [value]="option.id"
+                                                                            class="text-negro/90 data-highlighted:text-negro"
+                                                                        >
                                                                             {{ option.valor }}
                                                                         </hlm-autocomplete-item>
                                                                     }

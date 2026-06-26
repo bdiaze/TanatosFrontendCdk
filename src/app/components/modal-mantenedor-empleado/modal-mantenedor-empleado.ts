@@ -13,7 +13,7 @@ import { SalEmpleado, SalEmpleadoDestinatario } from '@/app/entities/others/sal-
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, EventEmitter, inject, Input, Output, signal, untracked } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -126,6 +126,11 @@ export class ModalMantenedorEmpleado {
                 destino: FormControl<string | null>;
             }>
         >([]),
+    });
+
+    readonly cargoSeleccionado = toSignal(this.form.controls.cargo.valueChanges, { initialValue: this.form.controls.cargo.value });
+    readonly cargoExistente = computed(() => {
+        return this.cargos().find((c) => c.nombre.toLocaleLowerCase().trim() == this.cargoSeleccionado()?.toLocaleLowerCase().trim());
     });
 
     constructor() {

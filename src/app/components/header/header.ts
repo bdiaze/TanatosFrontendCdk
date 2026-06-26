@@ -83,12 +83,12 @@ export class Header implements OnInit, OnDestroy {
     abrirMenu() {
         this.menuAbierto.set(true);
         this.historyService.registrarEstado('menuAbierto');
-        document.body.classList.add('overflow-hidden', 'md:pr-1.25');
+        document.body.classList.add('overflow-hidden!', 'md:pr-1.25');
     }
 
     cerrarMenu() {
         this.menuAbierto.set(false);
         this.historyService.removerEstado('menuAbierto');
-        document.body.classList.remove('overflow-hidden', 'md:pr-1.25');
+        document.body.classList.remove('overflow-hidden!', 'md:pr-1.25');
     }
 }
