@@ -83,7 +83,7 @@
             </div>
             <div class="flex flex-col gap-6">
                 <div id="periodicidad_multa" class="flex flex-row items-stretch gap-4 w-full">
-                    <div hlmItem variant="outline" size="sm" class="md:px-8">
+                    <div hlmItem variant="outline" size="sm" class="w-fit!">
                         <div hlmItemContent>
                             <div hlmItemTitle>Periodicidad</div>
                             <div hlmItemDescription class="whitespace-nowrap">
@@ -91,7 +91,7 @@
                             </div>
                         </div>
                     </div>
-                    <div hlmItem variant="outline" size="sm" class="w-full">
+                    <div hlmItem variant="outline" size="sm" class="w-full!">
                         <div hlmItemContent>
                             <div hlmItemTitle>Multa</div>
                             <div hlmItemDescription>
@@ -292,7 +292,7 @@
                     </div>
                 }
                 <div id="vencimiento_completar" class="flex flex-row items-stretch gap-4 w-full">
-                    <div hlmItem variant="outline" size="sm" class="md:px-8">
+                    <div hlmItem variant="outline" size="sm" class="md:px-6 w-fit!">
                         <div hlmItemContent>
                             <div hlmItemTitle>Vencimiento</div>
                             <div hlmItemDescription class="text-center">
@@ -302,12 +302,12 @@
                         </div>
                     </div>
                     @if (itemMostrar()?.fechaCompletitud) {
-                        <div hlmItem variant="outline" size="sm" class="w-full bg-(--azul) border-(--azul) rounded-full justify-center">
+                        <div hlmItem variant="outline" size="sm" class="w-full bg-azul border-azul rounded-full! justify-center">
                             <div hlmItemMedia>
-                                <ng-icon hlm name="lucideBadgeCheck" size="30px" class="text-(--blanco)" />
+                                <ng-icon hlm name="lucideBadgeCheck" size="30px" class="text-blanco" />
                             </div>
                             <div hlmItemContent class="flex-none max-w-full">
-                                <div hlmItemTitle class="text-base md:text-lg text-(--blanco) text-center">
+                                <div hlmItemTitle class="text-base md:text-lg text-blanco text-center">
                                     ¡Completada el
                                     {{ itemMostrar()?.fechaCompletitud | date: "d 'de' MMMM 'de' yyyy" }}!
                                 </div>

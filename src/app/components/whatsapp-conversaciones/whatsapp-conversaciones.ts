@@ -2,7 +2,7 @@ import { WhatsappDao } from '@/app/daos/whatsapp-dao';
 import { SalWhatsappConversacion } from '@/app/entities/others/sal-whatsapp-conversacion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { Component, DestroyRef, effect, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -29,6 +29,7 @@ import { interval, switchMap } from 'rxjs';
         HlmTooltipImports,
         HlmSkeletonImports,
         HlmAlertImports,
+        NgClass,
     ],
     templateUrl: './whatsapp-conversaciones.html',
     providers: [provideIcons({ lucideMessageCircleMore, lucideTag, lucideTriangleAlert })],

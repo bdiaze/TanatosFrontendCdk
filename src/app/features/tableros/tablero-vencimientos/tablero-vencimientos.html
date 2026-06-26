@@ -41,13 +41,13 @@
                                     <div class="w-full text-center">
                                         <span hlmBadge variant="destructive">{{ haceCuanto(vencido.fechaVencimiento) }}</span>
                                     </div>
-                                    <p hlmItemDescription class="text-center mt-1 md:hidden">
+                                    <p hlmItemDescription class="text-center mt-1 md:hidden!">
                                         {{ vencido.fechaVencimiento | date: 'd MMM yyyy HH:mm' }}
                                     </p>
-                                    <p hlmItemDescription class="text-center mt-1 hidden md:flow-root">
+                                    <p hlmItemDescription class="text-center mt-1 hidden! md:flow-root!">
                                         {{ vencido.fechaVencimiento | date: 'd MMM yyyy' }}
                                     </p>
-                                    <p hlmItemDescription class="text-center text-xs hidden md:flow-root">
+                                    <p hlmItemDescription class="text-center text-xs hidden! md:flow-root!">
                                         {{ vencido.fechaVencimiento | date: 'HH:mm' }}
                                     </p>
                                 </div>
@@ -103,17 +103,15 @@
                             >
                                 <div hlmItemHeader class="flex flex-col items-stretch justify-start">
                                     <div class="text-center">
-                                        <span hlmBadge class="bg-(--calipso) text-balance whitespace-break-spaces">{{
-                                            enCuanto(futuro.fechaVencimiento)
-                                        }}</span>
+                                        <span hlmBadge class="bg-calipso text-balance whitespace-break-spaces">{{ enCuanto(futuro.fechaVencimiento) }}</span>
                                     </div>
-                                    <p hlmItemDescription class="text-center mt-1 md:hidden">
+                                    <p hlmItemDescription class="text-center mt-1 md:hidden!">
                                         {{ futuro.fechaVencimiento | date: 'd MMM yyyy HH:mm' }}
                                     </p>
-                                    <p hlmItemDescription class="text-center mt-1 hidden md:flow-root">
+                                    <p hlmItemDescription class="text-center mt-1 hidden! md:flow-root!">
                                         {{ futuro.fechaVencimiento | date: 'd MMM yyyy' }}
                                     </p>
-                                    <p hlmItemDescription class="text-center text-xs hidden md:flow-root">
+                                    <p hlmItemDescription class="text-center text-xs hidden! md:flow-root!">
                                         {{ futuro.fechaVencimiento | date: 'HH:mm' }}
                                     </p>
                                 </div>
@@ -182,13 +180,13 @@
                                     <div class="text-center">
                                         <span hlmBadge class="badgeAzul">Completada</span>
                                     </div>
-                                    <p hlmItemDescription class="text-center mt-1 md:hidden">
+                                    <p hlmItemDescription class="text-center mt-1 md:hidden!">
                                         {{ completada.fechaVencimiento | date: 'd MMM yyyy HH:mm' }}
                                     </p>
-                                    <p hlmItemDescription class="text-center mt-1 hidden md:flow-root">
+                                    <p hlmItemDescription class="text-center mt-1 hidden! md:flow-root!">
                                         {{ completada.fechaVencimiento | date: 'd MMM yyyy' }}
                                     </p>
-                                    <p hlmItemDescription class="text-center text-xs hidden md:flow-root">
+                                    <p hlmItemDescription class="text-center text-xs hidden! md:flow-root!">
                                         {{ completada.fechaVencimiento | date: 'HH:mm' }}
                                     </p>
                                 </div>

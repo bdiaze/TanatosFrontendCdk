@@ -62,7 +62,7 @@
             >
                 <div hlmItem class="mensajeRecibido w-max items-stretch py-1 px-2" [class.mensajeEnviado]="mensaje.direccion == 'Salida'">
                     <div hlmItemContent>
-                        <p hlmItemDescription class="text-(--blanco) py-1 px-2 flex flex-row items-center gap-2">
+                        <p hlmItemDescription class="text-blanco py-1 px-2 flex flex-row items-center gap-2">
                             @if (tiposDescarga().includes(mensaje.tipo)) {
                                 <div class="w-6 flex flex-row items-center justify-center">
                                     @if (descargandoImagen().has(mensaje.whatsappMessageId)) {
@@ -72,7 +72,7 @@
                                             hlm
                                             size="1.3rem"
                                             name="lucideDownload"
-                                            class="text-(--blanco) cursor-pointer hover:text-(--blanco)/90"
+                                            class="text-blanco cursor-pointer hover:text-(--blanco)/90"
                                             (click)="descargarImagen(mensaje.whatsappMessageId)"
                                         />
                                     }
@@ -81,30 +81,38 @@
                             {{ mensaje.cuerpo ?? `${mensaje.tipo} recibid${tiposFemeninos().includes(mensaje.tipo) ? 'a' : 'o'}` }}
                         </p>
                     </div>
-                    <div hlmItemContent class="flex-none text-center items-center justify-end">
-                        <div class="flex flex-row items-center justify-end gap-1">
+                    <div hlmItemContent class="flex-none text-center items-center justify-center">
+                        <div class="flex flex-row items-center justify-center gap-2">
                             @if (fueHoy(mensaje.fechaCreacion)) {
-                                <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
+                                <p hlmItemDescription class="text-[0.6rem] text-blanco">
                                     {{ mensaje.fechaCreacion | date: 'HH:mm' }}
                                 </p>
                             } @else {
                                 @if (fueAyer(mensaje.fechaCreacion)) {
-                                    <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">Ayer<br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}</p>
+                                    <p hlmItemDescription class="text-[0.6rem] text-blanco text-center">
+                                        Ayer<br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}
+                                    </p>
                                 } @else {
-                                    <p hlmItemDescription class="text-[0.6rem] text-(--blanco)">
+                                    <p hlmItemDescription class="text-[0.6rem] text-blanco text-center">
                                         {{ mensaje.fechaCreacion | date: 'dd/MM/yyyy' }}
                                         <br />{{ mensaje.fechaCreacion | date: 'HH:mm' }}
                                     </p>
                                 }
                             }
                             @if (mensaje.estado === 'Leido') {
-                                <ng-icon hlm size="xs" name="lucideCheckCheck" class="text-(--blanco)" />
+                                <div class="w-3 h-full flex items-center justify-center">
+                                    <ng-icon hlm size="xs" name="lucideCheckCheck" class="text-blanco" />
+                                </div>
                             }
                             @if (mensaje.estado === 'Entregado') {
-                                <ng-icon hlm size="xs" name="lucideCheck" class="text-(--blanco)" />
+                                <div class="w-3 h-full flex items-center justify-center">
+                                    <ng-icon hlm size="xs" name="lucideCheck" class="text-blanco" />
+                                </div>
                             }
                             @if (mensaje.estado === 'Enviado' || mensaje.estado === 'ConfirmacionEnvio') {
-                                <ng-icon hlm size="xs" name="lucideClock3" class="text-(--blanco)" />
+                                <div class="w-3 h-full flex items-center justify-center">
+                                    <ng-icon hlm size="xs" name="lucideClock3" class="text-blanco" />
+                                </div>
                             }
                         </div>
                     </div>

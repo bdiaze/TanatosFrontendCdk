@@ -285,3 +285,16 @@ ng-component[role='tooltip'] {
 textarea[hlminputgrouptextarea] {
     @apply shadow-none;
 }
+
+[hlmitem] {
+    @apply rounded-none;
+}
+
+[hlmitemdescription] {
+    @apply line-clamp-3 w-full text-negro/90;
+}
+
+[hlmitemdescription]:has(table),
+[hlmitemdescription]:has(ul) {
+    @apply line-clamp-none overflow-visible;
+}
