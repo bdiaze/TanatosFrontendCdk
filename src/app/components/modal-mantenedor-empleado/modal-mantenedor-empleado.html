@@ -4,7 +4,7 @@
             <div hlmCardHeader class="faster-fade-in">
                 <div class="flex items-center gap-2 pt-1 pb-2">
                     <ng-icon hlm name="lucideContactRound" />
-                    <h3 hlmH3 hlmCardTitle>Nuevo Integrante:</h3>
+                    <h3 hlmH3 hlmCardTitle>{{ !idEmpleado ? 'Nuevo Integrante:' : 'Modificación Integrante:' }}</h3>
                 </div>
 
                 <hlm-separator />
@@ -52,6 +52,11 @@
                                             [class.max-h-0]="!invalid('cargo')"
                                             >Debes ingresar el cargo</hlm-field-error
                                         >
+                                        @if (cargoSeleccionado() && !cargoExistente()) {
+                                            <div class="ml-auto">
+                                                <p hlmP class="text-xs opacity-90">Se creará el cargo: {{ cargoSeleccionado() }}</p>
+                                            </div>
+                                        }
                                     </div>
                                     <div class="pb-2 px-2 w-full">
                                         <hlm-autocomplete-search formControlName="cargo" [(search)]="search" class="w-full" autoHighlight>
@@ -67,11 +72,6 @@
                                                 </div>
                                             </hlm-autocomplete-content>
                                         </hlm-autocomplete-search>
-                                        @if (cargoSeleccionado() && !cargoExistente()) {
-                                            <div>
-                                                <p hlmP class="text-sm text-center mt-2 mr-2 text-negro/90">Se creará el cargo {{ cargoSeleccionado() }}</p>
-                                            </div>
-                                        }
                                     </div>
                                 </div>
                             }
