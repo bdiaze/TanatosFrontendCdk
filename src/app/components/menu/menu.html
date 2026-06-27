@@ -27,8 +27,8 @@
                         </div>
                     } @else {
                         @if (negocioStore.negociosUsuario().length > 1) {
-                            <div class="size-5 flex items-center justify-center -ml-1">
-                                <ng-icon hlm name="lucideChevronsUpDown" class="opacity-80 group-hover:scale-115 transition-transform" size="sm" />
+                            <div class="size-5 flex items-center justify-center -ml-1 md:ml-0">
+                                <ng-icon hlm name="lucideChevronsUpDown" class="opacity-80 group-hover:scale-115 transition-transform" size="20px" />
                             </div>
                         }
                     }
@@ -103,7 +103,7 @@
         <div class="flex-1"></div>
         @if (withClose) {
             <div class="flex items-center justify-center h-19 md:h-23 lg:h-27 pr-2">
-                <button hlmBtn hlmsidebartrigger variant="ghost" class="hover:bg-transparent py-4!" (click)="cerrar()">
+                <button hlmBtn hlmsidebartrigger variant="ghost" class="hover:bg-transparent size-10! mr-2!" (click)="cerrar()">
                     <ng-icon hlm name="lucideX" size="base" class="text-(--negro)/70 scale-100" />
                 </button>
             </div>
@@ -111,7 +111,7 @@
     </div>
     <hlm-separator />
     @if (authStore.sesionIniciada()) {
-        <div class="[direction:rtl] scrollContainer overflow-y-auto overflow-x-hidden overscroll-auto pb-4">
+        <div class="[direction:rtl] scrollContainer overflow-y-auto overflow-x-hidden pb-4">
             <div class="[direction:ltr]">
                 @for (item of opcionesMenu(); track item.id; let first = $first) {
                     @if (item.tipo === 'item' && item.url) {
