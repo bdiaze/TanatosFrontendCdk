@@ -266,7 +266,7 @@ export class MantenedorNormaSuscrita {
         if (this.ayuda() === '1') {
             steps.push({
                 popover: {
-                    title: '¡Ya estamos en Mis Obligaciones!',
+                    title: '¡Listo! Llegamos a Mis Obligaciones',
                     description: 'Ahora que ya estamos en Mis Obligaciones, te mostraremos sus principales funciones.',
                 },
             });
@@ -321,15 +321,26 @@ export class MantenedorNormaSuscrita {
                         description: 'Con este botón puedes acceder a modificar o eliminar la obligación.',
                     },
                 },
-                {
-                    element: '#creacion-obligacion',
-                    popover: {
-                        title: 'Click aquí para crear',
-                        description: 'Y con este botón podrás crear las obligaciones que tu desees.',
-                    },
-                },
             ] as DriveStep[]),
         );
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                element: '#creacion-obligacion',
+                popover: {
+                    title: 'Click aquí para crear',
+                    description: 'Y con este botón podrás crear las obligaciones que tu desees, ¡Vamos allá!',
+                },
+            });
+        } else {
+            steps.push({
+                element: '#creacion-obligacion',
+                popover: {
+                    title: 'Click aquí para crear',
+                    description: 'Y con este botón podrás crear las obligaciones que tu desees.',
+                },
+            });
+        }
 
         let cambiandoASiguiente = false;
 

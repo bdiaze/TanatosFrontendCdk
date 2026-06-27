@@ -53,7 +53,7 @@ export class MenuInicial {
         if (this.ayuda() === '1') {
             steps.push({
                 popover: {
-                    title: '¡Ya estamos en Inicio!',
+                    title: '¡Listo! Llegamos a Inicio',
                     description: 'Ahora que ya estamos en Inicio, te mostraremos sus principales funciones.',
                 },
             });

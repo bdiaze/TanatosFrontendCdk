@@ -273,7 +273,7 @@ export class TableroVencimientos {
         if (this.ayuda() === '1') {
             steps.push({
                 popover: {
-                    title: '¡Ya estamos en Mi Calendario!',
+                    title: '¡Listo! Llegamos a Mi Calendario',
                     description: 'Ahora que ya estamos en Mi Calendario, te mostraremos sus principales funciones.',
                 },
             });
@@ -309,16 +309,28 @@ export class TableroVencimientos {
                         description: 'Al final encontrarás el historial de obligaciones que ya fueron completadas.',
                     },
                 },
-                {
-                    element: '#obligacion-prueba',
-                    popover: {
-                        title: 'Selecciona un vencimiento',
-                        description: 'Puedes seleccionar cualquier obligación para obtener más información del vencimiento de ella.',
-                        side: 'bottom',
-                    },
-                },
             ] as DriveStep[]),
         );
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                element: '#obligacion-prueba',
+                popover: {
+                    title: 'Selecciona un vencimiento',
+                    description: 'Además, puedes seleccionar cualquier obligación para obtener más información de ese vencimiento, ¡Vamos allá!',
+                    side: 'bottom',
+                },
+            });
+        } else {
+            steps.push({
+                element: '#obligacion-prueba',
+                popover: {
+                    title: 'Selecciona un vencimiento',
+                    description: 'Además, puedes seleccionar cualquier obligación para obtener más información de ese vencimiento.',
+                    side: 'bottom',
+                },
+            });
+        }
 
         let cambiandoASiguiente = false;
 
