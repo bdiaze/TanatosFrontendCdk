@@ -15,10 +15,11 @@ import { AuthStore } from '@/app/services/auth-store';
 import { TourService } from '@/app/helpers/tour-service';
 import { DriveStep } from 'driver.js';
 import { MenuHelper } from '@/app/helpers/menu-helper';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
 
 @Component({
     selector: 'app-ayuda',
-    imports: [HlmP, HlmH3, HlmH4, NgIcon, HlmIcon, HlmAccordionImports, EditorTexto, HlmSkeletonImports],
+    imports: [HlmP, HlmH3, HlmH4, NgIcon, HlmIcon, HlmAccordionImports, EditorTexto, HlmSkeletonImports, HlmButtonImports],
     templateUrl: './ayuda.html',
     styleUrl: './ayuda.scss',
     providers: [provideIcons({ lucideCircleQuestionMark })],
@@ -72,7 +73,7 @@ export class Ayuda implements OnInit {
                     element: '#group-negocio-seleccionado-item-inicio',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Inicio deberás hacer click aquí.',
+                        description: 'Primero, debes saber que para llegar a Inicio deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {
@@ -93,7 +94,7 @@ export class Ayuda implements OnInit {
                     element: '#group-negocio-seleccionado-item-mi-calendario',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Mi Calendario deberás hacer click aquí.',
+                        description: 'Primero, debes saber que para llegar a Mi Calendario deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {
@@ -114,7 +115,7 @@ export class Ayuda implements OnInit {
                     element: '#group-negocio-seleccionado-item-mis-obligaciones',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Mis Obligaciones deberás hacer click aquí.',
+                        description: 'Primero, debes saber que para llegar a Mis Obligaciones deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {
@@ -135,7 +136,7 @@ export class Ayuda implements OnInit {
                     element: '#group-negocio-seleccionado-item-plantillas-inscritas',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Plantillas Inscritas deberás hacer click aquí.',
+                        description: 'Primero, debes saber que para llegar a Plantillas Inscritas deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {
@@ -156,7 +157,7 @@ export class Ayuda implements OnInit {
                     element: '#group-negocio-seleccionado-item-mi-equipo',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Mi Equipo deberás hacer click aquí.',
+                        description: 'Primero, debes saber que para llegar a Mi Equipo deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {
@@ -168,6 +169,7 @@ export class Ayuda implements OnInit {
                 },
             ] as DriveStep[],
         },
+        /*
         {
             id: 'mis-negocios',
             nombre: 'Mis Negocios',
@@ -177,7 +179,7 @@ export class Ayuda implements OnInit {
                     element: '#group-general-item-mis-negocios',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Mis Negocios deberás hacer click aquí.',
+                        description: 'Primero, debes saber que para llegar a Mis Negocios deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {
@@ -198,7 +200,7 @@ export class Ayuda implements OnInit {
                     element: '#group-general-item-mi-plan',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Mi Plan deberás hacer click aquí.',
+                        description: 'Primero, debes saber que para llegar a Mi Plan deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {
@@ -210,14 +212,15 @@ export class Ayuda implements OnInit {
                 },
             ] as DriveStep[],
         },
+        */
     ]);
 
     ayudaClick(modulo: { nombre: string; link: readonly any[]; steps: DriveStep[] }): void {
         const steps = [
             {
                 popover: {
-                    title: 'Te tenemos un recorrido guiado',
-                    description: `Para que conozcas mejor el módulo ${modulo.nombre}, te mostraremos un recorrido guiado por sus funciones más importantes.`,
+                    title: 'Te tenemos un tour guiado',
+                    description: `Para que conozcas mejor el módulo ${modulo.nombre}, te haremos un tour guiado por sus funciones más importantes.`,
                 },
             },
             ...modulo.steps,

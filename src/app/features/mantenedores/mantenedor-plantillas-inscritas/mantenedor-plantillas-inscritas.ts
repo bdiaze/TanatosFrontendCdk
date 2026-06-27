@@ -33,11 +33,13 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
-import { forkJoin } from 'rxjs';
+import { forkJoin, map } from 'rxjs';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
-import { RouterModule } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { TourService } from '@/app/helpers/tour-service';
+import { DriveStep } from 'driver.js';
 
 @Component({
     selector: 'app-mantenedor-plantillas-inscritas',
@@ -79,16 +81,50 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 })
 export class MantenedorPlantillasInscritas {
     private readonly destroyRef = inject(DestroyRef);
+    private readonly tourService = inject(TourService);
+    private readonly router = inject(Router);
 
-    inscripcionTemplateDao: InscripcionTemplateDao = inject(InscripcionTemplateDao);
-    templateDao: TemplateDao = inject(TemplateDao);
-    authStore = inject(AuthStore);
+    private readonly route = inject(ActivatedRoute);
+    private readonly ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
+
+    private readonly inscripcionTemplateDao: InscripcionTemplateDao = inject(InscripcionTemplateDao);
+    private readonly templateDao: TemplateDao = inject(TemplateDao);
+    private readonly authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
 
-    templatesVigentes = signal([] as Template[]);
-    inscripciones = signal([] as SalInscripcionTemplate[]);
+    private readonly templatesVigentes = signal([] as Template[]);
+    private readonly inscripciones = signal([] as SalInscripcionTemplate[]);
 
     listado = signal([] as TemplateConInscripcion[]);
+    listadoMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    idTemplate: -1,
+                    nombreTemplate: 'Plantilla de ejemplo',
+                    inscrito: true,
+                    recomendado: true,
+                    templateNormas: [
+                        {
+                            nombreNorma: 'Obligación de ejemplo',
+                        },
+                    ] as TemplateNormasConInscripcion[],
+                },
+                {
+                    idTemplate: -2,
+                    nombreTemplate: 'Otra plantilla de ejemplo',
+                    inscrito: false,
+                    recomendado: false,
+                    templateNormas: [
+                        {
+                            nombreNorma: 'Otra obligación de ejemplo',
+                        },
+                    ] as TemplateNormasConInscripcion[],
+                },
+            ] as TemplateConInscripcion[];
+        }
+        return this.listado();
+    });
     cargando = signal(true);
     error = signal('');
 
@@ -149,6 +185,15 @@ export class MantenedorPlantillasInscritas {
             untracked(() => {
                 if (negocioSeleccionado) {
                     this.obtenerTemplatesEInscripciones();
+                }
+            });
+        });
+
+        effect(() => {
+            const ayuda = this.ayuda();
+            untracked(() => {
+                if (ayuda === '1') {
+                    this.ayudaClick();
                 }
             });
         });
@@ -320,5 +365,85 @@ export class MantenedorPlantillasInscritas {
         }
 
         return retorno;
+    }
+
+    ayudaRunning = signal<boolean>(false);
+    ayudaClick(): void {
+        const steps: DriveStep[] = [];
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                popover: {
+                    title: '¡Listo! Llegamos a Plantillas Inscritas',
+                    description: 'Ahora que ya estamos en Plantillas Inscritas, te mostraremos sus principales funciones.',
+                },
+            });
+        } else {
+            steps.push({
+                popover: {
+                    title: 'Acá están nuestras plantillas de obligaciones',
+                    description: 'Aquí podrás inscribirte, o cancelar tu inscripción, a nuestras plantillas de obligaciones.',
+                },
+            });
+        }
+
+        steps.push(
+            ...([
+                {
+                    element: '#tabla_plantillas',
+                    popover: {
+                        title: 'Nuestras plantillas de obligaciones',
+                        description: 'Acá encontrarás todas nuestras plantillas de obligaciones.',
+                    },
+                },
+                {
+                    element: '#plantilla_inscrita',
+                    popover: {
+                        title: 'Plantillas inscritas',
+                        description: 'Con este check verde te aparecerán las plantillas que tienes inscritas.',
+                    },
+                },
+                {
+                    element: '#plantilla_no_inscrita',
+                    popover: {
+                        title: 'Plantillas no inscritas',
+                        description: 'Y con una "x" roja, las plantillas a las que no te has inscrito.',
+                    },
+                },
+                {
+                    element: '#plantilla_recomendada',
+                    popover: {
+                        title: 'Plantillas recomendadas',
+                        description: 'Además, con esta estrella dorada te recomendamos plantillas según el rubro de tu negocio.',
+                    },
+                },
+                {
+                    element: '#opciones',
+                    popover: {
+                        title: '¿Y cómo me inscribo?',
+                        description: 'Y con este botón puedes inscribirte, o cancelar tu inscripción, a las plantillas que desees.',
+                    },
+                },
+            ] as DriveStep[]),
+        );
+
+        let config: {
+            pasos: DriveStep[];
+            onFinish?: (element: Element | undefined, step: DriveStep, options: any) => void;
+            showProgress?: boolean;
+            doneBtnText?: string;
+            onNextFromLast?: (element: Element | undefined, step: DriveStep, options: any) => void;
+        } = {
+            pasos: steps,
+            onFinish: () => {
+                this.ayudaRunning.set(false);
+                if (this.ayuda() === '1') {
+                    this.router.navigate(['/ayuda']);
+                }
+            },
+        };
+
+        this.ayudaRunning.set(true);
+        this.tourService.iniciarTour(config);
     }
 }

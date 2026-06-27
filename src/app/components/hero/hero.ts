@@ -7,11 +7,11 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCalendarClock, lucideEarth } from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIcon } from '@spartan-ng/helm/icon';
-import { HlmH1, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH4 } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-hero',
-    imports: [HlmH4, HlmP, HlmButtonImports, RouterLink, HlmIcon, NgIcon, FadeIn],
+    imports: [HlmH4, HlmButtonImports, RouterLink, HlmIcon, NgIcon, FadeIn],
     templateUrl: './hero.html',
     styleUrl: './hero.scss',
     host: {

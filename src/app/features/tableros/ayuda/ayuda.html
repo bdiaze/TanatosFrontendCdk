@@ -6,7 +6,7 @@
         <h4 hlmH4 class="font-normal">Aquí toda la información que necesitas</h4>
     </div>
     <div class="flex flex-col">
-        <h4 hlmH4 class="font-normal bg-(--calipso) text-(--blanco) px-4 py-2 flex flex-row items-center gap-2">
+        <h4 hlmH4 class="font-normal bg-calipso text-blanco px-4 py-2 flex flex-row items-center gap-2">
             <ng-icon hlm name="lucideCircleQuestionMark" size="20px" />
             Preguntas Frecuentes
         </h4>
@@ -41,15 +41,20 @@
     </div>
     @if (authStore.sesionIniciada()) {
         <div class="flex flex-col gap-3">
-            <h4 hlmH4 class="font-normal bg-(--azul) text-(--blanco) px-4 py-2 flex flex-row items-center gap-2">
+            <h4 hlmH4 class="font-normal bg-azul text-blanco px-4 py-2 flex flex-row items-center gap-2">
                 <ng-icon hlm name="lucideCircleQuestionMark" size="20px" />
-                Información Módulos
+                Tours Guiados
             </h4>
             <div class="flex flex-wrap items-stretch justify-center gap-3">
                 @for (modulo of modulos(); track $index) {
-                    <div class="px-4 py-1 md:py-2 border border-(--azul) text-(--azul) cursor-pointer rounded-full" (click)="ayudaClick(modulo)">
+                    <button
+                        hlmBtn
+                        variant="outline"
+                        class="font-normal! text-base! px-4! py-4.5! border-azul! text-azul! hover:border-azul/80! hover:text-azul/80!"
+                        (click)="ayudaClick(modulo)"
+                    >
                         <p hlmP class="font-serif">{{ modulo.nombre }}</p>
-                    </div>
+                    </button>
                 }
             </div>
         </div>

@@ -1,16 +1,19 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
     <div>
-        <nav hlmBreadcrumb class="mb-4 pl-2">
-            <ol hlmBreadcrumbList>
-                <li hlmBreadcrumbItem>
-                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
-                </li>
-                <li hlmBreadcrumbSeparator></li>
-                <li hlmBreadcrumbItem>
-                    <span hlmBreadcrumbPage>Plantillas Inscritas</span>
-                </li>
-            </ol>
-        </nav>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Plantillas Inscritas</span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
         <h4 hlmH4 class="text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
         </h4>
@@ -20,7 +23,7 @@
         </div>
     </div>
     <div hlmTableContainer class="fade-in">
-        <table hlmTable>
+        <table id="tabla_plantillas" hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
@@ -30,7 +33,7 @@
                 </tr>
             </thead>
             <tbody hlmTBody>
-                @if (cargando()) {
+                @if (cargando() && !ayudaRunning()) {
                     <tr hlmTr>
                         <td hlmTd>
                             <hlm-skeleton class="h-10 rounded-xl" />
@@ -56,7 +59,7 @@
                         <td hlmTd></td>
                     </tr>
                 } @else {
-                    @for (item of listado(); track item.idTemplate) {
+                    @for (item of listadoMostrar(); track item.idTemplate) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="whitespace-normal text-xs md:text-sm">
                                 <div class="flex justify-start items-center gap-2">
@@ -76,6 +79,7 @@
                                     @if (item.recomendado) {
                                         <div class="w-4 flex items-center">
                                             <ng-icon
+                                                [id]="ayudaRunning() ? 'plantilla_recomendada' : null"
                                                 hlm
                                                 size="sm"
                                                 name="lucideStar"
@@ -113,14 +117,20 @@
                             </td>
                             <td hlmTd class="text-center px-0">
                                 @if (item.inscrito) {
-                                    <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                                    <ng-icon hlm [id]="ayudaRunning() ? 'plantilla_inscrita' : null" name="lucideBadgeCheck" class="text-green-700" />
                                 } @else {
-                                    <ng-icon hlmTooltipTrigger hlm name="lucideBadgeX" class="text-destructive" />
+                                    <ng-icon hlm [id]="ayudaRunning() ? 'plantilla_no_inscrita' : null" name="lucideBadgeX" class="text-destructive" />
                                 }
                             </td>
                             <td hlmTd class="px-0">
                                 <div class="flex items-center justify-center-safe">
-                                    <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
+                                    <button
+                                        hlmBtn
+                                        [id]="ayudaRunning() && item.inscrito ? 'opciones' : null"
+                                        variant="outline"
+                                        size="sm"
+                                        [hlmDropdownMenuTrigger]="menu"
+                                    >
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
