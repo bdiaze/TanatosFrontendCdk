@@ -1,16 +1,19 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
     <div>
-        <nav hlmBreadcrumb class="mb-4 pl-2">
-            <ol hlmBreadcrumbList>
-                <li hlmBreadcrumbItem>
-                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
-                </li>
-                <li hlmBreadcrumbSeparator></li>
-                <li hlmBreadcrumbItem>
-                    <span hlmBreadcrumbPage>Mi Equipo</span>
-                </li>
-            </ol>
-        </nav>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Mi Equipo</span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
         <h4 hlmH4 class="text-center">
             {{ negocioStore.negocioSeleccionado()?.nombre }}
         </h4>
@@ -19,11 +22,11 @@
             <h3 hlmH3>Mi Equipo</h3>
         </div>
     </div>
-    @if (cargos().length > 0) {
+    @if (cargosMostrar().length > 0) {
         <div class="w-full flex justify-end mb-3 fade-in">
-            <div class="flex flex-wrap items-center justify-end gap-1 w-full md:w-4/5">
+            <div id="seccion_cargos" class="flex flex-wrap items-center justify-end gap-1 md:max-w-4/5">
                 <p hlmP class="text-sm px-2 underline underline-offset-2">Cargos:</p>
-                @for (cargo of cargos(); track cargo.id) {
+                @for (cargo of cargosMostrar(); track cargo.id) {
                     <span hlmBadge class="text-xs pr-1 flex items-center">
                         {{ cargo.nombre }}
                         <button
@@ -41,7 +44,7 @@
         </div>
     }
     <div hlmTableContainer class="fade-in">
-        <table hlmTable>
+        <table id="tabla_empleados" hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
@@ -65,7 +68,7 @@
                 </tr>
             </thead>
             <tbody hlmTBody>
-                @if (cargando()) {
+                @if (cargando() && !ayudaRunning()) {
                     <tr hlmTr>
                         <td hlmTd>
                             <hlm-skeleton class="h-8 rounded-xl" />
@@ -91,18 +94,21 @@
                         <td hlmTd></td>
                     </tr>
                 } @else {
-                    @for (item of empleados(); track item.id) {
+                    @for (item of empleadosMostrar(); track item.id) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="text-xs md:text-sm">
                                 {{ item.nombre }}
                             </td>
-                            <td hlmTd class="whitespace-normal text-center text-xs md:text-sm">
+                            <td hlmTd [id]="ayudaRunning() ? 'celda_cargo' : null" class="whitespace-normal text-center text-xs md:text-sm">
                                 {{ item.nombreCargo }}
                             </td>
-                            <td hlmTd class="whitespace-normal text-center text-xs md:text-sm px-3">
+                            <td hlmTd [id]="ayudaRunning() ? 'celda_destinos' : null" class="whitespace-normal text-center text-xs md:text-sm px-3">
                                 <div class="flex flex-col items-start gap-1">
                                     @for (destinatario of item.destinatarios; track destinatario.id) {
-                                        <div class="flex flex-col items-start justify-center">
+                                        <div
+                                            [id]="ayudaRunning() ? (destinatario.validado ? 'correo_validado' : 'correo_invalido') : null"
+                                            class="flex flex-col items-start justify-center"
+                                        >
                                             <p hlmP class="text-[0.65rem] md:text-[0.7rem] opacity-85">{{ destinatario.nombreTipoReceptor }}</p>
                                             <div class="flex flex-row items-center gap-1">
                                                 @if (destinatario.validado) {
@@ -132,7 +138,7 @@
                             </td>
                             <td hlmTd class="px-0">
                                 <div class="flex items-center justify-center-safe">
-                                    <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
+                                    <button [id]="ayudaRunning() ? 'opciones' : null" hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
@@ -159,7 +165,7 @@
                 }
             </tbody>
         </table>
-        <button hlmBtn (click)="openModalCrearEmpleado()" class="btnAzul m-4!" [disabled]="cargando()">Nuevo Integrante</button>
+        <button hlmBtn id="nuevo_empleado" (click)="openModalCrearEmpleado()" class="btnAzul m-4!" [disabled]="cargando()">Nuevo Integrante</button>
     </div>
     @if (error()) {
         <div hlmAlert variant="destructive" class="mt-6">
@@ -185,7 +191,8 @@
     </app-modal-mantenedor-empleado>
 }
 @if (showModalCrearEmpleado()) {
-    <app-modal-mantenedor-empleado (cerrar)="closeModalCrearEmpleado()" (postGuardar)="postGuardar()"> </app-modal-mantenedor-empleado>
+    <app-modal-mantenedor-empleado [ayudaRunning]="ayudaRunning()" (cerrar)="closeModalCrearEmpleado()" (postGuardar)="postGuardar()">
+    </app-modal-mantenedor-empleado>
 }
 
 @if (showModalEliminarCargo()) {

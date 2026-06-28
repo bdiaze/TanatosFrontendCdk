@@ -13,10 +13,10 @@
                 <fieldset hlmFieldSet>
                     <div hlmFieldGroup class="gap-3">
                         <div hlmField class="gap-1">
-                            @if (cargandoEmpleados()) {
+                            @if (cargandoEmpleados() && !ayudaRunning()) {
                                 <hlm-skeleton class="h-17.25 w-full rounded-md" />
                             } @else {
-                                <div hlmInputGroup class="fade-in">
+                                <div id="nombre_empleado" hlmInputGroup class="fade-in">
                                     <div hlmInputGroupAddon align="block-start">
                                         <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Nombre</label>
                                         <hlm-field-error
@@ -33,10 +33,11 @@
                             }
                         </div>
                         <div hlmField class="gap-1">
-                            @if (cargandoCargos()) {
+                            @if (cargandoCargos() && !ayudaRunning()) {
                                 <hlm-skeleton class="h-20 w-full rounded-md" />
                             } @else {
                                 <div
+                                    id="cargo_empleado"
                                     hlmInputGroup
                                     class="has-[[data-slot=input-group-control]:focus-visible]:ring-0 has-[[data-slot=input-group-control]:focus-visible]:border-input fade-in"
                                 >
@@ -76,8 +77,8 @@
                                 </div>
                             }
                         </div>
-                        <div hlmField class="gap-1">
-                            @if (cargandoTipoReceptores() || cargandoEmpleados()) {
+                        <div id="nuevo_destino" hlmField class="gap-1">
+                            @if ((cargandoTipoReceptores() || cargandoEmpleados()) && !ayudaRunning()) {
                                 <hlm-skeleton class="h-18.25 w-full rounded-md" />
                             } @else {
                                 <div class="flex flex-row items-center justify-center pb-1.5 relative fade-in">
@@ -218,7 +219,7 @@
                 }
                 <div class="w-full flex items-center justify-end gap-6">
                     <button hlmBtn type="button" (click)="cerrar.emit()" class="btnOutlineAzul">Cancelar</button>
-                    <button hlmBtn type="submit" [disabled]="form.invalid || cargando()" class="btnAzul">
+                    <button hlmBtn id="guardar_empleado" type="submit" [disabled]="form.invalid || cargando()" class="btnAzul">
                         @if (procesando()) {
                             <hlm-spinner />
                         }

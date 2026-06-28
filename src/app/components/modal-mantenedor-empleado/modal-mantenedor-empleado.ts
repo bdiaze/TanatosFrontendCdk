@@ -12,7 +12,7 @@ import { SalCargo } from '@/app/entities/others/sal-cargo';
 import { SalEmpleado, SalEmpleadoDestinatario } from '@/app/entities/others/sal-empleado';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, EventEmitter, inject, Input, Output, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, EventEmitter, inject, input, Input, Output, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
@@ -73,6 +73,7 @@ import { AutoFocus } from '@/app/directives/auto-focus';
     providers: [provideIcons({ lucideContactRound, lucidePlus, lucideMail, lucideSmartphone, lucideTrash2, lucideGem })],
 })
 export class ModalMantenedorEmpleado {
+    ayudaRunning = input<boolean>(false);
     @Input() idEmpleado: number | null = null;
     @Output() cerrar = new EventEmitter<void>();
     @Output() postGuardar = new EventEmitter<void>();
