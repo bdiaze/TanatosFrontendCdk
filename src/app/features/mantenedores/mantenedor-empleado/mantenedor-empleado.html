@@ -50,7 +50,7 @@
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-center text-xs md:text-sm">Cargo</th>
                     <th hlmTh class="text-center text-xs md:text-sm">
-                        <div class="flex flex-row items-center justify-center gap-1">
+                        <div class="flex flex-row items-center justify-center gap-1 whitespace-normal wrap-break-word">
                             @if (!tienePlanEmpresa()) {
                                 <ng-icon
                                     hlm
@@ -96,39 +96,43 @@
                 } @else {
                     @for (item of empleadosMostrar(); track item.id) {
                         <tr hlmTr class="fade-in">
-                            <td hlmTd class="text-xs md:text-sm">
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
                                 {{ item.nombre }}
                             </td>
-                            <td hlmTd [id]="ayudaRunning() ? 'celda_cargo' : null" class="whitespace-normal text-center text-xs md:text-sm">
+                            <td hlmTd [id]="ayudaRunning() ? 'celda_cargo' : null" class="text-center text-xs md:text-sm whitespace-normal wrap-break-word">
                                 {{ item.nombreCargo }}
                             </td>
-                            <td hlmTd [id]="ayudaRunning() ? 'celda_destinos' : null" class="whitespace-normal text-center text-xs md:text-sm px-3">
+                            <td hlmTd [id]="ayudaRunning() ? 'celda_destinos' : null" class="text-center text-xs md:text-sm px-3">
                                 <div class="flex flex-col items-start gap-1">
                                     @for (destinatario of item.destinatarios; track destinatario.id) {
                                         <div
                                             [id]="ayudaRunning() ? (destinatario.validado ? 'correo_validado' : 'correo_invalido') : null"
                                             class="flex flex-col items-start justify-center"
                                         >
-                                            <p hlmP class="text-[0.65rem] md:text-[0.7rem] opacity-85">{{ destinatario.nombreTipoReceptor }}</p>
+                                            <p hlmP class="text-[0.65rem] md:text-[0.7rem] opacity-85 whitespace-normal wrap-break-word">
+                                                {{ destinatario.nombreTipoReceptor }}
+                                            </p>
                                             <div class="flex flex-row items-center gap-1">
-                                                @if (destinatario.validado) {
-                                                    <ng-icon
-                                                        hlm
-                                                        hlmTooltip="El destinatario aceptó recibir notificaciones"
-                                                        name="lucideBadgeCheck"
-                                                        class="text-green-700"
-                                                        size="sm"
-                                                    />
-                                                } @else {
-                                                    <ng-icon
-                                                        hlm
-                                                        hlmTooltip="Pendiente confirmación del destinatario..."
-                                                        name="lucideClockAlert"
-                                                        class="opacity-90"
-                                                        size="sm"
-                                                    />
-                                                }
-                                                <p hlmP class="text-xs md:text-sm">
+                                                <div class="size-4">
+                                                    @if (destinatario.validado) {
+                                                        <ng-icon
+                                                            hlm
+                                                            hlmTooltip="El destinatario aceptó recibir notificaciones"
+                                                            name="lucideBadgeCheck"
+                                                            class="text-green-700"
+                                                            size="sm"
+                                                        />
+                                                    } @else {
+                                                        <ng-icon
+                                                            hlm
+                                                            hlmTooltip="Pendiente confirmación del destinatario..."
+                                                            name="lucideClockAlert"
+                                                            class="opacity-90"
+                                                            size="sm"
+                                                        />
+                                                    }
+                                                </div>
+                                                <p hlmP class="text-xs md:text-sm whitespace-normal break-all text-left">
                                                     {{ destinatario.idTipoReceptor === 2 ? (destinatario.destino | formatearTelefono) : destinatario.destino }}
                                                 </p>
                                             </div>

@@ -405,7 +405,7 @@ export class MantenedorEmpleado {
                     element: '#nuevo_destino',
                     popover: {
                         title: 'Destinos de notificaciones',
-                        description: 'Y por último, puedes añadir los destinos de notificaciones con el botón azul.',
+                        description: 'Y por último, puedes añadir los destinos de notificaciones con el botón azul que tiene el símbolo "+".',
                     },
                     onHighlightStarted: (element) => {
                         const parent = element?.parentElement;
