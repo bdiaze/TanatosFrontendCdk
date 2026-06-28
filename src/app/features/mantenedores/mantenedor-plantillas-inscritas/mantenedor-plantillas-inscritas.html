@@ -92,7 +92,7 @@
                                     {{ item.nombreTemplate }}
                                 </div>
                             </td>
-                            <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                            <td [id]="ayudaRunning() && item.inscrito ? 'obligaciones_plantilla' : null" hlmTd class="whitespace-normal text-xs md:text-sm">
                                 <div class="flex flex-wrap justify-center items-center gap-2">
                                     @for (norma of item.templateNormas.slice(0, 3); track norma.idNorma) {
                                         @if (norma.nombreNorma.length > 20) {
@@ -145,7 +145,7 @@
                                                     } @else {
                                                         <div hlmTooltip="Restringido debido a tu plan" position="left" routerLink="/mi-plan">
                                                             <button hlmDropdownMenuItem disabled>
-                                                                <ng-icon hlm name="lucideGem" size="sm" class="text-(--negro)/80" />
+                                                                <ng-icon hlm name="lucideGem" size="sm" class="text-negro/80" />
                                                                 Inscribirse
                                                             </button>
                                                         </div>

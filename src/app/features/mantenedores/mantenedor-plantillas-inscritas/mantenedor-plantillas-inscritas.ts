@@ -89,7 +89,6 @@ export class MantenedorPlantillasInscritas {
 
     private readonly inscripcionTemplateDao: InscripcionTemplateDao = inject(InscripcionTemplateDao);
     private readonly templateDao: TemplateDao = inject(TemplateDao);
-    private readonly authStore = inject(AuthStore);
     negocioStore = inject(NegocioStore);
 
     private readonly templatesVigentes = signal([] as Template[]);
@@ -106,7 +105,16 @@ export class MantenedorPlantillasInscritas {
                     recomendado: true,
                     templateNormas: [
                         {
+                            idNorma: -1,
                             nombreNorma: 'Obligación de ejemplo',
+                        },
+                        {
+                            idNorma: -2,
+                            nombreNorma: 'Segunda obligación de ejemplo',
+                        },
+                        {
+                            idNorma: -3,
+                            nombreNorma: 'Y tercera obligación de ejemplo',
                         },
                     ] as TemplateNormasConInscripcion[],
                 },
@@ -394,6 +402,13 @@ export class MantenedorPlantillasInscritas {
                     popover: {
                         title: 'Nuestras plantillas de obligaciones',
                         description: 'Acá encontrarás todas nuestras plantillas de obligaciones.',
+                    },
+                },
+                {
+                    element: '#obligaciones_plantilla',
+                    popover: {
+                        title: 'Obligaciones de la plantilla',
+                        description: 'Cada plantilla tiene sus propias obligaciones que puedes ver acá.',
                     },
                 },
                 {
