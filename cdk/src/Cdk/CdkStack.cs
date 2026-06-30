@@ -114,9 +114,6 @@ namespace Cdk
                     function handler(event) {
                         var request = event.request;
                         var host = request.headers.host.value;
-                        if (host.startsWith('www.')) {
-                            return request;
-                        }
 
                         var url = 'https://www.' + host + request.uri;
                         
@@ -150,7 +147,7 @@ namespace Cdk
                     Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
                     Compress = true,
                     AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-                    ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                    ViewerProtocolPolicy = ViewerProtocolPolicy.ALLOW_ALL,
                     ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
                     FunctionAssociations = [
                         new FunctionAssociation {
