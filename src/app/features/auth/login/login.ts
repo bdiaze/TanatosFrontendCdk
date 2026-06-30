@@ -34,26 +34,18 @@ export class Login implements OnInit, OnDestroy {
     });
 
     ngOnInit() {
-        document.addEventListener('visibilitychange', this.onVisibilityChange);
         window.addEventListener('pageshow', this.onPageShow);
     }
 
     ngOnDestroy() {
-        document.removeEventListener('visibilitychange', this.onVisibilityChange);
         window.removeEventListener('pageshow', this.onPageShow);
     }
-
-    onVisibilityChange = () => {
-        if (document.visibilityState === 'visible') {
-            this.iniciandoSesion.set(false);
-            this.registrandose.set(false);
-        }
-    };
 
     onPageShow = (event: PageTransitionEvent) => {
         if (event.persisted) {
             this.iniciandoSesion.set(false);
             this.registrandose.set(false);
+            isRedirectingToLogin = false;
         }
     };
 
@@ -84,8 +76,6 @@ export async function generateCodeChallenge(verifier: string): Promise<string> {
         .replace(/\//g, '_')
         .replace(/=/g, '');
 }
-
-let isRedirectingToLogin = false;
 
 export async function generarUrlALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string): Promise<string> {
     const codeVerifier = generateRandomString(64);
@@ -133,6 +123,8 @@ export async function generarUrlALogin(accion: 'login' | 'signup' = 'login', red
         })
     );
 }
+
+let isRedirectingToLogin = false;
 
 export async function redireccionarALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string) {
     if (isRedirectingToLogin) return;
