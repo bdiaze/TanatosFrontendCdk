@@ -22,7 +22,7 @@ namespace Cdk
             string buildDirectory = System.Environment.GetEnvironmentVariable("BUILD_DIR") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno BUILD_DIR");
             string rootObject = System.Environment.GetEnvironmentVariable("ROOT_OBJECT") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno ROOT_OBJECT");
             string subdomainName = System.Environment.GetEnvironmentVariable("SUBDOMAIN_NAME") ?? throw new InvalidOperationException("No se ha configurado la variable de entorno SUBDOMAIN_NAME");
-
+            
             // Se obtiene el certificado existente...
             ICertificate certificate = Certificate.FromCertificateArn(this, $"{appName}FrontendCertificate", certificateArn);
 
@@ -103,6 +103,72 @@ namespace Cdk
                 RecordName = subdomainName,
                 Target = RecordTarget.FromAlias(new CloudFrontTarget(distribution)),
             });
+
+            #region Redirección de URL a versión www.
+            // Función para redireccionar request a versión www. de la página web...
+            Function redirectFunction = new(this, $"{appName}FrontendRedirectFunction", new FunctionProps {
+                FunctionName = $"{appName}FrontendRedirectFunction",
+                Comment = "Redirecciona al usuario a la versión www.* de la página web",
+                Runtime = FunctionRuntime.JS_2_0,
+                Code = FunctionCode.FromInline(@"
+                    function handler(event) {
+                        var request = event.request;
+                        var host = request.headers.host.value;
+                        if (host.indexOf('www.') === 0) {
+                            return request;
+                        }
+
+                        var uri = request.uri;
+                        var querystring = request.querystring;
+
+                        var qs = '';
+                        var keys = Object.keys(querystring);
+                        if (keys.length > 0) {
+                            qs = '?' + keys.map(function(k) {
+                                return k + '=' + querystring[k].value;
+                            }).join('&');
+                        }
+
+                        return {
+                            statusCode: 301,
+                            statusDescription: 'Moved Permanently',
+                            headers: {
+                                'location': {
+                                    value: 'https://www.' + host + uri + qs }
+                                }
+                            }
+                        };
+                    }
+                ")
+            });
+
+            // Se añade distribución para redireccionar request a versión www. de la página web...
+            Distribution redirectDistribution = new(this, $"{appName}FrontendRedirectDistribution", new DistributionProps {
+                Comment = $"{appName} Frontend Redirect Distribution",
+                DomainNames = [domainName],
+                Certificate = certificate,
+                DefaultBehavior = new BehaviorOptions {
+                    Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
+                    Compress = true,
+                    AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                    ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                    ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
+                    FunctionAssociations = [
+                        new FunctionAssociation {
+                            Function = redirectFunction,
+                            EventType = FunctionEventType.VIEWER_REQUEST
+                        }
+                    ]
+                },
+            });
+
+            // Se crea record en hosted zone...
+            _ = new ARecord(this, $"{appName}FrontendARecord", new ARecordProps {
+                Zone = hostedZone,
+                RecordName = domainName,
+                Target = RecordTarget.FromAlias(new CloudFrontTarget(redirectDistribution)),
+            });
+            #endregion
         }
     }
 }
