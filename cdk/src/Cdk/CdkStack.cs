@@ -163,7 +163,7 @@ namespace Cdk
             });
 
             // Se crea record en hosted zone...
-            _ = new ARecord(this, $"{appName}FrontendARecord", new ARecordProps {
+            _ = new ARecord(this, $"{appName}FrontendRedirectARecord", new ARecordProps {
                 Zone = hostedZone,
                 RecordName = domainName,
                 Target = RecordTarget.FromAlias(new CloudFrontTarget(redirectDistribution)),
