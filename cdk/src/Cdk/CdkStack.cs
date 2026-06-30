@@ -114,27 +114,26 @@ namespace Cdk
                     function handler(event) {
                         var request = event.request;
                         var host = request.headers.host.value;
-                        if (host.indexOf('www.') === 0) {
+                        if (host.startsWith('www.')) {
                             return request;
                         }
 
-                        var uri = request.uri;
-                        var querystring = request.querystring;
-
-                        var qs = '';
-                        var keys = Object.keys(querystring);
-                        if (keys.length > 0) {
-                            qs = '?' + keys.map(function(k) {
-                                return k + '=' + querystring[k].value;
-                            }).join('&');
+                        var url = 'https://www.' + host + request.uri;
+                        
+                        if (request.querystring && Object.keys(request.querystring).length > 0) {
+                            var qs = [];
+                            for (var key in request.querystring) {
+                                qs.push(key + '=' + request.querystring[key].value);
+                            }
+                            url += '?' + qs.join('&');
                         }
 
                         return {
                             statusCode: 301,
                             statusDescription: 'Moved Permanently',
                             headers: {
-                                'location': {
-                                    value: 'https://www.' + host + uri + qs }
+                                location: {
+                                    value: url
                                 }
                             }
                         };
