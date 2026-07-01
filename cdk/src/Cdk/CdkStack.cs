@@ -115,7 +115,7 @@ namespace Cdk
                         var request = event.request;
                         var url = 'https://{subdomainName}' + request.uri;
                       
-                        if (request.querystring && Object.keys(request.querystring).length > 0)) {{
+                        if (request.querystring && Object.keys(request.querystring).length > 0) {{
                             var qs = [];
                             for (var key in request.querystring) {{
                                 var qsParam = request.querystring[key];
