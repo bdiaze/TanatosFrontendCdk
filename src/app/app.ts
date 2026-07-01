@@ -1,8 +1,8 @@
-import { afterNextRender, AfterViewInit, Component, computed, DestroyRef, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { afterNextRender, Component, computed, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Header } from '@components/header/header';
 import { Footer } from '@components/footer/footer';
-import { filter, take } from 'rxjs';
+import { filter } from 'rxjs';
 import { Menu } from './components/menu/menu';
 import { AuthStore } from './services/auth-store';
 import { RecaptchaHelper } from './helpers/recaptcha-helper';
@@ -13,9 +13,11 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ViewportScroller } from '@angular/common';
 import { AuthRefreshService } from './services/auth-refresh-service';
 import { RecordatorioSuscripcionGratuita } from './components/recordatorio-suscripcion-gratuita/recordatorio-suscripcion-gratuita';
+import { CanActivateRunning } from './services/can-activate-running';
+import { EmptyHero } from './components/empty-hero/empty-hero';
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionGratuita],
+    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionGratuita, EmptyHero],
     templateUrl: './app.html',
 })
 export class App implements OnInit, OnDestroy {
@@ -28,6 +30,7 @@ export class App implements OnInit, OnDestroy {
     authRefreshService = inject(AuthRefreshService);
     mobileHelper = inject(MobileHelper);
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+    canActivateRunning = inject(CanActivateRunning);
 
     mostrarDesktop = computed(() => {
         return !this.mobileHelper.isMobile();
