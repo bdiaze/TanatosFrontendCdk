@@ -15,8 +15,8 @@
         <h3 hlmH3>Mi Plan</h3>
     </div>
     @if (procesandoPrimerPago()) {
-        <div class="border-(--naranjo) border text-(--negro) w-full flex flex-col items-center justify-center mb-6 fade-in">
-            <div class="border-(--naranjo) border bg-(--naranjo) text-(--blanco) w-full flex flex-row items-center justify-start gap-3 p-4 px-5">
+        <div class="border-naranjo border text-negro w-full flex flex-col items-center justify-center mb-6 fade-in">
+            <div class="border-naranjo border bg-naranjo text-blanco w-full flex flex-row items-center justify-start gap-3 p-4 px-5">
                 <hlm-spinner class="text-2xl" />
                 <h4 hlmH4>¡Procesando tu primer pago!</h4>
             </div>
@@ -46,10 +46,10 @@
     } @else {
         @if (ultimaSuscripcion()) {
             <div
-                class="border-(--azul) border w-full flex flex-col items-stretch justify-center fade-in"
+                class="border-azul border w-full flex flex-col items-stretch justify-center fade-in"
                 [class.mb-6]="ultimaSuscripcion()!.precioPlan === 0 || ultimaSuscripcion()!.estado !== 1"
             >
-                <div class="bg-(--azul) text-(--blanco) flex flex-row items-center justify-between py-4 px-8">
+                <div class="bg-azul text-blanco flex flex-row items-center justify-between py-4 px-8">
                     <div class="flex flex-col items-start justify-center gap-2">
                         <h4 hlmH4>{{ ultimaSuscripcion()?.nombrePlan }}</h4>
                     </div>
@@ -105,8 +105,8 @@
                 </div>
             }
         } @else {
-            <div class="border-(--calipso) border text-(--negro) w-full flex flex-col items-center justify-center mb-6 fade-in">
-                <div class="border-(--calipso) border bg-(--calipso) text-(--blanco) w-full flex flex-row items-center justify-between gap-2 p-4 px-8">
+            <div class="border-calipso border text-negro w-full flex flex-col items-center justify-center mb-6 fade-in">
+                <div class="border-calipso border bg-calipso text-blanco w-full flex flex-row items-center justify-between gap-2 p-4 px-8">
                     <h4 hlmH4>Plan Emprendedor</h4>
                     <h4 hlmH4>Gratuito</h4>
                 </div>
@@ -285,14 +285,11 @@
                     <button
                         hlmItem
                         variant="outline"
-                        class="w-60 h-42 flex flex-row items-start justify-start p-0 fade-in group border border-(--azul) enabled:hover:border-(--azul)/90 gap-0"
+                        class="w-60 h-42 flex flex-row items-start justify-start p-0 fade-in group border border-azul enabled:hover:border-(--azul)/90! gap-0 cursor-pointer!"
                         (click)="generarUrlPago(plan.id)"
                         [disabled]="procesandoPago()"
                     >
-                        <div
-                            hlmItemHeader
-                            class="flex flex-col items-stretch justify-start border border-(--azul) group-enabled:group-hover:border-(--azul) bg-(--azul) group-enabled:group-hover:bg-(--azul)/90 text-(--blanco) p-4"
-                        >
+                        <div hlmItemHeader class="flex flex-col items-stretch justify-start bg-azul group-enabled:group-hover:bg-(--azul)/90! text-blanco p-4">
                             <p hlmItemTitle class="w-full justify-center text-center text-base underline underline-offset-3">
                                 {{ plan.nombre }}
                             </p>
