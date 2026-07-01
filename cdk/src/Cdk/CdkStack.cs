@@ -104,6 +104,12 @@ namespace Cdk
                 Target = RecordTarget.FromAlias(new CloudFrontTarget(distribution)),
             });
 
+            _ = new AaaaRecord(this, $"{appName}FrontendAAAARecord", new AaaaRecordProps {
+                Zone = hostedZone,
+                RecordName = subdomainName,
+                Target = RecordTarget.FromAlias(new CloudFrontTarget(distribution)),
+            });
+
             #region Redirección de URL a versión www.
             // Función para redireccionar request a versión www. de la página web...
             Function redirectFunction = new(this, $"{appName}FrontendRedirectFunction", new FunctionProps {
@@ -173,6 +179,12 @@ namespace Cdk
 
             // Se crea record en hosted zone...
             _ = new ARecord(this, $"{appName}FrontendRedirectARecord", new ARecordProps {
+                Zone = hostedZone,
+                RecordName = domainName,
+                Target = RecordTarget.FromAlias(new CloudFrontTarget(redirectDistribution)),
+            });
+
+            _ = new AaaaRecord(this, $"{appName}FrontendRedirectAAAARecord", new AaaaRecordProps {
                 Zone = hostedZone,
                 RecordName = domainName,
                 Target = RecordTarget.FromAlias(new CloudFrontTarget(redirectDistribution)),
