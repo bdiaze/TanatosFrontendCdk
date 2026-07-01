@@ -10,7 +10,7 @@
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
-                    <th hlmTh class="text-xs md:text-sm whitespace-break-spaces">Nombre Corto</th>
+                    <th hlmTh class="text-xs md:text-sm whitespace-normal wrap-break-word hidden md:table-cell">Nombre Corto</th>
                     <th hlmTh class="text-xs md:text-sm">Descripción</th>
                     <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
                     <th hlmTh class="w-10 md:w-16"></th>
@@ -32,11 +32,11 @@
                     @for (item of listado(); track item.id) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
-                            <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
                                 {{ item.nombre }}
                             </td>
-                            <td hlmTd class="text-xs md:text-sm">{{ item.nombreCorto }}</td>
-                            <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word hidden md:table-cell">{{ item.nombreCorto }}</td>
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
                                 {{ item.descripcion }}
                             </td>
                             <td hlmTd class="text-center px-0">

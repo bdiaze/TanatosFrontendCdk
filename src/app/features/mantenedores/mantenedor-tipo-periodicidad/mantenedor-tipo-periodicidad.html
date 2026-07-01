@@ -32,13 +32,13 @@
                     @for (item of listado(); track item.id) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
-                            <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
                                 {{ item.nombre }}
                             </td>
-                            <td hlmTd class="text-xs md:text-sm text-center whitespace-normal">
+                            <td hlmTd class="text-xs md:text-sm text-center whitespace-normal break-all md:break-normal">
                                 {{ item.cron }}
                             </td>
-                            <td hlmTh class="text-xs md:text-sm text-center">
+                            <td hlmTh class="text-xs md:text-sm text-center whitespace-normal wrap-break-word">
                                 @if (item.deltaDias) {
                                     Días: {{ item.deltaDias }}
                                 }

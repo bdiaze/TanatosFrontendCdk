@@ -32,7 +32,7 @@
                     @for (item of listado(); track item.id) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
-                            <td hlmTd class="text-xs md:text-sm">{{ item.nombre }}</td>
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">{{ item.nombre }}</td>
                             <td hlmTd class="text-xs md:text-sm">
                                 @if (item.precio === 0) {
                                     Gratuito
@@ -40,7 +40,7 @@
                                     ${{ item.precio | number: '1.0-0' }}
                                 }
                             </td>
-                            <td hlmTd class="text-xs md:text-sm">
+                            <td hlmTd class="text-xs md:text-sm text-center whitespace-normal wrap-break-word">
                                 @if (item.duracionMeses === 1) {
                                     Un mes
                                 } @else {

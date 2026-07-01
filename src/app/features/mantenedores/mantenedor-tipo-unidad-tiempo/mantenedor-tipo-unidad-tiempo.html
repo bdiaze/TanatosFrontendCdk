@@ -10,8 +10,8 @@
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
-                    <th hlmTh class="text-xs md:text-sm">Plural</th>
-                    <th hlmTh class="text-xs md:text-sm text-center whitespace-break-spaces w-22 md:w-34">Cant. Segundos, Minutos, Horas y Días</th>
+                    <th hlmTh class="text-xs md:text-sm hidden md:table-cell">Plural</th>
+                    <th hlmTh class="text-xs md:text-sm text-center whitespace-normal wrap-break-word w-22 md:w-34">Cant. Segundos, Minutos, Horas y Días</th>
                     <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
@@ -33,17 +33,17 @@
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
                             <td hlmTd class="text-xs md:text-sm">{{ item.nombre }}</td>
-                            <td hlmTd class="text-xs md:text-sm">{{ item.nombrePlural }}</td>
+                            <td hlmTd class="text-xs md:text-sm hidden md:table-cell">{{ item.nombrePlural }}</td>
                             <td hlmTd class="text-xs md:text-sm text-center">
-                                <p class="text-xs">Cant. Segundos: {{ item.cantSegundos | number: '1.0-0' }}</p>
+                                <p class="text-xs">Segundos: {{ item.cantSegundos | number: '1.0-0' }}</p>
                                 @if (item.cantMinutos) {
-                                    <p class="text-xs">Cant. Minutos: {{ item.cantMinutos | number: '1.0-0' }}</p>
+                                    <p class="text-xs">Minutos: {{ item.cantMinutos | number: '1.0-0' }}</p>
                                 }
                                 @if (item.cantHoras) {
-                                    <p class="text-xs">Cant. Horas: {{ item.cantHoras | number: '1.0-0' }}</p>
+                                    <p class="text-xs">Horas: {{ item.cantHoras | number: '1.0-0' }}</p>
                                 }
                                 @if (item.cantDias) {
-                                    <p class="text-xs">Cant. Días: {{ item.cantDias | number: '1.0-0' }}</p>
+                                    <p class="text-xs">Días: {{ item.cantDias | number: '1.0-0' }}</p>
                                 }
                             </td>
                             <td hlmTd class="text-xs md:text-sm text-center">

@@ -11,7 +11,7 @@
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-xs md:text-sm">Descripción</th>
-                    <th hlmTh class="text-xs md:text-sm text-center">Padre</th>
+                    <th hlmTh class="text-xs md:text-sm text-center hidden md:table-cell">Padre</th>
                     <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
                     <th hlmTh class="w-10 md:w-16"></th>
                 </tr>
@@ -32,15 +32,15 @@
                     @for (item of listado(); track item.id) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
-                            <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
                                 {{ item.nombre }}
                             </td>
-                            <td hlmTd class="text-xs md:text-sm whitespace-normal">
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
                                 {{ item.descripcion }}
                             </td>
-                            <td hlmTd class="text-xs md:text-sm text-center">
+                            <td hlmTd class="text-xs md:text-sm text-center hidden md:table-cell">
                                 @if (item.idTemplatePadre) {
-                                    <span hlmBadge class="text-[0.7rem] md:text-xs whitespace-normal text-center" variant="default">
+                                    <span hlmBadge class="text-[0.7rem] md:text-xs whitespace-normal wrap-break-word text-center" variant="default">
                                         {{ item.idTemplatePadre ? obtenerPadre(item.idTemplatePadre!)?.nombre : '' }}
                                     </span>
                                 }
