@@ -110,32 +110,45 @@ namespace Cdk
                 FunctionName = $"{appName}FrontendRedirectFunction",
                 Comment = "Redirecciona al usuario a la versión www.* de la página web",
                 Runtime = FunctionRuntime.JS_2_0,
-                Code = FunctionCode.FromInline(@"
-                    function handler(event) {
+                Code = FunctionCode.FromInline($@"
+                    function handler(event) {{
                         var request = event.request;
-                        var host = request.headers.host.value;
-
-                        var url = 'https://www.' + host + request.uri;
-                        
-                        if (request.querystring && Object.keys(request.querystring).length > 0) {
+                        var url = 'https://{subdomainName}' + request.uri;
+                      
+                        if (request.querystring && Object.keys(request.querystring).length > 0)) {{
                             var qs = [];
-                            for (var key in request.querystring) {
-                                qs.push(key + '=' + request.querystring[key].value);
-                            }
+                            for (var key in request.querystring) {{
+                                var qsParam = request.querystring[key];
+                                if (qsParam.multiValue) {{
+                                    qsParam.multiValue.forEach(function(item) {{
+                                        qs.push(key + '=' + item.value);
+                                    }});
+                                }} else {{
+                                    qs.push(key + '=' + qsParam.value);
+                                }}
+                            }}
                             url += '?' + qs.join('&');
-                        }
+                        }}
 
-                        return {
+                        return {{
                             statusCode: 301,
                             statusDescription: 'Moved Permanently',
-                            headers: {
-                                location: {
+                            headers: {{
+                                location: {{
                                     value: url
-                                }
-                            }
-                        };
-                    }
+                                }}
+                            }}
+                        }};
+                    }}
                 ")
+            });
+
+            Bucket bucketDummy = new(this, $"{appName}FrontendRedirectS3Bucket", new BucketProps {
+                BucketName = $"{appName.ToLower()}-frontend-redirect-bucket",
+                Versioned = false,
+                RemovalPolicy = RemovalPolicy.DESTROY,
+                AutoDeleteObjects = true,
+                BlockPublicAccess = BlockPublicAccess.BLOCK_ALL,
             });
 
             // Se añade distribución para redireccionar request a versión www. de la página web...
@@ -144,7 +157,7 @@ namespace Cdk
                 DomainNames = [domainName],
                 Certificate = certificate,
                 DefaultBehavior = new BehaviorOptions {
-                    Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
+                    Origin = S3BucketOrigin.WithOriginAccessControl(bucketDummy),
                     Compress = true,
                     AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
                     ViewerProtocolPolicy = ViewerProtocolPolicy.ALLOW_ALL,
