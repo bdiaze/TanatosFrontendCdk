@@ -1,4 +1,3 @@
-import { PosiblesValores } from '@/app/components/modal-edicion/modal-edicion';
 import { TemplateDao } from '@/app/daos/template-dao';
 import { TipoActividadDao } from '@/app/daos/tipo-actividad-dao';
 import { TipoRubroDao } from '@/app/daos/tipo-rubro-dao';
@@ -6,22 +5,20 @@ import { Template } from '@/app/entities/models/template';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { normalize } from '@/app/helpers/string-comparator';
-import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { afterNextRender, Component, computed, DestroyRef, effect, inject, Injector, OnDestroy, OnInit, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideCheck, lucideChevronRight, lucideGem, lucideMoveLeft, lucideMoveRight, lucideStar, lucideStore, lucideX } from '@ng-icons/lucide';
+import { lucideCheck, lucideGem, lucideMoveLeft, lucideMoveRight, lucideStar, lucideStore, lucideX } from '@ng-icons/lucide';
 import { HlmAutocompleteImports } from '@spartan-ng/helm/autocomplete';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
-import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
-import { forkJoin } from 'rxjs';
+import { catchError, finalize, forkJoin } from 'rxjs';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
 import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
@@ -287,25 +284,35 @@ export class Bienvenida implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: SalNegocio) => {
                     const requests = this.plantillasSeleccionadas().map((plantilla) =>
-                        this.inscripcionTemplateDao.activar({
-                            idNegocio: res.id,
-                            idTemplate: plantilla.id,
-                            activarPadres: false,
-                        } as EntInscripcionTemplateActivar),
+                        this.inscripcionTemplateDao
+                            .activar({
+                                idNegocio: res.id,
+                                idTemplate: plantilla.id,
+                                activarPadres: false,
+                            } as EntInscripcionTemplateActivar)
+                            .pipe(
+                                catchError((err) => {
+                                    console.error(`Error al inscribirse a la plantilla ${plantilla.id}:`, err);
+                                    throw err;
+                                }),
+                            ),
                     );
 
-                    forkJoin(requests).subscribe({
-                        next: (resultados) => {
-                            this.negocioDao.obtenerVigentes().subscribe({
-                                next: (res) => {
-                                    this.router.navigateByUrl('/inicio');
-                                },
-                            });
-                        },
-                        error: (err) => {},
-                    });
+                    forkJoin(requests)
+                        .pipe(
+                            finalize(() => {
+                                this.negocioDao.obtenerVigentes().subscribe({
+                                    next: (res) => {
+                                        this.router.navigateByUrl('/inicio');
+                                    },
+                                });
+                            }),
+                        )
+                        .subscribe();
                 },
-                error: (err) => {},
+                error: (err) => {
+                    console.error(`Error al crear el negocio ${this.formNegocio.controls.nombre.value}:`, err);
+                },
             });
     }
 
@@ -317,13 +324,7 @@ export class Bienvenida implements OnInit, OnDestroy {
 
                 const header = document.querySelector('app-header');
                 const offset = header?.scrollHeight ?? 0;
-
-                console.log('offset:', offset);
-
                 const top = el.getBoundingClientRect().top + window.scrollY - offset;
-                console.log('getBoundingClientRect.top:', el.getBoundingClientRect().top);
-                console.log('window.scrollY:', window.scrollY);
-
                 window.scrollTo({ top, behavior: 'instant' });
             },
             { injector: this.injector },
