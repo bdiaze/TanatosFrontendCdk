@@ -19,7 +19,7 @@
         } @else {
             @if (preguntasFrecuentes().length === 0) {
                 <div class="w-full flex justify-center py-3">
-                    <p hlmP class="text-(--negro)/85">¡Ups! aún no tenemos preguntas frecuentes...</p>
+                    <p hlmP class="text-negro/85">¡Ups! aún no tenemos preguntas frecuentes...</p>
                 </div>
             } @else {
                 <hlm-accordion type="multiple" class="fade-in">
@@ -36,6 +36,50 @@
                         </hlm-accordion-item>
                     }
                 </hlm-accordion>
+            }
+        }
+    </div>
+    <div class="flex flex-col">
+        <h4 hlmH4 class="font-normal bg-naranjo text-blanco px-4 py-2 flex flex-row items-center gap-2">
+            <ng-icon hlm name="lucideCircleQuestionMark" size="20px" />
+            Videos Tutoriales
+        </h4>
+        @if (cargandoVideosTutoriales()) {
+            <div class="flex flex-wrap items-stretch justify-center gap-2 py-2">
+                <hlm-skeleton class="aspect-video w-full sm:w-60 md:w-62 lg:w-75 rounded-none" />
+                <hlm-skeleton class="aspect-video w-full sm:w-60 md:w-62 lg:w-75 rounded-none" />
+            </div>
+        } @else {
+            @if (datosVideosTutoriales().length === 0) {
+                <div class="w-full flex justify-center py-3">
+                    <p hlmP class="text-negro/85">¡Ups! aún no tenemos videos tutoriales...</p>
+                </div>
+            } @else {
+                <div class="flex flex-wrap items-stretch justify-center gap-2 py-2">
+                    @for (videoTutorial of datosVideosTutoriales(); track $index) {
+                        <div
+                            class="aspect-video bg-cover bg-center flex flex-col items-center justify-center gap-1 px-2 py-1 w-full sm:w-60 md:w-62 lg:w-75 fade-in"
+                            [style.background-image]="
+                                videoTutorial.youtube
+                                    ? `linear-gradient(rgba(0,0,0,.8), rgba(0,0,0,.8)),url(${videoTutorial.youtube!.miniaturaUrl})`
+                                    : 'linear-gradient(var(--negro), var(--negro));'
+                            "
+                        >
+                            <h4 hlmH4 class="text-blanco text-center text-balance text-base md:text-sm">{{ videoTutorial.titulo }}</h4>
+                            @if (videoTutorial.descripcion) {
+                                <p hlmP class="text-blanco/90 text-center text-balance text-sm md:text-xs">{{ videoTutorial.descripcion }}</p>
+                            }
+                            <button
+                                hlmBtn
+                                variant="link"
+                                class="text-blanco! text-center text-balance text-base md:text-sm p-0! h-fit!"
+                                (click)="videoTutorial ? videoSeleccionado.set(videoTutorial) : null"
+                            >
+                                ¡Click para ver!
+                            </button>
+                        </div>
+                    }
+                </div>
             }
         }
     </div>
@@ -60,3 +104,27 @@
         </div>
     }
 </section>
+
+@if (videoSeleccionado()) {
+    <div class="fixed left-0 top-0 right-0 bottom-0 bg-black/95 flex justify-center items-center z-50 p-5" (click)="videoSeleccionado.set(undefined)">
+        <button
+            hlmBtn
+            variant="ghost"
+            class="absolute size-9! top-2 right-2 text-blanco! hover:text-negro! rounded-full z-50"
+            (click)="videoSeleccionado.set(undefined)"
+            aria-label="Cerrar"
+        >
+            <ng-icon hlm name="lucideX" size="20px" />
+        </button>
+        <div class="relative w-[90vw] max-w-6xl aspect-video">
+            <iframe
+                [src]="safeEmbeddedUrl()"
+                [title]="videoSeleccionado()?.titulo"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen
+                class="w-full h-full slower-fade-in"
+            ></iframe>
+        </div>
+    </div>
+}
