@@ -18,7 +18,7 @@ import { MenuHelper } from '@/app/helpers/menu-helper';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { VideoTutorialDao } from '@/app/daos/video-tutorial-dao';
 import { SalVideoTutorialHabilitado } from '@/app/entities/others/sal-video-tutorial-habilitado';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-ayuda',
@@ -148,9 +148,12 @@ export class Ayuda implements OnInit, OnDestroy {
     private obtenerYoutubeData(urlString: string) {
         const videoId = this.obtenerYoutubeVideoId(urlString);
         if (videoId) {
+            const embeddedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0`;
+
             return {
                 youtube: {
-                    embeddedUrl: `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0`,
+                    embeddedUrl: embeddedUrl,
+                    bypassSecurityEmbeddedUrl: this.sanitizer.bypassSecurityTrustResourceUrl(embeddedUrl),
                     miniaturaUrl: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
                     miniaturaMaxResUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
                 },
@@ -162,19 +165,13 @@ export class Ayuda implements OnInit, OnDestroy {
 
     videoSeleccionado = signal<
         | {
-              youtube?: { embeddedUrl: string; miniaturaUrl: string; miniaturaMaxResUrl: string } | undefined;
               titulo: string;
               descripcion: string | null;
               url: string;
+              youtube?: { embeddedUrl: string; bypassSecurityEmbeddedUrl: SafeResourceUrl; miniaturaUrl: string; miniaturaMaxResUrl: string } | undefined;
           }
         | undefined
     >(undefined);
-    safeEmbeddedUrl = computed(() => {
-        if (this.videoSeleccionado()?.youtube?.embeddedUrl)
-            return this.sanitizer.bypassSecurityTrustResourceUrl(this.videoSeleccionado()!.youtube!.embeddedUrl);
-
-        return undefined;
-    });
 
     modulos = signal([
         {
