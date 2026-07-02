@@ -19,6 +19,7 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { VideoTutorialDao } from '@/app/daos/video-tutorial-dao';
 import { SalVideoTutorialHabilitado } from '@/app/entities/others/sal-video-tutorial-habilitado';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HistoryService } from '@/app/services/history-service';
 
 @Component({
     selector: 'app-ayuda',
@@ -33,6 +34,7 @@ export class Ayuda implements OnInit, OnDestroy {
     private readonly menuHelper = inject(MenuHelper);
     private readonly tourService = inject(TourService);
     private readonly sanitizer = inject(DomSanitizer);
+    private readonly historyService = inject(HistoryService);
     private readonly preguntaFrecuenteDao = inject(PreguntaFrecuenteDao);
     private readonly videoTutorialDao = inject(VideoTutorialDao);
     authStore = inject(AuthStore);
@@ -40,16 +42,8 @@ export class Ayuda implements OnInit, OnDestroy {
     error = signal('');
 
     constructor() {
-        effect(() => {
-            const videoSeleccionado = this.videoSeleccionado();
-
-            untracked(() => {
-                if (videoSeleccionado) {
-                    document.body.classList.add('overflow-hidden!');
-                } else {
-                    document.body.classList.remove('overflow-hidden!');
-                }
-            });
+        this.historyService.popState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((_) => {
+            this.cerrarVideo();
         });
     }
 
@@ -59,7 +53,7 @@ export class Ayuda implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        document.body.classList.remove('overflow-hidden!');
+        this.cerrarVideo();
     }
 
     cargandoPreguntasFrecuentes = signal<boolean>(false);
@@ -111,15 +105,15 @@ export class Ayuda implements OnInit, OnDestroy {
                 this.cargandoVideosTutoriales.set(false);
             });
     }
-    datosVideosTutoriales = computed(() => {
+    datosVideosTutoriales = computed<Video[]>(() => {
         return this.videosTutoriales().map((video) => {
-            const youtube = this.obtenerYoutubeData(video.url);
+            const youtubeData = this.obtenerYoutubeData(video.url);
 
             return {
                 titulo: video.titulo,
                 descripcion: video.descripcion,
                 url: video.url,
-                ...(youtube ?? {}),
+                youtube: youtubeData,
             };
         });
     });
@@ -145,33 +139,35 @@ export class Ayuda implements OnInit, OnDestroy {
         }
     }
 
-    private obtenerYoutubeData(urlString: string) {
+    private obtenerYoutubeData(urlString: string): VideoYoutube | undefined {
         const videoId = this.obtenerYoutubeVideoId(urlString);
         if (videoId) {
             const embeddedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&hl=es`;
 
             return {
-                youtube: {
-                    embeddedUrl: embeddedUrl,
-                    bypassSecurityEmbeddedUrl: this.sanitizer.bypassSecurityTrustResourceUrl(embeddedUrl),
-                    miniaturaUrl: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-                    miniaturaMaxResUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
-                },
+                embeddedUrl: embeddedUrl,
+                bypassSecurityEmbeddedUrl: this.sanitizer.bypassSecurityTrustResourceUrl(embeddedUrl),
+                miniaturaUrl: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+                miniaturaMaxResUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
             };
         }
 
         return undefined;
     }
 
-    videoSeleccionado = signal<
-        | {
-              titulo: string;
-              descripcion: string | null;
-              url: string;
-              youtube?: { embeddedUrl: string; bypassSecurityEmbeddedUrl: SafeResourceUrl; miniaturaUrl: string; miniaturaMaxResUrl: string } | undefined;
-          }
-        | undefined
-    >(undefined);
+    videoSeleccionado = signal<Video | undefined>(undefined);
+
+    abrirVideo(video: Video) {
+        this.historyService.registrarEstado('videoTutorialRunning');
+        this.videoSeleccionado.set(video);
+        document.body.classList.add('overflow-hidden!');
+    }
+
+    cerrarVideo() {
+        this.videoSeleccionado.set(undefined);
+        this.historyService.removerEstado('videoTutorialRunning');
+        document.body.classList.remove('overflow-hidden!');
+    }
 
     modulos = signal([
         {
@@ -345,4 +341,18 @@ export class Ayuda implements OnInit, OnDestroy {
             },
         });
     }
+}
+
+interface Video {
+    titulo: string;
+    descripcion: string | null;
+    url: string;
+    youtube?: VideoYoutube | undefined;
+}
+
+interface VideoYoutube {
+    embeddedUrl: string;
+    bypassSecurityEmbeddedUrl: SafeResourceUrl;
+    miniaturaUrl: string;
+    miniaturaMaxResUrl: string;
 }
