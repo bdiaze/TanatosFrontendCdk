@@ -58,7 +58,7 @@
                 <div class="flex flex-wrap items-stretch justify-center gap-3 py-3">
                     @for (videoTutorial of datosVideosTutoriales(); track $index) {
                         <div
-                            class="aspect-video bg-cover bg-center flex flex-col items-center justify-center gap-1.5 p-3 w-full sm:w-60 md:w-62 lg:w-75 fade-in cursor-pointer"
+                            class="aspect-video bg-cover bg-center flex flex-col items-center justify-center gap-1.5 p-3 w-full sm:w-60 md:w-62 lg:w-75 fade-in cursor-pointer transition-transform duration-100 transform-gpu hover:scale-102 active:scale-98 antialiased"
                             [style.background-image]="
                                 videoTutorial.youtube
                                     ? `linear-gradient(rgba(0,0,0,.8), rgba(0,0,0,.8)),url(${videoTutorial.youtube!.miniaturaUrl})`
@@ -68,7 +68,9 @@
                         >
                             <h4 hlmH4 class="text-blanco text-center text-balance text-base md:text-sm">{{ videoTutorial.titulo }}</h4>
                             @if (videoTutorial.descripcion) {
-                                <p hlmP class="text-blanco/90 text-center text-balance text-sm md:text-xs">{{ videoTutorial.descripcion }}</p>
+                                <p hlmP class="text-blanco/90 text-center text-balance text-sm md:text-xs">
+                                    {{ videoTutorial.descripcion }}
+                                </p>
                             }
                         </div>
                     }
@@ -99,7 +101,10 @@
 </section>
 
 @if (videoSeleccionado()) {
-    <div class="fixed left-0 top-0 right-0 bottom-0 bg-black/95 flex justify-center items-center z-50 p-5" (click)="$event.stopPropagation(); cerrarVideo()">
+    <div
+        class="fixed left-0 top-0 right-0 bottom-0 bg-black/95 flex justify-center items-center z-50 p-5 faster-fade-in"
+        (click)="$event.stopPropagation(); cerrarVideo()"
+    >
         <button
             hlmBtn
             variant="ghost"
@@ -116,7 +121,7 @@
                 frameborder="0"
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                 allowfullscreen
-                class="slower-fade-in size-full"
+                class="fade-in size-full"
             ></iframe>
         </div>
     </div>
