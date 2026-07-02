@@ -12,7 +12,22 @@ import { SalCargo } from '@/app/entities/others/sal-cargo';
 import { SalEmpleado, SalEmpleadoDestinatario } from '@/app/entities/others/sal-empleado';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, EventEmitter, inject, input, Input, Output, signal, untracked } from '@angular/core';
+import {
+    Component,
+    computed,
+    DestroyRef,
+    effect,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    inject,
+    input,
+    Input,
+    Output,
+    signal,
+    untracked,
+    ViewChild,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterModule } from '@angular/router';
@@ -455,5 +470,29 @@ export class ModalMantenedorEmpleado {
             default:
                 return '';
         }
+    }
+
+    @ViewChild('overlay', { static: true })
+    overlay!: ElementRef<HTMLDivElement>;
+
+    private pointerStartedInOverlay = false;
+
+    @HostListener('document:pointerdown', ['$event'])
+    onPointerDown(event: PointerEvent) {
+        this.pointerStartedInOverlay = event.target === this.overlay.nativeElement;
+    }
+
+    @HostListener('document:pointercancel')
+    onPointerCancel() {
+        this.pointerStartedInOverlay = false;
+    }
+
+    @HostListener('document:click', ['$event'])
+    onClick(event: PointerEvent) {
+        if (this.pointerStartedInOverlay && event.target === this.overlay.nativeElement) {
+            this.cerrar.emit();
+        }
+
+        this.pointerStartedInOverlay = false;
     }
 }

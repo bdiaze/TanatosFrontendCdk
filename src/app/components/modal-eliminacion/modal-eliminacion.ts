@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, signal, ViewChild } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
@@ -30,5 +30,29 @@ export class ModalEliminacion {
 
     confirmarEliminacion() {
         this.eliminar.emit(this.item);
+    }
+
+    @ViewChild('overlay', { static: true })
+    overlay!: ElementRef<HTMLDivElement>;
+
+    private pointerStartedInOverlay = false;
+
+    @HostListener('document:pointerdown', ['$event'])
+    onPointerDown(event: PointerEvent) {
+        this.pointerStartedInOverlay = event.target === this.overlay.nativeElement;
+    }
+
+    @HostListener('document:pointercancel')
+    onPointerCancel() {
+        this.pointerStartedInOverlay = false;
+    }
+
+    @HostListener('document:click', ['$event'])
+    onClick(event: PointerEvent) {
+        if (this.pointerStartedInOverlay && event.target === this.overlay.nativeElement) {
+            this.cerrar.emit();
+        }
+
+        this.pointerStartedInOverlay = false;
     }
 }

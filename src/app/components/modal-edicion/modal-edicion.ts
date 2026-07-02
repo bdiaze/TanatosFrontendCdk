@@ -1,4 +1,18 @@
-import { Component, computed, EventEmitter, input, Input, OnInit, Output, Signal, signal, WritableSignal } from '@angular/core';
+import {
+    Component,
+    computed,
+    ElementRef,
+    EventEmitter,
+    HostListener,
+    input,
+    Input,
+    OnInit,
+    Output,
+    Signal,
+    signal,
+    ViewChild,
+    WritableSignal,
+} from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
@@ -120,6 +134,30 @@ export class ModalEdicion implements OnInit {
     invalid(llave: string) {
         const control = this.form.get(llave);
         return control?.invalid && control?.touched;
+    }
+
+    @ViewChild('overlay', { static: true })
+    overlay!: ElementRef<HTMLDivElement>;
+
+    private pointerStartedInOverlay = false;
+
+    @HostListener('document:pointerdown', ['$event'])
+    onPointerDown(event: PointerEvent) {
+        this.pointerStartedInOverlay = event.target === this.overlay.nativeElement;
+    }
+
+    @HostListener('document:pointercancel')
+    onPointerCancel() {
+        this.pointerStartedInOverlay = false;
+    }
+
+    @HostListener('document:click', ['$event'])
+    onClick(event: PointerEvent) {
+        if (this.pointerStartedInOverlay && event.target === this.overlay.nativeElement) {
+            this.cerrar.emit();
+        }
+
+        this.pointerStartedInOverlay = false;
     }
 }
 

@@ -1,13 +1,14 @@
-<div class="fixed left-0 top-0 right-0 bottom-0 p-4 bg-black/70 flex justify-center items-center z-50" (pointerdown)="cerrar.emit()">
-    <div hlmCard (pointerdown)="$event.stopPropagation()" (click)="$event.stopPropagation()" class="px-3">
+<div #overlay class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50 p-5">
+    <div hlmCard class="max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4 px-3">
         <div hlmCardHeader class="faster-fade-in">
-            <div class="flex items-center gap-3 my-2">
-                <ng-icon hlm name="lucideCircleAlert" class="text-destructive" />
+            <div class="flex items-center gap-3">
+                <div class="flex items-center justify-center size-6">
+                    <ng-icon hlm name="lucideCircleAlert" class="text-destructive" />
+                </div>
                 <h3 hlmH3 hlmCardTitle>{{ titulo }}</h3>
             </div>
-            <hlm-separator />
         </div>
-        <div hlmCardContent class="faster-fade-in">
+        <div hlmCardContent class="faster-fade-in -mt-2">
             <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
             @if (textoVerificacion) {
                 <div class="mt-4">
@@ -24,7 +25,7 @@
                 </div>
             }
         </div>
-        <div hlmCardFooter class="flex items-center justify-end gap-6 faster-fade-in">
+        <div hlmCardFooter class="flex items-center justify-end gap-3 md:gap-6 faster-fade-in">
             <button hlmBtn (click)="cerrar.emit()" class="btnOutlineAzul">
                 {{ textoBotonCancelar }}
             </button>

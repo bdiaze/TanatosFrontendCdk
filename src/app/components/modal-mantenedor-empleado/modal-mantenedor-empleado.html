@@ -1,15 +1,15 @@
-<div class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50" (pointerdown)="cerrar.emit()">
+<div #overlay class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50 p-5">
     <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
-        <div hlmCard (pointerdown)="$event.stopPropagation()" (click)="$event.stopPropagation()" class="min-w-xs md:min-w-md gap-3">
+        <div hlmCard class="min-w-xs md:min-w-md max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4">
             <div hlmCardHeader class="faster-fade-in">
-                <div class="flex items-center gap-2 pt-1 pb-2">
-                    <ng-icon hlm name="lucideContactRound" />
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center justify-center size-6">
+                        <ng-icon hlm name="lucideContactRound" />
+                    </div>
                     <h3 hlmH3 hlmCardTitle>{{ !idEmpleado ? 'Nuevo Integrante:' : 'Modificación Integrante:' }}</h3>
                 </div>
-
-                <hlm-separator />
             </div>
-            <div hlmCardContent class="faster-fade-in">
+            <div hlmCardContent class="faster-fade-in -mt-2">
                 <fieldset hlmFieldSet>
                     <div hlmFieldGroup class="gap-3">
                         <div hlmField class="gap-1">
@@ -217,7 +217,7 @@
                         <p hlmAlertDescription>{{ error() }}</p>
                     </div>
                 }
-                <div class="w-full flex items-center justify-end gap-6">
+                <div class="w-full flex items-center justify-end gap-3 md:gap-6">
                     <button hlmBtn type="button" (click)="cerrar.emit()" class="btnOutlineAzul">Cancelar</button>
                     <button hlmBtn id="guardar_empleado" type="submit" [disabled]="form.invalid || cargando()" class="btnAzul">
                         @if (procesando()) {

@@ -1,18 +1,16 @@
-<div class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50 p-5" (pointerdown)="cerrar.emit()">
+<div #overlay class="fixed left-0 top-0 right-0 bottom-0 bg-black/70 flex justify-center items-center z-50 p-5">
     <div
         hlmCard
-        (pointerdown)="$event.stopPropagation()"
-        (click)="$event.stopPropagation()"
         class="max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4"
         [ngClass]="contieneCampoEditorTexto() ? 'min-w-full md:min-w-160' : 'min-w-xs md:min-w-md'"
     >
         <div hlmCardHeader class="faster-fade-in">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
                 <ng-icon hlm name="lucideSquarePen" />
                 <h3 hlmH3 hlmCardTitle>{{ titulo }}</h3>
             </div>
         </div>
-        <div hlmCardContent class="faster-fade-in">
+        <div hlmCardContent class="faster-fade-in -mt-2">
             @if (descripcion) {
                 <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
             }
