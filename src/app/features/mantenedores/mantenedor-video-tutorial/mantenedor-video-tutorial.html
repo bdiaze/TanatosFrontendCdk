@@ -1,0 +1,110 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <h3 hlmH3>Administrar Videos Tutoriales</h3>
+        </div>
+    </div>
+    <div hlmTableContainer class="fade-in">
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14">Orden</th>
+                    <th hlmTh class="text-xs md:text-sm">Título</th>
+                    <th hlmTh class="text-xs md:text-sm">Descripción</th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14 px-0">Visible</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargando()) {
+                    @for (_ of [1, 2, 3]; track $index) {
+                        <tr hlmTr>
+                            @for (_ of [1, 2, 3, 4]; track $index) {
+                                <td hlmTd>
+                                    <hlm-skeleton class="h-8 rounded-xl" />
+                                </td>
+                            }
+                            <td hlmTd></td>
+                        </tr>
+                    }
+                } @else {
+                    @for (item of listado(); track item.id) {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd class="text-xs md:text-sm text-center">{{ item.orden }}</td>
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
+                                {{ item.titulo }}
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
+                                {{ item.descripcion }}
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm text-center">
+                                @if (item.habilitado) {
+                                    <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                                } @else {
+                                    <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                                }
+                            </td>
+                            <td hlmTd>
+                                <div class="flex items-center justify-center-safe">
+                                    <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
+                                        <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                    </button>
+                                    <ng-template #menu>
+                                        <hlm-dropdown-menu>
+                                            <hlm-dropdown-menu-group>
+                                                <button hlmDropdownMenuItem (click)="openModalEditar(item)">Editar</button>
+                                                <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
+                                            </hlm-dropdown-menu-group>
+                                        </hlm-dropdown-menu>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd colspan="6" class="text-center">No existen videos tutoriales registrados</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <button hlmBtn (click)="openModalCrear()" class="btnAzul m-4!">Crear Nuevo</button>
+    </div>
+    @if (error()) {
+        <div hlmAlert variant="destructive" class="mt-2">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
+    }
+</section>
+@if (showModalEliminar()) {
+    <app-modal-eliminacion
+        [item]="itemSeleccionado()"
+        titulo="Eliminar un video tutorial:"
+        [descripcion]="`¿Seguro que deseas eliminar el video: <b>${itemSeleccionado()?.titulo}</b>?`"
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    >
+    </app-modal-eliminacion>
+}
+@if (showModalEditar()) {
+    <app-modal-edicion
+        [campos]="camposEdicion()"
+        [item]="itemSeleccionado()"
+        titulo="Editar un video tutorial:"
+        (cerrar)="closeModalEditar()"
+        (editar)="editar($event)"
+    >
+    </app-modal-edicion>
+}
+@if (showModalCrear()) {
+    <app-modal-edicion
+        [campos]="camposCreacion()"
+        [item]="itemSeleccionado()"
+        titulo="Crear un video tutorial:"
+        (cerrar)="closeModalCrear()"
+        (editar)="crear($event)"
+    >
+    </app-modal-edicion>
+}

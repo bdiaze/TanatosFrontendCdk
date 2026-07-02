@@ -216,6 +216,12 @@ export class Menu implements OnInit {
                                 url: '/administracion/mantenedores/preguntas-frecuentes',
                             },
                             {
+                                id: 'group-administracion-item-mantenedores-subitem-video-tutorial',
+                                tipo: 'subitem',
+                                titulo: 'Videos Tutoriales',
+                                url: '/administracion/mantenedores/videos-tutoriales',
+                            },
+                            {
                                 id: 'group-administracion-item-mantenedores-subitem-plan',
                                 tipo: 'subitem',
                                 titulo: 'Planes',
