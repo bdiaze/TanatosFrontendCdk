@@ -112,14 +112,14 @@
         >
             <ng-icon hlm name="lucideX" size="20px" />
         </button>
-        <div class="relative w-[90vw] max-h-[85vh] max-w-6xl aspect-video">
+        <div class="relative w-[min(90vw,calc(85vh*16/9))] aspect-video">
             <iframe
                 [src]="videoSeleccionado()?.youtube?.bypassSecurityEmbeddedUrl"
                 [title]="videoSeleccionado()?.titulo"
                 frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
                 allowfullscreen
-                class="w-full h-full slower-fade-in"
+                class="slower-fade-in size-full"
             ></iframe>
         </div>
     </div>

@@ -148,7 +148,7 @@ export class Ayuda implements OnInit, OnDestroy {
     private obtenerYoutubeData(urlString: string) {
         const videoId = this.obtenerYoutubeVideoId(urlString);
         if (videoId) {
-            const embeddedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0`;
+            const embeddedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1&rel=0&modestbranding=1&hl=es`;
 
             return {
                 youtube: {
