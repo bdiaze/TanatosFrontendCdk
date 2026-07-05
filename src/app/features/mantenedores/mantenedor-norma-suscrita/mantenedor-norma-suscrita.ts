@@ -71,6 +71,7 @@ export class MantenedorNormaSuscrita {
     private readonly destroyRef = inject(DestroyRef);
     private readonly tourService = inject(TourService);
     private readonly router = inject(Router);
+    private readonly plainTextPipe = inject(PlainTextPipe);
     private readonly normaSuscritaDao: NormaSuscritaDao = inject(NormaSuscritaDao);
     negocioStore = inject(NegocioStore);
 
@@ -111,7 +112,7 @@ export class MantenedorNormaSuscrita {
 
     itemSeleccionado = signal<SalNormaSuscrita | null>(null);
 
-    constructor(private readonly plainTextPipe: PlainTextPipe) {
+    constructor() {
         effect(() => {
             const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
 
