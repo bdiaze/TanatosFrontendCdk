@@ -10,29 +10,50 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { lucideGem } from '@ng-icons/lucide';
 
 @Component({
-    selector: 'app-recordatorio-suscripcion-gratuita',
+    selector: 'app-recordatorio-suscripcion-por-vencer',
     imports: [HlmP, RouterLink, NgIcon, HlmIcon],
-    templateUrl: './recordatorio-suscripcion-gratuita.html',
-    styleUrl: './recordatorio-suscripcion-gratuita.scss',
+    templateUrl: './recordatorio-suscripcion-por-vencer.html',
+    styleUrl: './recordatorio-suscripcion-por-vencer.scss',
     providers: [
         provideIcons({
             lucideGem,
         }),
     ],
 })
-export class RecordatorioSuscripcionGratuita {
+export class RecordatorioSuscripcionPorVencer {
     private readonly destroyRef = inject(DestroyRef);
 
     private readonly authStore = inject(AuthStore);
     private readonly negocioStore = inject(NegocioStore);
     private readonly suscripcionDao = inject(SuscripcionDao);
 
-    suscripcionGratuita = this.negocioStore.suscripcionActualGratuita;
+    suscripcionPorVencer = computed(() => {
+        const suscripcionActual = this.negocioStore.suscripcionActualUsuario();
+        // Si la suscripción actual no tiene ID de Flow (no se renueva) o fue cancelada, se considera "por vencer"...
+        if (suscripcionActual && (!suscripcionActual.tieneFlowSubscriptionId || suscripcionActual.estado === 2) /* Cancelada */) {
+            return suscripcionActual;
+        }
+        return null;
+    });
     diasRestantes = computed(() => {
-        const fechaActual = new Date();
-        const fechaExpiracion = new Date(this.suscripcionGratuita()?.fechaExpiracion!);
-        const dias = Math.round((fechaExpiracion.getTime() - fechaActual.getTime()) / (1000 * 60 * 60 * 24));
-        return dias;
+        const suscripcionPorVencer = this.suscripcionPorVencer();
+        if (suscripcionPorVencer) {
+            const fechaActual = new Date();
+            const fechaExpiracion = new Date(suscripcionPorVencer.fechaExpiracion!);
+            const dias = (fechaExpiracion.getTime() - fechaActual.getTime()) / (1000 * 60 * 60 * 24);
+            return Math.round(dias);
+        }
+        return null;
+    });
+    titulo = computed(() => {
+        const suscripcionPorVencer = this.suscripcionPorVencer();
+        if (suscripcionPorVencer) {
+            if (!suscripcionPorVencer.tieneFlowSubscriptionId) {
+                return 'Mes de Prueba';
+            }
+            return 'Plan Empresa';
+        }
+        return null;
     });
 
     expanded = signal<boolean>(false);

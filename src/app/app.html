@@ -19,7 +19,7 @@
             <app-liston-beta />
         }
         @if (authStore.sesionIniciada() && !authStore.callbackRunning() && !authStore.logoutRunning()) {
-            <app-recordatorio-suscripcion-gratuita />
+            <app-recordatorio-suscripcion-por-vencer />
         }
     </div>
 </div>

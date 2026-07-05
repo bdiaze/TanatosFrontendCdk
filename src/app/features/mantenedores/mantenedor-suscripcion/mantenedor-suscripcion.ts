@@ -3,21 +3,17 @@ import { PlanDao } from '@/app/daos/plan-dao';
 import { SuscripcionDao } from '@/app/daos/suscripcion-dao';
 import { EntSuscripcionCrear } from '@/app/entities/others/ent-suscripcion-crear';
 import { SalPlan } from '@/app/entities/others/sal-plan';
-import { SalSuscripcion } from '@/app/entities/others/sal-suscripcion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
-    lucideCalendarRange,
     lucideChevronRight,
     lucideCircleCheck,
     lucideCircleX,
     lucideCreditCard,
-    lucideDiamond,
     lucideDot,
     lucideGem,
     lucideHourglass,
@@ -39,7 +35,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
-import { interval, merge, startWith, Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-mantenedor-suscripcion',

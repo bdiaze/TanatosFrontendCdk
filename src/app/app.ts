@@ -12,12 +12,12 @@ import { PaginaSinMenuEstaticoHelper } from './helpers/pagina-sin-menu-estatico-
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ViewportScroller } from '@angular/common';
 import { AuthRefreshService } from './services/auth-refresh-service';
-import { RecordatorioSuscripcionGratuita } from './components/recordatorio-suscripcion-gratuita/recordatorio-suscripcion-gratuita';
+import { RecordatorioSuscripcionPorVencer } from './components/recordatorio-suscripcion-por-vencer/recordatorio-suscripcion-por-vencer';
 import { CanActivateRunning } from './services/can-activate-running';
 import { EmptyHero } from './components/empty-hero/empty-hero';
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionGratuita, EmptyHero],
+    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionPorVencer, EmptyHero],
     templateUrl: './app.html',
 })
 export class App implements OnInit, OnDestroy {

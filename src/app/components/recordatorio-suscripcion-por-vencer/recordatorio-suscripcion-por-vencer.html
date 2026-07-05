@@ -1,7 +1,7 @@
-@if (suscripcionGratuita()) {
+@if (suscripcionPorVencer()) {
     <div
         id="recordatorio-suscripcion-gratuita"
-        class="z-10 fixed transition-[right] duration-1000 -right-37 top-22 md:top-26 lg:top-30 rounded-l-lg shadow-md bg-(--azul) p-0 text-(--blanco) flex flex-row items-stretch justify-center fade-in"
+        class="z-10 fixed transition-[right] duration-1000 -right-37 top-22 md:top-26 lg:top-30 rounded-l-lg shadow-md bg-azul p-0 text-blanco flex flex-row items-stretch justify-center fade-in"
         (mouseenter)="expanded.set(true)"
         (mouseleave)="expanded.set(false)"
         (touchstart)="expanded.set(true)"
@@ -19,7 +19,7 @@
             [class.opacity-100]="expanded()"
             [routerLink]="['/mi-plan']"
         >
-            <p hlmP class="text-base text-balance text-center underline underline-offset-2 font-serif">Mes de Prueba</p>
+            <p hlmP class="text-base text-balance text-center underline underline-offset-2 font-serif">{{ titulo() }}</p>
             <div class="flex flex-row items-center justify-center gap-1 mt-1">
                 <p hlmP class="text-sm text-center font-semibold">{{ diasRestantes() }}</p>
                 <p hlmP class="text-xs text-center">dias restantes</p>
