@@ -19,7 +19,6 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { catchError, finalize, forkJoin } from 'rxjs';
-import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
 import { HlmSwitch } from '@spartan-ng/helm/switch';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { NegocioDao } from '@/app/daos/negocio-dao';
@@ -44,7 +43,6 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
         HlmAutocompleteImports,
         HlmButtonImports,
         HlmCardImports,
-        PlainTextPipe,
         HlmSwitch,
         HlmTooltipImports,
         HlmSpinnerImports,
