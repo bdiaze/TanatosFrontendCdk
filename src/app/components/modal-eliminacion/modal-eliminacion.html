@@ -12,9 +12,9 @@
             <p hlmP class="text-center text-balance mx-1" [innerHTML]="descripcion"></p>
             @if (textoVerificacion) {
                 <div class="mt-4">
-                    <p class="text-sm mx-1" for="texto-verificacion">
+                    <label class="text-sm mx-1 block" for="texto-verificacion">
                         {{ descripcionTextVerificacion ?? `Para confirmar, escribe a continuación "${textoVerificacion}":` }}
-                    </p>
+                    </label>
                     <input
                         id="texto-verificacion"
                         hlmInput

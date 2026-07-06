@@ -18,7 +18,7 @@
                         <p hlmP class="text-center text-balance w-full md:w-110 fade-in">Primero que todo, cuentanos sobre tu negocio</p>
                     }
                     <div class="w-full flex flex-col items-center gap-0.5">
-                        <h4 hlmH4 for="nombre-negocio">¿Cómo se llama tu negocio?</h4>
+                        <label hlmH4 for="nombre-negocio">¿Cómo se llama tu negocio?</label>
                         <div
                             class="w-full flex justify-end transition-all duration-500 ease-out"
                             [class.opacity-100]="invalid('nombre', formNegocio)"
@@ -45,7 +45,7 @@
                         [formControl]="formNegocio.controls['direccion']"
                     />
                     <div class="w-full flex flex-col items-center gap-0.5">
-                        <h4 hlmH4 class="mt-1">¿A qué se dedica el negocio?</h4>
+                        <label hlmH4 class="mt-1">¿A qué se dedica el negocio?</label>
                         <div
                             class="w-full flex justify-end transition-all duration-500 ease-out delay-150"
                             [class.opacity-100]="invalid('idActividad', formNegocio)"
