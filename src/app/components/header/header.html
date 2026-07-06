@@ -59,7 +59,12 @@
                             @if (!sesionIniciada() && !logoutRunning()) {
                                 <app-login [vertical]="false"></app-login>
                             } @else {
-                                <app-logout [primary]="true" (click)="cerrarMenu()"></app-logout>
+                                <app-logout
+                                    [primary]="true"
+                                    (click)="cerrarMenu()"
+                                    (keydown.enter)="cerrarMenu()"
+                                    (keydown.space)="$event.preventDefault(); cerrarMenu()"
+                                ></app-logout>
                             }
                         </div>
                     </div>

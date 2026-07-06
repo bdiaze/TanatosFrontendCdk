@@ -31,7 +31,10 @@
                     'border-gris! cursor-pointer!': numeroAbierto() != conversacion.numeroTelefono,
                     'border-azul! z-10!': numeroAbierto() == conversacion.numeroTelefono,
                 }"
+                tabindex="0"
                 (click)="seleccionarConversacion(conversacion.numeroTelefono)"
+                (keydown.enter)="seleccionarConversacion(conversacion.numeroTelefono)"
+                (keydown.space)="$event.preventDefault(); seleccionarConversacion(conversacion.numeroTelefono)"
             >
                 <div hlmItemHeader>
                     <div hlmItemTitle>

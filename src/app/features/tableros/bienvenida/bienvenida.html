@@ -37,7 +37,7 @@
                         class="text-2xl! h-13 text-center font-semibold focus-visible:border-blanco focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
                         [formControl]="formNegocio.controls['nombre']"
                     />
-                    <h4 hlmH4 for="direccion-negocio" class="mt-1">¿En qué dirección se encuentra?</h4>
+                    <label hlmH4 for="direccion-negocio" class="mt-1">¿En qué dirección se encuentra?</label>
                     <input
                         id="direccion-negocio"
                         hlmInput
@@ -45,7 +45,7 @@
                         [formControl]="formNegocio.controls['direccion']"
                     />
                     <div class="w-full flex flex-col items-center gap-0.5">
-                        <label hlmH4 class="mt-1">¿A qué se dedica el negocio?</label>
+                        <label for="actividad-negocio" hlmH4 class="mt-1">¿A qué se dedica el negocio?</label>
                         <div
                             class="w-full flex justify-end transition-all duration-500 ease-out delay-150"
                             [class.opacity-100]="invalid('idActividad', formNegocio)"
@@ -71,7 +71,7 @@
                             [formControl]="formNegocio.controls['idActividad']"
                             [autoHighlight]="true"
                         >
-                            <hlm-autocomplete-input [showSearch]="true" [showClear]="true" />
+                            <hlm-autocomplete-input id="actividad-negocio" [showSearch]="true" [showClear]="true" />
                             <hlm-autocomplete-content *hlmAutocompletePortal>
                                 <hlm-autocomplete-empty>Actividad no encontrada...</hlm-autocomplete-empty>
                                 <div hlmAutocompleteList>

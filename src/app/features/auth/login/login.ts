@@ -71,10 +71,10 @@ export function generateRandomString(length: number): string {
 export async function generateCodeChallenge(verifier: string): Promise<string> {
     const data = new TextEncoder().encode(verifier);
     const digest = await crypto.subtle.digest('SHA-256', data);
-    return btoa(String.fromCharCode(...new Uint8Array(digest)))
-        .replace(/\+/g, '-')
-        .replace(/\//g, '_')
-        .replace(/=/g, '');
+    return btoa(String.fromCodePoint(...new Uint8Array(digest)))
+        .replaceAll('+', '-')
+        .replaceAll('/', '_')
+        .replaceAll('=', '');
 }
 
 export async function generarUrlALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string): Promise<string> {

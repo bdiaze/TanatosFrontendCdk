@@ -63,24 +63,29 @@
             >
                 <div hlmItem class="mensajeRecibido w-max items-stretch py-1 px-2" [class.mensajeEnviado]="mensaje.direccion == 'Salida'">
                     <div hlmItemContent>
-                        <p hlmItemDescription class="text-blanco! py-1 px-2 flex flex-row items-center gap-2">
-                            @if (tiposDescarga().includes(mensaje.tipo)) {
-                                <div class="w-6 flex flex-row items-center justify-center">
-                                    @if (descargandoImagen().has(mensaje.whatsappMessageId)) {
-                                        <hlm-spinner class="text-xl" />
-                                    } @else {
-                                        <ng-icon
-                                            hlm
-                                            size="1.3rem"
-                                            name="lucideDownload"
-                                            class="text-blanco cursor-pointer hover:text-(--blanco)/90"
-                                            (click)="descargarImagen(mensaje.whatsappMessageId)"
-                                        />
-                                    }
-                                </div>
-                            }
-                            {{ mensaje.cuerpo ?? `${mensaje.tipo} recibid${tiposFemeninos().includes(mensaje.tipo) ? 'a' : 'o'}` }}
-                        </p>
+                        <div hlmItemDescription class="text-blanco! py-1 px-2">
+                            <div class="flex flex-row items-center gap-1">
+                                @if (tiposDescarga().includes(mensaje.tipo)) {
+                                    <div class="size-6 flex items-center">
+                                        @if (descargandoImagen().has(mensaje.whatsappMessageId)) {
+                                            <hlm-spinner class="text-xl" />
+                                        } @else {
+                                            <ng-icon
+                                                hlm
+                                                size="sm"
+                                                name="lucideDownload"
+                                                class="text-blanco cursor-pointer hover:text-(--blanco)/90"
+                                                tabindex="0"
+                                                (click)="descargarImagen(mensaje.whatsappMessageId)"
+                                                (keydown.enter)="descargarImagen(mensaje.whatsappMessageId)"
+                                                (keydown.space)="$event.preventDefault(); descargarImagen(mensaje.whatsappMessageId)"
+                                            />
+                                        }
+                                    </div>
+                                }
+                                {{ mensaje.cuerpo ?? `${mensaje.tipo} recibid${tiposFemeninos().includes(mensaje.tipo) ? 'a' : 'o'}` }}
+                            </div>
+                        </div>
                     </div>
                     <div hlmItemContent class="flex-none text-center items-center justify-center">
                         <div class="flex flex-row items-center justify-center gap-2">
