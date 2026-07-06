@@ -3,34 +3,22 @@
 }
 
 .autocompleteBienvenida ::ng-deep hlm-autocomplete-input {
-    height: calc(var(--spacing) * 10);
-    transition-property: all;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function) /* cubic-bezier(0.4, 0, 0.2, 1) */);
-    transition-duration: var(--tw-duration, var(--default-transition-duration) /* 150ms */);
-    transition-delay: 150ms;
-    animation-delay: calc(150 * 1ms) /* 150ms */;
-    animation-delay: 0.15s;
-    --tw-animation-delay: calc(150 * 1ms) /* 150ms */;
-    --tw-animation-delay: 0.15s;
-}
-
-.autocompleteBienvenida ::ng-deep hlm-autocomplete-input {
-    height: calc(var(--spacing) * 10);
-    transition-property: all;
-    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function) /* cubic-bezier(0.4, 0, 0.2, 1) */);
-    transition-duration: var(--tw-duration, var(--default-transition-duration) /* 150ms */);
-    transition-delay: 150ms;
-    animation-delay: calc(150 * 1ms) /* 150ms */;
-    animation-delay: 0.15s;
-    --tw-animation-delay: calc(150 * 1ms) /* 150ms */;
-    --tw-animation-delay: 0.15s;
+    height: calc(var(--spacing) * 10) !important;
+    transition-property: all !important;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function) /* cubic-bezier(0.4, 0, 0.2, 1) */) !important;
+    transition-duration: var(--tw-duration, var(--default-transition-duration) /* 150ms */) !important;
+    transition-delay: 150ms !important;
+    animation-delay: calc(150 * 1ms) /* 150ms */ !important;
+    animation-delay: 0.15s !important;
+    --tw-animation-delay: calc(150 * 1ms) /* 150ms */ !important;
+    --tw-animation-delay: 0.15s !important;
 
     &:has(*:is([data-slot='input-group-control']:focus-visible)) {
-        border-color: var(--blanco);
+        border-color: var(--blanco) !important;
     }
 
     &:has(*:is([data-slot='input-group-control']:focus-visible)) {
-        --tw-ring-color: color-mix(in oklab, var(--blanco) 40%, transparent);
+        --tw-ring-color: color-mix(in oklab, var(--blanco) 40%, transparent) !important;
     }
 
     &:has(> [data-matches-spartan-invalid='true']) {
@@ -45,14 +33,22 @@
 .autocompleteBienvenida ::ng-deep hlm-autocomplete-input input[hlminputgroupinput] {
     font-size: var(--text-lg) /* 1.125rem = 18px */ !important;
     line-height: var(--tw-leading, var(--text-lg--line-height) /* calc(1.75 / 1.125) ≈ 1.555556 */) !important;
-    text-align: center;
+    text-align: center !important;
     & *::selection {
-        background-color: color-mix(in oklab, var(--blanco) 20%, transparent);
+        background-color: color-mix(in oklab, var(--blanco) 20%, transparent) !important;
     }
     &::selection {
-        background-color: color-mix(in oklab, var(--blanco) 20%, transparent);
+        background-color: color-mix(in oklab, var(--blanco) 20%, transparent) !important;
     }
     &::placeholder {
-        color: var(--blanco);
+        color: var(--blanco) !important;
+    }
+}
+
+.autocompleteBienvenida ::ng-deep hlm-autocomplete-input button[hlminputgroupbutton] {
+    &:hover {
+        @media (hover: hover) {
+            background-color: var(--azul);
+        }
     }
 }

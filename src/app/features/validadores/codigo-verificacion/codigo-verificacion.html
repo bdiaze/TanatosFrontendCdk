@@ -10,8 +10,9 @@
             </div>
             @if (!vienenCorreoElectronico()) {
                 <div class="flex flex-col mt-4 gap-1 -mb-2">
-                    <p hlmP class="font-bold text-sm text-(--negro)/80">Correo Electrónico</p>
+                    <p hlmP for="correo-electronico" class="font-bold text-sm text-(--negro)/80">Correo Electrónico</p>
                     <input
+                        id="correo-electronico"
                         hlmInput
                         formControlName="correo"
                         type="email"
@@ -27,8 +28,9 @@
                 </div>
             }
             <div class="flex flex-col mt-4 gap-1">
-                <p hlmP class="font-bold text-sm text-(--negro)/80">Código</p>
+                <p hlmP for="codigo-verificacion" class="font-bold text-sm text-(--negro)/80">Código</p>
                 <input
+                    id="codigo-verificacion"
                     hlmInput
                     formControlName="codigo"
                     class="placeholder:italic h-8 text-sm border-(--negro)/80 focus-visible:border-transparent focus-visible:ring-0 focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-(--calipso) focus-visible:data-[matches-spartan-invalid=true]:outline-0 transition-none"

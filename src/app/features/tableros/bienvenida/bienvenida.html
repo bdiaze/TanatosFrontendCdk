@@ -18,7 +18,7 @@
                         <p hlmP class="text-center text-balance w-full md:w-110 fade-in">Primero que todo, cuentanos sobre tu negocio</p>
                     }
                     <div class="w-full flex flex-col items-center gap-0.5">
-                        <h4 hlmH4>¿Cómo se llama tu negocio?</h4>
+                        <h4 hlmH4 for="nombre-negocio">¿Cómo se llama tu negocio?</h4>
                         <div
                             class="w-full flex justify-end transition-all duration-500 ease-out"
                             [class.opacity-100]="invalid('nombre', formNegocio)"
@@ -32,12 +32,14 @@
                         </div>
                     </div>
                     <input
+                        id="nombre-negocio"
                         hlmInput
                         class="text-2xl! h-13 text-center font-semibold focus-visible:border-blanco focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
                         [formControl]="formNegocio.controls['nombre']"
                     />
-                    <h4 hlmH4 class="mt-1">¿En qué dirección se encuentra?</h4>
+                    <h4 hlmH4 for="direccion-negocio" class="mt-1">¿En qué dirección se encuentra?</h4>
                     <input
+                        id="direccion-negocio"
                         hlmInput
                         class="text-lg! h-10 text-center focus-visible:border-blanco focus-visible:ring-(--blanco)/50 selection:bg-(--blanco)/20"
                         [formControl]="formNegocio.controls['direccion']"

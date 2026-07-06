@@ -232,13 +232,14 @@
                                                             >
                                                                 <button hlmBtn size="icon" variant="link" class="size-8!" (click)="fileInput.click()">
                                                                     <ng-icon hlm size="sm" name="lucidePlus" />
-                                                                    <div>Click aquí para adjuntar tu documento</div>
+                                                                    <div for="subir-documento">Click aquí para adjuntar tu documento</div>
                                                                     <br />
                                                                 </button>
                                                                 <p hlmP class="text-xs mt-2 font-normal italic opacity-80">
                                                                     (también puedes arrastrar aquí tus documentos)
                                                                 </p>
                                                                 <input
+                                                                    id="subir-documento"
                                                                     type="file"
                                                                     #fileInput
                                                                     hidden
@@ -257,13 +258,14 @@
                                                                 <app-popup-funcionalidad-bloqueada class="w-full" #pop>
                                                                     <button hlmBtn size="icon" variant="link" class="size-8!">
                                                                         <ng-icon hlm size="sm" name="lucideGem" />
-                                                                        <div>Click aquí para adjuntar tu documento</div>
+                                                                        <div for="subir-documento-bloqueado">Click aquí para adjuntar tu documento</div>
                                                                         <br />
                                                                     </button>
                                                                     <p hlmP class="text-xs mt-2 font-normal italic opacity-80">
                                                                         (también puedes arrastrar aquí tus documentos)
                                                                     </p>
                                                                     <input
+                                                                        id="subir-documento-bloqueado"
                                                                         type="file"
                                                                         #fileInput
                                                                         hidden
