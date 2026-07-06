@@ -21,7 +21,7 @@
         }
     } @else {
         @for (conversacion of conversaciones(); track conversacion.numeroTelefono; let first = $first; let last = $last) {
-            <div
+            <button
                 hlmItem
                 class="bg-blanco! text-negro! w-52! min-h-32! fade-in! transition-all!"
                 [ngClass]="{
@@ -31,7 +31,6 @@
                     'border-gris! cursor-pointer!': numeroAbierto() != conversacion.numeroTelefono,
                     'border-azul! z-10!': numeroAbierto() == conversacion.numeroTelefono,
                 }"
-                tabindex="0"
                 (click)="seleccionarConversacion(conversacion.numeroTelefono)"
                 (keydown.enter)="seleccionarConversacion(conversacion.numeroTelefono)"
                 (keydown.space)="$event.preventDefault(); seleccionarConversacion(conversacion.numeroTelefono)"
@@ -44,7 +43,7 @@
                         <span hlmBadge class="rounded-full!">{{ conversacion.cantidadNoLeidos }}</span>
                     }
                 </div>
-                <div hlmItemContent>
+                <div hlmItemContent class="text-left">
                     {{ conversacion.previewUltimoMensaje }}
                 </div>
                 <div hlmItemContent class="flex-none text-center">
@@ -84,7 +83,7 @@
                         </span>
                     </div>
                 }
-            </div>
+            </button>
         }
     }
 </div>

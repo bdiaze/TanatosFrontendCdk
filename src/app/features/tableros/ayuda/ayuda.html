@@ -57,14 +57,13 @@
             } @else {
                 <div class="flex flex-wrap items-stretch justify-center gap-3 py-3">
                     @for (videoTutorial of datosVideosTutoriales(); track $index) {
-                        <div
+                        <button
                             class="aspect-video bg-cover bg-center flex flex-col items-center justify-center gap-1.5 p-3 w-full sm:w-60 md:w-62 lg:w-75 fade-in cursor-pointer transition-transform duration-100 transform-gpu hover:scale-102 active:scale-98 antialiased"
                             [style.background-image]="
                                 videoTutorial.youtube
                                     ? `linear-gradient(rgba(0,0,0,.8), rgba(0,0,0,.8)),url(${videoTutorial.youtube!.miniaturaUrl})`
                                     : 'linear-gradient(var(--negro), var(--negro));'
                             "
-                            tabindex="0"
                             (click)="abrirVideo(videoTutorial)"
                             (keydown.enter)="abrirVideo(videoTutorial)"
                             (keydown.space)="$event.preventDefault(); abrirVideo(videoTutorial)"
@@ -75,7 +74,7 @@
                                     {{ videoTutorial.descripcion }}
                                 </p>
                             }
-                        </div>
+                        </button>
                     }
                 </div>
             }
