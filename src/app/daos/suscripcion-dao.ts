@@ -29,8 +29,8 @@ export class SuscripcionDao {
         return this.http.post<SalSuscripcionCrear>(environment.tanatosService.apiUrl + '/Suscripcion/', entrada);
     }
 
-    cancelar(idSuscripcion: number): Observable<void> {
-        return this.http.delete<void>(environment.tanatosService.apiUrl + `/Suscripcion/${idSuscripcion}`);
+    cancelar(): Observable<void> {
+        return this.http.delete<void>(environment.tanatosService.apiUrl + `/Suscripcion/`);
     }
 
     arraysIguales(a: SalSuscripcion[], b: SalSuscripcion[]): boolean {

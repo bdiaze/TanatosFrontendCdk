@@ -249,7 +249,7 @@ export class MantenedorSuscripcion implements OnInit {
     desuscribirse(idSuscripcion: number) {
         this.procesando.set(true);
         this.suscripcionDao
-            .cancelar(idSuscripcion)
+            .cancelar()
             .subscribe({
                 next: () => {
                     this.obtenerSuscripciones();
