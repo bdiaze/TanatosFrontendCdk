@@ -47,15 +47,18 @@
         @if (esPlanEmpresa()) {
             <div
                 class="border-azul border w-full flex flex-col items-stretch justify-center fade-in"
-                [class.mb-6]="resumenSuscripcion()!.precioPlanEnCurso === 0"
+                [class.mb-6]="!resumenSuscripcion()?.nombrePlanPagoEnCurso"
             >
                 <div class="bg-azul text-blanco flex flex-row items-center justify-between py-4 px-8">
                     <div class="flex flex-col items-start justify-center gap-2">
-                        <h4 hlmH4>{{ resumenSuscripcion()?.nombrePlanEnCurso }}</h4>
+                        <h4 hlmH4>{{ resumenSuscripcion()?.nombrePlanPagoEnCurso ?? resumenSuscripcion()?.nombrePlanEnCurso }}</h4>
                     </div>
-                    @if (resumenSuscripcion()?.precioPlanEnCurso && resumenSuscripcion()!.precioPlanEnCurso! > 0) {
+                    @if (
+                        (resumenSuscripcion()?.precioPlanPagoEnCurso ?? resumenSuscripcion()?.precioPlanEnCurso) &&
+                        (resumenSuscripcion()?.precioPlanPagoEnCurso ?? resumenSuscripcion()?.precioPlanEnCurso)! > 0
+                    ) {
                         <div>
-                            <h4 hlmH4>${{ resumenSuscripcion()!.precioPlanEnCurso | number: '1.0-0' }}</h4>
+                            <h4 hlmH4>${{ (resumenSuscripcion()?.precioPlanPagoEnCurso ?? resumenSuscripcion()?.precioPlanEnCurso)! | number: '1.0-0' }}</h4>
                         </div>
                     }
                 </div>
