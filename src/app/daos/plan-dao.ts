@@ -16,6 +16,10 @@ export class PlanDao {
         return this.http.get<SalPlan[]>(environment.tanatosService.apiUrl + '/Plan/Vigentes');
     }
 
+    obtenerDisponibles(): Observable<SalPlan[]> {
+        return this.http.get<SalPlan[]>(environment.tanatosService.apiUrl + '/Plan/Disponibles');
+    }
+
     obtenerPorVigencia(vigencia: boolean | null): Observable<Plan[]> {
         return this.http.get<Plan[]>(environment.tanatosService.apiUrl + `/Plan/PorVigencia/${vigencia}`);
     }
