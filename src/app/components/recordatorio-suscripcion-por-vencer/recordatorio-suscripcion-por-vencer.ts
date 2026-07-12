@@ -27,33 +27,22 @@ export class RecordatorioSuscripcionPorVencer {
     private readonly negocioStore = inject(NegocioStore);
     private readonly suscripcionDao = inject(SuscripcionDao);
 
-    suscripcionPorVencer = computed(() => {
-        const suscripcionActual = this.negocioStore.suscripcionActualUsuario();
-        // Si la suscripción actual no tiene ID de Flow (no se renueva) o fue cancelada, se considera "por vencer"...
-        if (suscripcionActual && (!suscripcionActual.tieneFlowSubscriptionId || suscripcionActual.estado === 2) /* Cancelada */) {
-            return suscripcionActual;
-        }
-        return null;
-    });
     diasRestantes = computed(() => {
-        const suscripcionPorVencer = this.suscripcionPorVencer();
-        if (suscripcionPorVencer) {
+        const resumenSuscripcion = this.negocioStore.resumenSuscripcionUsuario();
+        if (resumenSuscripcion && resumenSuscripcion.fechaExpiracion) {
             const fechaActual = new Date();
-            const fechaExpiracion = new Date(suscripcionPorVencer.fechaExpiracion!);
+            const fechaExpiracion = new Date(resumenSuscripcion.fechaExpiracion!);
             const dias = (fechaExpiracion.getTime() - fechaActual.getTime()) / (1000 * 60 * 60 * 24);
             return Math.round(dias);
         }
         return null;
     });
     titulo = computed(() => {
-        const suscripcionPorVencer = this.suscripcionPorVencer();
-        if (suscripcionPorVencer) {
-            if (!suscripcionPorVencer.tieneFlowSubscriptionId) {
-                return 'Mes de Prueba';
-            }
-            return 'Plan Empresa';
+        const resumenSuscripcion = this.negocioStore.resumenSuscripcionUsuario();
+        if (resumenSuscripcion && resumenSuscripcion.precioPlanEnCurso === 0) {
+            return 'Mes de Prueba';
         }
-        return null;
+        return 'Plan Empresa';
     });
 
     expanded = signal<boolean>(false);
@@ -64,13 +53,13 @@ export class RecordatorioSuscripcionPorVencer {
 
             untracked(() => {
                 if (sesionIniciada) {
-                    this.obtenerSuscripciones();
+                    this.obtenerResumenSuscripcion();
                 }
             });
         });
     }
 
-    obtenerSuscripciones() {
-        this.suscripcionDao.obtenerVigentes().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({});
+    obtenerResumenSuscripcion() {
+        this.suscripcionDao.obtenerResumen().pipe(takeUntilDestroyed(this.destroyRef)).subscribe({});
     }
 }
