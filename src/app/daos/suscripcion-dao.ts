@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { EntSuscripcionCrear } from '../entities/others/ent-suscripcion-crear';
 import { SalSuscripcionCrear } from '../entities/others/sal-suscripcion-crear';
 import { NegocioStore } from '../services/negocio-store';
+import { SalSuscripcionResumen } from '../entities/others/sal-suscripcion-resumen';
 
 @Injectable({
     providedIn: 'root',
@@ -15,11 +16,20 @@ export class SuscripcionDao {
 
     negocioStore = inject(NegocioStore);
 
-    obtenerVigentes(): Observable<SalSuscripcion[]> {
-        return this.http.get<SalSuscripcion[]>(environment.tanatosService.apiUrl + `/Suscripcion/Vigentes`).pipe(
-            tap((v) => {
-                if (!this.arraysIguales(v, this.negocioStore.suscripcionesUsuario())) {
-                    this.negocioStore.suscripcionesUsuario.set(v);
+    obtenerResumen(): Observable<SalSuscripcionResumen> {
+        return this.http.get<SalSuscripcionResumen>(environment.tanatosService.apiUrl + `/Suscripcion/Resumen`).pipe(
+            tap((r) => {
+                const resumenExistente = this.negocioStore.resumenSuscripcionUsuario();
+                if (
+                    resumenExistente?.nombrePlanEnCurso != r.nombrePlanEnCurso ||
+                    resumenExistente?.precioPlanEnCurso != r.precioPlanEnCurso ||
+                    resumenExistente?.nombrePlanPagoEnCurso != r.nombrePlanPagoEnCurso ||
+                    resumenExistente?.precioPlanPagoEnCurso != r.precioPlanPagoEnCurso ||
+                    resumenExistente?.fechaExpiracion != r.fechaExpiracion ||
+                    resumenExistente?.fechaProximoCobro != r.fechaProximoCobro ||
+                    resumenExistente?.renovacionAutomatica != r.renovacionAutomatica
+                ) {
+                    this.negocioStore.resumenSuscripcionUsuario.set(r);
                 }
             }),
         );
@@ -31,27 +41,5 @@ export class SuscripcionDao {
 
     cancelar(): Observable<void> {
         return this.http.delete<void>(environment.tanatosService.apiUrl + `/Suscripcion/`);
-    }
-
-    arraysIguales(a: SalSuscripcion[], b: SalSuscripcion[]): boolean {
-        if (a.length !== b.length) return false;
-
-        const mapA = new Map(a.map((x) => [x.id, x]));
-        return b.every((x) => {
-            const original = mapA.get(x.id);
-            if (!original) return false;
-
-            return (
-                original.idPlan === x.idPlan &&
-                original.nombrePlan === x.nombrePlan &&
-                original.precioPlan === x.precioPlan &&
-                original.duracionMesesPlan === x.duracionMesesPlan &&
-                original.fechaInicio === x.fechaInicio &&
-                original.fechaExpiracion === x.fechaExpiracion &&
-                original.fechaCancelacion === x.fechaCancelacion &&
-                original.estado === x.estado &&
-                original.tieneFlowSubscriptionId === x.tieneFlowSubscriptionId
-            );
-        });
     }
 }
