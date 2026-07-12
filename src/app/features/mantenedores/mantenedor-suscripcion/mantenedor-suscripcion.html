@@ -44,49 +44,55 @@
             </div>
         </div>
     } @else {
-        @if (ultimaSuscripcion()) {
+        @if (esPlanEmpresa()) {
             <div
                 class="border-azul border w-full flex flex-col items-stretch justify-center fade-in"
-                [class.mb-6]="ultimaSuscripcion()!.precioPlan === 0 || ultimaSuscripcion()!.estado !== 1"
+                [class.mb-6]="resumenSuscripcion()!.precioPlanEnCurso === 0"
             >
                 <div class="bg-azul text-blanco flex flex-row items-center justify-between py-4 px-8">
                     <div class="flex flex-col items-start justify-center gap-2">
-                        <h4 hlmH4>{{ ultimaSuscripcion()?.nombrePlan }}</h4>
+                        <h4 hlmH4>{{ resumenSuscripcion()?.nombrePlanEnCurso }}</h4>
                     </div>
-                    @if (ultimaSuscripcion() && ultimaSuscripcion()!.precioPlan > 0) {
+                    @if (resumenSuscripcion()?.precioPlanEnCurso && resumenSuscripcion()!.precioPlanEnCurso! > 0) {
                         <div>
-                            <h4 hlmH4>${{ ultimaSuscripcion()?.precioPlan | number: '1.0-0' }}</h4>
+                            <h4 hlmH4>${{ resumenSuscripcion()!.precioPlanEnCurso | number: '1.0-0' }}</h4>
                         </div>
                     }
                 </div>
                 <div class="flex flex-row items-center justify-around gap-2 py-4 px-8">
-                    <div class="flex flex-col items-center justify-center">
-                        <p hlmP class="text-sm">Vencimiento:</p>
-                        <p hlmP class="font-semibold">
-                            {{ ultimaSuscripcion()?.fechaExpiracion | date: "EEEE d 'de' MMMM 'de' yyyy" }}
-                        </p>
-                    </div>
-                    @if (obtenerRenovacion(ultimaSuscripcion()!.idPlan)) {
+                    @if (fechaExpiracionFormateada()) {
+                        <div class="flex flex-col items-center justify-center">
+                            <p hlmP class="text-sm">Vencimiento:</p>
+                            <p hlmP class="font-semibold">
+                                {{ fechaExpiracionFormateada() }}
+                            </p>
+                        </div>
+                    }
+                    @if (fechaProximoCobroFormateada()) {
+                        <div class="flex flex-col items-center justify-center">
+                            <p hlmP class="text-sm">Próximo Cobro:</p>
+                            <p hlmP class="font-semibold">
+                                {{ fechaProximoCobroFormateada() }}
+                            </p>
+                        </div>
+                    }
+                    @if (informarRenovacion()) {
                         <div class="flex flex-col items-center justify-center">
                             <p hlmP class="text-sm">Renovación:</p>
                             <div class="flex flex-row items-center justify-center gap-2">
-                                @if (ultimaSuscripcion()!.estado !== 1) {
-                                    <ng-icon hlm hlmAlertIcon name="lucideRefreshCwOff" size="20px" />
-                                    <p hlmP class="font-semibold">
-                                        {{ obtenerEstadoSuscripcion(ultimaSuscripcion()!.estado) }}
-                                    </p>
-                                } @else {
+                                @if (resumenSuscripcion()?.renovacionAutomatica) {
                                     <ng-icon hlm hlmAlertIcon name="lucideRefreshCw" size="20px" />
-                                    <p hlmP class="font-semibold">
-                                        {{ obtenerRenovacion(ultimaSuscripcion()!.idPlan) }}
-                                    </p>
+                                    <p hlmP class="font-semibold">Automática</p>
+                                } @else {
+                                    <ng-icon hlm hlmAlertIcon name="lucideRefreshCwOff" size="20px" class="text-destructive" />
+                                    <p hlmP class="font-semibold text-destructive">Cancelada</p>
                                 }
                             </div>
                         </div>
                     }
                 </div>
             </div>
-            @if (ultimaSuscripcion()!.precioPlan !== 0 && ultimaSuscripcion()!.estado === 1) {
+            @if (resumenSuscripcion()?.nombrePlanPagoEnCurso) {
                 <div class="py-2 flex flex-col items-end fade-in">
                     <button
                         hlmBtn
@@ -276,7 +282,7 @@
             </div>
         </div>
 
-        @if (!esPlanEmpresa()) {
+        @if (!resumenSuscripcion()?.nombrePlanPagoEnCurso) {
             <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in mt-3">
                 <h4 hlmH4>¡Contrata el Plan Empresa ahora!</h4>
             </div>
@@ -331,15 +337,12 @@
 </section>
 @if (showModalDesuscribirse()) {
     <app-modal-eliminacion
-        [item]="ultimaSuscripcion()?.id"
         titulo="Cancela tu suscripción:"
-        [descripcion]="
-            `¿Seguro que deseas cancelar tu suscripción <b>&quot;${ultimaSuscripcion()?.nombrePlan}&quot;</b>?<br/>Podrás seguir disfrutando de los beneficios del plan hasta <u>el ${fechaExpiracionFormateada()}</u>.`
-        "
+        [descripcion]="`¿Seguro que deseas cancelar tu suscripción <b>&quot;${resumenSuscripcion()?.nombrePlanPagoEnCurso}&quot;</b>?`"
         textoBotonEliminar="Cancelar suscripción"
         textoBotonCancelar="Cerrar"
         (cerrar)="closeModalDesuscribirse()"
-        (eliminar)="desuscribirse($event)"
+        (eliminar)="desuscribirse()"
     >
     </app-modal-eliminacion>
 }

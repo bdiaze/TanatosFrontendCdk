@@ -47,7 +47,6 @@ import { interval, Subscription } from 'rxjs';
         HlmH4,
         HlmSpinnerImports,
         HlmSeparatorImports,
-        DatePipe,
         DecimalPipe,
         HlmItemImports,
         HlmAlertImports,
@@ -86,34 +85,50 @@ export class MantenedorSuscripcion implements OnInit {
     negocioStore: NegocioStore = inject(NegocioStore);
     private readonly datePipe = inject(DatePipe);
 
-    suscripciones = this.negocioStore.suscripcionesUsuario;
-    ultimaSuscripcion = this.negocioStore.suscripcionActualUsuario;
     planesVigentes = signal([] as SalPlan[]);
+
+    resumenSuscripcion = this.negocioStore.resumenSuscripcionUsuario;
+
     fechaExpiracionFormateada = computed(() => {
-        if (this.ultimaSuscripcion()) {
-            return this.datePipe.transform(this.ultimaSuscripcion()?.fechaExpiracion, "EEEE d 'de' MMMM 'de' yyyy");
+        const resumenSuscripcion = this.resumenSuscripcion();
+        if (resumenSuscripcion && resumenSuscripcion.fechaExpiracion) {
+            return this.datePipe.transform(resumenSuscripcion.fechaExpiracion, "EEEE d 'de' MMMM 'de' yyyy");
+        }
+        return null;
+    });
+    fechaProximoCobroFormateada = computed(() => {
+        const resumenSuscripcion = this.resumenSuscripcion();
+        if (resumenSuscripcion && resumenSuscripcion.fechaProximoCobro) {
+            return this.datePipe.transform(resumenSuscripcion.fechaProximoCobro, "EEEE d 'de' MMMM 'de' yyyy");
         }
         return null;
     });
     esPlanEmpresa = computed(() => {
-        const ultimaSuscripcion = this.ultimaSuscripcion();
-        if (ultimaSuscripcion?.fechaExpiracion && new Date(ultimaSuscripcion.fechaExpiracion) > new Date()) {
+        const resumenSuscripcion = this.resumenSuscripcion();
+        if (resumenSuscripcion && resumenSuscripcion.nombrePlanEnCurso) {
             return true;
         }
         return false;
     });
-    planes = computed(() => {
-        const planesVigentes = this.planesVigentes();
-        const suscripciones = this.suscripciones();
-        return planesVigentes.filter((p) => !p.suscripcionUnica || !suscripciones.some((s) => s.idPlan == p.id));
+    informarRenovacion = computed(() => {
+        const resumenSuscripcion = this.resumenSuscripcion();
+        if (resumenSuscripcion?.renovacionAutomatica) {
+            return true;
+        }
+        if (resumenSuscripcion?.precioPlanEnCurso && resumenSuscripcion!.precioPlanEnCurso! > 0) {
+            return true;
+        }
+        return false;
     });
+    planes = computed(() => this.planesVigentes());
 
     cargandoSuscripciones = signal(true);
     cargandoPlanesVigentes = signal(true);
     error = signal('');
 
     procesandoPrimerPago = computed(() => {
-        return this.suscripciones().some((s) => s.estado === 4 /* Pago Pendiente */ && s.tieneFlowSubscriptionId);
+        const resumenSuscripcion = this.resumenSuscripcion();
+        return resumenSuscripcion && !resumenSuscripcion.nombrePlanEnCurso && resumenSuscripcion.nombrePlanPagoEnCurso;
     });
 
     private pollingSub?: Subscription;
@@ -126,7 +141,7 @@ export class MantenedorSuscripcion implements OnInit {
                 if (procesandoPrimerPago) {
                     if (this.pollingSub) return;
                     this.pollingSub = interval(10 * 1000).subscribe(() => {
-                        this.obtenerSuscripciones(true);
+                        this.obtenerResumenSuscripcion(true);
                     });
                 } else {
                     this.pollingSub?.unsubscribe();
@@ -137,22 +152,22 @@ export class MantenedorSuscripcion implements OnInit {
     }
 
     ngOnInit(): void {
-        this.obtenerSuscripciones();
+        this.obtenerResumenSuscripcion();
         this.obtenerPlanesVigentes();
     }
 
-    obtenerSuscripciones(oculto: boolean = false) {
+    obtenerResumenSuscripcion(oculto: boolean = false) {
         if (!oculto) {
             this.cargandoSuscripciones.set(true);
         }
 
         this.suscripcionDao
-            .obtenerVigentes()
+            .obtenerResumen()
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 error: (err) => {
-                    console.error('Error al obtener las suscripciones del cliente', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al obtener las suscripciones del cliente');
+                    console.error('Error al obtener el resumen de suscripción del cliente', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener el resumen de suscripción del cliente');
                 },
             })
             .add(() => {
@@ -166,7 +181,7 @@ export class MantenedorSuscripcion implements OnInit {
         this.cargandoPlanesVigentes.set(true);
         this.planesVigentes.set([]);
         this.planDao
-            .obtenerVigentes()
+            .obtenerDisponibles()
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
@@ -174,8 +189,8 @@ export class MantenedorSuscripcion implements OnInit {
                     this.planesVigentes.set(sorted);
                 },
                 error: (err) => {
-                    console.error('Error al obtener los planes vigentes', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al obtener los planes vigentes');
+                    console.error('Error al obtener los planes disponibles', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al obtener los planes disponibles');
                 },
             })
             .add(() => {
@@ -200,7 +215,7 @@ export class MantenedorSuscripcion implements OnInit {
                     if (res.urlSuscripcion) {
                         window.location.href = res.urlSuscripcion;
                     } else {
-                        this.obtenerSuscripciones();
+                        this.obtenerResumenSuscripcion();
                         this.procesandoPago.set(false);
                         this.idPlanProcesandoPago.set(null);
                     }
@@ -212,26 +227,6 @@ export class MantenedorSuscripcion implements OnInit {
                     this.idPlanProcesandoPago.set(null);
                 },
             });
-    }
-
-    obtenerEstadoSuscripcion(idEstado: number) {
-        switch (idEstado) {
-            case 1:
-                return 'Activa';
-            case 2:
-                return 'Cancelada';
-            case 3:
-                return 'Expirada';
-            case 4:
-                return 'Pago Pendiente';
-            default:
-                return '';
-        }
-    }
-
-    obtenerRenovacion(idPlan: number) {
-        if (idPlan == 1) return null;
-        return 'Automática';
     }
 
     showModalDesuscribirse = signal(false);
@@ -246,13 +241,13 @@ export class MantenedorSuscripcion implements OnInit {
 
     procesando = signal(false);
 
-    desuscribirse(idSuscripcion: number) {
+    desuscribirse() {
         this.procesando.set(true);
         this.suscripcionDao
             .cancelar()
             .subscribe({
                 next: () => {
-                    this.obtenerSuscripciones();
+                    this.obtenerResumenSuscripcion();
                 },
                 error: (err) => {
                     console.error('Error al cancelar suscripción', err);
