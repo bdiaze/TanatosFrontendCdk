@@ -43,8 +43,8 @@ export class App implements OnInit, OnDestroy {
     });
 
     ngOnInit() {
-        void this.recaptchHelper.load();
-        void this.googleAnalytics.load();
+        void this.recaptchHelper.load().catch((err) => console.error(err));
+        void this.googleAnalytics.load().catch((err) => console.error(err));
 
         const skipRefreshRoutes = ['callback'];
         const currentPath = window.location.pathname.split('/').pop() ?? '';
