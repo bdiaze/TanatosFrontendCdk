@@ -1,10 +1,26 @@
 import { environment } from '@/environments/environment';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GoogleAnalytics {
+    private readonly router = inject(Router);
+    private readonly title = inject(Title);
+
+    constructor() {
+        this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
+            this.event('page_view', {
+                page_title: this.title.getTitle(),
+                page_location: window.location.href,
+                page_path: event.urlAfterRedirects,
+            });
+        });
+    }
+
     private loadPromise?: Promise<void>;
 
     load(): Promise<void> {
@@ -36,7 +52,9 @@ export class GoogleAnalytics {
 
             script.onload = () => {
                 window.gtag('js', new Date());
-                window.gtag('config', environment.google.analytics.id);
+                window.gtag('config', environment.google.analytics.id, {
+                    send_page_view: false,
+                });
                 resolve();
             };
             script.onerror = () => reject(new Error('No se pudo cargar Google Analytics'));
