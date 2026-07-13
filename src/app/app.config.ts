@@ -6,7 +6,7 @@ import { HttpBackend, HttpXhrBackend, provideHttpClient, withFetch, withIntercep
 import { authInterceptor } from './interceptors/auth-interceptor';
 
 import '@/app/helpers/locales';
-import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { provideBrnCalendarI18n } from '@spartan-ng/brain/calendar';
 import { dedupInterceptor } from './interceptors/dedup-interceptor';
 

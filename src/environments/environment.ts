@@ -1,4 +1,5 @@
 export const environment = {
+    production: false,
     cognitoService: {
         userPoolId: '',
         clientId: '',
@@ -13,6 +14,9 @@ export const environment = {
     google: {
         recaptcha: {
             siteKey: '',
+        },
+        analytics: {
+            id: '',
         },
     },
 };
