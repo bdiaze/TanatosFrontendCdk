@@ -42,8 +42,9 @@ export class App implements OnInit, OnDestroy {
         return this.paginaSinMenuEstaticoHelper.paginaSinMenuEstatico();
     });
 
-    async ngOnInit(): Promise<void> {
-        await Promise.all([this.recaptchHelper.load(), this.googleAnalytics.load()]);
+    ngOnInit() {
+        void this.recaptchHelper.load();
+        void this.googleAnalytics.load();
 
         const skipRefreshRoutes = ['callback'];
         const currentPath = window.location.pathname.split('/').pop() ?? '';
