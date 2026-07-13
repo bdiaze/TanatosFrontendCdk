@@ -1,40 +1,50 @@
 import { environment } from '@/environments/environment';
 import { Injectable } from '@angular/core';
 
-declare global {
-    interface Window {
-        dataLayer: unknown[];
-        gtag: (...args: unknown[]) => void;
-    }
-}
-
 @Injectable({
     providedIn: 'root',
 })
 export class GoogleAnalytics {
-    private initialized = false;
+    private loadPromise?: Promise<void>;
 
-    initialize(): void {
-        if (this.initialized || !environment.google.analytics.id || !environment.production) {
-            return;
+    load(): Promise<void> {
+        if (this.loadPromise) {
+            return this.loadPromise;
         }
 
-        this.initialized = true;
+        this.loadPromise = new Promise((resolve, reject) => {
+            if (!environment.google.analytics.id || !environment.production) {
+                resolve();
+                return;
+            }
 
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${environment.google.analytics.id}`;
+            if (document.getElementById('google-analytics-script')) {
+                resolve();
+                return;
+            }
 
-        document.head.appendChild(script);
+            window.dataLayer = window.dataLayer || [];
 
-        window.dataLayer = window.dataLayer || [];
+            window.gtag = (...args: unknown[]) => {
+                window.dataLayer.push(args);
+            };
 
-        window.gtag = (...args: unknown[]) => {
-            window.dataLayer.push(args);
-        };
+            const script = document.createElement('script');
+            script.id = 'google-analytics-script';
+            script.async = true;
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${environment.google.analytics.id}`;
 
-        window.gtag('js', new Date());
-        window.gtag('config', environment.google.analytics.id);
+            script.onload = () => {
+                window.gtag('js', new Date());
+                window.gtag('config', environment.google.analytics.id);
+                resolve();
+            };
+            script.onerror = () => reject(new Error('No se pudo cargar Google Analytics'));
+
+            document.head.appendChild(script);
+        });
+
+        return this.loadPromise;
     }
 
     event(eventName: string, parameters?: Record<string, unknown>): void {

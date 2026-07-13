@@ -7,8 +7,6 @@ import { Injectable, signal } from '@angular/core';
 export class RecaptchaHelper {
     private loadPromise?: Promise<void>;
 
-    siteKey = signal<string>(environment.google.recaptcha.siteKey);
-
     load(): Promise<void> {
         if (this.loadPromise) {
             return this.loadPromise;
@@ -22,7 +20,7 @@ export class RecaptchaHelper {
 
             const script = document.createElement('script');
             script.id = 'recaptcha-script';
-            script.src = `https://www.google.com/recaptcha/enterprise.js?render=${this.siteKey()}`;
+            script.src = `https://www.google.com/recaptcha/enterprise.js?render=${environment.google.recaptcha.siteKey}`;
             script.async = true;
             script.defer = true;
             script.onload = () => resolve();

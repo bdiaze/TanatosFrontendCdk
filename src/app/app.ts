@@ -42,8 +42,8 @@ export class App implements OnInit, OnDestroy {
         return this.paginaSinMenuEstaticoHelper.paginaSinMenuEstatico();
     });
 
-    ngOnInit(): void {
-        this.recaptchHelper.load();
+    async ngOnInit(): Promise<void> {
+        await Promise.all([this.recaptchHelper.load(), this.googleAnalytics.load()]);
 
         const skipRefreshRoutes = ['callback'];
         const currentPath = window.location.pathname.split('/').pop() ?? '';
@@ -58,8 +58,6 @@ export class App implements OnInit, OnDestroy {
     }
 
     constructor() {
-        this.googleAnalytics.initialize();
-
         afterNextRender(() => {
             const header = document.querySelector('app-header');
             if (!header) return;
