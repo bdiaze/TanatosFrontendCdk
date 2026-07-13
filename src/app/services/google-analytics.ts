@@ -14,7 +14,6 @@ export class GoogleAnalytics {
     constructor() {
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
             this.event('page_view', {
-                page_title: this.title.getTitle(),
                 page_location: window.location.href,
                 page_path: event.urlAfterRedirects,
             });
@@ -39,27 +38,23 @@ export class GoogleAnalytics {
                 return;
             }
 
-            window.dataLayer = window.dataLayer || [];
-
-            window.gtag = (...args: unknown[]) => {
-                window.dataLayer.push(args);
-            };
-
             const script = document.createElement('script');
             script.id = 'google-analytics-script';
-            script.async = true;
             script.src = `https://www.googletagmanager.com/gtag/js?id=${environment.google.analytics.id}`;
-
-            script.onload = () => {
-                window.gtag('js', new Date());
-                window.gtag('config', environment.google.analytics.id, {
-                    send_page_view: false,
-                });
-                resolve();
-            };
+            script.async = true;
+            script.onload = () => resolve();
             script.onerror = () => reject(new Error('No se pudo cargar Google Analytics'));
 
             document.head.appendChild(script);
+
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = (...args: unknown[]) => {
+                window.dataLayer.push(args);
+            };
+            window.gtag('js', new Date());
+            window.gtag('config', environment.google.analytics.id, {
+                send_page_view: false,
+            });
         });
 
         return this.loadPromise;
