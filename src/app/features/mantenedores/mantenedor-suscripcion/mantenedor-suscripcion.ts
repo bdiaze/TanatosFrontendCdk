@@ -105,7 +105,8 @@ export class MantenedorSuscripcion implements OnInit {
     fechaProximoCobroFormateada = computed(() => {
         const resumenSuscripcion = this.resumenSuscripcion();
         if (resumenSuscripcion && resumenSuscripcion.fechaProximoCobro) {
-            return this.datePipe.transform(resumenSuscripcion.fechaProximoCobro, "EEEE d 'de' MMMM 'de' yyyy");
+            const fechaFormateada = this.datePipe.transform(resumenSuscripcion.fechaProximoCobro, "EEEE d 'de' MMMM 'de' yyyy");
+            return fechaFormateada!.charAt(0).toLocaleUpperCase() + fechaFormateada!.slice(1);
         }
         return null;
     });
