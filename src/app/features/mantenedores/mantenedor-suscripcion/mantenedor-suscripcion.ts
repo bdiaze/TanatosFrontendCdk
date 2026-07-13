@@ -92,7 +92,13 @@ export class MantenedorSuscripcion implements OnInit {
     fechaExpiracionFormateada = computed(() => {
         const resumenSuscripcion = this.resumenSuscripcion();
         if (resumenSuscripcion && resumenSuscripcion.fechaExpiracion) {
-            return this.datePipe.transform(resumenSuscripcion.fechaExpiracion, "EEEE d 'de' MMMM 'de' yyyy");
+            const fechaFormateada = this.datePipe.transform(resumenSuscripcion.fechaExpiracion, "EEEE d 'de' MMMM 'de' yyyy");
+            // Si la fecha es distinta a la actual, se muestra la fecha, sino, se muestra la hora...
+            if (this.datePipe.transform(new Date(), "EEEE d 'de' MMMM 'de' yyyy") !== fechaFormateada) {
+                return fechaFormateada!.charAt(0).toLocaleUpperCase() + fechaFormateada!.slice(1);
+            } else {
+                return this.datePipe.transform(resumenSuscripcion.fechaExpiracion, "'Hoy a las' HH:mm");
+            }
         }
         return null;
     });
