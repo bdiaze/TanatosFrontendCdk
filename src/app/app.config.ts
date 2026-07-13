@@ -1,5 +1,5 @@
 import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, TitleStrategy, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import { HttpBackend, HttpXhrBackend, provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
@@ -9,6 +9,7 @@ import '@/app/helpers/locales';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { provideBrnCalendarI18n } from '@spartan-ng/brain/calendar';
 import { dedupInterceptor } from './interceptors/dedup-interceptor';
+import { AppTitleStrategy } from './providers/app-title-strategy';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -20,6 +21,10 @@ export const appConfig: ApplicationConfig = {
                 anchorScrolling: 'enabled',
             }),
         ),
+        {
+            provide: TitleStrategy,
+            useClass: AppTitleStrategy,
+        },
         provideHttpClient(withFetch(), withInterceptors([authInterceptor, dedupInterceptor])),
         { provide: HttpBackend, useClass: HttpXhrBackend },
         { provide: LOCALE_ID, useValue: 'es-CL' },
