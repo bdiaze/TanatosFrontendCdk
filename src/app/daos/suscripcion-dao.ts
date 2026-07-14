@@ -7,6 +7,7 @@ import { EntSuscripcionCrear } from '../entities/others/ent-suscripcion-crear';
 import { SalSuscripcionCrear } from '../entities/others/sal-suscripcion-crear';
 import { NegocioStore } from '../services/negocio-store';
 import { SalSuscripcionResumen } from '../entities/others/sal-suscripcion-resumen';
+import { SalNegocioInformacionUsuario } from '../entities/others/sal-negocio-informacion-usuario';
 
 @Injectable({
     providedIn: 'root',
@@ -30,6 +31,17 @@ export class SuscripcionDao {
                     resumenExistente?.renovacionAutomatica != r.renovacionAutomatica
                 ) {
                     this.negocioStore.resumenSuscripcionUsuario.set(r);
+                }
+
+                const informacionExistente = this.negocioStore.informacionUsuario();
+                if (informacionExistente && informacionExistente.tienePlanEmpresa !== r.tienePlanEmpresa) {
+                    this.negocioStore.informacionUsuario.update(
+                        (info) =>
+                            ({
+                                ...info,
+                                tienePlanEmpresa: r.tienePlanEmpresa,
+                            }) as SalNegocioInformacionUsuario,
+                    );
                 }
             }),
         );

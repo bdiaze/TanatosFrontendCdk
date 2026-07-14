@@ -1,4 +1,5 @@
 export interface SalSuscripcionResumen {
+    tienePlanEmpresa: boolean;
     nombrePlanEnCurso: string | null;
     precioPlanEnCurso: number | null;
     nombrePlanPagoEnCurso: string | null;

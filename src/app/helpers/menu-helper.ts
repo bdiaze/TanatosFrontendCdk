@@ -29,7 +29,9 @@ export class MenuHelper {
     }
 
     ejecutar() {
-        this.logicaEjecutada.set(true);
+        if (!this.logicaEjecutada()) {
+            this.logicaEjecutada.set(true);
+        }
     }
 
     cargandoNegocios = signal<boolean>(false);
