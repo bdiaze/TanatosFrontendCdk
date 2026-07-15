@@ -14,7 +14,7 @@ export class EvaluacionDao {
 
     obtener(fechaDesde: Date, fechaHasta: Date): Observable<SalEvaluacion[]> {
         const params = new HttpParams().set('fechaDesde', fechaDesde.toISOString()).set('fechaHasta', fechaHasta.toISOString());
-        return this.http.get<SalEvaluacion[]>(environment.tanatosService.apiUrl + `/Evaluacion/`, { params });
+        return this.http.get<SalEvaluacion[]>(environment.tanatosService.apiUrl + `/Evaluacion`, { params });
     }
 
     crear(entrada: EntEvaluacionCrear): Observable<SalEvaluacionCrear> {
