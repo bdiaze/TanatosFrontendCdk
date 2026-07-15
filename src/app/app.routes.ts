@@ -38,6 +38,7 @@ import { chainActivateGuards } from './can-activate/chain-activate-guards';
 import { MantenedorPreguntaFrecuente } from './features/mantenedores/mantenedor-pregunta-frecuente/mantenedor-pregunta-frecuente';
 import { Ayuda } from './features/tableros/ayuda/ayuda';
 import { MantenedorVideoTutorial } from './features/mantenedores/mantenedor-video-tutorial/mantenedor-video-tutorial';
+import { Evaluaciones } from './features/tableros/evaluaciones/evaluaciones';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -184,6 +185,12 @@ export const routes: Routes = [
         title: 'Chats de Whatsapp',
         path: 'administracion/servicio-cliente/chats-whatsapp',
         component: ChatsWhatsapp,
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
+    },
+    {
+        title: 'Evaluaciones',
+        path: 'administracion/servicio-cliente/evaluaciones',
+        component: Evaluaciones,
         canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
