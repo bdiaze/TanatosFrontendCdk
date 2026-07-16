@@ -1,0 +1,99 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 pb-4 fade-in">
+    <div>
+        <div class="flex justify-center-safe items-center gap-3 py-4">
+            <ng-icon hlm name="lucideMail" />
+            <h3 hlmH3>Mensajes</h3>
+        </div>
+    </div>
+    <form [formGroup]="form" (submit)="filtrar()" class="flex flex-row items-center justify-center gap-2">
+        <hlm-date-picker class="w-full" formControlName="fechaDesde">
+            <hlm-date-picker-trigger
+                buttonId="fechaDesde"
+                class="[&_button]:text-xs! md:[&_button]:text-sm! [&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal!"
+                >Desde</hlm-date-picker-trigger
+            >
+        </hlm-date-picker>
+        <hlm-date-picker class="w-full" formControlName="fechaHasta">
+            <hlm-date-picker-trigger
+                buttonId="fechaHasta"
+                class="[&_button]:text-xs! md:[&_button]:text-sm! [&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal!"
+                >Hasta</hlm-date-picker-trigger
+            >
+        </hlm-date-picker>
+        <button hlmBtn size="icon" type="submit" [disabled]="cargandoMensajes()">
+            @if (cargandoMensajes()) {
+                <hlm-spinner class="text-lg" />
+            } @else {
+                <ng-icon name="lucideSearch" class="text-lg" />
+            }
+        </button>
+    </form>
+    <div hlmTableContainer class="mt-2">
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm text-center w-26 md:w-36">Emisor</th>
+                    <th hlmTh class="text-xs md:text-sm text-center">Mensaje</th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-20 md:w-22">Fecha</th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargandoMensajes()) {
+                    @for (_ of [1, 2, 3]; track $index) {
+                        <tr hlmTr>
+                            @for (_ of [1, 2, 3]; track $index) {
+                                <td hlmTd>
+                                    <hlm-skeleton class="h-8 rounded-xl" />
+                                </td>
+                            }
+                        </tr>
+                    }
+                } @else {
+                    @for (mensaje of mensajes(); track $index) {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd class="text-xs md:text-sm max-w-26 md:max-w-36">
+                                <p hlmP class="font-semibold text-center">{{ mensaje.nombre }}</p>
+                                <div class="flex flex-row items-center justify-start gap-1.5">
+                                    <div class="size-3 flex items-start">
+                                        <ng-icon hlm name="lucideMail" size="12px" />
+                                    </div>
+                                    <div class="max-w-17 md:max-w-27">
+                                        <p hlmP class="text-xs whitespace-normal wrap-break-word">{{ mensaje.correo }}</p>
+                                    </div>
+                                </div>
+                                @if (mensaje.sub) {
+                                    <div class="flex flex-row items-center justify-start gap-1.5 mt-1">
+                                        <div class="size-3 flex items-center">
+                                            <ng-icon hlm name="lucideHash" size="12px" />
+                                        </div>
+                                        <div class="max-w-17 md:max-w-27">
+                                            <p hlmP class="text-xs truncate">{{ mensaje.sub }}</p>
+                                        </div>
+                                    </div>
+                                }
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word md:px-3">
+                                {{ mensaje.contenido }}
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm text-center">
+                                <p hlmP class="text-xs">{{ mensaje.fechaCreacion | date: 'dd/MM/yyyy' }}</p>
+                                <p hlmP class="text-xs">{{ mensaje.fechaCreacion | date: 'HH:mm:ss' }}</p>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd colspan="6" class="text-center py-3">No existen mensajes registrados...</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    @if (error()) {
+        <div hlmAlert variant="destructive" class="mt-2">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
+    }
+</section>

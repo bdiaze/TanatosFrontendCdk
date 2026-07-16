@@ -41,6 +41,7 @@ import { MantenedorVideoTutorial } from './features/mantenedores/mantenedor-vide
 import { Evaluaciones } from './features/evaluacion/evaluaciones/evaluaciones';
 import { NuevaEvaluacion } from './features/evaluacion/nueva-evaluacion/nueva-evaluacion';
 import { PantallaIngresoEvaluacion } from './features/evaluacion/pantalla-ingreso-evaluacion/pantalla-ingreso-evaluacion';
+import { ConsultaMensajes } from './features/mensaje/consulta-mensajes/consulta-mensajes';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -199,6 +200,12 @@ export const routes: Routes = [
         title: 'Evaluaciones',
         path: 'administracion/servicio-cliente/evaluaciones',
         component: Evaluaciones,
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
+    },
+    {
+        title: 'Mensajes',
+        path: 'administracion/servicio-cliente/mensajes',
+        component: ConsultaMensajes,
         canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {
