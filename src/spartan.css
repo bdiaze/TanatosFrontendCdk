@@ -282,6 +282,7 @@ ng-component[role='tooltip'] {
     @apply bg-negro;
 }
 
+textarea[hlmtextarea],
 textarea[hlminputgrouptextarea] {
     @apply shadow-none;
 }
