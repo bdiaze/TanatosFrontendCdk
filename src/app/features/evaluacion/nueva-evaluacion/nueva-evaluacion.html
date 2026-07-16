@@ -1,1 +1,99 @@
-<p>nueva-evaluacion works!</p>
+<section class="w-fit px-4 py-2 fade-in">
+    <form class="flex flex-col items-center justify-center gap-0" [formGroup]="form" (submit)="enviarEvaluacion()">
+        <div class="flex flex-col items-center justify-center">
+            <h3 hlmH3>¡Evalúanos!</h3>
+        </div>
+        <div class="flex flex-row items-stretch justify-center">
+            @for (puntaje of [1, 2, 3, 4, 5]; track $index) {
+                <button
+                    hlmBtn
+                    type="button"
+                    size="icon"
+                    variant="outline"
+                    (click)="seleccionarPuntaje(puntaje)"
+                    (mouseenter)="preseleccionarPuntaje(puntaje)"
+                    (mouseleave)="quitarPreseleccion(puntaje)"
+                    class="size-10! flex items-center justify-center border-none! text-negro/40 hover:text-azul/80! transition-[color]"
+                    [disabled]="evaluacionEnviada()"
+                    [ngClass]="{
+                        'text-azul/80!': puntajeHover() && puntajeHover()! >= puntaje,
+                    }"
+                >
+                    <ng-icon
+                        name="lucideStar"
+                        class="text-3xl transition-[font-size,line-height,color]"
+                        [ngClass]="{
+                            'text-azul text-4xl': puntajeSeleccionado() && puntajeSeleccionado()! >= puntaje,
+                        }"
+                    />
+                </button>
+            }
+            @if (puntajeSeleccionado()) {
+                <div class="relative flex items-end justify-start w-0" [class.opacity-70]="evaluacionEnviada()">
+                    @if (puntajeSeleccionado() == 1) {
+                        <p hlmP class="absolute text-xs w-12 fade-in delay-200">1 de 5</p>
+                    } @else if (puntajeSeleccionado() == 2) {
+                        <p hlmP class="absolute text-xs w-12 fade-in delay-200">2 de 5</p>
+                    } @else if (puntajeSeleccionado() == 3) {
+                        <p hlmP class="absolute text-xs w-12 fade-in delay-200">3 de 5</p>
+                    } @else if (puntajeSeleccionado() == 4) {
+                        <p hlmP class="absolute text-xs w-12 fade-in delay-200">4 de 5</p>
+                    } @else if (puntajeSeleccionado() == 5) {
+                        <p hlmP class="absolute text-xs w-12 fade-in delay-200">¡5 de 5!</p>
+                    }
+                </div>
+            }
+        </div>
+        <div class="flex flex-col items-center justify-center gap-2 mt-1" [class.opacity-70]="evaluacionEnviada()">
+            @if (puntajeSeleccionado() == 1) {
+                <p hlmP class="text-balance text-center text-sm px-2 w-80 fade-in flex items-center justify-center gap-1">
+                    <span class="text-xl">😧</span>Cuéntanos lo que menos te gustó...
+                </p>
+            } @else if (puntajeSeleccionado() == 2) {
+                <p hlmP class="text-balance text-center text-sm px-2 w-80 fade-in flex items-center justify-center gap-1">
+                    <span class="text-xl">😣</span>Harto por hacer... ¿Dónde comenzamos?
+                </p>
+            } @else if (puntajeSeleccionado() == 3) {
+                <p hlmP class="text-balance text-center text-sm px-2 w-80 fade-in flex items-center justify-center gap-1">
+                    <span class="text-xl">😕</span>¿Solo 3? Cuéntanos lo bueno y lo malo:
+                </p>
+            } @else if (puntajeSeleccionado() == 4) {
+                <p hlmP class="text-balance text-center text-sm px-2 w-80 fade-in flex items-center justify-center gap-1">
+                    <span class="text-xl">😅</span>¿Y qué nos falta para las 5 estrellitas?
+                </p>
+            } @else if (puntajeSeleccionado() == 5) {
+                <p hlmP class="text-balance text-center text-sm px-2 w-80 fade-in flex items-center justify-center gap-1">
+                    <span class="text-xl">😁</span>¡Genial! ¿Algo que te gustaría añadir?
+                </p>
+            } @else {
+                <p hlmP class="text-balance text-center text-sm px-2 w-80 fade-in flex items-center justify-center gap-1">
+                    <span class="text-xl">😊</span>Cuéntanos más sobre tu opinión:
+                </p>
+            }
+            <textarea #comentario hlmTextarea formControlName="comentario" class="w-80 disabled:opacity-80 disabled:cursor-auto"></textarea>
+        </div>
+        @if (error()) {
+            <div hlmAlert variant="destructive" class="mt-2 py-2 px-3 fade-in">
+                <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                <h4 hlmAlertTitle class="text-xs">¡Ocurrió un error!</h4>
+                <p hlmAlertDescription class="text-xs">{{ error() }}</p>
+            </div>
+        }
+        <div class="w-full flex items-center justify-end gap-3 mt-2">
+            @if (form.invalid && form.touched) {
+                <p hlmP class="text-destructive text-xs w-50 text-balance text-right fade-in">Falta que nos indiques tu evaluación con las estrellitas</p>
+            }
+            @if (evaluacionEnviada()) {
+                <p hlmP class="text-azul text-xs w-50 text-balance text-right fade-in">¡Muchas gracias<br />por tu evaluación!</p>
+            }
+            <button hlmBtn type="submit" [disabled]="enviandoEvaluacion() || evaluacionEnviada()" class="gap-2 pl-4! pr-6!">
+                @if (enviandoEvaluacion()) {
+                    <hlm-spinner />
+                } @else {
+                    <ng-icon hlm hlmAlertIcon name="lucideSend" />
+                }
+                Enviar
+            </button>
+        </div>
+    </form>
+</section>
