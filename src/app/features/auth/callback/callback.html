@@ -1,8 +1,10 @@
 <section class="h-full w-full fade-in">
     <div class="flex flex-row items-stretch justify-start h-full">
-        <div class="hidden md:flex md:w-1/4 lg:w-1/4 xl:w-1/5 2xl:w-1/6">
-            <hlm-skeleton class="h-full w-full rounded-none" />
-        </div>
+        @if (authStore.callbackRunning()) {
+            <div class="hidden md:flex md:w-1/4 lg:w-1/4 xl:w-1/5 2xl:w-1/6">
+                <hlm-skeleton class="h-full w-full rounded-none" />
+            </div>
+        }
         <div class="max-w-2xl mx-auto flex-1 flex flex-col items-start justify-start gap-4 px-6 pt-4 pb-6">
             @if (error()) {
                 <div hlmAlert variant="destructive" class="mt-6">

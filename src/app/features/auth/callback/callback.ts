@@ -27,18 +27,16 @@ import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estat
         }),
     ],
 })
-export class Callback implements OnInit, OnDestroy {
-    private readonly paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+export class Callback implements OnInit {
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
-    private readonly authStore = inject(AuthStore);
     private readonly authDao = inject(AuthDao);
     private readonly negocioDao = inject(NegocioDao);
+    authStore = inject(AuthStore);
 
     error = signal('');
 
     ngOnInit() {
-        this.paginaSinMenuEstaticoHelper.quitarMenuEstatico();
         this.authStore.callbackRunning.set(true);
 
         this.route.queryParams.subscribe((params) => {
@@ -113,10 +111,6 @@ export class Callback implements OnInit, OnDestroy {
                     this.authStore.callbackRunning.set(false);
                 });
         });
-    }
-
-    ngOnDestroy(): void {
-        this.paginaSinMenuEstaticoHelper.mostrarMenuEstatico();
     }
 
     private getMensajeErrorCallback(code: string | null, returnedState: string | null, storedState: string | null, codeVerifier: string | null): string {
