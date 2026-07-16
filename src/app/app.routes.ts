@@ -40,6 +40,7 @@ import { Ayuda } from './features/tableros/ayuda/ayuda';
 import { MantenedorVideoTutorial } from './features/mantenedores/mantenedor-video-tutorial/mantenedor-video-tutorial';
 import { Evaluaciones } from './features/evaluacion/evaluaciones/evaluaciones';
 import { NuevaEvaluacion } from './features/evaluacion/nueva-evaluacion/nueva-evaluacion';
+import { PantallaIngresoEvaluacion } from './features/evaluacion/pantalla-ingreso-evaluacion/pantalla-ingreso-evaluacion';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -185,7 +186,7 @@ export const routes: Routes = [
     {
         title: '¡Evalúanos!',
         path: 'nueva-evaluacion',
-        component: NuevaEvaluacion,
+        component: PantallaIngresoEvaluacion,
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
