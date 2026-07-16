@@ -38,7 +38,8 @@ import { chainActivateGuards } from './can-activate/chain-activate-guards';
 import { MantenedorPreguntaFrecuente } from './features/mantenedores/mantenedor-pregunta-frecuente/mantenedor-pregunta-frecuente';
 import { Ayuda } from './features/tableros/ayuda/ayuda';
 import { MantenedorVideoTutorial } from './features/mantenedores/mantenedor-video-tutorial/mantenedor-video-tutorial';
-import { Evaluaciones } from './features/tableros/evaluaciones/evaluaciones';
+import { Evaluaciones } from './features/evaluacion/evaluaciones/evaluaciones';
+import { NuevaEvaluacion } from './features/evaluacion/nueva-evaluacion/nueva-evaluacion';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -179,6 +180,12 @@ export const routes: Routes = [
         title: 'Mi Plan',
         path: 'mi-plan',
         component: MantenedorSuscripcion,
+        canActivate: [chainActivateGuards(sesionIniciada)],
+    },
+    {
+        title: '¡Evalúanos!',
+        path: 'nueva-evaluacion',
+        component: NuevaEvaluacion,
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
