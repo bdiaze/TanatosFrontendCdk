@@ -7,6 +7,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideSearch, lucideStar, lucideTriangleAlert } from '@ng-icons/lucide';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -28,6 +29,7 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
         HlmDatePickerImports,
         ReactiveFormsModule,
         HlmSpinnerImports,
+        HlmAlertImports,
         DatePipe,
     ],
     templateUrl: './evaluaciones.html',
