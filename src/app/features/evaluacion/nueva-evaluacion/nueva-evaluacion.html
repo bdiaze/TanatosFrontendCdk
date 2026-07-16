@@ -1,4 +1,4 @@
-<section class="w-fit px-4 py-2 fade-in">
+<section class="w-fit mx-auto fade-in">
     <form class="flex flex-col items-center justify-center gap-0" [formGroup]="form" (submit)="enviarEvaluacion()">
         <div class="flex flex-col items-center justify-center">
             <h3 hlmH3>¡Evalúanos!</h3>
@@ -13,17 +13,15 @@
                     (click)="seleccionarPuntaje(puntaje)"
                     (mouseenter)="preseleccionarPuntaje(puntaje)"
                     (mouseleave)="quitarPreseleccion(puntaje)"
-                    class="size-10! flex items-center justify-center border-none! text-negro/40 hover:text-azul/80! transition-[color]"
+                    class="size-10! flex items-center justify-center border-none! group"
                     [disabled]="evaluacionEnviada()"
-                    [ngClass]="{
-                        'text-azul/80!': puntajeHover() && puntajeHover()! >= puntaje,
-                    }"
                 >
                     <ng-icon
                         name="lucideStar"
-                        class="text-3xl transition-[font-size,line-height,color]"
+                        class="text-3xl transition-[font-size,line-height,color] text-negro/40 group-hover:text-negro/40"
                         [ngClass]="{
-                            'text-azul text-4xl': puntajeSeleccionado() && puntajeSeleccionado()! >= puntaje,
+                            'text-azul/80!': puntajeHover() && puntajeHover()! >= puntaje && !(puntajeSeleccionado() && puntajeSeleccionado()! >= puntaje),
+                            'text-azul! text-4xl': puntajeSeleccionado() && puntajeSeleccionado()! >= puntaje,
                         }"
                     />
                 </button>

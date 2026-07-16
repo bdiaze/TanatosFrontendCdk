@@ -65,6 +65,7 @@ export class NuevaEvaluacion {
             this.comentario.nativeElement.focus();
         } else {
             this.puntajeSeleccionado.set(null);
+            this.puntajeHover.set(null);
             this.form.markAsUntouched();
         }
     }
