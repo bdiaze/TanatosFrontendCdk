@@ -2,7 +2,7 @@ import { EvaluacionDao } from '@/app/daos/evaluacion-dao';
 import { EntEvaluacionCrear } from '@/app/entities/others/ent-evaluacion-crear';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NgClass } from '@angular/common';
-import { Component, computed, effect, ElementRef, inject, input, output, signal, untracked, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, signal, untracked, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideSend, lucideStar, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -11,11 +11,11 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
-import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-nueva-evaluacion',
-    imports: [HlmH3, HlmH4, HlmP, NgIcon, HlmIcon, HlmSpinnerImports, HlmButtonImports, HlmTextareaImports, NgClass, ReactiveFormsModule, HlmAlertImports],
+    imports: [HlmH3, HlmP, NgIcon, HlmIcon, HlmSpinnerImports, HlmButtonImports, HlmTextareaImports, NgClass, ReactiveFormsModule, HlmAlertImports],
     templateUrl: './nueva-evaluacion.html',
     styleUrl: './nueva-evaluacion.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideStar, lucideSend })],
