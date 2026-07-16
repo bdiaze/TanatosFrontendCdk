@@ -1,5 +1,4 @@
-export interface Mensaje {
-    id: number;
+export interface SalMensaje {
     sub: string | null;
     nombre: string;
     correo: string;

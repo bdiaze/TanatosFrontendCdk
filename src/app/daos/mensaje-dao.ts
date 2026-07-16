@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Mensaje } from '../entities/models/mensaje';
 import { environment } from '@/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { EntMensajeIngresar } from '../entities/others/ent-mensaje-ingresar';
+import { SalMensaje } from '../entities/others/sal-mensaje';
 
 @Injectable({
     providedIn: 'root',
@@ -11,8 +11,9 @@ import { EntMensajeIngresar } from '../entities/others/ent-mensaje-ingresar';
 export class MensajeDao {
     constructor(private readonly http: HttpClient) {}
 
-    obtener(fechaInicial: string, fechaFinal: string): Observable<Mensaje[]> {
-        return this.http.get<Mensaje[]>(environment.tanatosService.apiUrl + `/Mensaje/${fechaInicial}/${fechaFinal}`);
+    obtener(fechaDesde: Date, fechaHasta: Date): Observable<SalMensaje[]> {
+        const params = new HttpParams().set('fechaDesde', fechaDesde.toISOString()).set('fechaHasta', fechaHasta.toISOString());
+        return this.http.get<SalMensaje[]>(environment.tanatosService.apiUrl + `/Mensaje`, { params });
     }
 
     ingresar(entrada: EntMensajeIngresar): Observable<void> {
