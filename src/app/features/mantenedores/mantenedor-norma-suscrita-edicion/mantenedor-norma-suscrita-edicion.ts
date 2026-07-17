@@ -47,6 +47,7 @@ import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { map } from 'rxjs';
 import { TourService } from '@/app/helpers/tour-service';
 import { DriveStep } from 'driver.js';
+import { SalTipoPeriodicidad } from '@/app/entities/others/sal-tipo-periodicidad';
 
 @Component({
     selector: 'app-mantenedor-norma-suscrita-edicion',
@@ -185,7 +186,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
     categoriasVigentes = signal<CategoriaNorma[]>([]);
 
     cargandoPeriodicidadVigentes = signal<boolean>(true);
-    periodicidadesVigentes = signal<TipoPeriodicidad[]>([]);
+    periodicidadesVigentes = signal<SalTipoPeriodicidad[]>([]);
 
     cargandoFiscalizadoresVigentes = signal<boolean>(true);
     fiscalizadoresVigentes = signal<TipoFiscalizador[]>([]);

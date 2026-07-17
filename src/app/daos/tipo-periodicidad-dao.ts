@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TipoPeriodicidad } from '../entities/models/tipo-periodicidad';
+import { SalTipoPeriodicidad } from '../entities/others/sal-tipo-periodicidad';
 
 @Injectable({
     providedIn: 'root',
@@ -10,8 +11,8 @@ import { TipoPeriodicidad } from '../entities/models/tipo-periodicidad';
 export class TipoPeriodicidadDao {
     constructor(private readonly http: HttpClient) {}
 
-    obtenerVigentes(): Observable<TipoPeriodicidad[]> {
-        return this.http.get<TipoPeriodicidad[]>(environment.tanatosService.apiUrl + '/TipoPeriodicidad/Vigentes');
+    obtenerVigentes(): Observable<SalTipoPeriodicidad[]> {
+        return this.http.get<SalTipoPeriodicidad[]>(environment.tanatosService.apiUrl + '/TipoPeriodicidad/Vigentes');
     }
 
     obtenerPorVigencia(vigencia: boolean | null): Observable<TipoPeriodicidad[]> {
