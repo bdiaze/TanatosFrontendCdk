@@ -11,23 +11,19 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmButton } from '@spartan-ng/helm/button';
-import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
-import { HlmBadgeImports } from '@spartan-ng/helm/badge';
-import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
-import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { normalize } from '@/app/helpers/string-comparator';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmInputImports } from '@spartan-ng/helm/input';
-import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import dayjs from 'dayjs';
 import { TourService } from '@/app/helpers/tour-service';
 import { map } from 'rxjs';
 import { DriveStep } from 'driver.js';
+import { TarjetaVencimiento } from '@/app/components/tarjeta-vencimiento/tarjeta-vencimiento';
 
 @Component({
     selector: 'app-tablero-vencimientos',
@@ -36,22 +32,17 @@ import { DriveStep } from 'driver.js';
         HlmIcon,
         HlmH3,
         HlmH4,
-        HlmP,
         HlmInputImports,
         HlmInputGroupImports,
         HlmSpinnerImports,
         HlmSeparatorImports,
         HlmItemImports,
         HlmButton,
-        DatePipe,
         RouterLink,
         HlmAlertImports,
-        HlmBadgeImports,
-        BrnTooltipImports,
-        HlmTooltipImports,
         HlmSkeletonImports,
         HlmBreadcrumbImports,
-        PlainTextPipe,
+        TarjetaVencimiento,
     ],
     templateUrl: './tablero-vencimientos.html',
     providers: [
@@ -177,88 +168,6 @@ export class TableroVencimientos {
             .add(() => {
                 this.cargando.set(false);
             });
-    }
-
-    haceCuanto(strFecha: string): string {
-        const diferencia = this.diferenciaConFechaActual(strFecha);
-        return `${diferencia.length > 0 ? 'Hace ' + diferencia : 'Recién'}`;
-    }
-
-    enCuanto(strFecha: string): string {
-        const diferencia = this.diferenciaConFechaActual(strFecha, true);
-        return `${diferencia.length > 0 ? 'Menos de ' + diferencia : 'Ahora'}`;
-    }
-
-    diferenciaConFechaActual(strFecha: string, aproxSuperior = false): string {
-        const fecha: Date = new Date(strFecha);
-        const ahora: Date = new Date();
-
-        // Se determina la fecha de inicio y fin según la fecha mayor...
-        const fechaFutura = fecha > ahora;
-        let inicio = fechaFutura ? ahora : fecha;
-        let fin = fechaFutura ? fecha : ahora;
-
-        const inicioDayJS = dayjs(inicio);
-        const finDayJS = dayjs(fin);
-
-        const diffInYears = finDayJS.diff(inicioDayJS, 'year', true);
-        if (!aproxSuperior) {
-            const annos = Math.floor(diffInYears);
-            if (annos >= 1) {
-                return `${annos} ${annos === 1 ? 'año' : 'años'}`;
-            }
-        } else {
-            const annos = Math.ceil(diffInYears);
-            if (annos > 1) {
-                return `${annos} años`;
-            }
-        }
-
-        const diffInMonths = finDayJS.diff(inicioDayJS, 'month', true);
-        if (!aproxSuperior) {
-            const meses = Math.floor(diffInMonths);
-            if (meses >= 1) {
-                return `${meses} ${meses === 1 ? 'mes' : 'meses'}`;
-            }
-        } else {
-            const meses = Math.ceil(diffInMonths);
-            if (meses == 12) {
-                return `un año`;
-            } else if (meses > 1) {
-                return `${meses} meses`;
-            }
-        }
-
-        // Se calcula la diferencia para semanas, días, horas, minutos y segundos...
-        const diffMs = fin.getTime() - inicio.getTime();
-
-        const unidades = [
-            { unit: 'semana', ms: 1000 * 60 * 60 * 24 * 7 },
-            { unit: 'día', ms: 1000 * 60 * 60 * 24 },
-            { unit: 'hora', ms: 1000 * 60 * 60 },
-            { unit: 'minuto', ms: 1000 * 60 },
-            { unit: 'segundo', ms: 1000 },
-        ];
-
-        if (!aproxSuperior) {
-            for (const u of unidades) {
-                const valor = Math.floor(diffMs / u.ms);
-                if (valor >= 1) {
-                    return `${valor} ${valor === 1 ? u.unit : u.unit + 's'}`;
-                }
-            }
-        } else {
-            for (const [index, u] of unidades.entries()) {
-                const valor = Math.ceil(diffMs / u.ms);
-                if (index > 0 && valor * u.ms == unidades[index - 1].ms) {
-                    return `un${[0, 2].includes(index - 1) ? 'a' : ''} ${unidades[index - 1].unit}`;
-                } else if (valor > 1) {
-                    return `${valor} ${u.unit + 's'}`;
-                }
-            }
-        }
-
-        return '';
     }
 
     mostrarMasCompletadas() {

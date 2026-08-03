@@ -30,54 +30,11 @@
                         <hlm-skeleton class="h-50 rounded-xl" />
                     } @else {
                         @for (vencido of normasVencidasMostrar(); track vencido.idHistorialNormaSuscrita) {
-                            <a
+                            <tarjeta-vencimiento
                                 [id]="ayudaRunning() ? 'obligacion-prueba' : null"
-                                hlmItem
-                                variant="outline"
-                                [routerLink]="['/obligacion', vencido.idNormaSuscrita, vencido.idHistorialNormaSuscrita]"
-                                class="relative flex flex-row items-start justify-start px-5 fade-in"
-                            >
-                                <div hlmItemHeader class="flex flex-col items-stretch justify-start">
-                                    <div class="w-full text-center">
-                                        <span hlmBadge variant="destructive">{{ haceCuanto(vencido.fechaVencimiento) }}</span>
-                                    </div>
-                                    <p hlmItemDescription class="text-center mt-1 md:hidden!">
-                                        {{ vencido.fechaVencimiento | date: 'd MMM yyyy HH:mm' }}
-                                    </p>
-                                    <p hlmItemDescription class="text-center mt-1 hidden! md:flow-root!">
-                                        {{ vencido.fechaVencimiento | date: 'd MMM yyyy' }}
-                                    </p>
-                                    <p hlmItemDescription class="text-center text-xs hidden! md:flow-root!">
-                                        {{ vencido.fechaVencimiento | date: 'HH:mm' }}
-                                    </p>
-                                </div>
-                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-5 w-full">
-                                    <div hlmItemTitle class="w-full justify-center text-center">
-                                        {{ vencido.nombreNorma }}
-                                    </div>
-                                    <p hlmItemDescription class="whitespace-pre-line">
-                                        {{ vencido.descripcionNorma | plainText }}
-                                    </p>
-                                    @if (vencido.multaNorma) {
-                                        <p
-                                            [hlmTooltip]="vencido.multaNorma"
-                                            position="bottom"
-                                            hlmItemDescription
-                                            class="text-destructive opacity-90 text-xs mt-1"
-                                        >
-                                            <b>Multa:</b><br />
-                                            {{ vencido.multaNorma }}
-                                        </p>
-                                    }
-                                </div>
-                                <div
-                                    class="absolute bottom-0 left-0 py-1 px-5 border-t border-r rounded-tr-sm max-w-9/10"
-                                    [hlmTooltip]="vencido.nombreTemplate ? `Pertenece a la plantilla ${vencido.nombreTemplate}` : 'Creada por ti'"
-                                    position="bottom"
-                                >
-                                    <p hlmP class="text-xs truncate text-negro/90">{{ vencido.nombreTemplate ?? 'Propia' }}</p>
-                                </div>
-                            </a>
+                                variant="vencido"
+                                [vencimiento]="vencido"
+                            ></tarjeta-vencimiento>
                         } @empty {
                             <div hlmAlert class="col-span-1 md:col-span-3 fade-in">
                                 <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" />
@@ -102,48 +59,7 @@
                         <hlm-skeleton class="h-50 rounded-xl" />
                     } @else {
                         @for (futuro of normasFuturasMostrar(); track futuro.idHistorialNormaSuscrita) {
-                            <a
-                                hlmItem
-                                variant="outline"
-                                [routerLink]="['/obligacion', futuro.idNormaSuscrita, futuro.idHistorialNormaSuscrita]"
-                                class="relative flex flex-row items-start justify-start px-5 fade-in"
-                            >
-                                <div hlmItemHeader class="flex flex-col items-stretch justify-start">
-                                    <div class="text-center">
-                                        <span hlmBadge class="bg-calipso text-balance whitespace-break-spaces">{{ enCuanto(futuro.fechaVencimiento) }}</span>
-                                    </div>
-                                    <p hlmItemDescription class="text-center mt-1 md:hidden!">
-                                        {{ futuro.fechaVencimiento | date: 'd MMM yyyy HH:mm' }}
-                                    </p>
-                                    <p hlmItemDescription class="text-center mt-1 hidden! md:flow-root!">
-                                        {{ futuro.fechaVencimiento | date: 'd MMM yyyy' }}
-                                    </p>
-                                    <p hlmItemDescription class="text-center text-xs hidden! md:flow-root!">
-                                        {{ futuro.fechaVencimiento | date: 'HH:mm' }}
-                                    </p>
-                                </div>
-                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-5 w-full">
-                                    <div hlmItemTitle class="w-full justify-center text-center">
-                                        {{ futuro.nombreNorma }}
-                                    </div>
-                                    <p hlmItemDescription class="whitespace-pre-line">
-                                        {{ futuro.descripcionNorma | plainText }}
-                                    </p>
-                                    @if (futuro.multaNorma) {
-                                        <p [hlmTooltip]="futuro.multaNorma" position="bottom" hlmItemDescription class="opacity-90 text-xs mt-1">
-                                            <b>Multa:</b><br />
-                                            {{ futuro.multaNorma }}
-                                        </p>
-                                    }
-                                </div>
-                                <div
-                                    class="absolute bottom-0 left-0 py-1 px-5 border-t border-r rounded-tr-sm max-w-9/10"
-                                    [hlmTooltip]="futuro.nombreTemplate ? `Pertenece a la plantilla ${futuro.nombreTemplate}` : 'Creada por ti'"
-                                    position="bottom"
-                                >
-                                    <p hlmP class="text-xs truncate text-negro/90">{{ futuro.nombreTemplate ?? 'Propia' }}</p>
-                                </div>
-                            </a>
+                            <tarjeta-vencimiento variant="futuro" [vencimiento]="futuro"></tarjeta-vencimiento>
                         } @empty {
                             <div hlmAlert class="col-span-1 md:col-span-3 fade-in">
                                 <ng-icon hlm hlmAlertIcon name="lucideCircleAlert" />
@@ -185,48 +101,7 @@
                         <hlm-skeleton class="h-50 rounded-xl" />
                     } @else {
                         @for (completada of normasCompletadasFiltradasPaginadas(); track completada.idHistorialNormaSuscrita) {
-                            <a
-                                hlmItem
-                                variant="outline"
-                                [routerLink]="['/obligacion', completada.idNormaSuscrita, completada.idHistorialNormaSuscrita]"
-                                class="relative flex flex-row items-start px-5 fade-in"
-                            >
-                                <div hlmItemHeader class="flex flex-col items-stretch justify-start">
-                                    <div class="text-center">
-                                        <span hlmBadge class="badgeAzul">Completada</span>
-                                    </div>
-                                    <p hlmItemDescription class="text-center mt-1 md:hidden!">
-                                        {{ completada.fechaVencimiento | date: 'd MMM yyyy HH:mm' }}
-                                    </p>
-                                    <p hlmItemDescription class="text-center mt-1 hidden! md:flow-root!">
-                                        {{ completada.fechaVencimiento | date: 'd MMM yyyy' }}
-                                    </p>
-                                    <p hlmItemDescription class="text-center text-xs hidden! md:flow-root!">
-                                        {{ completada.fechaVencimiento | date: 'HH:mm' }}
-                                    </p>
-                                </div>
-                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-5 w-full">
-                                    <div hlmItemTitle class="w-full justify-center text-center">
-                                        {{ completada.nombreNorma }}
-                                    </div>
-                                    <p hlmItemDescription class="whitespace-pre-line">
-                                        {{ completada.descripcionNorma | plainText }}
-                                    </p>
-                                    @if (completada.multaNorma) {
-                                        <p [hlmTooltip]="completada.multaNorma" position="bottom" hlmItemDescription class="opacity-90 text-xs mt-1">
-                                            <b>Multa:</b><br />
-                                            {{ completada.multaNorma }}
-                                        </p>
-                                    }
-                                </div>
-                                <div
-                                    class="absolute bottom-0 left-0 py-1 px-5 border-t border-r rounded-tr-sm max-w-9/10"
-                                    [hlmTooltip]="completada.nombreTemplate ? `Pertenece a la plantilla ${completada.nombreTemplate}` : 'Creada por ti'"
-                                    position="bottom"
-                                >
-                                    <p hlmP class="text-xs truncate text-negro/90">{{ completada.nombreTemplate ?? 'Propia' }}</p>
-                                </div>
-                            </a>
+                            <tarjeta-vencimiento variant="completado" [vencimiento]="completada"></tarjeta-vencimiento>
                         } @empty {
                             @if (normasCompletadas().length == 0) {
                                 <div hlmAlert class="col-span-1 md:col-span-3 fade-in">

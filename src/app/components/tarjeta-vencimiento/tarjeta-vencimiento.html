@@ -1,0 +1,58 @@
+<a
+    hlmItem
+    variant="outline"
+    [routerLink]="['/obligacion', vencimiento().idNormaSuscrita, vencimiento().idHistorialNormaSuscrita]"
+    class="relative flex flex-row items-start justify-start px-5 fade-in h-full gap-1 pb-10"
+>
+    <div hlmItemHeader class="flex flex-col items-center justify-center">
+        <span
+            hlmBadge
+            [variant]="badgeVariant()"
+            class="text-balance whitespace-break-spaces"
+            [class.badgeDestructive]="variant() == 'vencido'"
+            [class.bg-calipso]="variant() == 'futuro'"
+            [class.badgeAzul]="variant() == 'completado'"
+        >
+            {{ badgeText() }}
+        </span>
+    </div>
+    <div hlmItemContent class="flex flex-col items-center justify-center">
+        <p hlmItemDescription class="text-center mt-1 md:hidden!">
+            {{ vencimiento().fechaVencimiento | date: 'd MMM yyyy HH:mm' }}
+        </p>
+        <p hlmItemDescription class="text-center mt-1 hidden! md:flow-root!">
+            {{ vencimiento().fechaVencimiento | date: 'd MMM yyyy' }}
+        </p>
+        <p hlmItemDescription class="text-center text-xs hidden! md:flow-root!">
+            {{ vencimiento().fechaVencimiento | date: 'HH:mm' }}
+        </p>
+    </div>
+    <div hlmItemContent class="flex-1 flex flex-col items-start justify-start w-full">
+        <div hlmItemTitle class="w-full justify-center text-center">
+            {{ vencimiento().nombreNorma }}
+        </div>
+        <p hlmItemDescription class="whitespace-pre-line">
+            {{ vencimiento().descripcionNorma | plainText }}
+        </p>
+        @if (vencimiento().multaNorma) {
+            <p [hlmTooltip]="vencimiento().multaNorma" hlmItemDescription class="opacity-90 text-xs mt-1" [class.text-destructive]="variant() == 'vencido'">
+                <b>Multa:</b><br />
+                {{ vencimiento().multaNorma }}
+            </p>
+        }
+    </div>
+    <div
+        class="absolute bottom-0 left-0 py-1.5 px-4.5 border-t border-r rounded-tr-sm max-w-9/10 flex items-center justify-evenly gap-1"
+        [hlmTooltip]="vencimiento().nombreTemplate ? `Pertenece a la plantilla ${vencimiento().nombreTemplate}` : 'Creada por ti'"
+        position="bottom"
+    >
+        <div class="size-4">
+            @if (vencimiento().nombreTemplate) {
+                <ng-icon hlm name="lucideClipboardList" size="sm" />
+            } @else {
+                <ng-icon hlm name="lucideUser" size="sm" />
+            }
+        </div>
+        <p hlmP class="text-xs truncate text-negro/90">{{ vencimiento().nombreTemplate ?? 'Propia' }}</p>
+    </div>
+</a>

@@ -117,7 +117,8 @@ span[hlmBadge] ng-icon {
     @apply text-blanco;
 }
 
-span[hlmBadge][variant='destructive'] {
+span[hlmBadge][variant='destructive'],
+span[hlmBadge].badgeDestructive {
     @apply text-blanco bg-destructive;
 }
 
@@ -279,7 +280,7 @@ ng-component[role='tooltip'] span svg {
 }
 
 ng-component[role='tooltip'] {
-    @apply bg-negro;
+    @apply bg-negro text-wrap;
 }
 
 textarea[hlmtextarea],
