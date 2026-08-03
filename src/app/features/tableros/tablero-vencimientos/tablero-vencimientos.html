@@ -35,7 +35,7 @@
                                 hlmItem
                                 variant="outline"
                                 [routerLink]="['/obligacion', vencido.idNormaSuscrita, vencido.idHistorialNormaSuscrita]"
-                                class="flex flex-row items-start justify-start px-5 fade-in"
+                                class="relative flex flex-row items-start justify-start px-5 fade-in"
                             >
                                 <div hlmItemHeader class="flex flex-col items-stretch justify-start">
                                     <div class="w-full text-center">
@@ -51,7 +51,7 @@
                                         {{ vencido.fechaVencimiento | date: 'HH:mm' }}
                                     </p>
                                 </div>
-                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-2 w-full">
+                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-5 w-full">
                                     <div hlmItemTitle class="w-full justify-center text-center">
                                         {{ vencido.nombreNorma }}
                                     </div>
@@ -69,6 +69,13 @@
                                             {{ vencido.multaNorma }}
                                         </p>
                                     }
+                                </div>
+                                <div
+                                    class="absolute bottom-0 left-0 py-1 px-5 border-t border-r rounded-tr-sm max-w-9/10"
+                                    [hlmTooltip]="vencido.nombreTemplate ? `Pertenece a la plantilla ${vencido.nombreTemplate}` : 'Creada por ti'"
+                                    position="bottom"
+                                >
+                                    <p hlmP class="text-xs truncate text-negro/90">{{ vencido.nombreTemplate ?? 'Propia' }}</p>
                                 </div>
                             </a>
                         } @empty {
@@ -99,7 +106,7 @@
                                 hlmItem
                                 variant="outline"
                                 [routerLink]="['/obligacion', futuro.idNormaSuscrita, futuro.idHistorialNormaSuscrita]"
-                                class="flex flex-row items-start justify-start px-5 fade-in"
+                                class="relative flex flex-row items-start justify-start px-5 fade-in"
                             >
                                 <div hlmItemHeader class="flex flex-col items-stretch justify-start">
                                     <div class="text-center">
@@ -115,7 +122,7 @@
                                         {{ futuro.fechaVencimiento | date: 'HH:mm' }}
                                     </p>
                                 </div>
-                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-2 w-full">
+                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-5 w-full">
                                     <div hlmItemTitle class="w-full justify-center text-center">
                                         {{ futuro.nombreNorma }}
                                     </div>
@@ -128,6 +135,13 @@
                                             {{ futuro.multaNorma }}
                                         </p>
                                     }
+                                </div>
+                                <div
+                                    class="absolute bottom-0 left-0 py-1 px-5 border-t border-r rounded-tr-sm max-w-9/10"
+                                    [hlmTooltip]="futuro.nombreTemplate ? `Pertenece a la plantilla ${futuro.nombreTemplate}` : 'Creada por ti'"
+                                    position="bottom"
+                                >
+                                    <p hlmP class="text-xs truncate text-negro/90">{{ futuro.nombreTemplate ?? 'Propia' }}</p>
                                 </div>
                             </a>
                         } @empty {
@@ -175,7 +189,7 @@
                                 hlmItem
                                 variant="outline"
                                 [routerLink]="['/obligacion', completada.idNormaSuscrita, completada.idHistorialNormaSuscrita]"
-                                class="flex flex-row items-start justify-start px-5 fade-in"
+                                class="relative flex flex-row items-start px-5 fade-in"
                             >
                                 <div hlmItemHeader class="flex flex-col items-stretch justify-start">
                                     <div class="text-center">
@@ -191,7 +205,7 @@
                                         {{ completada.fechaVencimiento | date: 'HH:mm' }}
                                     </p>
                                 </div>
-                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-2 w-full">
+                                <div hlmItemContent class="flex-1 flex flex-col items-start justify-start mb-5 w-full">
                                     <div hlmItemTitle class="w-full justify-center text-center">
                                         {{ completada.nombreNorma }}
                                     </div>
@@ -204,6 +218,13 @@
                                             {{ completada.multaNorma }}
                                         </p>
                                     }
+                                </div>
+                                <div
+                                    class="absolute bottom-0 left-0 py-1 px-5 border-t border-r rounded-tr-sm max-w-9/10"
+                                    [hlmTooltip]="completada.nombreTemplate ? `Pertenece a la plantilla ${completada.nombreTemplate}` : 'Creada por ti'"
+                                    position="bottom"
+                                >
+                                    <p hlmP class="text-xs truncate text-negro/90">{{ completada.nombreTemplate ?? 'Propia' }}</p>
                                 </div>
                             </a>
                         } @empty {
