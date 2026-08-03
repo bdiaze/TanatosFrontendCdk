@@ -14,7 +14,7 @@ import { HlmDropdownMenuImports } from '@spartan-ng/helm/dropdown-menu';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { catchError, combineLatest, of } from 'rxjs';
 
 @Component({
@@ -25,6 +25,7 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmButtonImports,
         HlmTableImports,
         HlmH3,
+        HlmP,
         HlmAlertImports,
         NgIcon,
         HlmIcon,
@@ -59,13 +60,20 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             llave: 'descripcion',
             nombre: 'Descripción',
             tipo: 'string',
-            requerido: true,
+            requerido: false,
             deshabilitado: false,
         },
         {
             llave: 'cron',
             nombre: 'Cron',
             tipo: 'string',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'frecuenciaDias',
+            nombre: 'Frecuencia en Días',
+            tipo: 'number',
             requerido: false,
             deshabilitado: false,
         },
@@ -88,6 +96,13 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             nombre: 'Delta Años',
             tipo: 'number',
             requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'orden',
+            nombre: 'Orden',
+            tipo: 'number',
+            requerido: true,
             deshabilitado: false,
         },
         {
@@ -112,13 +127,20 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             llave: 'descripcion',
             nombre: 'Descripción',
             tipo: 'string',
-            requerido: true,
+            requerido: false,
             deshabilitado: false,
         },
         {
             llave: 'cron',
             nombre: 'Cron',
             tipo: 'string',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'frecuenciaDias',
+            nombre: 'Frecuencia en Días',
+            tipo: 'number',
             requerido: false,
             deshabilitado: false,
         },
@@ -141,6 +163,13 @@ export class MantenedorTipoPeriodicidad implements OnInit {
             nombre: 'Delta Años',
             tipo: 'number',
             requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'orden',
+            nombre: 'Orden',
+            tipo: 'number',
+            requerido: true,
             deshabilitado: false,
         },
         {
@@ -217,8 +246,18 @@ export class MantenedorTipoPeriodicidad implements OnInit {
     editar(item: TipoPeriodicidad) {
         this.cargando.set(true);
 
-        if (item.cron?.trim().length === 0) {
-            item.cron = null;
+        item.nombre = item.nombre.trim();
+        if (item.cron) {
+            item.cron = item.cron.trim();
+            if (item.cron.length === 0) {
+                item.cron = null;
+            }
+        }
+        if (item.descripcion) {
+            item.descripcion = item.descripcion.trim();
+            if (item.descripcion.length === 0) {
+                item.descripcion = null;
+            }
         }
 
         this.dao.actualizar(item).subscribe({
@@ -247,8 +286,18 @@ export class MantenedorTipoPeriodicidad implements OnInit {
     crear(item: TipoPeriodicidad) {
         this.cargando.set(true);
 
-        if (item.cron?.trim().length === 0) {
-            item.cron = null;
+        item.nombre = item.nombre.trim();
+        if (item.cron) {
+            item.cron = item.cron.trim();
+            if (item.cron.length === 0) {
+                item.cron = null;
+            }
+        }
+        if (item.descripcion) {
+            item.descripcion = item.descripcion.trim();
+            if (item.descripcion.length === 0) {
+                item.descripcion = null;
+            }
         }
 
         this.dao.crear(item).subscribe({

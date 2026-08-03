@@ -10,7 +10,7 @@
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm text-center w-12">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
-                    <th hlmTh class="text-xs md:text-sm text-center md:w-48">Cron</th>
+                    <th hlmTh class="text-xs md:text-sm md:w-48">Cron o Frecuencia</th>
                     <th hlmTh class="text-xs md:text-sm text-center md:w-22">Delta</th>
                     <th hlmTh class="text-xs md:text-sm text-center w-14 md:w-24 px-0">Vigencia</th>
                     <th hlmTh class="w-10 md:w-16"></th>
@@ -32,11 +32,22 @@
                     @for (item of listado(); track item.id) {
                         <tr hlmTr class="fade-in">
                             <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
-                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
-                                {{ item.nombre }}
+                            <td hlmTd class="whitespace-normal wrap-break-word">
+                                <p hlmP class="text-[0.65rem] md:text-xs">Orden: {{ item.orden }}</p>
+                                <p hlmP class="text-xs md:text-sm">{{ item.nombre }}</p>
+                                @if (item.descripcion) {
+                                    <p hlmP class="text-[0.65rem] md:text-xs">{{ item.descripcion }}</p>
+                                }
                             </td>
-                            <td hlmTd class="text-xs md:text-sm text-center whitespace-normal break-all md:break-normal">
-                                {{ item.cron }}
+                            <td hlmTd class="whitespace-normal break-all">
+                                @if (item.cron) {
+                                    <p hlmP class="text-[0.65rem] md:text-xs">Cron:</p>
+                                    <p hlmP class="text-xs md:text-sm">{{ item.cron }}</p>
+                                }
+                                @if (item.frecuenciaDias) {
+                                    <p hlmP class="text-[0.65rem] md:text-xs">Frecuencia en Días:</p>
+                                    <p hlmP class="text-xs md:text-sm">{{ item.frecuenciaDias }}</p>
+                                }
                             </td>
                             <td hlmTh class="text-xs md:text-sm text-center whitespace-normal wrap-break-word">
                                 @if (item.deltaDias) {

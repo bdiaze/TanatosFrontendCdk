@@ -575,7 +575,7 @@ export class MantenedorNormaSuscritaEdicion implements OnInit {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (vigentes) => {
-                    vigentes = vigentes.sort((a, b) => a.id - b.id);
+                    vigentes = vigentes.sort((a, b) => a.orden - b.orden);
                     this.periodicidadesVigentes.set(vigentes);
                 },
                 error: (err) => {
