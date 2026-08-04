@@ -7,7 +7,7 @@ import { HlmP } from '@spartan-ng/helm/typography';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
-import { lucideGem } from '@ng-icons/lucide';
+import { lucideBan, lucideConstruction, lucideGem, lucideKey, lucideKeyRound, lucideLockOpen, lucideSlash } from '@ng-icons/lucide';
 
 @Component({
     selector: 'app-recordatorio-suscripcion-por-vencer',
@@ -17,6 +17,7 @@ import { lucideGem } from '@ng-icons/lucide';
     providers: [
         provideIcons({
             lucideGem,
+            lucideKeyRound,
         }),
     ],
 })
@@ -26,6 +27,19 @@ export class RecordatorioSuscripcionPorVencer {
     private readonly authStore = inject(AuthStore);
     private readonly negocioStore = inject(NegocioStore);
     private readonly suscripcionDao = inject(SuscripcionDao);
+
+    resumenSuscripcionConsultado = computed(() => {
+        const resumenSuscripcion = this.negocioStore.resumenSuscripcionUsuario();
+        if (resumenSuscripcion) {
+            return true;
+        }
+        return false;
+    });
+
+    tienePlanEmpresa = computed(() => {
+        const resumenSuscripcion = this.negocioStore.resumenSuscripcionUsuario();
+        return resumenSuscripcion?.tienePlanEmpresa ?? false;
+    });
 
     diasRestantes = computed(() => {
         const resumenSuscripcion = this.negocioStore.resumenSuscripcionUsuario();
@@ -37,6 +51,7 @@ export class RecordatorioSuscripcionPorVencer {
         }
         return null;
     });
+
     titulo = computed(() => {
         const resumenSuscripcion = this.negocioStore.resumenSuscripcionUsuario();
         if (resumenSuscripcion && resumenSuscripcion.precioPlanEnCurso === 0) {
