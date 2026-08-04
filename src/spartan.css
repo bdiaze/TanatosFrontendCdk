@@ -109,7 +109,8 @@ span[hlmBadge] {
     @apply rounded-sm h-auto py-0.5;
 }
 
-span[hlmBadge].badgeAzul {
+span[hlmBadge].badgeGris {
+    @apply bg-negro/80;
 }
 
 span[hlmBadge] ng-icon {
