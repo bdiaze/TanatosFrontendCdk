@@ -23,7 +23,7 @@
             <h3 hlmH3>Mi Calendario</h3>
         </div>
         <div class="flex flex-col gap-6 fade-in">
-            <div id="obligaciones-vencidas" class="flex flex-col gap-6 relative">
+            <div id="obligaciones-vencidas" class="flex flex-col gap-4 relative">
                 <h4 hlmH4>¡Obligaciones Vencidas!</h4>
                 <div hlmItemGroup class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch fade-in">
                     @if (cargando() && !ayudaRunning()) {
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <hlm-separator />
-            <div id="proximas-obligaciones" class="flex flex-col gap-6 relative">
+            <div id="proximas-obligaciones" class="flex flex-col gap-4 relative">
                 <h4 hlmH4>Próximas Obligaciones</h4>
                 <div hlmItemGroup class="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch fade-in">
                     @if (cargando() && !ayudaRunning()) {
@@ -77,9 +77,51 @@
                 </div>
             </div>
             <hlm-separator />
-            <div id="obligaciones-completadas" class="flex flex-col gap-6 relative">
+            <div id="obligaciones-inactivas" class="flex flex-col relative">
+                <div>
+                    <button
+                        hlmBtn
+                        variant="ghost"
+                        type="button"
+                        class="pl-2! pr-3! py-4! flex flex-row items-center justify-start gap-1"
+                        (click)="toggleMostrarInactivas()"
+                    >
+                        @if (!mostrarInactivas()) {
+                            <ng-icon hlm name="lucidePlus" size="20px" class="fade-in" />
+                        } @else {
+                            <ng-icon hlm name="lucideMinus" size="20px" class="fade-in" />
+                        }
+                        <h4 hlmH4>Obligaciones Inactivas ({{ normasInactivasMostrar().length }})</h4>
+                    </button>
+                </div>
+                @if (mostrarInactivas()) {
+                    <div hlmItemGroup class="overflow-hidden grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch fade-in mt-4">
+                        @if (cargando() && !ayudaRunning()) {
+                            <hlm-skeleton class="h-50 rounded-xl" />
+                            <hlm-skeleton class="h-50 rounded-xl" />
+                            <hlm-skeleton class="h-50 rounded-xl" />
+                        } @else {
+                            @for (inactiva of normasInactivasMostrar(); track inactiva.idNormaSuscrita) {
+                                <tarjeta-vencimiento variant="inactivo" [vencimiento]="inactiva"></tarjeta-vencimiento>
+                            } @empty {
+                                <div hlmAlert class="col-span-1 md:col-span-3 fade-in">
+                                    <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" />
+                                    <h4 hlmAlertTitle>Sin obligaciones inactivas.</h4>
+                                    <p hlmAlertDescription>
+                                        Todas las obligaciones de
+                                        {{ negocioStore.negocioSeleccionado()?.nombre }}
+                                        están activas, es decir, ¡No te perderás el vencimiento de ninguna de tus obligaciones!
+                                    </p>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+            <hlm-separator />
+            <div id="obligaciones-completadas" class="flex flex-col gap-3 relative">
                 <h4 hlmH4>Obligaciones Completadas</h4>
-                <div hlmInputGroup class="-my-3 md:my-0">
+                <div hlmInputGroup class="-mt-1">
                     <input
                         hlmInputGroupInput
                         aria-label="Filtro de búsqueda"

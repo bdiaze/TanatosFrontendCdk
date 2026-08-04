@@ -4,11 +4,11 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideCalendarRange, lucideCircleAlert, lucideCircleCheck, lucideClockAlert, lucideSearch, lucideX } from '@ng-icons/lucide';
+import { lucideCalendarRange, lucideCircleAlert, lucideCircleCheck, lucideClockAlert, lucideMinus, lucidePlus, lucideX } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
-import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmButton } from '@spartan-ng/helm/button';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -19,7 +19,6 @@ import { normalize } from '@/app/helpers/string-comparator';
 import { HlmInputGroupImports } from '@spartan-ng/helm/input-group';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import dayjs from 'dayjs';
 import { TourService } from '@/app/helpers/tour-service';
 import { map } from 'rxjs';
 import { DriveStep } from 'driver.js';
@@ -52,6 +51,8 @@ import { TarjetaVencimiento } from '@/app/components/tarjeta-vencimiento/tarjeta
             lucideCircleAlert,
             lucideCircleCheck,
             lucideX,
+            lucidePlus,
+            lucideMinus,
         }),
     ],
 })
@@ -93,8 +94,22 @@ export class TableroVencimientos {
         return this.normasFuturas();
     });
 
-    normasCompletadas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
+    mostrarInactivas = signal(false);
+    normasInactivas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
+    normasInactivasMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    fechaVencimiento: null,
+                    nombreNorma: 'Obligación de ejemplo',
+                    descripcionNorma: 'Esta es una obligación inactiva',
+                } as SalNormaSuscritaObtenerConVencimiento,
+            ];
+        }
+        return this.normasInactivas();
+    });
 
+    normasCompletadas = signal([] as SalNormaSuscritaObtenerConVencimiento[]);
     filtroCompletadas = signal<string>('');
     cuantosMostrarCompletadas = signal<number>(6);
     normasCompletadasFiltradas = computed(() => {
@@ -149,11 +164,20 @@ export class TableroVencimientos {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
-                    const sorted = res.sort((a, b) => new Date(a.fechaVencimiento).getTime() - new Date(b.fechaVencimiento).getTime());
-
                     const ahora = new Date();
-                    this.normasVencidas.set(sorted.filter((x) => new Date(x.fechaVencimiento).getTime() <= ahora.getTime() && !x.fechaCompletitud));
-                    this.normasFuturas.set(sorted.filter((x) => new Date(x.fechaVencimiento).getTime() > ahora.getTime() && !x.fechaCompletitud));
+
+                    const sortedVencidas = res
+                        .filter((x) => x.fechaVencimiento && new Date(x.fechaVencimiento).getTime() <= ahora.getTime() && !x.fechaCompletitud)
+                        .sort((a, b) => new Date(a.fechaVencimiento!).getTime() - new Date(b.fechaVencimiento!).getTime());
+                    this.normasVencidas.set(sortedVencidas);
+
+                    const sortedFuturas = res
+                        .filter((x) => x.fechaVencimiento && new Date(x.fechaVencimiento).getTime() > ahora.getTime() && !x.fechaCompletitud)
+                        .sort((a, b) => new Date(a.fechaVencimiento!).getTime() - new Date(b.fechaVencimiento!).getTime());
+                    this.normasFuturas.set(sortedFuturas);
+
+                    const sortedInactivas = res.filter((x) => !x.fechaVencimiento).sort((a, b) => a.idNormaSuscrita - b.idNormaSuscrita);
+                    this.normasInactivas.set(sortedInactivas);
 
                     const sortedFechaCompletitud = res
                         .filter((x) => x.fechaCompletitud)
@@ -174,6 +198,10 @@ export class TableroVencimientos {
         this.cuantosMostrarCompletadas.update((v) => {
             return v + 3;
         });
+    }
+
+    toggleMostrarInactivas() {
+        this.mostrarInactivas.update((m) => !m);
     }
 
     ayudaRunning = signal<boolean>(false);
@@ -213,6 +241,13 @@ export class TableroVencimientos {
                     },
                 },
                 {
+                    element: '#obligaciones-inactivas',
+                    popover: {
+                        title: 'Las que aún no activas',
+                        description: 'Además, te mostramos todas las obligaciones no activadas, es decir, sin notificaciones configuradas.',
+                    },
+                },
+                {
                     element: '#obligaciones-completadas',
                     popover: {
                         title: 'Y las completadas',
@@ -243,6 +278,7 @@ export class TableroVencimientos {
         }
 
         let cambiandoASiguiente = false;
+        let mostrandoInactivas = this.mostrarInactivas();
 
         let config: {
             pasos: DriveStep[];
@@ -254,6 +290,7 @@ export class TableroVencimientos {
             pasos: steps,
             onFinish: () => {
                 this.ayudaRunning.set(false);
+                this.mostrarInactivas.set(mostrandoInactivas);
                 if (!cambiandoASiguiente && this.ayuda() === '1') {
                     this.router.navigate(['/ayuda']);
                 }
@@ -274,6 +311,7 @@ export class TableroVencimientos {
             };
         }
 
+        this.mostrarInactivas.set(true);
         this.ayudaRunning.set(true);
         this.tourService.iniciarTour(config);
     }
