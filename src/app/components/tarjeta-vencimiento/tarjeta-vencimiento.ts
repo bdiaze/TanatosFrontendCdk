@@ -25,7 +25,7 @@ import dayjs from 'dayjs';
 })
 export class TarjetaVencimiento {
     vencimiento = input.required<SalNormaSuscritaObtenerConVencimiento>();
-    variant = input<'vencido' | 'futuro' | 'completado'>('futuro');
+    variant = input<'vencido' | 'futuro' | 'completado' | 'inactivo'>('futuro');
 
     badgeVariant = computed(() => {
         switch (this.variant()) {
@@ -40,9 +40,11 @@ export class TarjetaVencimiento {
         const fechaVencimiento = this.vencimiento().fechaVencimiento;
         switch (this.variant()) {
             case 'vencido':
-                return this.haceCuanto(fechaVencimiento);
+                return this.haceCuanto(fechaVencimiento!);
             case 'futuro':
-                return this.enCuanto(fechaVencimiento);
+                return this.enCuanto(fechaVencimiento!);
+            case 'inactivo':
+                return 'Inactiva';
             default:
                 return 'Completada';
         }
