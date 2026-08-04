@@ -34,7 +34,7 @@
                     }
                     <div class="grid flex-1 text-left text-sm leading-tight pl-1">
                         <span
-                            class="truncate opacity-90 text-base w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46"
+                            class="truncate opacity-90 text-base w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46 font-serif"
                             [class.font-semibold]="negocioStore.negocioSeleccionado()?.nombre"
                             [class.text-sm]="!negocioStore.negocioSeleccionado()?.nombre"
                         >
@@ -48,7 +48,7 @@
                                 }
                             }
                         </span>
-                        <span class="truncate text-sm flex items-center gap-1 font-normal font-serif w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46">
+                        <span class="truncate text-xs flex items-center gap-1 font-normal font-sans w-37 md:w-30 lg:w-45 xl:w-45 2xl:w-46">
                             @if (cargandoInformacionUsuario()) {
                                 <hlm-skeleton class="h-5 w-36 rounded-xl mt-1" />
                             } @else {
