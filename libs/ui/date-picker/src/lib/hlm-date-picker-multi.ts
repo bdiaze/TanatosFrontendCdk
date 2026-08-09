@@ -14,15 +14,14 @@ import {
 	viewChild,
 } from '@angular/core';
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { type BrnDatePickerBase, BrnDatePickerTriggerToken, provideBrnDatePicker } from '@spartan-ng/brain/date-picker';
 import { BrnFieldControl, provideBrnLabelable } from '@spartan-ng/brain/field';
 import type { ChangeFn, TouchFn } from '@spartan-ng/brain/forms';
 import type { BrnOverlayState } from '@spartan-ng/brain/overlay';
-import { BrnPopover } from '@spartan-ng/brain/popover';
+import { BrnPopover, type BrnPopoverAlign } from '@spartan-ng/brain/popover';
 import { HlmCalendarMulti } from '@spartan-ng/helm/calendar';
 import { HlmPopoverImports } from '@spartan-ng/helm/popover';
 import { injectHlmDatePickerMultiConfig } from './hlm-date-picker-multi.token';
-import { HlmDatePickerTriggerToken } from './hlm-date-picker-trigger.token';
-import { HlmDatePickerBase, provideHlmDatePicker } from './hlm-date-picker.token';
 
 export const HLM_DATE_PICKER_MUTLI_VALUE_ACCESSOR = {
 	provide: NG_VALUE_ACCESSOR,
@@ -35,14 +34,14 @@ export const HLM_DATE_PICKER_MUTLI_VALUE_ACCESSOR = {
 	imports: [HlmPopoverImports, HlmCalendarMulti],
 	providers: [
 		HLM_DATE_PICKER_MUTLI_VALUE_ACCESSOR,
-		provideHlmDatePicker(HlmDatePickerMulti),
+		provideBrnDatePicker(HlmDatePickerMulti),
 		provideBrnLabelable(HlmDatePickerMulti),
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	hostDirectives: [BrnFieldControl],
 	host: { class: 'block' },
 	template: `
-		<hlm-popover sideOffset="5" [state]="_popoverState()" (stateChanged)="_onStateChange($event)">
+		<hlm-popover [align]="align()" sideOffset="5" [state]="_popoverState()" (stateChanged)="_onStateChange($event)">
 			<ng-content />
 
 			<hlm-popover-content class="w-fit p-0" *hlmPopoverPortal="let ctx">
@@ -51,8 +50,8 @@ export const HLM_DATE_PICKER_MUTLI_VALUE_ACCESSOR = {
 					class="rounded-none border-0"
 					[date]="_mutableDate()"
 					[captionLayout]="captionLayout()"
-					[min]="min()"
-					[max]="max()"
+					[min]="minDate()"
+					[max]="maxDate()"
 					[minSelection]="minSelection()"
 					[maxSelection]="maxSelection()"
 					[disabled]="_disabled()"
@@ -63,21 +62,23 @@ export const HLM_DATE_PICKER_MUTLI_VALUE_ACCESSOR = {
 		</hlm-popover>
 	`,
 })
-export class HlmDatePickerMulti<T> implements HlmDatePickerBase<T>, ControlValueAccessor {
+export class HlmDatePickerMulti<T> implements BrnDatePickerBase<T[]>, ControlValueAccessor {
 	private readonly _config = injectHlmDatePickerMultiConfig<T>();
 
 	public readonly popover = viewChild.required(BrnPopover);
 
-	private readonly _trigger = contentChild(HlmDatePickerTriggerToken);
+	private readonly _trigger = contentChild(BrnDatePickerTriggerToken);
+
+	public readonly align = input<BrnPopoverAlign>('center');
 
 	/** Show dropdowns to navigate between months or years. */
 	public readonly captionLayout = input<'dropdown' | 'label' | 'dropdown-months' | 'dropdown-years'>('label');
 
 	/** The minimum date that can be selected.*/
-	public readonly min = input<T>();
+	public readonly minDate = input<T>();
 
 	/** The maximum date that can be selected. */
-	public readonly max = input<T>();
+	public readonly maxDate = input<T>();
 
 	/** The minimum selectable dates.  */
 	public readonly minSelection = input<number, NumberInput>(undefined, {
@@ -128,6 +129,9 @@ export class HlmDatePickerMulti<T> implements HlmDatePickerBase<T>, ControlValue
 
 	public readonly hasDate = computed(() => !!this._mutableDate()?.length);
 
+	/** @internal The current raw value, used by inputs to reformat on focus. */
+	public readonly value = computed(() => this._mutableDate() ?? null);
+
 	protected _onChange?: ChangeFn<T[]>;
 	protected _onTouched?: TouchFn;
 
@@ -149,6 +153,24 @@ export class HlmDatePickerMulti<T> implements HlmDatePickerBase<T>, ControlValue
 		if (this.autoCloseOnMaxSelection() && this._mutableDate()?.length === this.maxSelection()) {
 			this._popoverState.set('closed');
 		}
+	}
+
+	/**
+	 * Commit dates to the picker. Updates the internal model, notifies form
+	 * controls, and emits `dateChange`. Intended to be called from a text input
+	 * that parses user-entered values. Pass `null` to clear the selection.
+	 */
+	public updateDate(value: T[] | null) {
+		if (this._disabled()) return;
+		const transformedDate = value ? this.transformDates()(value) : undefined;
+
+		this._mutableDate.set(transformedDate);
+		this._onChange?.(transformedDate ?? []);
+		this.dateChange.emit(transformedDate ?? []);
+	}
+
+	public touched(): void {
+		this._onTouched?.();
 	}
 
 	/** CONTROL VALUE ACCESSOR */
