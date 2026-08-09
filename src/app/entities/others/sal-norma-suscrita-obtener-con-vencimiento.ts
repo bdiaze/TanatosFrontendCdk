@@ -15,4 +15,5 @@ export interface SalNormaSuscritaObtenerConVencimiento {
     nombreTipoPeriodicidad: string | null;
     idCargo: number | null;
     nombreCargo: string | null;
+    activado: boolean;
 }
