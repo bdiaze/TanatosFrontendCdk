@@ -176,7 +176,7 @@ export class TableroVencimientos {
                         .sort((a, b) => new Date(a.fechaVencimiento!).getTime() - new Date(b.fechaVencimiento!).getTime());
                     this.normasFuturas.set(sortedFuturas);
 
-                    const sortedInactivas = res.filter((x) => !x.activado).sort((a, b) => a.idNormaSuscrita - b.idNormaSuscrita);
+                    const sortedInactivas = res.filter((x) => !x.fechaVencimiento && !x.activado).sort((a, b) => a.idNormaSuscrita - b.idNormaSuscrita);
                     this.normasInactivas.set(sortedInactivas);
 
                     const sortedFechaCompletitud = res
