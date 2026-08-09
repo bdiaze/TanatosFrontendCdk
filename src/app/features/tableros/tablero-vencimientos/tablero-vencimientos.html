@@ -83,15 +83,17 @@
                         hlmBtn
                         variant="ghost"
                         type="button"
-                        class="pl-2! pr-3! py-4! flex flex-row items-center justify-start gap-1"
+                        class="-ml-2 pl-2! pr-1.5! py-4! flex flex-row items-center justify-start gap-2"
                         (click)="toggleMostrarInactivas()"
                     >
-                        @if (!mostrarInactivas()) {
-                            <ng-icon hlm name="lucidePlus" size="20px" class="fade-in" />
-                        } @else {
-                            <ng-icon hlm name="lucideMinus" size="20px" class="fade-in" />
-                        }
                         <h4 hlmH4>Obligaciones Inactivas ({{ normasInactivasMostrar().length }})</h4>
+                        <ng-icon
+                            hlm
+                            name="lucideChevronDown"
+                            size="20px"
+                            class="fade-in rot transition-[rotate] duration-100"
+                            [class.-rotate-180]="mostrarInactivas()"
+                        />
                     </button>
                 </div>
                 @if (mostrarInactivas()) {

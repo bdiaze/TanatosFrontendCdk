@@ -4,7 +4,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideCalendarRange, lucideCircleAlert, lucideCircleCheck, lucideClockAlert, lucideMinus, lucidePlus, lucideX } from '@ng-icons/lucide';
+import { lucideCalendarRange, lucideChevronDown, lucideCircleAlert, lucideCircleCheck, lucideX } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
@@ -47,12 +47,10 @@ import { TarjetaVencimiento } from '@/app/components/tarjeta-vencimiento/tarjeta
     providers: [
         provideIcons({
             lucideCalendarRange,
-            lucideClockAlert,
             lucideCircleAlert,
             lucideCircleCheck,
             lucideX,
-            lucidePlus,
-            lucideMinus,
+            lucideChevronDown,
         }),
     ],
 })
