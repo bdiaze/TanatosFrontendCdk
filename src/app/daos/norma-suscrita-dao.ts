@@ -10,6 +10,8 @@ import { SalNormaSuscritaObtenerPorIdConVencimiento } from '../entities/others/s
 import { EntNormaSuscritaCompletarNorma } from '../entities/others/ent-norma-suscrita-completar-norma';
 import { SalNormaSuscritaCompletarNorma } from '../entities/others/sal-norma-suscrita-completar-norma';
 import { EntNormaSuscritaCompletarNormaPorCodigoAcceso } from '../entities/others/ent-norma-suscrita-completar-norma-por-codigo-acceso';
+import { EntNormaSuscritaActivarNorma } from '../entities/others/ent-norma-suscrita-activar-norma';
+import { EntNormaSuscritaDesactivarNorma } from '../entities/others/ent-norma-suscrita-desactivar-norma';
 
 @Injectable({
     providedIn: 'root',
@@ -62,5 +64,13 @@ export class NormaSuscritaDao {
 
     eliminar(id: number): Observable<void> {
         return this.http.delete<void>(environment.tanatosService.apiUrl + `/NormaSuscrita/${id}`);
+    }
+
+    activar(entrada: EntNormaSuscritaActivarNorma): Observable<SalNormaSuscrita> {
+        return this.http.put<SalNormaSuscrita>(environment.tanatosService.apiUrl + '/NormaSuscrita/ActivarNorma', entrada);
+    }
+
+    desactivar(entrada: EntNormaSuscritaDesactivarNorma): Observable<SalNormaSuscrita> {
+        return this.http.put<SalNormaSuscrita>(environment.tanatosService.apiUrl + '/NormaSuscrita/DesactivarNorma', entrada);
     }
 }
