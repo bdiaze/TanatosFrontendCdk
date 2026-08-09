@@ -1,2 +1,9 @@
+allowBuilds:
+    '@parcel/watcher': false
+    esbuild: false
+    less: false
+    lmdb: false
+    msgpackr-extract: false
+    nx: false
 overrides:
     '@babel/core': 7.29.7
