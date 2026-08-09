@@ -8,7 +8,16 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { AfterViewInit, Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBadgeCheck, lucideCalendarCheck, lucideDownload, lucideGem, lucidePlus, lucideTrash, lucideTriangleAlert } from '@ng-icons/lucide';
+import {
+    lucideBadgeCheck,
+    lucideCalendarCheck,
+    lucideCircleAlert,
+    lucideDownload,
+    lucideGem,
+    lucidePlus,
+    lucideTrash,
+    lucideTriangleAlert,
+} from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
 import { HlmButton } from '@spartan-ng/helm/button';
@@ -40,6 +49,7 @@ import { EntDocumentoAdjuntoConfirmarSubida } from '@/app/entities/others/ent-do
 import { EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso } from '@/app/entities/others/ent-documento-adjunto-generar-url-bajada-por-codigo-acceso';
 import { DriveStep } from 'driver.js';
 import { TourService } from '@/app/helpers/tour-service';
+import { EntNormaSuscritaDesactivarNorma } from '@/app/entities/others/ent-norma-suscrita-desactivar-norma';
 
 @Component({
     selector: 'app-vencimiento',
@@ -78,6 +88,7 @@ import { TourService } from '@/app/helpers/tour-service';
             lucideTrash,
             lucideGem,
             lucideTriangleAlert,
+            lucideCircleAlert,
         }),
         DatePipe,
     ],
@@ -92,7 +103,7 @@ export class Vencimiento implements OnInit {
     ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
 
     codigoAcceso = signal<string | null>(null);
-    private readonly idNormaSuscrita = signal<number | null>(null);
+    idNormaSuscrita = signal<number | null>(null);
     private readonly idHistorialNormaSuscrita = signal<number | null>(null);
 
     private readonly datePipe = inject(DatePipe);
@@ -102,6 +113,14 @@ export class Vencimiento implements OnInit {
     private readonly s3Service = inject(S3Service);
 
     error = signal<string>('');
+
+    deshabilitarBoton = computed(() => {
+        return this.completando() || this.desactivando() || this.documentosEnProgreso().length > 0 || this.documentosAdjuntos().some((d) => d.borrando);
+    });
+
+    deshabilitarSubida = computed(() => {
+        return this.completando() || this.desactivando();
+    });
 
     showModalEliminar = signal(false);
     itemSeleccionado = signal<DocumentoAdjunto | null>(null);
@@ -335,16 +354,21 @@ export class Vencimiento implements OnInit {
 
     onDragOver(event: DragEvent) {
         event.preventDefault();
+        if (this.deshabilitarSubida()) return;
+
         this.draggingFile.set(true);
     }
 
     onDragLeave(event: DragEvent) {
         event.preventDefault();
+        if (this.deshabilitarSubida()) return;
+
         this.draggingFile.set(false);
     }
 
     onDropFile(event: DragEvent) {
         event.preventDefault();
+        if (this.deshabilitarSubida()) return;
 
         let files = event.dataTransfer?.files;
 
@@ -621,6 +645,40 @@ export class Vencimiento implements OnInit {
             });
         }
         this.closeModalEliminar();
+    }
+
+    showModalDesactivar = signal<boolean>(false);
+
+    openModalDesactivar() {
+        this.showModalDesactivar.set(true);
+    }
+
+    closeModalDesactivar() {
+        this.showModalDesactivar.set(false);
+    }
+
+    desactivando = signal<boolean>(false);
+
+    desactivar(idNormaSuscrita: number) {
+        this.closeModalDesactivar();
+        this.desactivando.set(true);
+
+        this.normaSuscritaDao
+            .desactivar({
+                idNormaSuscrita: idNormaSuscrita,
+            } as EntNormaSuscritaDesactivarNorma)
+            .subscribe({
+                next: () => {
+                    this.router.navigate(['/mi-calendario']);
+                },
+                error: (err) => {
+                    console.error('Error al desactivar la obligación', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al desactivar la obligación');
+                },
+            })
+            .add(() => {
+                this.desactivando.set(false);
+            });
     }
 
     showModalConfirmar = signal<boolean>(false);

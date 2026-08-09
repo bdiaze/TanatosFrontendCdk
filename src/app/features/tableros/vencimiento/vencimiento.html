@@ -221,6 +221,7 @@
                                                         class="text-center p-0 border-dashed border-(--negro)/80 border-2 transition-colors duration-200"
                                                         [ngClass]="{
                                                             'bg-(--negro)/10': draggingFile(),
+                                                            'border-(--negro)/20': deshabilitarSubida(),
                                                         }"
                                                     >
                                                         @if (puedeSubirArchivos()) {
@@ -230,14 +231,25 @@
                                                                 (drop)="onDropFile($event)"
                                                                 class="py-6"
                                                             >
-                                                                <button hlmBtn size="icon" variant="link" class="size-8!" (click)="fileInput.click()">
+                                                                <button
+                                                                    hlmBtn
+                                                                    size="icon"
+                                                                    variant="link"
+                                                                    class="size-8!"
+                                                                    (click)="fileInput.click()"
+                                                                    [disabled]="deshabilitarSubida()"
+                                                                >
                                                                     <ng-icon hlm size="sm" name="lucidePlus" />
                                                                     <label for="subir-documento" class="cursor-pointer"
                                                                         >Click aquí para adjuntar tu documento</label
                                                                     >
                                                                     <br />
                                                                 </button>
-                                                                <p hlmP class="text-xs mt-2 font-normal italic opacity-80">
+                                                                <p
+                                                                    hlmP
+                                                                    class="text-xs mt-2 font-normal italic opacity-80"
+                                                                    [class.opacity-50]="deshabilitarSubida()"
+                                                                >
                                                                     (también puedes arrastrar aquí tus documentos)
                                                                 </p>
                                                                 <input
@@ -328,7 +340,7 @@
                                             hlmBtn
                                             class="btnOutlineAzul w-full py-7! gap-4! text-lg"
                                             (click)="openModalConfirmar()"
-                                            [disabled]="completando() || (documentosEnProgreso() && documentosEnProgreso().length > 0)"
+                                            [disabled]="deshabilitarBoton()"
                                         >
                                             @if (completando()) {
                                                 <hlm-spinner />
@@ -343,10 +355,46 @@
                         </div>
                     }
                 </div>
+                @if (idNormaSuscrita() && !itemMostrar()?.fechaCompletitud) {
+                    <div class="-mt-4">
+                        <button
+                            hlmBtn
+                            variant="link"
+                            type="button"
+                            (click)="openModalDesactivar()"
+                            [disabled]="deshabilitarBoton()"
+                            class="text-sm px-1! py-0.5! flex flex-row items-center justify-start gap-1.5! text-destructive/80! hover:text-destructive! decoration-destructive!"
+                        >
+                            @if (desactivando()) {
+                                <hlm-spinner />
+                            } @else {
+                                <ng-icon hlm size="sm" name="lucideCircleAlert" />
+                            }
+                            Desactivar obligación
+                        </button>
+                    </div>
+                }
             </div>
         </div>
     }
 </section>
+
+@if (showModalDesactivar()) {
+    <app-modal-eliminacion
+        [item]="idNormaSuscrita()"
+        titulo="Desactivar la obligación:"
+        [descripcion]="
+            `¿Seguro que deseas desactivar la obligación <b>${itemMostrar()?.nombre ?? itemMostrar()?.templateNorma?.nombre}</b>?
+            <div class='text-sm mt-2'>Próximo Vencimiento: <b class='text-base'>${(itemMostrar()?.fechaVencimiento | date: 'd MMMM yyyy HH:mm')}</b></div>
+            <div class='text-sm mt-3'>Siempre podrás reactivar la obligación desde &quot;Mis Obligaciones&quot;</div>
+            <div class='text-sm mt-3 text-destructive'>No recibirás notificaciones de las obligaciones desactivadas.</div>`
+        "
+        textoBotonEliminar="Desactivar"
+        (cerrar)="closeModalDesactivar()"
+        (eliminar)="desactivar($event)"
+    >
+    </app-modal-eliminacion>
+}
 
 @if (showModalEliminar()) {
     <app-modal-eliminacion
