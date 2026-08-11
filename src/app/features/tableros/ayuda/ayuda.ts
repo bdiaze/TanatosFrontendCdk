@@ -275,7 +275,6 @@ export class Ayuda implements OnInit, OnDestroy {
                 },
             ] as DriveStep[],
         },
-        /*
         {
             id: 'mis-negocios',
             nombre: 'Mis Negocios',
@@ -297,6 +296,7 @@ export class Ayuda implements OnInit, OnDestroy {
                 },
             ] as DriveStep[],
         },
+        /*
         {
             id: 'mi-plan',
             nombre: 'Mi Plan',
