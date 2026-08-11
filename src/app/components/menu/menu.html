@@ -123,7 +123,7 @@
                                     variant="link"
                                     [routerLink]="item.url"
                                     routerLinkActive="active"
-                                    [routerLinkActiveOptions]="{ exact: true }"
+                                    [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored' }"
                                     class="w-full!"
                                     (click)="click()"
                                 >
@@ -154,7 +154,7 @@
                                                 variant="link"
                                                 [routerLink]="subItem.url"
                                                 routerLinkActive="active"
-                                                [routerLinkActiveOptions]="{ exact: true }"
+                                                [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored' }"
                                                 class="w-full!"
                                                 (click)="click()"
                                             >
@@ -190,7 +190,7 @@
                                                 variant="link"
                                                 [routerLink]="groupItem.url"
                                                 routerLinkActive="active"
-                                                [routerLinkActiveOptions]="{ exact: true }"
+                                                [routerLinkActiveOptions]="{ paths: 'exact', queryParams: 'ignored' }"
                                                 class="w-full! items-center justify-start text-negro/80 font-normal ml-2! my-0.5!"
                                                 (click)="click()"
                                             >
@@ -239,7 +239,8 @@
                                                                 [routerLink]="subItem.url"
                                                                 routerLinkActive="active"
                                                                 [routerLinkActiveOptions]="{
-                                                                    exact: true,
+                                                                    paths: 'exact',
+                                                                    queryParams: 'ignored',
                                                                 }"
                                                                 class="w-full! items-center justify-start text-negro/80 font-normal my-0.5!"
                                                                 (click)="click()"
