@@ -1,23 +1,26 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
     <div>
-        <nav hlmBreadcrumb class="mb-4 pl-2">
-            <ol hlmBreadcrumbList>
-                <li hlmBreadcrumbItem>
-                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
-                </li>
-                <li hlmBreadcrumbSeparator></li>
-                <li hlmBreadcrumbItem>
-                    <span hlmBreadcrumbPage>Mis Negocios</span>
-                </li>
-            </ol>
-        </nav>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Mis Negocios</span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
         <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
             <ng-icon hlm name="lucideStore" />
             <h3 hlmH3>Mis Negocios</h3>
         </div>
     </div>
     <div hlmTableContainer class="fade-in">
-        <table hlmTable>
+        <table id="tabla_negocios" hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
@@ -27,7 +30,7 @@
                 </tr>
             </thead>
             <tbody hlmTBody>
-                @if (cargando()) {
+                @if (cargando() && !ayudaRunning()) {
                     <tr hlmTr>
                         <td hlmTd>
                             <hlm-skeleton class="h-10 rounded-xl" />
@@ -41,9 +44,9 @@
                         <td hlmTd></td>
                     </tr>
                 } @else {
-                    @for (item of listado(); track item.id; let first = $first) {
+                    @for (item of listadoMostrar(); track item.id; let first = $first) {
                         <tr hlmTr class="fade-in">
-                            <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                            <td hlmTd [id]="ayudaRunning() ? 'nombre' : null" class="whitespace-normal text-xs md:text-sm">
                                 <div class="flex flex-row items-center justify-start gap-2">
                                     @if (!puedeCrear() && !first) {
                                         <ng-icon
@@ -58,10 +61,10 @@
                                     {{ item.nombre }}
                                 </div>
                             </td>
-                            <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                            <td hlmTd [id]="ayudaRunning() ? 'direccion' : null" class="whitespace-normal text-xs md:text-sm">
                                 {{ item.direccion }}
                             </td>
-                            <td hlmTd class="whitespace-normal text-xs md:text-sm">
+                            <td hlmTd [id]="ayudaRunning() ? 'actividad' : null" class="whitespace-normal text-xs md:text-sm">
                                 <div class="flex flex-col justify-start items-center text-center">
                                     <div class="text-[0.6rem] md:text-[0.7rem] opacity-80 text-center">
                                         {{ obtenerNombreRubro(item.idTipoActividad) }}
@@ -71,7 +74,7 @@
                             </td>
                             <td hlmTd class="px-0">
                                 <div class="flex items-center justify-center-safe">
-                                    <button hlmBtn variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
+                                    <button hlmBtn [id]="ayudaRunning() ? 'opciones' : null" variant="outline" size="sm" [hlmDropdownMenuTrigger]="menu">
                                         <ng-icon hlm size="xs" name="lucideEllipsis" />
                                     </button>
                                     <ng-template #menu>
@@ -109,7 +112,7 @@
             </tbody>
         </table>
         @if (puedeCrear()) {
-            <button hlmBtn (click)="openModalCrear()" class="btnAzul m-4!" [disabled]="cargando()">Nuevo Negocio</button>
+            <button hlmBtn id="boton_crear" (click)="openModalCrear()" class="btnAzul m-4!" [disabled]="cargando()">Nuevo Negocio</button>
         } @else {
             <app-popup-funcionalidad-bloqueada class="m-4 h-fit">
                 <button hlmBtn class="btnAzul has-[>ng-icon]:pl-3! has-[>ng-icon]:pr-5!">
