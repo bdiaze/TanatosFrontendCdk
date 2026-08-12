@@ -184,7 +184,7 @@ export class MenuInicial {
         if (this.ayuda() === '1') {
             config = {
                 ...config,
-                showProgress: false,
+                showProgress: true,
             };
         }
 

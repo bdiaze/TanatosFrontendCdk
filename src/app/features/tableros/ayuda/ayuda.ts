@@ -296,7 +296,6 @@ export class Ayuda implements OnInit, OnDestroy {
                 },
             ] as DriveStep[],
         },
-        /*
         {
             id: 'mi-plan',
             nombre: 'Mi Plan',
@@ -318,7 +317,6 @@ export class Ayuda implements OnInit, OnDestroy {
                 },
             ] as DriveStep[],
         },
-        */
     ]);
 
     ayudaClick(modulo: { nombre: string; link: readonly any[]; steps: DriveStep[] }): void {

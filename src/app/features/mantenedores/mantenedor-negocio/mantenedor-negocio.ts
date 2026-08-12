@@ -470,8 +470,7 @@ export class MantenedorNegocio implements OnInit {
         if (this.ayuda() === '1') {
             config = {
                 ...config,
-                showProgress: false,
-                doneBtnText: 'Siguiente',
+                showProgress: true,
             };
         }
 

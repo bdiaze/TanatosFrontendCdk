@@ -3,11 +3,14 @@ import { PlanDao } from '@/app/daos/plan-dao';
 import { SuscripcionDao } from '@/app/daos/suscripcion-dao';
 import { EntSuscripcionCrear } from '@/app/entities/others/ent-suscripcion-crear';
 import { SalPlan } from '@/app/entities/others/sal-plan';
+import { SalSuscripcionResumen } from '@/app/entities/others/sal-suscripcion-resumen';
 import { getErrorMessage } from '@/app/helpers/error-message';
+import { TourService } from '@/app/helpers/tour-service';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideChevronRight,
@@ -35,7 +38,8 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
-import { interval, Subscription } from 'rxjs';
+import { DriveStep } from 'driver.js';
+import { interval, map, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-mantenedor-suscripcion',
@@ -80,14 +84,37 @@ import { interval, Subscription } from 'rxjs';
 })
 export class MantenedorSuscripcion implements OnInit {
     private readonly destroyRef = inject(DestroyRef);
+    private readonly tourService = inject(TourService);
+    private readonly router = inject(Router);
+
     private readonly suscripcionDao: SuscripcionDao = inject(SuscripcionDao);
     private readonly planDao: PlanDao = inject(PlanDao);
     negocioStore: NegocioStore = inject(NegocioStore);
     private readonly datePipe = inject(DatePipe);
 
+    private readonly route = inject(ActivatedRoute);
+    private readonly ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
+
     planesVigentes = signal([] as SalPlan[]);
 
-    resumenSuscripcion = this.negocioStore.resumenSuscripcionUsuario;
+    resumenSuscripcion = computed(() => {
+        if (this.ayudaRunning()) {
+            const fecha = new Date();
+            fecha.setDate(fecha.getDate() + 14);
+
+            return {
+                tienePlanEmpresa: false,
+                nombrePlanEnCurso: 'Plan de Ejemplo',
+                precioPlanEnCurso: 9990,
+                nombrePlanPagoEnCurso: 'Plan de Ejemplo',
+                precioPlanPagoEnCurso: 9990,
+                fechaExpiracion: null,
+                fechaProximoCobro: fecha.toISOString(),
+                renovacionAutomatica: true,
+            } as SalSuscripcionResumen;
+        }
+        return this.negocioStore.resumenSuscripcionUsuario();
+    });
 
     fechaExpiracionFormateada = computed(() => {
         const resumenSuscripcion = this.resumenSuscripcion();
@@ -127,7 +154,25 @@ export class MantenedorSuscripcion implements OnInit {
         }
         return false;
     });
-    planes = computed(() => this.planesVigentes());
+    planesMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    nombre: 'Plan de Ejemplo',
+                    precio: 9990,
+                    duracionMeses: 1,
+                    suscripcionUnica: false,
+                },
+                {
+                    nombre: 'Plan Anual de Ejemplo',
+                    precio: 119880,
+                    duracionMeses: 12,
+                    suscripcionUnica: false,
+                },
+            ] as SalPlan[];
+        }
+        return this.planesVigentes();
+    });
 
     cargandoSuscripciones = signal(true);
     cargandoPlanesVigentes = signal(true);
@@ -153,6 +198,15 @@ export class MantenedorSuscripcion implements OnInit {
                 } else {
                     this.pollingSub?.unsubscribe();
                     this.pollingSub = undefined;
+                }
+            });
+        });
+
+        effect(() => {
+            const ayuda = this.ayuda();
+            untracked(() => {
+                if (ayuda === '1') {
+                    this.ayudaClick();
                 }
             });
         });
@@ -265,5 +319,128 @@ export class MantenedorSuscripcion implements OnInit {
                 this.procesando.set(false);
             });
         this.showModalDesuscribirse.set(false);
+    }
+
+    ayudaRunning = signal<boolean>(false);
+    ayudaClick(): void {
+        const steps: DriveStep[] = [];
+
+        if (this.ayuda() === '1') {
+            steps.push({
+                popover: {
+                    title: '¡Listo! Llegamos a Mi Plan',
+                    description: 'Ahora que ya estamos en Mi Plan, te mostraremos sus principales funciones.',
+                },
+            });
+        } else {
+            steps.push({
+                popover: {
+                    title: 'Acá está tu plan',
+                    description: 'Aquí encontrarás la información de tu plan actual, además de inscribirte o cancelar tus suscripciones.',
+                },
+            });
+        }
+
+        steps.push(
+            ...([
+                {
+                    element: '#plan_actual',
+                    popover: {
+                        title: 'Resumen de tu plan',
+                        description: 'Comenzando, tenemos el resumen de tu plan actual.',
+                    },
+                },
+                {
+                    element: '#precio_plan',
+                    popover: {
+                        title: 'El precio del plan',
+                        description: 'Encontrarás el precio de tu plan actual.',
+                    },
+                },
+                {
+                    element: '#proximo_cobro',
+                    popover: {
+                        title: 'Fecha del próximo cobro',
+                        description: 'La fecha en que se te cobrará la renovación automática del plan.',
+                    },
+                },
+                {
+                    element: '#cancelar_suscripcion',
+                    popover: {
+                        title: 'Cancelar tu suscripción',
+                        description: 'Y además, podrás cancelar tu suscripción actual. ¡Cuidado! perderás tus beneficios si no renuevas tu plan.',
+                    },
+                },
+                {
+                    element: '#comparacion_planes',
+                    popover: {
+                        title: 'Los beneficios de tu plan',
+                        description: 'Por otro lado, te recordamos los beneficios que tiene cada plan.',
+                    },
+                },
+                {
+                    element: '#comparacion_negocios',
+                    popover: {
+                        title: 'Cantidad de Negocios',
+                        description: 'Por ejemplo, con el Plan Empresa puedes registrar cuantos negocios quieras.',
+                    },
+                },
+                {
+                    element: '#comparacion_plantillas',
+                    popover: {
+                        title: 'Plantillas de Obligaciones',
+                        description: 'Podrás inscribirte a todas las plantillas de obligaciones que desees.',
+                    },
+                },
+                {
+                    element: '#comparacion_whatsapp',
+                    popover: {
+                        title: '¿Y Whatsapp?',
+                        description: 'Con el Plan Empresa podrás enviar recordatorios directo al Whatsapp de todo tu equipo.',
+                    },
+                },
+                {
+                    element: '#comparacion_adjuntos',
+                    popover: {
+                        title: 'Adjunta tus documentos',
+                        description: 'Y también podrás adjuntar documentos e imágenes al momento de dar por cumplida una obligación.',
+                    },
+                },
+                {
+                    element: '#contrata_plan',
+                    popover: {
+                        title: 'Contrata el plan para ti',
+                        description:
+                            '¿Y cómo consigo todos estos beneficios? ¡Simple! solo selecciona el plan que desees y te redireccionaremos a nuestra plataforma de pago.',
+                    },
+                },
+            ] as DriveStep[]),
+        );
+
+        let config: {
+            pasos: DriveStep[];
+            onFinish?: (element: Element | undefined, step: DriveStep, options: any) => void;
+            showProgress?: boolean;
+            doneBtnText?: string;
+            onNextFromLast?: (element: Element | undefined, step: DriveStep, options: any) => void;
+        } = {
+            pasos: steps,
+            onFinish: () => {
+                this.ayudaRunning.set(false);
+                if (this.ayuda() === '1') {
+                    this.router.navigate(['/ayuda']);
+                }
+            },
+        };
+
+        if (this.ayuda() === '1') {
+            config = {
+                ...config,
+                showProgress: true,
+            };
+        }
+
+        this.ayudaRunning.set(true);
+        this.tourService.iniciarTour(config);
     }
 }
