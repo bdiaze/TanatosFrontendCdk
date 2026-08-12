@@ -92,6 +92,8 @@ export class CodigoVerificacion implements OnInit, OnDestroy {
 
     verificandoCodigo = signal<boolean>(false);
     verificarCodigo() {
+        this.error.set('');
+
         if (this.form.invalid) {
             this.form.markAllAsTouched();
             return;
@@ -117,6 +119,14 @@ export class CodigoVerificacion implements OnInit, OnDestroy {
 
     reenviandoCodigo = signal<boolean>(false);
     reenviarCodigo() {
+        this.error.set('');
+
+        if (this.form.controls.correo.invalid) {
+            this.form.controls.correo.markAsTouched();
+            this.error.set('Debes ingresar tu correo electrónico');
+            return;
+        }
+
         this.reenviandoCodigo.set(true);
         this.perfilDao
             .reenviarCodigoVerificacion({
