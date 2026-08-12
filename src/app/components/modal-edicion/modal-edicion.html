@@ -18,7 +18,7 @@
                 <div hlmFieldGroup class="gap-3">
                     @for (campo of campos(); track campo.llave) {
                         @if (campo.tipo !== 'oculto') {
-                            <div hlmField class="gap-1">
+                            <div [id]="`input_${campo.llave}`" hlmField class="gap-1">
                                 @if (campo.tipo === 'string' || campo.tipo === 'number') {
                                     <hlm-input-group>
                                         @if (campo.tipo === 'string') {
@@ -196,7 +196,7 @@
         </div>
         <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-6 faster-fade-in">
             <button hlmBtn (click)="cerrar.emit()" class="btnOutlineAzul px-4! md:px-6!">Cancelar</button>
-            <button hlmBtn (click)="confirmar()" [disabled]="form.invalid" class="btnAzul px-4! md:px-6!">
+            <button hlmBtn id="boton_confirmar" (click)="confirmar()" [disabled]="form.invalid" class="btnAzul px-4! md:px-6!">
                 {{ textoBotonGuardar }}
             </button>
         </div>
