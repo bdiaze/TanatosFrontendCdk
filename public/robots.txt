@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /administracion/
+
+Sitemap: https://www.todoenorden.cl/sitemap.xml
