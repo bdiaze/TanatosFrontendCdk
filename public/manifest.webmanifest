@@ -1,7 +1,7 @@
 {
     "name": "Todo en Orden",
     "short_name": "Todo en Orden",
-    "description": "Somos una plataforma de gestión diseñada para ayudar a microempresarios a organizar y cumplir todas sus obligaciones.",
+    "description": "La plataforma que te ayuda a cumplir con las obligaciones de tu negocio.",
     "lang": "es-CL",
     "orientation": "portrait",
     "display": "standalone",
