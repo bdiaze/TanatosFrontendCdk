@@ -1,10 +1,9 @@
 import { AuthStore } from '@services/auth-store';
-import { Component, computed, DestroyRef, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Login } from '@/app/features/auth/login/login';
 import { Logout } from '@/app/features/auth/logout/logout';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { environment } from '@/environments/environment';
+import { RouterLink } from '@angular/router';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMenu } from '@ng-icons/lucide';
@@ -14,7 +13,6 @@ import { ClickOutside } from '@/app/directives/click-outside';
 import { CommonModule } from '@angular/common';
 import { MobileHelper } from '@/app/helpers/mobile-helper';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
-import { filter, fromEvent, Subscription, take } from 'rxjs';
 import { FadeIn } from '@/app/directives/fade-in';
 import { MenuHelper } from '@/app/helpers/menu-helper';
 import { HistoryService } from '@/app/services/history-service';
@@ -31,8 +29,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ],
 })
 export class Header implements OnInit, OnDestroy {
-    urlLogo = `${environment.urlImages}/images/logo.svg`;
-
     private readonly destroyRef = inject(DestroyRef);
     private readonly authStore = inject(AuthStore);
     private readonly mobileHelper = inject(MobileHelper);

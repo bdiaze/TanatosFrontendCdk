@@ -2,7 +2,6 @@ import { PerfilDao } from '@/app/daos/perfil-dao';
 import { EntPerfilConfirmarRegistro } from '@/app/entities/others/ent-perfil-confirmar-registro';
 import { EntPerfilReenviarCodigoVerificacion } from '@/app/entities/others/ent-perfil-reenviar-codigo-verificacion';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { environment } from '@/environments/environment';
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -41,9 +40,6 @@ export class CodigoVerificacion implements OnInit, OnDestroy {
     private readonly paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
     private readonly route = inject(ActivatedRoute);
     private readonly perfilDao = inject(PerfilDao);
-
-    urlImagen = `${environment.urlImages}/images/cognito-image-graphic-email-light.svg`;
-    urlFondo = `${environment.urlImages}/images/joven-sosteniendo-tableta-blured.jpeg`;
 
     form: FormGroup<{
         correo: FormControl<string | null>;

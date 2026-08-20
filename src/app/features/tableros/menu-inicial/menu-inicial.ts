@@ -1,4 +1,3 @@
-import { environment } from '@/environments/environment';
 import { Component, effect, inject, untracked } from '@angular/core';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmH1, HlmP } from '@spartan-ng/helm/typography';
@@ -20,11 +19,6 @@ import { toSignal } from '@angular/core/rxjs-interop';
     templateUrl: './menu-inicial.html',
 })
 export class MenuInicial {
-    urlCalendario = `${environment.urlImages}/images/calendario-reloj-blanco.png`;
-    urlCaracteristicas = `${environment.urlImages}/images/caracteristicas-blanco.png`;
-    urlComprobacionLista = `${environment.urlImages}/images/comprobacion-de-lista-blanco.png`;
-    urlTienda = `${environment.urlImages}/images/tienda-blanco.png`;
-
     negocioStore = inject(NegocioStore);
     negocioSeleccionado = this.negocioStore.negocioSeleccionado;
     informacionUsuario = this.negocioStore.informacionUsuario;

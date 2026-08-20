@@ -1,6 +1,5 @@
 import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
-import { environment } from '@/environments/environment';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -26,24 +25,6 @@ import { HlmH4 } from '@spartan-ng/helm/typography';
 })
 export class Hero implements OnInit, OnDestroy {
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
-
-    urlFondo1_640 = `${environment.urlImages}/images/contenido-joven-sosteniendo-tableta-digital/640.webp`;
-    urlFondo1_960 = `${environment.urlImages}/images/contenido-joven-sosteniendo-tableta-digital/960.webp`;
-    urlFondo1_1280 = `${environment.urlImages}/images/contenido-joven-sosteniendo-tableta-digital/1280.webp`;
-    urlFondo1_1920 = `${environment.urlImages}/images/contenido-joven-sosteniendo-tableta-digital/1920.webp`;
-    urlFondo1_2560 = `${environment.urlImages}/images/contenido-joven-sosteniendo-tableta-digital/2560.webp`;
-
-    urlTarea = `${environment.urlImages}/images/tarea.png`;
-
-    urlFondo2_640 = `${environment.urlImages}/images/gerente-de-pequenas-empresas-en-su-taller/640.webp`;
-    urlFondo2_960 = `${environment.urlImages}/images/gerente-de-pequenas-empresas-en-su-taller/960.webp`;
-    urlFondo2_1280 = `${environment.urlImages}/images/gerente-de-pequenas-empresas-en-su-taller/1280.webp`;
-    urlFondo2_1920 = `${environment.urlImages}/images/gerente-de-pequenas-empresas-en-su-taller/1920.webp`;
-
-    urlFondo3_640 = `${environment.urlImages}/images/hombre-de-negocios-dueno-de-la-empresa-en-la-oficina/640.webp`;
-    urlFondo3_960 = `${environment.urlImages}/images/hombre-de-negocios-dueno-de-la-empresa-en-la-oficina/960.webp`;
-    urlFondo3_1280 = `${environment.urlImages}/images/hombre-de-negocios-dueno-de-la-empresa-en-la-oficina/1280.webp`;
-    urlFondo3_1920 = `${environment.urlImages}/images/hombre-de-negocios-dueno-de-la-empresa-en-la-oficina/1920.webp`;
 
     ngOnInit(): void {
         this.paginaSinMenuEstaticoHelper.quitarMenuEstatico();

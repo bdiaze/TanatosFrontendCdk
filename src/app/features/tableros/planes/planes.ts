@@ -1,6 +1,5 @@
 import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
-import { environment } from '@/environments/environment';
 import { DecimalPipe } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -27,11 +26,6 @@ import { RouterLink } from '@angular/router';
 })
 export class Planes implements OnInit, OnDestroy {
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
-
-    urlFondo1_640 = `${environment.urlImages}/images/hombre-con-delantal-ofreciendo-comida-para-llevar-empaquetada-clienta/640.webp`;
-    urlFondo1_960 = `${environment.urlImages}/images/hombre-con-delantal-ofreciendo-comida-para-llevar-empaquetada-clienta/960.webp`;
-    urlFondo1_1280 = `${environment.urlImages}/images/hombre-con-delantal-ofreciendo-comida-para-llevar-empaquetada-clienta/1280.webp`;
-    urlFondo1_1920 = `${environment.urlImages}/images/hombre-con-delantal-ofreciendo-comida-para-llevar-empaquetada-clienta/1920.webp`;
 
     readonly valorMensualPlanEmpresa = signal<number>(9990);
 

@@ -14,8 +14,13 @@
     <div class="relative w-full md:w-1/2 h-[clamp(16rem,80vw,40rem)] md:h-[clamp(35rem,50vw,40rem)] overflow-hidden object-top-right order-1 md:order-2">
         <img
             appFadeIn
-            [src]="urlFondo1_1280"
-            [srcset]="`${urlFondo1_640} 640w, ${urlFondo1_960} 960w, ${urlFondo1_1280} 1280w, ${urlFondo1_1920} 1920w`"
+            src="/images/vista-frontal-empleado-masculino-sirviendo-cafe/1280.webp"
+            srcset="
+                /images/vista-frontal-empleado-masculino-sirviendo-cafe/640.webp   640w,
+                /images/vista-frontal-empleado-masculino-sirviendo-cafe/960.webp   960w,
+                /images/vista-frontal-empleado-masculino-sirviendo-cafe/1280.webp 1280w,
+                /images/vista-frontal-empleado-masculino-sirviendo-cafe/1920.webp 1920w
+            "
             sizes="(max-width: 767px) 100vw, 50vw"
             alt="Empleado sirviendo café"
             class="absolute inset-0 h-full w-full object-cover"
@@ -50,13 +55,13 @@
             loop
             playsinline
             preload="auto"
-            [poster]="urlVideo1_Poster"
+            poster="/videos/mujer-trabajando-en-tablet/poster.webp"
             class="absolute inset-0 w-full h-full object-cover -z-10"
             tabindex="-1"
             aria-hidden="true"
         >
-            <source [src]="urlVideo1_WebM" type="video/webm" />
-            <source [src]="urlVideo1_MP4" type="video/mp4" />
+            <source src="/videos/mujer-trabajando-en-tablet/720p.webm" type="video/webm" />
+            <source src="/videos/mujer-trabajando-en-tablet/720p.mp4" type="video/mp4" />
             <track kind="none" />
         </video>
     </div>
