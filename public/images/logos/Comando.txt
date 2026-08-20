@@ -1,0 +1,8 @@
+inkscape .\logo-blanco-fondo-azul.svg --export-filename=logo-blanco-fondo-azul-72x72.png --export-width=72 --export-height=72
+inkscape .\logo-blanco-fondo-azul.svg --export-filename=logo-blanco-fondo-azul-96x96.png --export-width=96 --export-height=96
+inkscape .\logo-blanco-fondo-azul.svg --export-filename=logo-blanco-fondo-azul-128x128.png --export-width=128 --export-height=128
+inkscape .\logo-blanco-fondo-azul.svg --export-filename=logo-blanco-fondo-azul-144x144.png --export-width=144 --export-height=144
+inkscape .\logo-blanco-fondo-azul.svg --export-filename=logo-blanco-fondo-azul-152x152.png --export-width=152 --export-height=152
+inkscape .\logo-blanco-fondo-azul.svg --export-filename=logo-blanco-fondo-azul-192x192.png --export-width=192 --export-height=192
+inkscape .\logo-blanco-fondo-azul.svg --export-filename=logo-blanco-fondo-azul-384x384.png --export-width=384 --export-height=384
+inkscape .\logo-blanco-fondo-azul.svg --export-filename=logo-blanco-fondo-azul-512x512.png --export-width=512 --export-height=512
