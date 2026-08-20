@@ -1,69 +1,51 @@
 import { environment } from '@/environments/environment';
-import { inject, Injectable } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GoogleAnalytics {
-    private readonly router = inject(Router);
-    private readonly title = inject(Title);
+    private isInitialized = false;
 
-    constructor() {
-        this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event) => {
-            this.event('page_view', {
-                page_location: window.location.href,
-                page_path: event.urlAfterRedirects,
-            });
+    private initGtag(): void {
+        if (this.isInitialized) return;
+
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function () {
+            window.dataLayer.push(arguments);
+        };
+        window.gtag('js', new Date());
+        window.gtag('config', environment.google.analytics.id, {
+            send_page_view: false,
         });
+
+        this.isInitialized = true;
     }
 
-    private loadPromise?: Promise<void>;
-
-    load(): Promise<void> {
-        if (this.loadPromise) {
-            return this.loadPromise;
+    load(): void {
+        if (!environment.google.analytics.id || !environment.production) {
+            return;
         }
 
-        this.loadPromise = new Promise((resolve, reject) => {
-            if (!environment.google.analytics.id || !environment.production) {
-                resolve();
-                return;
-            }
+        this.initGtag();
 
-            if (document.getElementById('google-analytics-script')) {
-                resolve();
-                return;
-            }
+        if (document.getElementById('google-analytics-script')) {
+            return;
+        }
 
-            const script = document.createElement('script');
-            script.id = 'google-analytics-script';
-            script.src = `https://www.googletagmanager.com/gtag/js?id=${environment.google.analytics.id}`;
-            script.async = true;
-            script.onload = () => resolve();
-            script.onerror = () => reject(new Error('No se pudo cargar Google Analytics'));
-
-            document.head.appendChild(script);
-
-            window.dataLayer = window.dataLayer || [];
-            window.gtag = (...args: unknown[]) => {
-                window.dataLayer.push(args);
-            };
-            window.gtag('js', new Date());
-            window.gtag('config', environment.google.analytics.id, {
-                send_page_view: false,
-            });
-        });
-
-        return this.loadPromise;
+        const script = document.createElement('script');
+        script.id = 'google-analytics-script';
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${environment.google.analytics.id}`;
+        script.async = true;
+        document.head.appendChild(script);
     }
 
     event(eventName: string, parameters?: Record<string, unknown>): void {
         if (!environment.production) {
             return;
         }
+
+        this.initGtag();
 
         window.gtag?.('event', eventName, parameters);
     }
