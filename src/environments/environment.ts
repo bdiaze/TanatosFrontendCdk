@@ -10,7 +10,6 @@ export const environment = {
     tanatosService: {
         apiUrl: '',
     },
-    urlImages: '',
     google: {
         recaptcha: {
             siteKey: '',
