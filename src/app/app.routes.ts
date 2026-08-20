@@ -39,9 +39,9 @@ import { MantenedorPreguntaFrecuente } from './features/mantenedores/mantenedor-
 import { Ayuda } from './features/tableros/ayuda/ayuda';
 import { MantenedorVideoTutorial } from './features/mantenedores/mantenedor-video-tutorial/mantenedor-video-tutorial';
 import { Evaluaciones } from './features/evaluacion/evaluaciones/evaluaciones';
-import { NuevaEvaluacion } from './features/evaluacion/nueva-evaluacion/nueva-evaluacion';
 import { PantallaIngresoEvaluacion } from './features/evaluacion/pantalla-ingreso-evaluacion/pantalla-ingreso-evaluacion';
 import { ConsultaMensajes } from './features/mensaje/consulta-mensajes/consulta-mensajes';
+import { RedirectToHome } from './components/redirect-to-home/redirect-to-home';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -286,5 +286,5 @@ export const routes: Routes = [
         component: MantenedorTipoUnidadTiempo,
         canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
-    { path: '**', redirectTo: '' },
+    { path: '**', component: RedirectToHome },
 ];
