@@ -1,0 +1,62 @@
+{
+    "name": "Todo en Orden",
+    "short_name": "Todo en Orden",
+    "description": "Somos una plataforma de gestión diseñada para ayudar a microempresarios a organizar y cumplir todas sus obligaciones.",
+    "lang": "es-CL",
+    "orientation": "portrait",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/inicio",
+    "background_color": "#005db2",
+    "theme_color": "#ffffff",
+    "icons": [
+        {
+            "src": "images/logos/logo-blanco-fondo-azul-72x72.png",
+            "sizes": "72x72",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "images/logos/logo-blanco-fondo-azul-96x96.png",
+            "sizes": "96x96",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "images/logos/logo-blanco-fondo-azul-128x128.png",
+            "sizes": "128x128",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "images/logos/logo-blanco-fondo-azul-144x144.png",
+            "sizes": "144x144",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "images/logos/logo-blanco-fondo-azul-152x152.png",
+            "sizes": "152x152",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "images/logos/logo-blanco-fondo-azul-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "images/logos/logo-blanco-fondo-azul-384x384.png",
+            "sizes": "384x384",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "images/logos/logo-blanco-fondo-azul-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        }
+    ]
+}
