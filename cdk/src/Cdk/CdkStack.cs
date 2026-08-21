@@ -8,6 +8,7 @@ using Amazon.CDK.AWS.S3;
 using Amazon.CDK.AWS.S3.Deployment;
 using Constructs;
 using System;
+using System.Collections.Generic;
 
 namespace Cdk
 {
@@ -55,6 +56,16 @@ namespace Cdk
                 ")
             });
 
+            CachePolicy staticCachePolicy = new(this, $"{appName}FrontendStaticCachePolicy", new CachePolicyProps {
+                CachePolicyName = $"{appName}-Frontend-Static-Assets",
+                Comment = $"Politica de cache para recursos estáticos de {appName}",
+                DefaultTtl = Duration.Days(30),
+                MinTtl = Duration.Seconds(0),
+                MaxTtl = Duration.Days(365),
+                EnableAcceptEncodingBrotli = true,
+                EnableAcceptEncodingGzip = true,
+            });
+
             // Se crea distribución de cloudfront...
             Distribution distribution = new(this, $"{appName}FrontendDistribution", new DistributionProps {
                 Comment = $"{appName} Frontend Distribution",
@@ -64,6 +75,7 @@ namespace Cdk
                 DefaultBehavior = new BehaviorOptions {
                     Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
                     Compress = true,
+                    CachePolicy = CachePolicy.CACHING_DISABLED,
                     AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
                     ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                     ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
@@ -74,20 +86,48 @@ namespace Cdk
                         }
                     ]
                 },
-                ErrorResponses = [
-                    new ErrorResponse {
-                        HttpStatus = 403,
-                        ResponseHttpStatus = 200,
-                        ResponsePagePath = $"/{rootObject}",
-                        Ttl = Duration.Days(1),
+                AdditionalBehaviors = new Dictionary<string, IBehaviorOptions> {
+                    ["*.js"] = new BehaviorOptions {
+                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
+                        Compress = true,
+                        CachePolicy = staticCachePolicy,
+                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
                     },
-                    new ErrorResponse {
-                        HttpStatus = 404,
-                        ResponseHttpStatus = 200,
-                        ResponsePagePath = $"/{rootObject}",
-                        Ttl = Duration.Days(1),
+                    ["*.css"] = new BehaviorOptions {
+                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
+                        Compress = true,
+                        CachePolicy = staticCachePolicy,
+                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
                     },
-                ]
+                    ["images/*"] = new BehaviorOptions {
+                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
+                        Compress = true,
+                        CachePolicy = staticCachePolicy,
+                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
+                    },
+                    ["videos/*"] = new BehaviorOptions {
+                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
+                        Compress = true,
+                        CachePolicy = staticCachePolicy,
+                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
+                    },
+                    ["*.ico"] = new BehaviorOptions {
+                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
+                        Compress = true,
+                        CachePolicy = staticCachePolicy,
+                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
+                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
+                    }
+                }
             });
 
             // Se despliegan piezas del frontend en el bucket...
