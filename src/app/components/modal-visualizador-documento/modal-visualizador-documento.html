@@ -1,0 +1,20 @@
+<div
+    class="fixed left-0 top-0 right-0 bottom-0 bg-black/95 flex flex-col justify-center items-center gap-3 md:gap-5 z-50 p-5 faster-fade-in"
+    (click)="$event.stopPropagation(); cerrar.emit()"
+    (keydown.enter)="$event.stopPropagation(); cerrar.emit()"
+    (keydown.space)="$event.preventDefault(); $event.stopPropagation(); cerrar.emit()"
+>
+    <button
+        hlmBtn
+        variant="ghost"
+        class="absolute size-9! top-2 right-2 text-blanco! hover:text-negro! rounded-full z-50 p-0! flex items-center justify-center"
+        (click)="$event.stopPropagation(); cerrar.emit()"
+        aria-label="Cerrar"
+    >
+        <ng-icon hlm name="lucideX" size="20px" />
+    </button>
+    @if (nombre()) {
+        <h4 hlmH4 class="text-blanco text-center text-balance max-w-[80vw] break-all">{{ nombre() }}</h4>
+    }
+    <app-document-viewer [url]="url()" [mime]="mime()"></app-document-viewer>
+</div>
