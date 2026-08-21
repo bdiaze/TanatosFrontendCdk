@@ -5,6 +5,7 @@ using Amazon.CDK.AWS.CloudFront.Origins;
 using Amazon.CDK.AWS.Route53;
 using Amazon.CDK.AWS.Route53.Targets;
 using Amazon.CDK.AWS.S3;
+using AssetOptions = Amazon.CDK.AWS.S3.Assets.AssetOptions;
 using Amazon.CDK.AWS.S3.Deployment;
 using Constructs;
 using System;
@@ -92,7 +93,7 @@ namespace Cdk
 
             // Se despliegan piezas del frontend en el bucket...
             BucketDeployment frontendDeployment = new(this, $"{appName}FrontendDeployment", new BucketDeploymentProps {
-                Sources = [Source.Asset(buildDirectory)],
+                Sources = [Source.Asset(buildDirectory, new AssetOptions { Exclude = archivosNoCache })],
                 DestinationBucket = bucket,
                 Distribution = distribution,
                 Exclude = archivosNoCache,
@@ -104,7 +105,7 @@ namespace Cdk
             });
 
             BucketDeployment frontendMetadaDeployment = new(this, $"{appName}FrontendMetadataDeployment", new BucketDeploymentProps {
-                Sources = [Source.Asset(buildDirectory)],
+                Sources = [Source.Asset(buildDirectory, new AssetOptions { Exclude = ["*", ..archivosNoCache.Select(a => $"!{a}")] })],
                 DestinationBucket = bucket,
                 Distribution = distribution,
                 Exclude = ["*"],
@@ -116,7 +117,6 @@ namespace Cdk
                 ],
                 DistributionPaths = [.. archivosNoCache.Select(a => $"/{a}")]
             });
-            frontendMetadaDeployment.Node.AddDependency(frontendDeployment);
 
             // Se crea record en hosted zone...
             _ = new ARecord(this, $"{appName}FrontendARecord", new ARecordProps {
