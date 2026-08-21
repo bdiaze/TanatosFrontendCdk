@@ -8,7 +8,7 @@ using Amazon.CDK.AWS.S3;
 using Amazon.CDK.AWS.S3.Deployment;
 using Constructs;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace Cdk
 {
@@ -88,14 +88,18 @@ namespace Cdk
                 }
             });
 
+            string[] archivosNoCache = ["index.html", "manifest.webmanifest", "ngsw.json"];
+
             // Se despliegan piezas del frontend en el bucket...
             BucketDeployment frontendDeployment = new(this, $"{appName}FrontendDeployment", new BucketDeploymentProps {
                 Sources = [Source.Asset(buildDirectory)],
                 DestinationBucket = bucket,
                 Distribution = distribution,
-                Exclude = ["index.html", "manifest.webmanifest", "ngsw.json"],
+                Exclude = archivosNoCache,
                 CacheControl = [
-                        CacheControl.FromString("public, max-age=2592000, immutable")
+                        CacheControl.SetPublic(),
+                        CacheControl.MaxAge(Duration.Days(30)),
+                        CacheControl.Immutable()
                 ]
             });
 
@@ -104,11 +108,13 @@ namespace Cdk
                 DestinationBucket = bucket,
                 Distribution = distribution,
                 Exclude = ["*"],
-                Include = ["index.html", "manifest.webmanifest", "ngsw.json"],
+                Include = archivosNoCache,
                 CacheControl = [
-                    CacheControl.FromString("no-cache, no-store, must-revalidate")
+                    CacheControl.NoCache(),
+                    CacheControl.NoStore(),
+                    CacheControl.MustRevalidate()
                 ],
-                DistributionPaths = ["/index.html", "/manifest.webmanifest", "/ngsw.json"]
+                DistributionPaths = [.. archivosNoCache.Select(a => $"/{a}")]
             });
             frontendMetadaDeployment.Node.AddDependency(frontendDeployment);
 
