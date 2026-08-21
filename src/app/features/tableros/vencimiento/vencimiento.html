@@ -144,8 +144,8 @@
                                         ) {
                                             <thead hlmTHead>
                                                 <tr hlmTr>
-                                                    <th hlmTh>Nombre</th>
-                                                    <th hlmTh class="text-center">Fecha Subida</th>
+                                                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                                                    <th hlmTh class="text-xs md:text-sm text-center whitespace-normal wrap-break-word">Fecha Subida</th>
                                                     <th hlmTh></th>
                                                 </tr>
                                             </thead>
@@ -171,32 +171,51 @@
                                                             <button
                                                                 hlmBtn
                                                                 size="icon"
-                                                                class="btnOutlineAzul size-8!"
-                                                                (click)="descargaArchivo(documento.id)"
-                                                                [disabled]="documento.descargando"
+                                                                class="size-8!"
+                                                                (click)="obtenerUrlVisualizacion(documento)"
+                                                                [disabled]="
+                                                                    obteniendoUrlVisualizacion() ||
+                                                                    documentoSeleccionadoVisualizacion() !== null ||
+                                                                    documento.borrando
+                                                                "
                                                             >
-                                                                @if (documento.descargando) {
+                                                                @if (documento.visualizando) {
                                                                     <hlm-spinner />
                                                                 } @else {
-                                                                    <ng-icon hlm size="sm" name="lucideDownload" />
+                                                                    <ng-icon hlm size="sm" name="lucideSearch" />
                                                                 }
                                                             </button>
-                                                            @if (!itemMostrar()?.fechaCompletitud) {
+                                                            <div class="flex flex-col md:flex-row items-center justify-end gap-2">
                                                                 <button
                                                                     hlmBtn
                                                                     size="icon"
-                                                                    variant="destructive"
-                                                                    class="size-8!"
-                                                                    (click)="openModalEliminar(documento)"
-                                                                    [disabled]="documento.borrando"
+                                                                    class="btnOutlineAzul size-8!"
+                                                                    (click)="descargaArchivo(documento.id)"
+                                                                    [disabled]="documento.descargando || documento.borrando"
                                                                 >
-                                                                    @if (documento.borrando) {
+                                                                    @if (documento.descargando) {
                                                                         <hlm-spinner />
                                                                     } @else {
-                                                                        <ng-icon hlm size="sm" name="lucideTrash" />
+                                                                        <ng-icon hlm size="sm" name="lucideDownload" />
                                                                     }
                                                                 </button>
-                                                            }
+                                                                @if (!itemMostrar()?.fechaCompletitud) {
+                                                                    <button
+                                                                        hlmBtn
+                                                                        size="icon"
+                                                                        variant="destructive"
+                                                                        class="size-8!"
+                                                                        (click)="openModalEliminar(documento)"
+                                                                        [disabled]="documento.borrando || documento.descargando || documento.visualizando"
+                                                                    >
+                                                                        @if (documento.borrando) {
+                                                                            <hlm-spinner />
+                                                                        } @else {
+                                                                            <ng-icon hlm size="sm" name="lucideTrash" />
+                                                                        }
+                                                                    </button>
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -378,6 +397,15 @@
         </div>
     }
 </section>
+
+@if (urlDocumentoVisualizacion() && documentoSeleccionadoVisualizacion()) {
+    <app-modal-visualizador-documento
+        [url]="urlDocumentoVisualizacion()!"
+        [nombre]="documentoSeleccionadoVisualizacion()!.nombreArchivo"
+        [mime]="documentoSeleccionadoVisualizacion()!.mime"
+        (cerrar)="closeModalVerDocumento()"
+    ></app-modal-visualizador-documento>
+}
 
 @if (showModalDesactivar()) {
     <app-modal-eliminacion

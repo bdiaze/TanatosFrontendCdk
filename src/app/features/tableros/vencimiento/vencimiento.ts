@@ -13,8 +13,10 @@ import {
     lucideCalendarCheck,
     lucideCircleAlert,
     lucideDownload,
+    lucideEye,
     lucideGem,
     lucidePlus,
+    lucideSearch,
     lucideTrash,
     lucideTriangleAlert,
 } from '@ng-icons/lucide';
@@ -50,6 +52,7 @@ import { EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso } from '@/app/entiti
 import { DriveStep } from 'driver.js';
 import { TourService } from '@/app/helpers/tour-service';
 import { EntNormaSuscritaDesactivarNorma } from '@/app/entities/others/ent-norma-suscrita-desactivar-norma';
+import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-documento/modal-visualizador-documento';
 
 @Component({
     selector: 'app-vencimiento',
@@ -77,6 +80,7 @@ import { EntNormaSuscritaDesactivarNorma } from '@/app/entities/others/ent-norma
         EditorTexto,
         PopupFuncionalidadBloqueada,
         RouterModule,
+        ModalVisualizadorDocumento,
     ],
     templateUrl: './vencimiento.html',
     providers: [
@@ -89,6 +93,8 @@ import { EntNormaSuscritaDesactivarNorma } from '@/app/entities/others/ent-norma
             lucideGem,
             lucideTriangleAlert,
             lucideCircleAlert,
+            lucideSearch,
+            lucideEye,
         }),
         DatePipe,
     ],
@@ -164,6 +170,8 @@ export class Vencimiento implements OnInit {
             return [
                 {
                     nombreArchivo: 'Un_archivo_de_ejemplo.pdf',
+                    mime: 'application/pdf',
+                    tamanno: 1_000_000,
                     fechaSubida: new Date().toISOString(),
                 },
             ] as DocumentoAdjunto[];
@@ -255,6 +263,8 @@ export class Vencimiento implements OnInit {
                                 ({
                                     id: x.id,
                                     nombreArchivo: x.nombreArchivo,
+                                    mime: x.mime,
+                                    tamanno: x.tamanno,
                                     fechaSubida: x.fechaSubida,
                                     descargando: false,
                                     borrando: false,
@@ -335,6 +345,8 @@ export class Vencimiento implements OnInit {
                     ({
                         id: x.id,
                         nombreArchivo: x.nombreArchivo,
+                        mime: x.mime,
+                        tamanno: x.tamanno,
                         fechaSubida: x.fechaSubida,
                         descargando: false,
                         borrando: false,
@@ -568,6 +580,7 @@ export class Vencimiento implements OnInit {
                 .generarUrlBajadaPorCodigoAcceso({
                     codigoAcceso: this.codigoAcceso(),
                     idDocumentoAdjunto: idDocumento,
+                    paraVisualizacion: false,
                 } as EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso)
                 .subscribe({
                     next: (salida) => {
@@ -588,6 +601,7 @@ export class Vencimiento implements OnInit {
             this.documentoAdjuntoDao
                 .generarUrlBajada({
                     idDocumentoAdjunto: idDocumento,
+                    paraVisualizacion: false,
                 } as EntDocumentoAdjuntoGenerarUrlBajada)
                 .subscribe({
                     next: (salida) => {
@@ -603,6 +617,63 @@ export class Vencimiento implements OnInit {
                         console.error('Error al generar URL de bajada de documento', err);
                         this.error.set(getErrorMessage(err) ?? 'Error al generar URL de bajada de documento');
                     },
+                });
+        }
+    }
+
+    urlDocumentoVisualizacion = signal<string | null>(null);
+    documentoSeleccionadoVisualizacion = signal<DocumentoAdjunto | null>(null);
+    verDocumento(url: string | null, documento: DocumentoAdjunto | null) {
+        this.urlDocumentoVisualizacion.set(url);
+        this.documentoSeleccionadoVisualizacion.set(documento);
+    }
+    closeModalVerDocumento() {
+        this.verDocumento(null, null);
+    }
+
+    obteniendoUrlVisualizacion = signal(false);
+    obtenerUrlVisualizacion(documento: DocumentoAdjunto) {
+        // Se deja documento como "visualizando"...
+        this.obteniendoUrlVisualizacion.set(true);
+        this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === documento.id ? { ...doc, visualizando: true } : doc)));
+        if (this.codigoAcceso()) {
+            this.documentoAdjuntoDao
+                .generarUrlBajadaPorCodigoAcceso({
+                    codigoAcceso: this.codigoAcceso(),
+                    idDocumentoAdjunto: documento.id,
+                    paraVisualizacion: true,
+                } as EntDocumentoAdjuntoGenerarUrlBajadaPorCodigoAcceso)
+                .subscribe({
+                    next: (salida) => {
+                        this.verDocumento(salida.preSignedUrl, documento);
+                        this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === documento.id ? { ...doc, visualizando: false } : doc)));
+                    },
+                    error: (err) => {
+                        console.error('Error al generar URL para visualizar documento', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al generar URL para visualizar documento');
+                    },
+                })
+                .add(() => {
+                    this.obteniendoUrlVisualizacion.set(false);
+                });
+        } else {
+            this.documentoAdjuntoDao
+                .generarUrlBajada({
+                    idDocumentoAdjunto: documento.id,
+                    paraVisualizacion: true,
+                } as EntDocumentoAdjuntoGenerarUrlBajada)
+                .subscribe({
+                    next: (salida) => {
+                        this.verDocumento(salida.preSignedUrl, documento);
+                        this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === documento.id ? { ...doc, visualizando: false } : doc)));
+                    },
+                    error: (err) => {
+                        console.error('Error al generar URL para visualizar documento', err);
+                        this.error.set(getErrorMessage(err) ?? 'Error al generar URL para visualizar documento');
+                    },
+                })
+                .add(() => {
+                    this.obteniendoUrlVisualizacion.set(false);
                 });
         }
     }
@@ -861,7 +932,10 @@ export class Vencimiento implements OnInit {
 export interface DocumentoAdjunto {
     id: number;
     nombreArchivo: string;
+    mime: string;
+    tamanno: number;
     fechaSubida: string | null;
+    visualizando: boolean;
     descargando: boolean;
     borrando: boolean;
 }
