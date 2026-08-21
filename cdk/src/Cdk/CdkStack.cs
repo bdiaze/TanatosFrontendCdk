@@ -103,6 +103,7 @@ namespace Cdk
                 Sources = [Source.Asset(buildDirectory)],
                 DestinationBucket = bucket,
                 Distribution = distribution,
+                Exclude = ["*"],
                 Include = ["index.html", "manifest.webmanifest", "ngsw.json"],
                 CacheControl = [
                     CacheControl.FromString("no-cache, no-store, must-revalidate")
