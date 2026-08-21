@@ -1,0 +1,30 @@
+@if (loading()) {
+    <div class="my-10 flex flex-col gap-4 items-center justify-center text-blanco">
+        <hlm-spinner class="text-3xl" />
+        <p hlmP>Cargando tu documento...</p>
+    </div>
+}
+
+@if (isPdf()) {
+    <iframe
+        [src]="safeUrl()"
+        class="w-[95vw] md:w-[90vw] h-[75svh] md:h-[85svh] max-h-[85svh] border-0 transition-[opacity,max-height] duration-1000 opacity-0"
+        [ngClass]="{ 'max-h-0!': loading(), 'opacity-100': !loading() }"
+        title="Visualizador de PDF"
+        (load)="documentoCargado()"
+    ></iframe>
+} @else if (isImage()) {
+    <div class="max-w-[90vw] max-h-[85svh] overflow-auto">
+        <img
+            [src]="url()"
+            alt="Visualizador de Imagen"
+            class="max-w-full max-h-[85svh] w-auto h-auto object-contain transition-[opacity,max-height] duration-1000 opacity-0"
+            [ngClass]="{ 'max-h-0!': loading(), 'opacity-100': !loading() }"
+            (load)="documentoCargado()"
+        />
+    </div>
+} @else {
+    <div class="flex items-center justify-center text-blanco">
+        <p>Este tipo de archivo no puede ser visualizado.</p>
+    </div>
+}
