@@ -61,7 +61,7 @@ namespace Cdk
                 CachePolicyName = $"{appName}-Frontend-Cache-Policy",
                 Comment = $"Politica de cache para frontend de {appName}",
                 DefaultTtl = Duration.Days(365),
-                MinTtl = Duration.Seconds(0),
+                MinTtl = Duration.Seconds(365),
                 MaxTtl = Duration.Days(365),
                 EnableAcceptEncodingBrotli = true,
                 EnableAcceptEncodingGzip = true,
