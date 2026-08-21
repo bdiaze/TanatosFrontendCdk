@@ -1,5 +1,5 @@
-import { redireccionarALogin } from '@/app/features/auth/login/login';
-import { Component } from '@angular/core';
+import { RedirectToLogin } from '@/app/services/redirect-to-login';
+import { Component, inject } from '@angular/core';
 import { provideIcons } from '@ng-icons/core';
 import { HlmP } from '@spartan-ng/helm/typography';
 
@@ -10,7 +10,9 @@ import { HlmP } from '@spartan-ng/helm/typography';
     providers: [provideIcons({})],
 })
 export class ListonBeta {
+    private readonly redirectToLogin = inject(RedirectToLogin);
+
     async unirseBeta() {
-        await redireccionarALogin('signup');
+        await this.redirectToLogin.redireccionarALogin('signup');
     }
 }

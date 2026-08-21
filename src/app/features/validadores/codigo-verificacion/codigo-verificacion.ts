@@ -13,10 +13,10 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmInputOtpImports } from '@spartan-ng/helm/input-otp';
 import { HlmP } from '@spartan-ng/helm/typography';
-import { redireccionarALogin } from '../../auth/login/login';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { BgImageFadeIn } from '@/app/directives/bg-image-fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
+import { RedirectToLogin } from '@/app/services/redirect-to-login';
 
 @Component({
     selector: 'app-codigo-verificacion',
@@ -40,6 +40,7 @@ export class CodigoVerificacion implements OnInit, OnDestroy {
     private readonly paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
     private readonly route = inject(ActivatedRoute);
     private readonly perfilDao = inject(PerfilDao);
+    private readonly redirectToLogin = inject(RedirectToLogin);
 
     form: FormGroup<{
         correo: FormControl<string | null>;
@@ -103,7 +104,7 @@ export class CodigoVerificacion implements OnInit, OnDestroy {
             } as EntPerfilConfirmarRegistro)
             .subscribe({
                 next: () => {
-                    redireccionarALogin('login');
+                    this.redirectToLogin.redireccionarALogin('login');
                 },
                 error: (err) => {
                     console.error('Error al validar código de verificación', err);

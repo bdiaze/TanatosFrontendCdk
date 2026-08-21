@@ -1,7 +1,7 @@
 import { AuthRefreshService } from '@/app/services/auth-refresh-service';
 import { AuthStore } from '@/app/services/auth-store';
-import { Component, computed, inject, Inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
-import { environment } from '@environment';
+import { RedirectToLogin } from '@/app/services/redirect-to-login';
+import { Component, computed, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 
@@ -15,6 +15,7 @@ export class Login implements OnInit, OnDestroy {
 
     private readonly authStore = inject(AuthStore);
     private readonly authRefreshService = inject(AuthRefreshService);
+    private readonly redirectToLogin = inject(RedirectToLogin);
 
     backgroundRefreshRunning = this.authRefreshService.backgroundRefreshRunning;
     callbackRunning = this.authStore.callbackRunning;
@@ -45,7 +46,6 @@ export class Login implements OnInit, OnDestroy {
         if (event.persisted) {
             this.iniciandoSesion.set(false);
             this.registrandose.set(false);
-            isRedirectingToLogin = false;
         }
     };
 
@@ -55,82 +55,6 @@ export class Login implements OnInit, OnDestroy {
         } else {
             this.registrandose.set(true);
         }
-        await redireccionarALogin(registrarse ? 'signup' : 'login');
+        await this.redirectToLogin.redireccionarALogin(registrarse ? 'signup' : 'login');
     }
-}
-
-export function generateRandomString(length: number): string {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const array = new Uint32Array(length);
-    crypto.getRandomValues(array);
-    return Array.from(array)
-        .map((x) => chars[x % chars.length])
-        .join('');
-}
-
-export async function generateCodeChallenge(verifier: string): Promise<string> {
-    const data = new TextEncoder().encode(verifier);
-    const digest = await crypto.subtle.digest('SHA-256', data);
-    return btoa(String.fromCodePoint(...new Uint8Array(digest)))
-        .replaceAll('+', '-')
-        .replaceAll('/', '_')
-        .replaceAll('=', '');
-}
-
-export async function generarUrlALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string): Promise<string> {
-    const codeVerifier = generateRandomString(64);
-    const codeChallenge = await generateCodeChallenge(codeVerifier);
-
-    const statePayload = {
-        nonce: generateRandomString(32),
-        redirect: redirectAfterLogin,
-    };
-    const state = btoa(JSON.stringify(statePayload));
-    sessionStorage.setItem('pkce_state', state);
-    sessionStorage.setItem('pkce_code_verifier', codeVerifier);
-
-    const publicScopes = [
-        'api/perfil.read.self',
-        'api/perfil.write.self',
-        'api/negocios.read.self',
-        'api/negocios.write.self',
-        'api/obligaciones.read.self',
-        'api/obligaciones.write.self',
-        'api/vencimientos.read.self',
-        'api/vencimientos.write.self',
-        'api/suscripciones.read.self',
-        'api/suscripciones.write.self',
-        'api/templates.read.public',
-        'api/sistema.read.public',
-    ];
-
-    let urlBase = `${environment.cognitoService.baseUrl}/login?`;
-    if (accion === 'signup') {
-        urlBase = `${environment.cognitoService.baseUrl}/signup?`;
-    }
-
-    return (
-        urlBase +
-        new URLSearchParams({
-            response_type: 'code',
-            client_id: environment.cognitoService.clientId,
-            redirect_uri: environment.cognitoService.redirectUrl,
-            scope: `openid profile email ${publicScopes.join(' ')}`,
-            state: state,
-            code_challenge_method: 'S256',
-            code_challenge: codeChallenge,
-            lang: 'es',
-        })
-    );
-}
-
-let isRedirectingToLogin = false;
-
-export async function redireccionarALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string) {
-    if (isRedirectingToLogin) return;
-    isRedirectingToLogin = true;
-
-    const url: string = await generarUrlALogin(accion, redirectAfterLogin);
-
-    window.location.href = url;
 }

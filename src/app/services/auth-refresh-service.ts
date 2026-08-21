@@ -2,8 +2,8 @@ import { inject, Injectable, signal } from '@angular/core';
 import { catchError, map, NEVER, Observable, of, ReplaySubject, take, tap, throwError } from 'rxjs';
 import { AuthDao } from '../daos/auth-dao';
 import { AuthStore } from './auth-store';
-import { redireccionarALogin } from '../features/auth/login/login';
 import { Router } from '@angular/router';
+import { RedirectToLogin } from './redirect-to-login';
 
 @Injectable({
     providedIn: 'root',
@@ -18,6 +18,7 @@ export class AuthRefreshService {
     private readonly authDao = inject(AuthDao);
     private readonly authStore = inject(AuthStore);
     private readonly router = inject(Router);
+    private readonly redirectToLogin = inject(RedirectToLogin);
 
     refreshToken(sinRedirect: boolean = false): Observable<string> {
         if (!this._isRefreshing) {
@@ -38,7 +39,7 @@ export class AuthRefreshService {
                         this.authStore.setAccessToken(null);
                         this.refreshTokenSubject.error(err);
                         if (!sinRedirect) {
-                            redireccionarALogin('login', this.router.url);
+                            this.redirectToLogin.redireccionarALogin('login', this.router.url, true);
                             return NEVER;
                         }
                         return throwError(() => err);
