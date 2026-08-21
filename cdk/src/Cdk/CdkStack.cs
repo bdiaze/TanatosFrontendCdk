@@ -56,10 +56,10 @@ namespace Cdk
                 ")
             });
 
-            CachePolicy staticCachePolicy = new(this, $"{appName}FrontendStaticCachePolicy", new CachePolicyProps {
-                CachePolicyName = $"{appName}-Frontend-Static-Assets",
-                Comment = $"Politica de cache para recursos estáticos de {appName}",
-                DefaultTtl = Duration.Days(30),
+            CachePolicy cachePolicy = new(this, $"{appName}FrontendCachePolicy", new CachePolicyProps {
+                CachePolicyName = $"{appName}-Frontend-Cache-Policy",
+                Comment = $"Politica de cache para frontend de {appName}",
+                DefaultTtl = Duration.Days(365),
                 MinTtl = Duration.Seconds(0),
                 MaxTtl = Duration.Days(365),
                 EnableAcceptEncodingBrotli = true,
@@ -75,7 +75,7 @@ namespace Cdk
                 DefaultBehavior = new BehaviorOptions {
                     Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
                     Compress = true,
-                    CachePolicy = CachePolicy.CACHING_DISABLED,
+                    CachePolicy = cachePolicy,
                     AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
                     ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                     ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
@@ -85,57 +85,31 @@ namespace Cdk
                             EventType = FunctionEventType.VIEWER_REQUEST
                         }
                     ]
-                },
-                AdditionalBehaviors = new Dictionary<string, IBehaviorOptions> {
-                    ["*.js"] = new BehaviorOptions {
-                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
-                        Compress = true,
-                        CachePolicy = staticCachePolicy,
-                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
-                    },
-                    ["*.css"] = new BehaviorOptions {
-                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
-                        Compress = true,
-                        CachePolicy = staticCachePolicy,
-                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
-                    },
-                    ["images/*"] = new BehaviorOptions {
-                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
-                        Compress = true,
-                        CachePolicy = staticCachePolicy,
-                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
-                    },
-                    ["videos/*"] = new BehaviorOptions {
-                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
-                        Compress = true,
-                        CachePolicy = staticCachePolicy,
-                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
-                    },
-                    ["*.ico"] = new BehaviorOptions {
-                        Origin = S3BucketOrigin.WithOriginAccessControl(bucket),
-                        Compress = true,
-                        CachePolicy = staticCachePolicy,
-                        AllowedMethods = AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-                        ViewerProtocolPolicy = ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                        ResponseHeadersPolicy = ResponseHeadersPolicy.SECURITY_HEADERS,
-                    }
                 }
             });
 
             // Se despliegan piezas del frontend en el bucket...
-            _ = new BucketDeployment(this, $"{appName}FrontendDeployment", new BucketDeploymentProps {
+            BucketDeployment frontendDeployment = new(this, $"{appName}FrontendDeployment", new BucketDeploymentProps {
                 Sources = [Source.Asset(buildDirectory)],
                 DestinationBucket = bucket,
                 Distribution = distribution,
+                Exclude = ["index.html", "manifest.webmanifest", "ngsw.json"],
+                CacheControl = [
+                        CacheControl.FromString("public, max-age=2592000, immutable")
+                ]
             });
+
+            BucketDeployment frontendMetadaDeployment = new(this, $"{appName}FrontendMetadataDeployment", new BucketDeploymentProps {
+                Sources = [Source.Asset(buildDirectory)],
+                DestinationBucket = bucket,
+                Distribution = distribution,
+                Include = ["index.html", "manifest.webmanifest", "ngsw.json"],
+                CacheControl = [
+                    CacheControl.FromString("no-cache, no-store, must-revalidate")
+                ],
+                DistributionPaths = ["/index.html", "/manifest.webmanifest", "/ngsw.json"]
+            });
+            frontendMetadaDeployment.Node.AddDependency(frontendDeployment);
 
             // Se crea record en hosted zone...
             _ = new ARecord(this, $"{appName}FrontendARecord", new ARecordProps {
