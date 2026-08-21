@@ -8,17 +8,17 @@
                 </div>
             }
             <div class="flex-1 min-w-0">
-                @if (canActivateRunning.running()) {
+                @if (canActivateRunning.running() || redirectToLogin.cargandoLogin()) {
                     <app-empty-hero></app-empty-hero>
                 }
                 <router-outlet />
             </div>
         </div>
         <app-footer />
-        @if (!authStore.sesionIniciada() && !authStore.callbackRunning() && !authStore.logoutRunning()) {
+        @if (mostrarListon()) {
             <app-liston-beta />
         }
-        @if (authStore.sesionIniciada() && !authStore.callbackRunning() && !authStore.logoutRunning()) {
+        @if (mostrarRecordatorioSuscripcion()) {
             <app-recordatorio-suscripcion-por-vencer />
         }
     </div>

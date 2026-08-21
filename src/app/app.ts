@@ -16,6 +16,7 @@ import { RecordatorioSuscripcionPorVencer } from './components/recordatorio-susc
 import { CanActivateRunning } from './services/can-activate-running';
 import { EmptyHero } from './components/empty-hero/empty-hero';
 import { GoogleAnalytics } from './services/google-analytics';
+import { RedirectToLogin } from './services/redirect-to-login';
 @Component({
     selector: 'app-root',
     imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionPorVencer, EmptyHero],
@@ -33,6 +34,21 @@ export class App implements OnInit, OnDestroy {
     mobileHelper = inject(MobileHelper);
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
     canActivateRunning = inject(CanActivateRunning);
+    redirectToLogin = inject(RedirectToLogin);
+
+    mostrarListon = computed(() => {
+        return (
+            !this.authStore.sesionIniciada() &&
+            !this.authStore.callbackRunning() &&
+            !this.authStore.logoutRunning() &&
+            !this.canActivateRunning.running() &&
+            !this.redirectToLogin.cargandoLogin()
+        );
+    });
+
+    mostrarRecordatorioSuscripcion = computed(() => {
+        return this.authStore.sesionIniciada() && !this.authStore.callbackRunning() && !this.authStore.logoutRunning();
+    });
 
     mostrarDesktop = computed(() => {
         return !this.mobileHelper.isMobile();
