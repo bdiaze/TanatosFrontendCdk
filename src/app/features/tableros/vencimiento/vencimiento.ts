@@ -53,6 +53,7 @@ import { DriveStep } from 'driver.js';
 import { TourService } from '@/app/helpers/tour-service';
 import { EntNormaSuscritaDesactivarNorma } from '@/app/entities/others/ent-norma-suscrita-desactivar-norma';
 import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-documento/modal-visualizador-documento';
+import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 
 @Component({
     selector: 'app-vencimiento',
@@ -81,6 +82,7 @@ import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-
         PopupFuncionalidadBloqueada,
         RouterModule,
         ModalVisualizadorDocumento,
+        HlmTooltipImports,
     ],
     templateUrl: './vencimiento.html',
     providers: [
