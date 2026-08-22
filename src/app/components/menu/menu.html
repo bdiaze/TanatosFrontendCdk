@@ -1,4 +1,4 @@
-<section class="relative bg-gris text-(--negro)/90 flex flex-col overflow-y-auto overflow-x-hidden h-full" [class.z-50]="!estatico" [class.z-10]="estatico">
+<section class="relative bg-gris text-negro/90 flex flex-col overflow-y-auto overflow-x-hidden h-full" [class.z-50]="!estatico" [class.z-10]="estatico">
     <div class="sticky flex flex-row w-full items-center justify-between">
         @if (authStore.sesionIniciada()) {
             <button
@@ -11,7 +11,7 @@
                 [ngClass]="{
                     'pl-4! pr-0!': !estatico,
                     'px-3! py-4! w-full': estatico,
-                    'hover:cursor-default! hover:text-(--negro)/90!': negocioStore.negociosUsuario().length <= 1,
+                    'hover:cursor-default! hover:text-negro/90!': negocioStore.negociosUsuario().length <= 1,
                     'hover:text-negro! transition-[color]!': negocioStore.negociosUsuario().length > 1,
                 }"
                 [disabled]="cargandoNegocios()"
