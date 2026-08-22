@@ -3,7 +3,7 @@
     "short_name": "Todo en Orden",
     "description": "La plataforma que te ayuda a cumplir con las obligaciones de tu negocio.",
     "lang": "es-CL",
-    "orientation": "portrait",
+    "orientation": "any",
     "display": "standalone",
     "scope": "/",
     "start_url": "/inicio",
