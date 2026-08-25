@@ -293,6 +293,12 @@ export class Menu implements OnInit {
                                 titulo: 'Tipo Unidad Tiempo',
                                 url: '/administracion/mantenedores/tipo-unidad-tiempo',
                             },
+                            {
+                                id: 'group-administracion-item-mantenedores-subitem-tipo-proceso-automatico',
+                                tipo: 'subitem',
+                                titulo: 'Tipo Proceso Automático',
+                                url: '/administracion/mantenedores/tipo-proceso-automatico',
+                            },
                         ],
                     },
                 ],
