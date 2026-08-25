@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SalVideoTutorialHabilitado } from '../entities/others/sal-video-tutorial-habilitado';
-import { environment } from '@/environments/environment';
-import { SalVideoTutorial } from '../entities/others/sal-video-tutorial';
-import { EntVideoTutorialCrear } from '../entities/others/ent-video-tutorial-crear';
-import { EntVideoTutorialActualizar } from '../entities/others/ent-video-tutorial-actualizar';
+import { SalVideoTutorialHabilitado } from '@entities/others/sal-video-tutorial-habilitado';
+import { environment } from '@environment';
+import { SalVideoTutorial } from '@entities/others/sal-video-tutorial';
+import { EntVideoTutorialCrear } from '@entities/others/ent-video-tutorial-crear';
+import { EntVideoTutorialActualizar } from '@entities/others/ent-video-tutorial-actualizar';
 
 @Injectable({
     providedIn: 'root',
