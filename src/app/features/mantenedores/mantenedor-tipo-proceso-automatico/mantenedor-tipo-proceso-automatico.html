@@ -8,7 +8,7 @@
         <table hlmTable>
             <thead hlmTHead>
                 <tr hlmTr>
-                    <th hlmTh class="text-xs md:text-sm text-center w-14">Orden</th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14">ID</th>
                     <th hlmTh class="text-xs md:text-sm">Nombre</th>
                     <th hlmTh class="text-xs md:text-sm">Descripción</th>
                     <th hlmTh class="text-xs md:text-sm text-center w-14 px-0">Visible</th>
@@ -30,8 +30,9 @@
                 } @else {
                     @for (item of listado(); track item.id) {
                         <tr hlmTr class="fade-in">
-                            <td hlmTd class="text-xs md:text-sm text-center">{{ item.orden }}</td>
+                            <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
                             <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
+                                <p hlmP class="text-xs mb-1">Orden: {{ item.orden }}</p>
                                 {{ item.nombre }}
                             </td>
                             <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">

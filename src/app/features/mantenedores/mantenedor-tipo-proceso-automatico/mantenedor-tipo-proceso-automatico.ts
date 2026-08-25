@@ -17,7 +17,7 @@ import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH3 } from '@spartan-ng/helm/typography';
+import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-mantenedor-tipo-proceso-automatico',
@@ -26,6 +26,7 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
         ModalEdicion,
         HlmButtonImports,
         HlmTableImports,
+        HlmP,
         HlmH3,
         HlmAlertImports,
         NgIcon,
@@ -52,7 +53,7 @@ export class MantenedorTipoProcesoAutomatico implements OnInit {
     showModalCrear = signal(false);
 
     camposEdicion = signal<CampoDinamico[]>([
-        { llave: 'id', nombre: 'ID', tipo: 'oculto', requerido: true, deshabilitado: true },
+        { llave: 'id', nombre: 'ID', tipo: 'number', requerido: true, deshabilitado: true },
         {
             llave: 'nombre',
             nombre: 'Nombre',
@@ -84,6 +85,7 @@ export class MantenedorTipoProcesoAutomatico implements OnInit {
     ]);
 
     camposCreacion = signal<CampoDinamico[]>([
+        { llave: 'id', nombre: 'ID', tipo: 'number', requerido: true, deshabilitado: false },
         {
             llave: 'nombre',
             nombre: 'Nombre',
@@ -216,6 +218,7 @@ export class MantenedorTipoProcesoAutomatico implements OnInit {
 
         this.dao
             .crear({
+                id: item.id,
                 nombre: item.nombre,
                 descripcion: item.descripcion,
                 habilitado: item.habilitado,
