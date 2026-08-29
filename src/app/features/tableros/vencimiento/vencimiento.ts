@@ -54,6 +54,7 @@ import { TourService } from '@/app/helpers/tour-service';
 import { EntNormaSuscritaDesactivarNorma } from '@/app/entities/others/ent-norma-suscrita-desactivar-norma';
 import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-documento/modal-visualizador-documento';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
+import { HistoryService } from '@/app/services/history-service';
 
 @Component({
     selector: 'app-vencimiento',
@@ -106,6 +107,7 @@ export class Vencimiento implements OnInit {
 
     private readonly destroyRef = inject(DestroyRef);
     private readonly tourService = inject(TourService);
+    private readonly historyService = inject(HistoryService);
     private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
     ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
@@ -210,6 +212,10 @@ export class Vencimiento implements OnInit {
                     this.ayudaClick();
                 }
             });
+        });
+
+        this.historyService.popState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((_) => {
+            this.closeModalVerDocumento();
         });
     }
 
@@ -628,9 +634,15 @@ export class Vencimiento implements OnInit {
     verDocumento(url: string | null, documento: DocumentoAdjunto | null) {
         this.urlDocumentoVisualizacion.set(url);
         this.documentoSeleccionadoVisualizacion.set(documento);
+        if (url && documento) {
+            this.historyService.registrarEstado('verDocumentoOpen');
+            document.body.classList.add('overflow-hidden!');
+        }
     }
     closeModalVerDocumento() {
         this.verDocumento(null, null);
+        this.historyService.removerEstado('verDocumentoOpen');
+        document.body.classList.remove('overflow-hidden!');
     }
 
     obteniendoUrlVisualizacion = signal(false);
