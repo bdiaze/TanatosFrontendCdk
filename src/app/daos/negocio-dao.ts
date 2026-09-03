@@ -8,6 +8,7 @@ import { EntNegocioActualizar } from '../entities/others/ent-negocio-actualizar'
 import { NegocioStore } from '../services/negocio-store';
 import { clearCookie, getCookie, setCookie } from '../helpers/cookie-helper';
 import { SalNegocioInformacionUsuario } from '../entities/others/sal-negocio-informacion-usuario';
+import { EntNegocioMisionVisionValores } from '../entities/others/ent-negocio-mision-vision-valores';
 
 @Injectable({
     providedIn: 'root',
@@ -51,7 +52,10 @@ export class NegocioDao {
                             seleccionado?.id !== encontrado.id ||
                             seleccionado?.nombre !== encontrado.nombre ||
                             seleccionado?.idTipoActividad !== encontrado.idTipoActividad ||
-                            seleccionado?.direccion !== encontrado.direccion
+                            seleccionado?.direccion !== encontrado.direccion ||
+                            seleccionado?.mision !== encontrado.mision ||
+                            seleccionado?.vision !== encontrado.vision ||
+                            seleccionado?.valores !== encontrado.valores
                         ) {
                             this.negocioStore.negocioSeleccionado.set(encontrado);
                         }
@@ -81,6 +85,10 @@ export class NegocioDao {
         return this.http.put<SalNegocio>(environment.tanatosService.apiUrl + '/Negocio/', entrada);
     }
 
+    actualizarMisionVisionValores(entrada: EntNegocioMisionVisionValores): Observable<SalNegocio> {
+        return this.http.put<SalNegocio>(environment.tanatosService.apiUrl + '/Negocio/MisionVisionValores', entrada);
+    }
+
     eliminar(id: number): Observable<void> {
         return this.http.delete<void>(environment.tanatosService.apiUrl + `/Negocio/${id}`);
     }
@@ -93,7 +101,14 @@ export class NegocioDao {
             const original = mapA.get(x.id);
             if (!original) return false;
 
-            return original.nombre === x.nombre && original.direccion === x.direccion && original.idTipoActividad === x.idTipoActividad;
+            return (
+                original.nombre === x.nombre &&
+                original.direccion === x.direccion &&
+                original.idTipoActividad === x.idTipoActividad &&
+                original.mision === x.mision &&
+                original.vision === x.vision &&
+                original.valores === x.valores
+            );
         });
     }
 }
