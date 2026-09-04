@@ -186,7 +186,11 @@
                                     </div>
                                 }
                                 @if (campo.tipo === 'editor-texto') {
-                                    <app-editor-texto [formControl]="form.controls[campo.llave]"></app-editor-texto>
+                                    <app-editor-texto
+                                        [formControl]="form.controls[campo.llave]"
+                                        [toolbar]="campo.toolbarEditarTexto ?? null"
+                                        [formats]="campo.formatsEditarTexto ?? null"
+                                    ></app-editor-texto>
                                 }
                             </div>
                         }

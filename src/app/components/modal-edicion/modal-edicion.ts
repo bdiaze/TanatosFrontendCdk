@@ -167,6 +167,8 @@ export interface CampoDinamico {
     tipo: 'string' | 'number' | 'boolean' | 'select' | 'autocomplete' | 'oculto' | 'editor-texto';
     requerido: boolean;
     deshabilitado: boolean;
+    toolbarEditarTexto?: (string[] | { header: (number | boolean)[] }[] | { script: string }[] | { indent: string }[] | { list: string }[])[];
+    formatsEditarTexto?: string[];
     posiblesValores?: PosiblesValores[];
     autocompleteSearch?: WritableSignal<string>;
     autocompleteFilteredOptions?: Signal<PosiblesValoresCategorizados[]>;
