@@ -33,20 +33,21 @@
                         <button
                             hlmBtn
                             variant="link"
-                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit!"
+                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit! text-xl py-1.5!"
+                            [class.text-lg]="!negocioSeleccionado()?.mision"
                             (click)="openModalMision()"
                             [disabled]="actualizandoMisionVisionValores()"
                         >
                             @if (actualizandoMisionVisionValores() && tipoActualizando() === 'mision') {
-                                <div class="flex flex-row items-center justify-center gap-1 fade-in">
+                                <div class="flex flex-row items-center justify-center gap-2 fade-in">
                                     <hlm-spinner class="text-lg" />
-                                    <p hlmP>Guardando...</p>
+                                    <p hlmP class="text-lg">Guardando...</p>
                                 </div>
                             } @else {
                                 @if (negocioSeleccionado()?.mision) {
                                     <app-editor-texto
                                         [content]="negocioSeleccionado()?.mision"
-                                        class="**:cursor-pointer! [&_h2]:text-center! [&_h2]:text-negro/80! fade-in"
+                                        class="**:cursor-pointer! [&_h2]:text-center! [&_h2]:text-negro/80! [&_h2]:my-0! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
                                     ></app-editor-texto>
                                 } @else {
                                     Click para definir tu misión
@@ -66,20 +67,20 @@
                                 <button
                                     hlmBtn
                                     variant="link"
-                                    class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit!"
+                                    class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit! text-base! py-1.5!"
                                     (click)="openModalVision()"
                                     [disabled]="actualizandoMisionVisionValores()"
                                 >
                                     @if (actualizandoMisionVisionValores() && tipoActualizando() === 'vision') {
-                                        <div class="flex flex-row items-center justify-center gap-1 fade-in">
+                                        <div class="flex flex-row items-center justify-center gap-2 fade-in">
                                             <hlm-spinner class="text-lg" />
-                                            <p hlmP>Guardando...</p>
+                                            <p hlmP class="text-base">Guardando...</p>
                                         </div>
                                     } @else {
                                         @if (negocioSeleccionado()?.vision) {
                                             <app-editor-texto
                                                 [content]="negocioSeleccionado()?.vision"
-                                                class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! my-1.5 fade-in"
+                                                class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
                                             ></app-editor-texto>
                                         } @else {
                                             Click para definir tu visión
@@ -99,20 +100,20 @@
                                 <button
                                     hlmBtn
                                     variant="link"
-                                    class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit!"
+                                    class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit! text-base! py-1.5!"
                                     (click)="openModalValores()"
                                     [disabled]="actualizandoMisionVisionValores()"
                                 >
                                     @if (actualizandoMisionVisionValores() && tipoActualizando() === 'valores') {
-                                        <div class="flex flex-row items-center justify-center gap-1 fade-in">
+                                        <div class="flex flex-row items-center justify-center gap-2 fade-in">
                                             <hlm-spinner class="text-lg" />
-                                            <p hlmP>Guardando...</p>
+                                            <p hlmP class="text-base">Guardando...</p>
                                         </div>
                                     } @else {
                                         @if (negocioSeleccionado()?.valores) {
                                             <app-editor-texto
                                                 [content]="negocioSeleccionado()?.valores"
-                                                class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! my-1.5 fade-in"
+                                                class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
                                             ></app-editor-texto>
                                         } @else {
                                             Click para definir tus valores

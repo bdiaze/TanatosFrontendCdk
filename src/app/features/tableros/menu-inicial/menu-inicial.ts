@@ -67,7 +67,7 @@ export class MenuInicial {
             tipo: 'editor-texto',
             requerido: false,
             deshabilitado: false,
-            toolbarEditarTexto: [['bold', 'italic', 'underline'], [{ header: [2] }]],
+            toolbarEditarTexto: [['bold', 'italic', 'underline'], [{ header: [2, false] }]],
             formatsEditarTexto: ['bold', 'italic', 'underline', 'header'],
         },
         {
