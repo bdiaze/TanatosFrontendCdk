@@ -67,7 +67,7 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor {
 
             this.quill.on('text-change', () => {
                 const html = this.quill.root.innerHTML;
-                const value = html === '<p><br></p>' ? '' : html;
+                const value = html === '<h1><br></h1>' || html === '<h2><br></h2>' || html === '<h3><br></h3>' || html === '<p><br></p>' ? '' : html;
                 this.value = value;
                 this.onChange(value);
             });
