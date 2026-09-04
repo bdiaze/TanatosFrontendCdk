@@ -16,7 +16,7 @@ export class PlainTextPipe implements PipeTransform {
         div.innerHTML = sanitized ?? '';
 
         // Se agregan saltos de línea a elementos de bloque
-        div.querySelectorAll('p, div, br, li').forEach((el) => {
+        div.querySelectorAll('h1, h2, h3, p, div, br, li').forEach((el) => {
             el.appendChild(document.createTextNode('\n'));
         });
 
