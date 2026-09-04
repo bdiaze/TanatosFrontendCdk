@@ -20,6 +20,8 @@ import Quill from 'quill';
 export class EditorTexto implements AfterViewInit, ControlValueAccessor {
     content = input<string | null | undefined>(null);
     placeholder = input<string | null>(null);
+    toolbar = input<null | (string[] | { header: (number | boolean)[] }[] | { script: string }[] | { indent: string }[] | { list: string }[])[]>(null);
+    formats = input<null | string[]>(null);
 
     private readonly htmlSanitizerHelper = inject(HtmlSanitizerHelper);
     private readonly sanitizer = inject(DomSanitizer);
@@ -47,7 +49,7 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor {
                 theme: 'snow',
                 placeholder: this.placeholder() ?? undefined,
                 modules: {
-                    toolbar: [
+                    toolbar: this.toolbar() ?? [
                         ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                         [{ header: [1, 2, 3, false] }],
                         [{ script: 'sub' }, { script: 'super' }],
@@ -56,7 +58,7 @@ export class EditorTexto implements AfterViewInit, ControlValueAccessor {
                         ['link'],
                     ],
                 },
-                formats: ['bold', 'italic', 'underline', 'strike', 'blockquote', 'script', 'list', 'indent', 'header', 'link'],
+                formats: this.formats() ?? ['bold', 'italic', 'underline', 'strike', 'blockquote', 'script', 'list', 'indent', 'header', 'link'],
             });
 
             if (this.value) {
