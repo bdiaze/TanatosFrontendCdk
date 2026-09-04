@@ -1,6 +1,6 @@
 <section class="max-w-screen md:max-w-2xl mx-auto px-6 pt-4 pb-6 fade-in">
-    <div class="flex flex-col gap-2 relative">
-        <div class="flex flex-col justify-start items-start gap-1 pt-1 pb-5 fade-in">
+    <div class="flex flex-col relative">
+        <div class="flex flex-col justify-start items-start gap-1 pt-1 fade-in">
             <div class="flex flex-col items-start justify-between w-full">
                 <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2.5!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
                 <h1 hlmH1>
@@ -18,9 +18,116 @@
                     {{ negocioSeleccionado()?.nombre }}
                 </p>
             }
+        </div>
+        <div class="py-3 flex flex-col items-center justify-center gap-5">
+            <div hlmItem class="gap-0.5 p-0">
+                <div hlmItemHeader class="flex flex-col items-center">
+                    <h3 hlmH3 class="">Mi Misión</h3>
+                </div>
+                <div hlmItemContent class="items-center">
+                    <button
+                        hlmBtn
+                        variant="link"
+                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit!"
+                        (click)="openModalMision()"
+                        [disabled]="actualizandoMisionVisionValores()"
+                    >
+                        @if (actualizandoMisionVisionValores() && tipoActualizando() === 'mision') {
+                            <div class="flex flex-row items-center justify-center gap-1">
+                                <hlm-spinner class="text-lg" />
+                                <p hlmP>Guardando...</p>
+                            </div>
+                        } @else {
+                            @if (negocioSeleccionado()?.mision) {
+                                <app-editor-texto
+                                    [content]="negocioSeleccionado()?.mision"
+                                    class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center!"
+                                ></app-editor-texto>
+                            } @else {
+                                Click para definir tu misión
+                            }
+                        }
+                    </button>
+                </div>
+            </div>
+            <div class="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-2 w-full">
+                <div class="md:w-1/2">
+                    <div hlmItem class="gap-0.5 p-0">
+                        <div hlmItemHeader class="flex flex-col items-center">
+                            <h4 hlmH4 class="">Mi Visión</h4>
+                        </div>
+                        <div hlmItemContent class="items-center">
+                            <button
+                                hlmBtn
+                                variant="link"
+                                class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit!"
+                                (click)="openModalVision()"
+                                [disabled]="actualizandoMisionVisionValores()"
+                            >
+                                @if (actualizandoMisionVisionValores() && tipoActualizando() === 'vision') {
+                                    <div class="flex flex-row items-center justify-center gap-1">
+                                        <hlm-spinner class="text-lg" />
+                                        <p hlmP>Guardando...</p>
+                                    </div>
+                                } @else {
+                                    @if (negocioSeleccionado()?.vision) {
+                                        <app-editor-texto
+                                            [content]="negocioSeleccionado()?.vision"
+                                            class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center!"
+                                        ></app-editor-texto>
+                                    } @else {
+                                        Click para definir tu visión
+                                    }
+                                }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <div hlmItem class="gap-0.5 p-0">
+                        <div hlmItemHeader class="flex flex-col items-center">
+                            <h4 hlmH4 class="">Mis Valores</h4>
+                        </div>
+                        <div hlmItemContent class="items-center">
+                            <button
+                                hlmBtn
+                                variant="link"
+                                class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit!"
+                                (click)="openModalValores()"
+                                [disabled]="actualizandoMisionVisionValores()"
+                            >
+                                @if (actualizandoMisionVisionValores() && tipoActualizando() === 'valores') {
+                                    <div class="flex flex-row items-center justify-center gap-1">
+                                        <hlm-spinner class="text-lg" />
+                                        <p hlmP>Guardando...</p>
+                                    </div>
+                                } @else {
+                                    @if (negocioSeleccionado()?.valores) {
+                                        <app-editor-texto
+                                            [content]="negocioSeleccionado()?.valores"
+                                            class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center!"
+                                        ></app-editor-texto>
+                                    } @else {
+                                        Click para definir tus valores
+                                    }
+                                }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (error()) {
+                <div hlmAlert variant="destructive" class="mt-2">
+                    <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                    <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                    <p hlmAlertDescription>{{ error() }}</p>
+                </div>
+            }
+        </div>
+        <div class="py-2">
             <p hlmP>Aquí podrás visualizar y administrar las obligaciones y tareas de tus negocios:</p>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 items-stretch gap-3 w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2 items-stretch gap-3 w-full mt-2">
             <a
                 id="acceso-rapido-mi-calendario"
                 hlmItem
@@ -80,3 +187,54 @@
         </div>
     </div>
 </section>
+
+@if (showModalMision()) {
+    <app-modal-edicion
+        [campos]="camposEdicionMision()"
+        [item]="negocioSeleccionado()"
+        titulo="Misión:"
+        descripcion="
+            <p class='px-1 text-left text-sm opacity-90 font-medium'>Describe la razón de existir de tu negocio, su propósito central, ¿Qué necesidad de las personas satisface?</p>
+            <p class='px-1 pt-1 text-left text-sm opacity-80'>Por ejemplo, la misión de Viña Sutil es:</p>
+            <p class='px-1 pb-3 text-left text-sm opacity-80'><i>&quot;Entregar la mejor expresión de nuestra tierra, nuestra fruta y nuestra gente a través de nuestros vinos.&quot;</i></p>
+        "
+        textoBotonGuardar="Guardar"
+        (cerrar)="closeModalMision()"
+        (editar)="actualizarMisionVisionValores($event, 'mision')"
+    >
+    </app-modal-edicion>
+}
+
+@if (showModalVision()) {
+    <app-modal-edicion
+        [campos]="camposEdicionVision()"
+        [item]="negocioSeleccionado()"
+        titulo="Visión:"
+        descripcion="
+            <p class='px-1 text-left text-sm opacity-90 font-medium'>Describe el objetivo y las aspiraciones del negocio, ¿Cómo quieres ser reconocido en el futuro?</p>
+            <p class='px-1 pt-1 text-left text-sm opacity-80'>Por ejemplo, la visión de Viña Sutil es:</p>
+            <p class='px-1 pb-3 text-left text-sm opacity-80'><i>&quot;Ser reconocidos por entregar una propuesta de alto valor a través de nuestro diverso portafolio de marcas y productos,<br/> y por nuestra integridad y capacidad de comprender y adaptarse a las necesidades de nuestros clientes.&quot;</i></p>
+        "
+        textoBotonGuardar="Guardar"
+        (cerrar)="closeModalVision()"
+        (editar)="actualizarMisionVisionValores($event, 'vision')"
+    >
+    </app-modal-edicion>
+}
+
+@if (showModalValores()) {
+    <app-modal-edicion
+        [campos]="camposEdicionValores()"
+        [item]="negocioSeleccionado()"
+        titulo="Valores:"
+        descripcion="
+            <p class='px-1 text-left text-sm opacity-90 font-medium'>Describe los principios éticos y morales que definen la identidad de tu negocio:</p>
+            <p class='px-1 pt-1 text-left text-sm opacity-80'>Por ejemplo, los valores de Viña Sutil son:</p>
+            <p class='px-1 pb-3 text-left text-sm opacity-80'><i>&quot;Integridad - Compromiso - Calidez - Orgullo por el trabajo bien hecho - Proactividad&quot;</i></p>
+        "
+        textoBotonGuardar="Guardar"
+        (cerrar)="closeModalValores()"
+        (editar)="actualizarMisionVisionValores($event, 'valores')"
+    >
+    </app-modal-edicion>
+}

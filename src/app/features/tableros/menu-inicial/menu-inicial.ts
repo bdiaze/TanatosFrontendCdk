@@ -1,6 +1,6 @@
-import { Component, effect, inject, untracked } from '@angular/core';
+import { Component, effect, inject, signal, untracked } from '@angular/core';
 import { HlmItemImports } from '@spartan-ng/helm/item';
-import { HlmH1, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH1, HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
@@ -12,11 +12,39 @@ import { MenuHelper } from '@/app/helpers/menu-helper';
 import { DriveStep } from 'driver.js';
 import { map } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
+import { EditorTexto } from '@/app/components/editor-texto/editor-texto';
+import { NegocioDao } from '@/app/daos/negocio-dao';
+import { EntNegocioMisionVisionValores } from '@/app/entities/others/ent-negocio-mision-vision-valores';
+import { SalNegocio } from '@/app/entities/others/sal-negocio';
+import { getErrorMessage } from '@/app/helpers/error-message';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideTriangleAlert } from '@ng-icons/lucide';
+import { HlmIcon } from '@spartan-ng/helm/icon';
+import { HlmAlertImports } from '@spartan-ng/helm/alert';
 
 @Component({
     selector: 'app-menu-inicial',
-    imports: [HlmH1, HlmP, HlmItemImports, RouterLink, HlmSpinnerImports, HlmSkeletonImports, FadeIn, HlmButton],
+    imports: [
+        HlmH1,
+        HlmP,
+        HlmH3,
+        HlmH4,
+        HlmItemImports,
+        RouterLink,
+        HlmSpinnerImports,
+        HlmSkeletonImports,
+        FadeIn,
+        HlmButton,
+        ModalEdicion,
+        EditorTexto,
+        HlmSpinnerImports,
+        NgIcon,
+        HlmIcon,
+        HlmAlertImports,
+    ],
     templateUrl: './menu-inicial.html',
+    providers: [provideIcons({ lucideTriangleAlert })],
 })
 export class MenuInicial {
     negocioStore = inject(NegocioStore);
@@ -26,9 +54,85 @@ export class MenuInicial {
     private readonly menuHelper = inject(MenuHelper);
     private readonly router = inject(Router);
     private readonly tourService = inject(TourService);
+    private readonly negocioDao = inject(NegocioDao);
 
     private readonly route = inject(ActivatedRoute);
     ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
+
+    camposEdicionMision = signal<CampoDinamico[]>([
+        { llave: 'id', nombre: 'ID', tipo: 'oculto', requerido: true, deshabilitado: true },
+        {
+            llave: 'mision',
+            nombre: 'Misión',
+            tipo: 'editor-texto',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'vision',
+            nombre: 'Visión',
+            tipo: 'oculto',
+            requerido: false,
+            deshabilitado: true,
+        },
+        {
+            llave: 'valores',
+            nombre: 'Valores',
+            tipo: 'oculto',
+            requerido: false,
+            deshabilitado: true,
+        },
+    ]);
+
+    camposEdicionVision = signal<CampoDinamico[]>([
+        { llave: 'id', nombre: 'ID', tipo: 'oculto', requerido: true, deshabilitado: true },
+        {
+            llave: 'mision',
+            nombre: 'Misión',
+            tipo: 'oculto',
+            requerido: false,
+            deshabilitado: true,
+        },
+        {
+            llave: 'vision',
+            nombre: 'Visión',
+            tipo: 'editor-texto',
+            requerido: false,
+            deshabilitado: false,
+        },
+        {
+            llave: 'valores',
+            nombre: 'Valores',
+            tipo: 'oculto',
+            requerido: false,
+            deshabilitado: true,
+        },
+    ]);
+
+    camposEdicionValores = signal<CampoDinamico[]>([
+        { llave: 'id', nombre: 'ID', tipo: 'oculto', requerido: true, deshabilitado: true },
+        {
+            llave: 'mision',
+            nombre: 'Misión',
+            tipo: 'oculto',
+            requerido: false,
+            deshabilitado: true,
+        },
+        {
+            llave: 'vision',
+            nombre: 'Visión',
+            tipo: 'oculto',
+            requerido: false,
+            deshabilitado: true,
+        },
+        {
+            llave: 'valores',
+            nombre: 'Valores',
+            tipo: 'editor-texto',
+            requerido: false,
+            deshabilitado: false,
+        },
+    ]);
 
     constructor() {
         effect(() => {
@@ -39,6 +143,63 @@ export class MenuInicial {
                 }
             });
         });
+    }
+
+    showModalMision = signal<boolean>(false);
+    openModalMision() {
+        this.showModalMision.set(true);
+    }
+    closeModalMision() {
+        this.showModalMision.set(false);
+    }
+
+    showModalVision = signal<boolean>(false);
+    openModalVision() {
+        this.showModalVision.set(true);
+    }
+    closeModalVision() {
+        this.showModalVision.set(false);
+    }
+
+    showModalValores = signal<boolean>(false);
+    openModalValores() {
+        this.showModalValores.set(true);
+    }
+    closeModalValores() {
+        this.showModalValores.set(false);
+    }
+
+    error = signal<string>('');
+    actualizandoMisionVisionValores = signal<boolean>(false);
+    tipoActualizando = signal<null | 'mision' | 'vision' | 'valores'>(null);
+    actualizarMisionVisionValores(entrada: SalNegocio, tipo: 'mision' | 'vision' | 'valores') {
+        this.actualizandoMisionVisionValores.set(true);
+        this.tipoActualizando.set(tipo);
+        this.negocioDao
+            .actualizarMisionVisionValores({
+                id: entrada.id,
+                mision: entrada.mision,
+                vision: entrada.vision,
+                valores: entrada.valores,
+            } as EntNegocioMisionVisionValores)
+            .subscribe({
+                error: (err) => {
+                    console.error('Error al guardar tu misión, visión y valores', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al guardar tu misión, visión y valores');
+                },
+            })
+            .add(() => {
+                this.negocioDao
+                    .obtenerVigentes()
+                    .subscribe({})
+                    .add(() => {
+                        this.actualizandoMisionVisionValores.set(false);
+                        this.tipoActualizando.set(null);
+                    });
+            });
+        this.closeModalMision();
+        this.closeModalVision();
+        this.closeModalValores();
     }
 
     ayudaClick(): void {
