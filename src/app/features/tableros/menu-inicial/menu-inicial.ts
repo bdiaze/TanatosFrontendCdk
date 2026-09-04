@@ -19,7 +19,7 @@ import { EntNegocioMisionVisionValores } from '@/app/entities/others/ent-negocio
 import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideTriangleAlert } from '@ng-icons/lucide';
+import { lucideChartNoAxesCombined, lucideGoal, lucideTriangleAlert, lucideUserStar } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 
@@ -44,7 +44,7 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
         HlmAlertImports,
     ],
     templateUrl: './menu-inicial.html',
-    providers: [provideIcons({ lucideTriangleAlert })],
+    providers: [provideIcons({ lucideTriangleAlert, lucideGoal, lucideChartNoAxesCombined, lucideUserStar })],
 })
 export class MenuInicial {
     negocioStore = inject(NegocioStore);

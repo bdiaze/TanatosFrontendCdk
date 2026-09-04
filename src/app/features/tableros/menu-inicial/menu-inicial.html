@@ -25,7 +25,8 @@
                 <hlm-skeleton class="h-76 md:h-48 w-full rounded-xl" />
             } @else {
                 <div hlmItem class="gap-0.5 p-0 fade-in">
-                    <div hlmItemHeader class="flex flex-col items-center">
+                    <div hlmItemHeader class="flex flex-row items-center justify-center">
+                        <ng-icon hlm name="lucideGoal" />
                         <h3 hlmH3 class="">Mi Misión</h3>
                     </div>
                     <div hlmItemContent class="items-center">
@@ -45,7 +46,7 @@
                                 @if (negocioSeleccionado()?.mision) {
                                     <app-editor-texto
                                         [content]="negocioSeleccionado()?.mision"
-                                        class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! fade-in"
+                                        class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! [&_h1]:text-center! [&_h2]:text-center! [&_h3]:text-center! fade-in"
                                     ></app-editor-texto>
                                 } @else {
                                     Click para definir tu misión
@@ -54,10 +55,11 @@
                         </button>
                     </div>
                 </div>
-                <div class="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-2 w-full fade-in">
+                <div class="flex flex-col md:flex-row items-stretch justify-center gap-5 md:gap-6 w-full fade-in">
                     <div class="md:w-1/2">
                         <div hlmItem class="gap-0.5 p-0">
-                            <div hlmItemHeader class="flex flex-col items-center">
+                            <div hlmItemHeader class="flex flex-row items-center justify-center">
+                                <ng-icon hlm name="lucideChartNoAxesCombined" size="20px" />
                                 <h4 hlmH4 class="">Mi Visión</h4>
                             </div>
                             <div hlmItemContent class="items-center">
@@ -77,7 +79,7 @@
                                         @if (negocioSeleccionado()?.vision) {
                                             <app-editor-texto
                                                 [content]="negocioSeleccionado()?.vision"
-                                                class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! fade-in"
+                                                class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! [&_h1]:text-center! [&_h2]:text-center! [&_h3]:text-center! fade-in"
                                             ></app-editor-texto>
                                         } @else {
                                             Click para definir tu visión
@@ -89,7 +91,8 @@
                     </div>
                     <div class="md:w-1/2">
                         <div hlmItem class="gap-0.5 p-0">
-                            <div hlmItemHeader class="flex flex-col items-center">
+                            <div hlmItemHeader class="flex flex-row items-center justify-center">
+                                <ng-icon hlm name="lucideUserStar" size="20px" />
                                 <h4 hlmH4 class="">Mis Valores</h4>
                             </div>
                             <div hlmItemContent class="items-center">
@@ -109,7 +112,7 @@
                                         @if (negocioSeleccionado()?.valores) {
                                             <app-editor-texto
                                                 [content]="negocioSeleccionado()?.valores"
-                                                class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! fade-in"
+                                                class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! [&_h1]:text-center! [&_h2]:text-center! [&_h3]:text-center! fade-in"
                                             ></app-editor-texto>
                                         } @else {
                                             Click para definir tus valores
