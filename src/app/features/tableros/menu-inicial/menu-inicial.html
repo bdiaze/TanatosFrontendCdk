@@ -46,7 +46,7 @@
                                 @if (negocioSeleccionado()?.mision) {
                                     <app-editor-texto
                                         [content]="negocioSeleccionado()?.mision"
-                                        class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! [&_h1]:text-center! [&_h2]:text-center! [&_h3]:text-center! fade-in"
+                                        class="**:cursor-pointer! [&_h2]:text-center! fade-in"
                                     ></app-editor-texto>
                                 } @else {
                                     Click para definir tu misión
@@ -79,7 +79,7 @@
                                         @if (negocioSeleccionado()?.vision) {
                                             <app-editor-texto
                                                 [content]="negocioSeleccionado()?.vision"
-                                                class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! [&_h1]:text-center! [&_h2]:text-center! [&_h3]:text-center! fade-in"
+                                                class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! my-1.5 fade-in"
                                             ></app-editor-texto>
                                         } @else {
                                             Click para definir tu visión
@@ -112,7 +112,7 @@
                                         @if (negocioSeleccionado()?.valores) {
                                             <app-editor-texto
                                                 [content]="negocioSeleccionado()?.valores"
-                                                class="**:cursor-pointer! [&_ol]:pl-0! [&_ol]:-ml-2! [&_p]:text-center! [&_h1]:text-center! [&_h2]:text-center! [&_h3]:text-center! fade-in"
+                                                class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! my-1.5 fade-in"
                                             ></app-editor-texto>
                                         } @else {
                                             Click para definir tus valores

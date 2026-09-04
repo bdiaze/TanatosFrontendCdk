@@ -67,6 +67,8 @@ export class MenuInicial {
             tipo: 'editor-texto',
             requerido: false,
             deshabilitado: false,
+            toolbarEditarTexto: [['bold', 'italic', 'underline'], [{ header: [2] }]],
+            formatsEditarTexto: ['bold', 'italic', 'underline', 'header'],
         },
         {
             llave: 'vision',
@@ -99,6 +101,8 @@ export class MenuInicial {
             tipo: 'editor-texto',
             requerido: false,
             deshabilitado: false,
+            toolbarEditarTexto: [['bold', 'italic', 'underline'], [{ header: [false] }]],
+            formatsEditarTexto: ['bold', 'italic', 'underline', 'header'],
         },
         {
             llave: 'valores',
@@ -131,6 +135,8 @@ export class MenuInicial {
             tipo: 'editor-texto',
             requerido: false,
             deshabilitado: false,
+            toolbarEditarTexto: [['bold', 'italic', 'underline'], [{ header: [false] }]],
+            formatsEditarTexto: ['bold', 'italic', 'underline', 'header'],
         },
     ]);
 
