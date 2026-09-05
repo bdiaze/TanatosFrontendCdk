@@ -24,7 +24,7 @@
             @if (!negocioSeleccionado()) {
                 <hlm-skeleton class="h-76 md:h-48 w-full rounded-xl" />
             } @else {
-                <div hlmItem class="gap-0.5 p-0 fade-in">
+                <div id="mision" hlmItem class="gap-0.5 p-0 fade-in">
                     <div hlmItemHeader class="flex flex-row items-center justify-center">
                         <ng-icon hlm name="lucideGoal" />
                         <h3 hlmH3 class="">Mi Misión</h3>
@@ -34,7 +34,7 @@
                             hlmBtn
                             variant="link"
                             class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit! text-xl py-1.5!"
-                            [class.text-lg]="!negocioSeleccionado()?.mision"
+                            [class.text-lg]="!misionMostrar()"
                             (click)="openModalMision()"
                             [disabled]="actualizandoMisionVisionValores()"
                         >
@@ -44,9 +44,9 @@
                                     <p hlmP class="text-lg">Guardando...</p>
                                 </div>
                             } @else {
-                                @if (negocioSeleccionado()?.mision) {
+                                @if (misionMostrar()) {
                                     <app-editor-texto
-                                        [content]="negocioSeleccionado()?.mision"
+                                        [content]="misionMostrar()"
                                         class="**:cursor-pointer! [&_h2]:text-center! [&_h2]:text-negro/80! [&_h2]:my-0! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
                                     ></app-editor-texto>
                                 } @else {
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                     </div>
-                    <button hlmBtn variant="link" (click)="showVisionValores.set(!showVisionValores())">
+                    <button id="boton-vision-valores" hlmBtn variant="link" (click)="showVisionValores.set(!showVisionValores())">
                         @if (showVisionValores()) {
                             <ng-icon hlm name="lucideEyeOff" size="20px" class="fade-in" />
                         } @else {

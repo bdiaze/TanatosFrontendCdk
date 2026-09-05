@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmH1, HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -151,6 +151,13 @@ export class MenuInicial {
         });
     }
 
+    misionMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return '<h2>Haz click aquí para declarar <strong>la misión</strong> que mejor represente a tu negocio.</h2>';
+        }
+        return this.negocioSeleccionado()?.mision;
+    });
+
     showVisionValores = signal<boolean>(false);
 
     showModalMision = signal<boolean>(false);
@@ -210,6 +217,7 @@ export class MenuInicial {
         this.closeModalValores();
     }
 
+    ayudaRunning = signal<boolean>(false);
     ayudaClick(): void {
         const steps: DriveStep[] = [];
 
@@ -235,6 +243,9 @@ export class MenuInicial {
                 popover: {
                     title: 'A tu izquierda, el menú principal',
                     description: 'Aquí podrás explorar las distintas funcionalidades de Todo en Orden.',
+                },
+                onDeselected: () => {
+                    scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                 },
             });
         } else {
@@ -295,13 +306,27 @@ export class MenuInicial {
         steps.push(
             ...[
                 {
+                    element: '#mision',
+                    popover: {
+                        title: 'La misión de tu negocio',
+                        description: 'Acá podrás declarar la razón de ser de tu negocio. Haz click para modificarla.',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+                {
+                    element: '#boton-vision-valores',
+                    popover: {
+                        title: 'La visión y los valores',
+                        description: 'Y también podrás declarar la visión y los valores de tu negocio haciendo click aquí.',
+                    },
+                },
+                {
                     element: '#acceso-rapido-mi-calendario',
                     popover: {
                         title: 'Tu calendario',
                         description: 'Este es tu acceso rápido al calendario de obligaciones de tu negocio.',
-                    },
-                    onHighlightStarted: () => {
-                        this.menuHelper.cerrarMenu();
                     },
                 },
                 {
@@ -337,6 +362,8 @@ export class MenuInicial {
         } = {
             pasos: steps,
             onFinish: () => {
+                this.ayudaRunning.set(false);
+                this.showVisionValores.set(showVisionValores);
                 this.menuHelper.cerrarMenu();
                 if (this.ayuda() === '1') {
                     this.router.navigate(['/ayuda']);
@@ -351,6 +378,9 @@ export class MenuInicial {
             };
         }
 
+        const showVisionValores = this.showVisionValores();
+        this.showVisionValores.set(false);
+        this.ayudaRunning.set(true);
         this.tourService.iniciarTour(config);
     }
 }
