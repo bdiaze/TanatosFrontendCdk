@@ -1,8 +1,7 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { AuthClaims } from '@/app/entities/others/auth-claims';
 import { jwtDecode } from 'jwt-decode';
-import { AuthDao } from '@daos/auth-dao';
-import { clearCookie, getCookie } from '@helpers/cookie-helper';
+import { clearCookie, setCookie } from '@helpers/cookie-helper';
 import { NegocioStore } from './negocio-store';
 
 @Injectable({
@@ -45,12 +44,14 @@ export class AuthStore {
 
             if (!this.sesionIniciada()) {
                 this.sesionIniciada.set(true);
+                setCookie('SesionIniciada', 'true');
             }
         } else {
             this.negocioStore.negociosUsuario.set([]);
             this.negocioStore.negocioSeleccionado.set(null);
             this.negocioStore.informacionUsuario.set(null);
             clearCookie('NegocioSeleccionado');
+            clearCookie('SesionIniciada');
             this.groups.set(new Set<string>());
             this.sesionIniciada.set(false);
         }
