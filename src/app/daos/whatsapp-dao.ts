@@ -15,24 +15,24 @@ export class WhatsappDao {
     constructor(private readonly http: HttpClient) {}
 
     obtenerConversaciones(desde: Date | null = null, hasta: Date | null = null): Observable<SalWhatsappConversacion[]> {
-        const params = new HttpParams();
-        if (desde) {
-            params.set('desde', desde.toISOString());
+        let params = new HttpParams();
+        if (desde !== null) {
+            params = params.set('desde', desde.toISOString());
         }
-        if (hasta) {
-            params.set('hasta', hasta.toISOString());
+        if (hasta !== null) {
+            params = params.set('hasta', hasta.toISOString());
         }
 
         return this.http.get<SalWhatsappConversacion[]>(environment.tanatosService.apiUrl + '/Whatsapp/Conversaciones', { params });
     }
 
     obtenerMensajes(numeroTelefono: string, desde: Date | null = null, hasta: Date | null = null): Observable<SalWhatsappMensaje[]> {
-        const params = new HttpParams().set('numeroTelefono', numeroTelefono);
-        if (desde) {
-            params.set('desde', desde.toISOString());
+        let params = new HttpParams().set('numeroTelefono', numeroTelefono);
+        if (desde !== null) {
+            params = params.set('desde', desde.toISOString());
         }
-        if (hasta) {
-            params.set('hasta', hasta.toISOString());
+        if (hasta !== null) {
+            params = params.set('hasta', hasta.toISOString());
         }
 
         return this.http.get<SalWhatsappMensaje[]>(environment.tanatosService.apiUrl + '/Whatsapp/Mensajes', { params });
