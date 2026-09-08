@@ -299,6 +299,12 @@ export class Menu implements OnInit {
                                 titulo: 'Tipo Proceso Automático',
                                 url: '/administracion/mantenedores/tipo-proceso-automatico',
                             },
+                            {
+                                id: 'group-administracion-item-mantenedores-subitem-proceso-automatico',
+                                tipo: 'subitem',
+                                titulo: 'Proceso Automático',
+                                url: '/administracion/mantenedores/proceso-automatico',
+                            },
                         ],
                     },
                 ],

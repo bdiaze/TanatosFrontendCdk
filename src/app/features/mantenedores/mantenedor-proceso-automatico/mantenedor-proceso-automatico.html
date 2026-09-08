@@ -1,0 +1,203 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <div class="flex justify-center-safe items-center gap-3 py-1 fade-in">
+            <h3 hlmH3>Administrar Procesos Automáticos</h3>
+        </div>
+    </div>
+    <form [formGroup]="filterForm" class="flex flex-col md:flex-row items-stretch justify-center gap-2 my-2" (submit)="obtenerProcesosAutomaticos()">
+        <hlm-input-group>
+            <input hlmInputGroupInput type="text" class="transition-all duration-500 ease-out text-sm pb-1.5!" id="nombre" formControlName="nombre" />
+            <hlm-input-group-addon align="block-start" class="pt-1 pb-0">
+                <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Nombre</label>
+            </hlm-input-group-addon>
+        </hlm-input-group>
+        <div class="flex flex-row items-stretch justify-center gap-2 w-full md:w-104">
+            <hlm-input-group>
+                <hlm-input-group-addon align="block-start">
+                    <label for="vigencia" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground">Vigencia</label>
+                </hlm-input-group-addon>
+                <div class="pb-2 px-2 w-full">
+                    <hlm-select id="vigencia" class="inline-block z-10 w-full" formControlName="vigencia" [itemToString]="selectVigenciaItemToString">
+                        <hlm-select-trigger>
+                            <div class="flex justify-start items-center gap-2">
+                                <hlm-select-value class="text-sm! truncate" />
+                            </div>
+                        </hlm-select-trigger>
+                        <hlm-select-content *hlmSelectPortal showScroll>
+                            <hlm-select-group>
+                                <hlm-select-item [value]="0" class="text-sm!">Cualquiera</hlm-select-item>
+                                <hlm-select-item [value]="1" class="text-sm!">Vigente</hlm-select-item>
+                                <hlm-select-item [value]="2" class="text-sm!">No Vigente</hlm-select-item>
+                            </hlm-select-group>
+                        </hlm-select-content>
+                    </hlm-select>
+                </div>
+            </hlm-input-group>
+            <div>
+                <button hlmBtn type="submit" class="h-full! rounded-md!">Buscar</button>
+            </div>
+        </div>
+    </form>
+    <div hlmTableContainer class="fade-in max-h-70 md:max-h-81 scrollContainer mt-3">
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14">ID</th>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-xs md:text-sm text-center">Tipo</th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-18 px-0">Vigencia</th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @for (item of procesosAutomaticos(); track item.id) {
+                    <tr
+                        hlmTr
+                        class="fade-in cursor-pointer"
+                        (click)="seleccionarItem(item)"
+                        [ngClass]="{
+                            'bg-azul/10 hover:bg-azul/15': procesoAutomaticoSeleccionado()?.id === item.id,
+                        }"
+                    >
+                        <td hlmTd class="text-xs md:text-sm text-center">{{ item.id }}</td>
+                        <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
+                            {{ item.nombre }}
+                        </td>
+                        <td hlmTd class="text-xs md:text-sm text-center whitespace-normal wrap-break-word">
+                            {{ nombreTipoProcesoAutomatico(item.idTipoProcesoAutomatico) }}
+                        </td>
+                        <td hlmTd class="text-xs md:text-sm text-center">
+                            <div class="flex items-center justify-center">
+                                @if (item.vigencia) {
+                                    <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                                } @else {
+                                    <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                } @empty {
+                    @if (!cargandoProcesosAutomaticos()) {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd colspan="6" class="text-center">No existen procesos automáticos registrados</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+            @if (cargandoProcesosAutomaticos() || siguienteId()) {
+                <tfoot hlmTableFooter>
+                    <tr hlmTr class="fade-in">
+                        <td hlmTd colspan="4" class="text-center">
+                            @if (cargandoProcesosAutomaticos()) {
+                                <div class="flex items-center justify-center gap-2 py-2 opacity-40 fade-in">
+                                    <hlm-spinner class="text-base md:text-lg opacity-80" />
+                                    <p hlmP class="opacity-80">
+                                        @if (this.nuevaBusqueda()) {
+                                            Buscando procesos...
+                                        } @else {
+                                            Cargando más procesos...
+                                        }
+                                    </p>
+                                </div>
+                            } @else if (siguienteId()) {
+                                <button hlmBtn variant="link" type="button" (click)="obtenerProcesosAutomaticos(false)" class="my-0.5! fade-in">
+                                    Cargar más...
+                                </button>
+                            }
+                        </td>
+                    </tr>
+                </tfoot>
+            }
+        </table>
+    </div>
+    @if (error()) {
+        <div hlmAlert variant="destructive" class="mt-3">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
+    }
+    <hlm-separator />
+    @if (procesoAutomaticoSeleccionado()) {
+        <h3 hlmH4 class="mt-4 fade-in text-center">Detalle Proceso Automático</h3>
+        <div hlmTableContainer class="fade-in">
+            <table hlmTable>
+                <tbody hlmTBody>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right">ID</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ procesoAutomaticoSeleccionado()?.id }}</td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Tipo de Proceso Automático</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left whitespace-normal wrap-break-word">
+                            {{ nombreTipoProcesoAutomatico(procesoAutomaticoSeleccionado()!.idTipoProcesoAutomatico) }}
+                        </td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">ID Proceso Kairos</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left whitespace-normal wrap-break-word">
+                            {{ procesoAutomaticoSeleccionado()?.idProcesoKairos }}
+                        </td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">ID Calendarización Kairos</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left whitespace-normal wrap-break-word">
+                            {{ procesoAutomaticoSeleccionado()?.idCalendarizacionKairos }}
+                        </td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Nombre</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left whitespace-normal wrap-break-word">
+                            {{ procesoAutomaticoSeleccionado()?.nombre }}
+                        </td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-anywhere">ARN Rol</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left whitespace-normal wrap-anywhere">{{ procesoAutomaticoSeleccionado()?.arnRol }}</td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-anywhere">ARN Proceso</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left whitespace-normal wrap-anywhere">
+                            {{ procesoAutomaticoSeleccionado()?.arnProceso }}
+                        </td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-anywhere">Parámetros</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left whitespace-normal wrap-anywhere">
+                            <pre>{{ formatearJson(procesoAutomaticoSeleccionado()!.parametros) | json }}</pre>
+                        </td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right">Cron</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ procesoAutomaticoSeleccionado()?.cron }}</td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Frecuencia Días</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ procesoAutomaticoSeleccionado()?.frecuenciaDias }}</td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Inicio Ejecución UTC</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()?.inicioEjecucionUtc) }}</td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Fecha Creación</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()?.fechaCreacion) }}</td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Fecha Eliminación</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()?.fechaEliminacion) }}</td>
+                    </tr>
+                    <tr hlmTr>
+                        <th hlmTh class="p-1.5 text-xs md:text-sm text-right">Vigencia</th>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">
+                            @if (procesoAutomaticoSeleccionado()?.vigencia) {
+                                <ng-icon hlm name="lucideBadgeCheck" class="text-green-700" />
+                            } @else {
+                                <ng-icon hlm name="lucideBadgeX" class="text-destructive" />
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

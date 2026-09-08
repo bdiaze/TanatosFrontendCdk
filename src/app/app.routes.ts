@@ -43,6 +43,7 @@ import { PantallaIngresoEvaluacion } from './features/evaluacion/pantalla-ingres
 import { ConsultaMensajes } from './features/mensaje/consulta-mensajes/consulta-mensajes';
 import { RedirectToHome } from './components/redirect-to-home/redirect-to-home';
 import { MantenedorTipoProcesoAutomatico } from './features/mantenedores/mantenedor-tipo-proceso-automatico/mantenedor-tipo-proceso-automatico';
+import { MantenedorProcesoAutomatico } from './features/mantenedores/mantenedor-proceso-automatico/mantenedor-proceso-automatico';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -291,6 +292,12 @@ export const routes: Routes = [
         title: 'Tipos de Procesos Automáticos',
         path: 'administracion/mantenedores/tipo-proceso-automatico',
         component: MantenedorTipoProcesoAutomatico,
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
+    },
+    {
+        title: 'Procesos Automáticos',
+        path: 'administracion/mantenedores/proceso-automatico',
+        component: MantenedorProcesoAutomatico,
         canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     { path: '**', component: RedirectToHome },
