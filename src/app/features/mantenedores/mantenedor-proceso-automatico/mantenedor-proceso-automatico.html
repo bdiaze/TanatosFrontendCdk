@@ -87,8 +87,8 @@
                 <tfoot hlmTableFooter>
                     <tr hlmTr class="fade-in">
                         <td hlmTd colspan="4" class="text-center">
-                            @if (cargandoProcesosAutomaticos()) {
-                                <div class="flex items-center justify-center gap-2 py-2 opacity-40 fade-in">
+                            <div class="flex items-center justify-center gap-2 opacity-40 fade-in h-9">
+                                @if (cargandoProcesosAutomaticos()) {
                                     <hlm-spinner class="text-base md:text-lg opacity-80" />
                                     <p hlmP class="opacity-80">
                                         @if (this.nuevaBusqueda()) {
@@ -97,12 +97,12 @@
                                             Cargando más procesos...
                                         }
                                     </p>
-                                </div>
-                            } @else if (siguienteId()) {
-                                <button hlmBtn variant="link" type="button" (click)="obtenerProcesosAutomaticos(false)" class="my-0.5! fade-in">
-                                    Cargar más...
-                                </button>
-                            }
+                                } @else if (siguienteId()) {
+                                    <button hlmBtn variant="link" type="button" (click)="obtenerProcesosAutomaticos(false)" class="fade-in">
+                                        Cargar más...
+                                    </button>
+                                }
+                            </div>
                         </td>
                     </tr>
                 </tfoot>
