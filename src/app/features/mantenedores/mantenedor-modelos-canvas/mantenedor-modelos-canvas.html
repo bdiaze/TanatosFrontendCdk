@@ -1,5 +1,5 @@
-<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
-    <div>
+<section class="py-4">
+    <div class="max-w-screen md:max-w-2xl mx-auto px-4">
         <div class="flex flex-row items-start justify-between">
             <nav hlmBreadcrumb class="mb-4 pl-2">
                 <ol hlmBreadcrumbList>
@@ -22,7 +22,7 @@
             <h3 hlmH3>Modelo de Negocio</h3>
         </div>
     </div>
-    <div class="fade-in">
+    <div class="fade-in px-4 max-w-screen md:max-w-2xl lg:max-w-4xl xl:max-w-7xl mx-auto">
         <h4 hlmH4>Modelo Canvas</h4>
         @if (cargandoModelosCanvas() && !ayudaRunning()) {
             <div class="flex flex-row items-center gap-2 pt-2">
@@ -107,7 +107,7 @@
         <div class="overflow-x-auto scrollContainerHorizontal w-full">
             <div class="flex flex-col items-stretch border mt-3 w-fit">
                 <div class="flex flex-row items-stretch w-full">
-                    <div class="w-1/5 min-w-30 min-h-36 py-1.5 px-3 border-r">
+                    <div class="w-1/5 min-w-40 min-h-36 py-1.5 px-3 border-r">
                         <div id="socios-clave">
                             <h4 hlmH4 class="text-sm md:text-base">Socios Clave</h4>
                             @if (creandoOActualizando() && tipoCreandoOActualizando() === 'socios-clave') {
@@ -119,7 +119,7 @@
                                     <button
                                         hlmBtn
                                         variant="link"
-                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                         (click)="openModalEditar('socios-clave')"
                                         [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                     >
@@ -129,7 +129,7 @@
                             }
                         </div>
                     </div>
-                    <div class="flex flex-col items-stretch min-w-30 w-1/5 border-r">
+                    <div class="flex flex-col items-stretch min-w-40 w-1/5 border-r">
                         <div class="w-full min-h-36 py-1.5 px-3 border-b">
                             <div id="actividades-clave">
                                 <h4 hlmH4 class="text-sm md:text-base">Actividades Clave</h4>
@@ -142,7 +142,7 @@
                                         <button
                                             hlmBtn
                                             variant="link"
-                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                             (click)="openModalEditar('actividades-clave')"
                                             [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                         >
@@ -164,7 +164,7 @@
                                         <button
                                             hlmBtn
                                             variant="link"
-                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                             (click)="openModalEditar('recursos-clave')"
                                             [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                         >
@@ -175,7 +175,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-1/5 min-w-30 min-h-36 py-1.5 px-3 border-r">
+                    <div class="w-1/5 min-w-40 min-h-36 py-1.5 px-3 border-r">
                         <div id="propuesta-valor">
                             <h4 hlmH4 class="text-sm md:text-base">Propuesta de Valor</h4>
                             @if (creandoOActualizando() && tipoCreandoOActualizando() === 'propuesta-valor') {
@@ -187,7 +187,7 @@
                                     <button
                                         hlmBtn
                                         variant="link"
-                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                         (click)="openModalEditar('propuesta-valor')"
                                         [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                     >
@@ -197,7 +197,7 @@
                             }
                         </div>
                     </div>
-                    <div class="flex flex-col items-stretch min-w-30 w-1/5 border-r">
+                    <div class="flex flex-col items-stretch min-w-40 w-1/5 border-r">
                         <div class="w-full min-h-36 py-1.5 px-3 border-b">
                             <div id="relaciones-clientes">
                                 <h4 hlmH4 class="text-sm md:text-base">Relación con Clientes</h4>
@@ -210,7 +210,7 @@
                                         <button
                                             hlmBtn
                                             variant="link"
-                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                             (click)="openModalEditar('relaciones-clientes')"
                                             [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                         >
@@ -232,7 +232,7 @@
                                         <button
                                             hlmBtn
                                             variant="link"
-                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                             (click)="openModalEditar('canales')"
                                             [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                         >
@@ -243,7 +243,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-1/5 min-w-30 min-h-36 py-1.5 px-3">
+                    <div class="w-1/5 min-w-40 min-h-36 py-1.5 px-3">
                         <div id="segmentos-clientes">
                             <h4 hlmH4 class="text-sm md:text-base">Segmentos de Clientes</h4>
                             @if (creandoOActualizando() && tipoCreandoOActualizando() === 'segmentos-clientes') {
@@ -255,7 +255,7 @@
                                     <button
                                         hlmBtn
                                         variant="link"
-                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                         (click)="openModalEditar('segmentos-clientes')"
                                         [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                     >
@@ -279,7 +279,7 @@
                                     <button
                                         hlmBtn
                                         variant="link"
-                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                         (click)="openModalEditar('estructura-costos')"
                                         [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                     >
@@ -301,7 +301,7 @@
                                     <button
                                         hlmBtn
                                         variant="link"
-                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line"
                                         (click)="openModalEditar('fuentes-ingresos')"
                                         [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
                                     >
