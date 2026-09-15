@@ -19,7 +19,7 @@
                     @for (campo of campos(); track campo.llave) {
                         @if (campo.tipo !== 'oculto') {
                             <div [id]="`input_${campo.llave}`" hlmField class="gap-1">
-                                @if (campo.tipo === 'string' || campo.tipo === 'number') {
+                                @if (campo.tipo === 'string' || campo.tipo === 'number' || campo.tipo === 'textarea') {
                                     <hlm-input-group>
                                         @if (campo.tipo === 'string') {
                                             <input
@@ -38,6 +38,15 @@
                                                 [id]="campo.llave"
                                                 [formControl]="form.controls[campo.llave]"
                                             />
+                                        }
+                                        @if (campo.tipo === 'textarea') {
+                                            <textarea
+                                                hlmInputGroupTextarea
+                                                class="transition-all duration-500 ease-out text-sm pt-1 pb-3 min-h-14!"
+                                                rows="2"
+                                                [id]="campo.llave"
+                                                [formControl]="form.controls[campo.llave]"
+                                            ></textarea>
                                         }
                                         <hlm-input-group-addon align="block-start">
                                             <label [for]="campo.llave" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">{{

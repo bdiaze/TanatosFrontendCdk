@@ -32,6 +32,7 @@ import { normalize } from '@/app/helpers/string-comparator';
 import { HlmH3 } from '@spartan-ng/helm/typography';
 import { EditorTexto } from '../editor-texto/editor-texto';
 import { NgClass } from '@angular/common';
+import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 
 @Component({
     selector: 'app-modal-edicion',
@@ -53,6 +54,7 @@ import { NgClass } from '@angular/common';
         HlmAutocompleteImports,
         EditorTexto,
         NgClass,
+        HlmTextareaImports,
     ],
     templateUrl: './modal-edicion.html',
     providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideSquarePen })],
@@ -164,7 +166,7 @@ export class ModalEdicion implements OnInit {
 export interface CampoDinamico {
     llave: string;
     nombre?: string;
-    tipo: 'string' | 'number' | 'boolean' | 'select' | 'autocomplete' | 'oculto' | 'editor-texto';
+    tipo: 'string' | 'textarea' | 'number' | 'boolean' | 'select' | 'autocomplete' | 'oculto' | 'editor-texto';
     requerido: boolean;
     deshabilitado: boolean;
     toolbarEditarTexto?: (string[] | { header: (number | boolean)[] }[] | { script: string }[] | { indent: string }[] | { list: string }[])[];
