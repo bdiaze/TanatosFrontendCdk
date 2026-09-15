@@ -64,7 +64,7 @@
                     @for (modeloCanvas of modelosCanvasMostrar(); track modeloCanvas.id; let first = $first; let last = $last; let index = $index) {
                         <button
                             hlmItem
-                            class="relative bg-blanco! text-negro! w-fit! fade-in gap-1! pt-8! pb-1.5! -ml-1"
+                            class="relative bg-blanco! text-negro! w-fit! fade-in gap-1! pt-8! pb-1.5! -ml-px"
                             [ngClass]="{
                                 'border-negro/30! cursor-pointer!': modeloCanvasSeleccionadoMostrar()?.id !== modeloCanvas.id,
                                 'border-azul! z-10!': modeloCanvasSeleccionadoMostrar()?.id === modeloCanvas.id,
