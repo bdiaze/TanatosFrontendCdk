@@ -22,6 +22,7 @@ import {
     lucideCreditCard,
     lucideGem,
     lucideHouse,
+    lucideLayers,
     lucideMail,
     lucideMessageCircleMore,
     lucideSend,
@@ -29,7 +30,6 @@ import {
     lucideStar,
     lucideStore,
     lucideUser,
-    lucideUserStar,
     lucideX,
 } from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -83,6 +83,7 @@ import { filter, map } from 'rxjs';
             lucideCircleQuestionMark,
             lucideStar,
             lucideMail,
+            lucideLayers,
         }),
     ],
 })
@@ -152,6 +153,13 @@ export class Menu implements OnInit {
                         icon: 'lucideContactRound',
                         titulo: 'Mi Equipo',
                         url: '/mi-equipo',
+                    },
+                    {
+                        id: 'group-negocio-seleccionado-item-modelo-de-negocio',
+                        tipo: 'item',
+                        icon: 'lucideLayers',
+                        titulo: 'Modelo de Negocio',
+                        url: '/modelo-de-negocio',
                     },
                 ],
             });

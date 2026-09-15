@@ -44,6 +44,7 @@ import { ConsultaMensajes } from './features/mensaje/consulta-mensajes/consulta-
 import { RedirectToHome } from './components/redirect-to-home/redirect-to-home';
 import { MantenedorTipoProcesoAutomatico } from './features/mantenedores/mantenedor-tipo-proceso-automatico/mantenedor-tipo-proceso-automatico';
 import { MantenedorProcesoAutomatico } from './features/mantenedores/mantenedor-proceso-automatico/mantenedor-proceso-automatico';
+import { MantenedorModelosCanvas } from './features/mantenedores/mantenedor-modelos-canvas/mantenedor-modelos-canvas';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -172,6 +173,12 @@ export const routes: Routes = [
         title: 'Mi Equipo',
         path: 'mi-equipo',
         component: MantenedorEmpleado,
+        canActivate: [chainActivateGuards(sesionIniciada)],
+    },
+    {
+        title: 'Modelo de Negocio',
+        path: 'modelo-de-negocio',
+        component: MantenedorModelosCanvas,
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {

@@ -1,0 +1,359 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Modelo de Negocio</span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
+        <h4 hlmH4 class="text-center">
+            {{ negocioStore.negocioSeleccionado()?.nombre }}
+        </h4>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <ng-icon hlm name="lucideLayers" />
+            <h3 hlmH3>Modelo de Negocio</h3>
+        </div>
+    </div>
+    <div class="fade-in">
+        <h4 hlmH4>Modelo Canvas</h4>
+        @if (cargandoModelosCanvas() && !ayudaRunning()) {
+            <div class="flex flex-row items-center gap-2 pt-2">
+                <hlm-skeleton class="h-19 w-15 rounded-none" />
+                <hlm-skeleton class="h-19 w-24.5 rounded-none" />
+            </div>
+        } @else {
+            <div class="flex flex-row items-stretch w-full overflow-x-auto scrollContainerHorizontal pt-2 fade-in">
+                <div id="nuevo-modelo" class="flex flex-col items-center justify-center gap-1 px-3 min-h-19">
+                    <button
+                        hlmBtn
+                        class="opacity-100 size-8! transition-none!"
+                        [ngClass]="{
+                            'bg-azul! text-blanco!': !modeloCanvasSeleccionadoMostrar(),
+                            'bg-transparent! text-azul! border-2! border-azul!': modeloCanvasSeleccionadoMostrar(),
+                        }"
+                        (click)="modeloCanvasSeleccionado.set(null)"
+                        (keydown.enter)="modeloCanvasSeleccionado.set(null)"
+                        (keydown.space)="$event.preventDefault(); modeloCanvasSeleccionado.set(null)"
+                        [disabled]="eliminando() || creandoOActualizando()"
+                    >
+                        <ng-icon hlm name="lucidePlus" />
+                    </button>
+                    <button
+                        hlmBtn
+                        variant="link"
+                        class="px-1! py-0! h-fit! text-xs"
+                        [class.underline]="!modeloCanvasSeleccionadoMostrar()"
+                        (click)="modeloCanvasSeleccionado.set(null)"
+                        (keydown.enter)="modeloCanvasSeleccionado.set(null)"
+                        (keydown.space)="$event.preventDefault(); modeloCanvasSeleccionado.set(null)"
+                        [disabled]="eliminando() || creandoOActualizando()"
+                    >
+                        Nuevo<br />
+                        Modelo
+                    </button>
+                </div>
+                <div id="historial-modelos-canvas" class="flex flex-row items-stretch">
+                    @for (modeloCanvas of modelosCanvasMostrar(); track modeloCanvas.id; let first = $first; let last = $last; let index = $index) {
+                        <button
+                            hlmItem
+                            class="relative bg-blanco! text-negro! w-fit! fade-in gap-1! pt-8! pb-1.5! -ml-1"
+                            [ngClass]="{
+                                'border-negro/30! cursor-pointer!': modeloCanvasSeleccionadoMostrar()?.id !== modeloCanvas.id,
+                                'border-azul! z-10!': modeloCanvasSeleccionadoMostrar()?.id === modeloCanvas.id,
+                                'opacity-40!': eliminando() || creandoOActualizando(),
+                            }"
+                            (click)="modeloCanvasSeleccionado.set(modeloCanvas)"
+                            (keydown.enter)="modeloCanvasSeleccionado.set(modeloCanvas)"
+                            (keydown.space)="$event.preventDefault(); modeloCanvasSeleccionado.set(modeloCanvas)"
+                            [disabled]="eliminando() || creandoOActualizando()"
+                        >
+                            <p
+                                hlmP
+                                class="absolute top-0 left-0 px-3 py-0.5 border-r border-b border-negro/30 text-negro/90"
+                                [ngClass]="{
+                                    'border-azul! bg-azul! text-blanco!': modeloCanvasSeleccionadoMostrar()?.id == modeloCanvas.id,
+                                }"
+                            >
+                                N° {{ modelosCanvasMostrar().length - index }}
+                            </p>
+                            <div hlmItemContent class="flex-none">
+                                <p hlmItemDescription class="text-xs text-center">
+                                    {{ modeloCanvas.fechaCreacion | date: 'dd/MM/yyyy' }}
+                                </p>
+                                <p hlmItemDescription class="text-xs text-center">
+                                    {{ modeloCanvas.fechaCreacion | date: 'HH:mm' }}
+                                </p>
+                            </div>
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+        @if (error()) {
+            <div hlmAlert variant="destructive" class="mt-2">
+                <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                <p hlmAlertDescription>{{ error() }}</p>
+            </div>
+        }
+        <div class="overflow-x-auto scrollContainerHorizontal w-full">
+            <div class="flex flex-col items-stretch border mt-3 w-fit">
+                <div class="flex flex-row items-stretch w-full">
+                    <div class="w-1/5 min-w-30 min-h-36 py-1.5 px-3 border-r">
+                        <div id="socios-clave">
+                            <h4 hlmH4 class="text-sm md:text-base">Socios Clave</h4>
+                            @if (creandoOActualizando() && tipoCreandoOActualizando() === 'socios-clave') {
+                                <div class="flex flex-row py-1.5 fade-in">
+                                    <hlm-spinner class="text-xl opacity-70" />
+                                </div>
+                            } @else {
+                                <div class="fade-in">
+                                    <button
+                                        hlmBtn
+                                        variant="link"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        (click)="openModalEditar('socios-clave')"
+                                        [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                    >
+                                        {{ modeloCanvasSeleccionadoMostrar()?.sociosClave ?? 'Click para indicar a tus socios clave' }}
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-stretch min-w-30 w-1/5 border-r">
+                        <div class="w-full min-h-36 py-1.5 px-3 border-b">
+                            <div id="actividades-clave">
+                                <h4 hlmH4 class="text-sm md:text-base">Actividades Clave</h4>
+                                @if (creandoOActualizando() && tipoCreandoOActualizando() === 'actividades-clave') {
+                                    <div class="flex flex-row py-1.5 fade-in">
+                                        <hlm-spinner class="text-xl opacity-70" />
+                                    </div>
+                                } @else {
+                                    <div class="fade-in">
+                                        <button
+                                            hlmBtn
+                                            variant="link"
+                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                            (click)="openModalEditar('actividades-clave')"
+                                            [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                        >
+                                            {{ modeloCanvasSeleccionadoMostrar()?.actividadesClave ?? 'Click para indicar tus actividades clave' }}
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="min-h-36 py-1.5 px-3">
+                            <div id="recursos-clave">
+                                <h4 hlmH4 class="text-sm md:text-base">Recursos Clave</h4>
+                                @if (creandoOActualizando() && tipoCreandoOActualizando() === 'recursos-clave') {
+                                    <div class="flex flex-row py-1.5 fade-in">
+                                        <hlm-spinner class="text-xl opacity-70" />
+                                    </div>
+                                } @else {
+                                    <div class="fade-in">
+                                        <button
+                                            hlmBtn
+                                            variant="link"
+                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                            (click)="openModalEditar('recursos-clave')"
+                                            [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                        >
+                                            {{ modeloCanvasSeleccionadoMostrar()?.recursosClave ?? 'Click para indicar tus recursos clave' }}
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-1/5 min-w-30 min-h-36 py-1.5 px-3 border-r">
+                        <div id="propuesta-valor">
+                            <h4 hlmH4 class="text-sm md:text-base">Propuesta de Valor</h4>
+                            @if (creandoOActualizando() && tipoCreandoOActualizando() === 'propuesta-valor') {
+                                <div class="flex flex-row py-1.5 fade-in">
+                                    <hlm-spinner class="text-xl opacity-70" />
+                                </div>
+                            } @else {
+                                <div class="fade-in">
+                                    <button
+                                        hlmBtn
+                                        variant="link"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        (click)="openModalEditar('propuesta-valor')"
+                                        [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                    >
+                                        {{ modeloCanvasSeleccionadoMostrar()?.propuestaValor ?? 'Click para indicar tu propuesta de valor' }}
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-stretch min-w-30 w-1/5 border-r">
+                        <div class="w-full min-h-36 py-1.5 px-3 border-b">
+                            <div id="relaciones-clientes">
+                                <h4 hlmH4 class="text-sm md:text-base">Relación con Clientes</h4>
+                                @if (creandoOActualizando() && tipoCreandoOActualizando() === 'relaciones-clientes') {
+                                    <div class="flex flex-row py-1.5 fade-in">
+                                        <hlm-spinner class="text-xl opacity-70" />
+                                    </div>
+                                } @else {
+                                    <div class="fade-in">
+                                        <button
+                                            hlmBtn
+                                            variant="link"
+                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                            (click)="openModalEditar('relaciones-clientes')"
+                                            [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                        >
+                                            {{ modeloCanvasSeleccionadoMostrar()?.relacionesClientes ?? 'Click para indicar tu relación con los clientes' }}
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="min-h-36 py-1.5 px-3">
+                            <div id="canales">
+                                <h4 hlmH4 class="text-sm md:text-base">Canales</h4>
+                                @if (creandoOActualizando() && tipoCreandoOActualizando() === 'canales') {
+                                    <div class="flex flex-row py-1.5 fade-in">
+                                        <hlm-spinner class="text-xl opacity-70" />
+                                    </div>
+                                } @else {
+                                    <div class="fade-in">
+                                        <button
+                                            hlmBtn
+                                            variant="link"
+                                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                            (click)="openModalEditar('canales')"
+                                            [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                        >
+                                            {{ modeloCanvasSeleccionadoMostrar()?.canales ?? 'Click para indicar tus canales' }}
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-1/5 min-w-30 min-h-36 py-1.5 px-3">
+                        <div id="segmentos-clientes">
+                            <h4 hlmH4 class="text-sm md:text-base">Segmentos de Clientes</h4>
+                            @if (creandoOActualizando() && tipoCreandoOActualizando() === 'segmentos-clientes') {
+                                <div class="flex flex-row py-1.5 fade-in">
+                                    <hlm-spinner class="text-xl opacity-70" />
+                                </div>
+                            } @else {
+                                <div class="fade-in">
+                                    <button
+                                        hlmBtn
+                                        variant="link"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        (click)="openModalEditar('segmentos-clientes')"
+                                        [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                    >
+                                        {{ modeloCanvasSeleccionadoMostrar()?.segmentosClientes ?? 'Click para indicar tus segmentos de clientes' }}
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-row items-stretch w-full border-t">
+                    <div class="w-1/2 min-h-36 py-1.5 px-3 border-r">
+                        <div id="estructura-costos">
+                            <h4 hlmH4 class="text-sm md:text-base">Estructura de Costos</h4>
+                            @if (creandoOActualizando() && tipoCreandoOActualizando() === 'estructura-costos') {
+                                <div class="flex flex-row py-1.5 fade-in">
+                                    <hlm-spinner class="text-xl opacity-70" />
+                                </div>
+                            } @else {
+                                <div class="fade-in">
+                                    <button
+                                        hlmBtn
+                                        variant="link"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        (click)="openModalEditar('estructura-costos')"
+                                        [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                    >
+                                        {{ modeloCanvasSeleccionadoMostrar()?.estructuraCostos ?? 'Click para indicar tu estructura de costos' }}
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="w-1/2 min-h-36 py-1.5 px-3">
+                        <div id="fuentes-ingresos">
+                            <h4 hlmH4 class="text-sm md:text-base">Fuentes de Ingresos</h4>
+                            @if (creandoOActualizando() && tipoCreandoOActualizando() === 'fuentes-ingresos') {
+                                <div class="flex flex-row py-1.5 fade-in">
+                                    <hlm-spinner class="text-xl opacity-70" />
+                                </div>
+                            } @else {
+                                <div class="fade-in">
+                                    <button
+                                        hlmBtn
+                                        variant="link"
+                                        class="text-negro/70! md:text-negro/60! font-normal! p-0! text-left! text-balance! size-fit! text-xs! md:text-sm! py-1.5! whitespace-pre-line wrap-anywhere"
+                                        (click)="openModalEditar('fuentes-ingresos')"
+                                        [disabled]="eliminando() || creandoOActualizando() || cargandoModelosCanvas()"
+                                    >
+                                        {{ modeloCanvasSeleccionadoMostrar()?.fuentesIngresos ?? 'Click para indicar tus fuentes de ingresos' }}
+                                    </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @if (modeloCanvasSeleccionadoMostrar()) {
+            <button
+                id="boton-eliminar"
+                hlmBtn
+                variant="link"
+                type="button"
+                (click)="openModalEliminar(modeloCanvasSeleccionadoMostrar()!)"
+                [disabled]="eliminando()"
+                class="text-sm my-1 px-1! flex flex-row items-center justify-start gap-1.5! text-destructive/80! hover:text-destructive! decoration-destructive! fade-in"
+            >
+                @if (eliminando()) {
+                    <hlm-spinner />
+                } @else {
+                    <ng-icon hlm size="sm" name="lucideTrash" />
+                }
+                Eliminar modelo
+            </button>
+        }
+    </div>
+</section>
+
+@if (eliminarSeleccionado()) {
+    <app-modal-eliminacion
+        [item]="modeloCanvasSeleccionadoMostrar()"
+        titulo="Eliminar un modelo Canvas:"
+        [descripcion]="`¿Seguro que deseas eliminar el modelo Canvas?<br/><b>Creado el ${formatearFecha(eliminarSeleccionado()!.fechaCreacion)}</b>`"
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    >
+    </app-modal-eliminacion>
+}
+
+@if (campoModalEditar()) {
+    <app-modal-edicion
+        [campos]="camposEdicion()"
+        [item]="campoModalEditar()"
+        [titulo]="tituloEdicion()"
+        [descripcion]="descripcionEdicion()"
+        (cerrar)="closeModalEditar()"
+        (editar)="crearOActualizarModeloCanvas($event)"
+    >
+    </app-modal-edicion>
+}
