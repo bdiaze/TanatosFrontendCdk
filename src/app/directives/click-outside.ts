@@ -22,6 +22,8 @@ export class ClickOutside {
 
         if (target.closest('hlm-dropdown-menu[sidebar-dropdown-menu]')) return;
 
+        if (target.closest('body.driver-active')) return;
+
         if (!this.el.nativeElement.contains(target)) {
             this.postClickOutside.emit();
         }
