@@ -6,7 +6,7 @@ import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { CdkMenuTrigger } from '@angular/cdk/menu';
 import { NgClass } from '@angular/common';
-import { Component, computed, effect, EventEmitter, inject, Input, OnInit, Output, untracked, ViewChild } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, untracked, ViewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -21,10 +21,12 @@ import {
     lucideContactRound,
     lucideCreditCard,
     lucideGem,
+    lucideGoal,
     lucideHouse,
     lucideLayers,
     lucideMail,
     lucideMessageCircleMore,
+    lucideRoute,
     lucideSend,
     lucideSettings,
     lucideStar,
@@ -84,10 +86,12 @@ import { filter, map } from 'rxjs';
             lucideStar,
             lucideMail,
             lucideLayers,
+            lucideRoute,
+            lucideGoal,
         }),
     ],
 })
-export class Menu implements OnInit {
+export class Menu implements OnInit, OnDestroy {
     @Output() postClickItem = new EventEmitter<void>();
 
     @Input() withClose = false;
@@ -155,11 +159,26 @@ export class Menu implements OnInit {
                         url: '/mi-equipo',
                     },
                     {
-                        id: 'group-negocio-seleccionado-item-modelo-de-negocio',
+                        id: 'group-negocio-seleccionado-item-estrategia',
                         tipo: 'item',
-                        icon: 'lucideLayers',
-                        titulo: 'Modelo de Negocio',
-                        url: '/modelo-de-negocio',
+                        icon: 'lucideRoute',
+                        titulo: 'Estrategia',
+                        items: [
+                            {
+                                id: 'group-negocio-seleccionado-item-estrategia-subitem-mi-mision',
+                                tipo: 'item',
+                                icon: 'lucideGoal',
+                                titulo: 'Mi Misión',
+                                url: '/mi-mision',
+                            },
+                            {
+                                id: 'group-negocio-seleccionado-item-estrategia-subitem-modelo-de-negocio',
+                                tipo: 'item',
+                                icon: 'lucideLayers',
+                                titulo: 'Modelo de Negocio',
+                                url: '/modelo-de-negocio',
+                            },
+                        ],
                     },
                 ],
             });
@@ -330,7 +349,7 @@ export class Menu implements OnInit {
         { initialValue: this.router.url },
     );
 
-    groupsAbiertos = new Set<string>([]);
+    groupsAbiertos = signal<Set<string>>(new Set());
 
     constructor() {
         effect(() => {
@@ -340,11 +359,11 @@ export class Menu implements OnInit {
             untracked(() => {
                 for (const item of opciones) {
                     if (item.tipo === 'item' && this.tieneUrlHijoActivo(item, url)) {
-                        this.groupsAbiertos.add(item.id);
+                        this.abrirItem(item.id);
                     } else if (item.tipo === 'group' && item.items) {
                         for (const item2 of item.items) {
                             if (this.tieneUrlHijoActivo(item2, url)) {
-                                this.groupsAbiertos.add(item2.id);
+                                this.abrirItem(item2.id);
                             }
                         }
                     }
@@ -355,6 +374,13 @@ export class Menu implements OnInit {
 
     ngOnInit() {
         this.menuHelper.ejecutar();
+        this.menuHelper.registrarAbrirItem((id: string) => {
+            this.abrirItem(id);
+        });
+    }
+
+    ngOnDestroy(): void {
+        this.menuHelper.registrarAbrirItem(undefined);
     }
 
     tieneUrlHijoActivo(opcion: OpcionMenu, url: string) {
@@ -364,16 +390,32 @@ export class Menu implements OnInit {
         return false;
     }
 
+    abrirItem(groupId: string) {
+        this.groupsAbiertos.update((current) => {
+            if (current.has(groupId)) {
+                return current;
+            }
+
+            const next = new Set(current);
+            next.add(groupId);
+            return next;
+        });
+    }
+
     itemCollapsibleChange(groupId: string, isOpen: boolean) {
-        if (isOpen) {
-            this.groupsAbiertos.add(groupId);
-        } else {
-            this.groupsAbiertos.delete(groupId);
-        }
+        this.groupsAbiertos.update((current) => {
+            const next = new Set(current);
+            if (isOpen) {
+                next.add(groupId);
+            } else {
+                next.delete(groupId);
+            }
+            return next;
+        });
     }
 
     estaAbierto(groupId: string) {
-        return this.groupsAbiertos.has(groupId);
+        return this.groupsAbiertos().has(groupId);
     }
 
     @ViewChild('dropdownTrigger', { read: CdkMenuTrigger }) dropdownTrigger?: CdkMenuTrigger;
