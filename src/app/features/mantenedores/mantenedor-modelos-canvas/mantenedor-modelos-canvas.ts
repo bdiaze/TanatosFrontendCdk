@@ -585,8 +585,7 @@ export class MantenedorModelosCanvas {
         if (this.ayuda() === '1') {
             config = {
                 ...config,
-                showProgress: false,
-                doneBtnText: 'Siguiente',
+                showProgress: true,
             };
         }
 
