@@ -1,0 +1,193 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Mi Misión</span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
+        <h4 hlmH4 class="text-center">
+            {{ negocioStore.negocioSeleccionado()?.nombre }}
+        </h4>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <ng-icon hlm name="lucideGoal" />
+            <h3 hlmH3>Mi Misión</h3>
+        </div>
+    </div>
+
+    <div class="flex flex-col relative">
+        <div class="flex flex-col items-center justify-center">
+            @if (!negocioSeleccionado()) {
+                <hlm-skeleton class="h-48 w-full rounded-xl" />
+            } @else {
+                <div id="mision" hlmItem class="gap-0.5 p-0 fade-in">
+                    <div hlmItemContent class="items-center justify-center">
+                        <button
+                            hlmBtn
+                            variant="link"
+                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! text-lg! size-fit! py-0!"
+                            (click)="openModalMision()"
+                            [disabled]="actualizandoMisionVisionValores()"
+                        >
+                            @if (actualizandoMisionVisionValores() && tipoActualizando() === 'mision') {
+                                <div class="flex flex-row items-center justify-center gap-2 fade-in">
+                                    <hlm-spinner class="text-lg" />
+                                    <p hlmP class="text-lg">Guardando...</p>
+                                </div>
+                            } @else {
+                                @if (misionMostrar()) {
+                                    <app-editor-texto
+                                        [content]="misionMostrar()"
+                                        class="**:cursor-pointer! [&_h2]:text-center! [&_h2]:text-negro/80! [&_h2]:my-0! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
+                                    ></app-editor-texto>
+                                } @else {
+                                    Click aquí para definir tu misión, la razón de existir de tu negocio, su propósito central ¿Qué necesidad de las personas
+                                    satisface?
+                                }
+                            }
+                        </button>
+                    </div>
+                </div>
+            }
+            <div class="flex flex-col items-center justify-center gap-5 md:gap-6 w-full pt-8">
+                <div hlmItem class="gap-0.5 p-0">
+                    <div hlmItemHeader class="flex flex-row items-center justify-center fade-in">
+                        <ng-icon hlm name="lucideChartNoAxesCombined" size="20px" />
+                        <h4 hlmH4 class="">Mi Visión</h4>
+                    </div>
+                    @if (!negocioSeleccionado()) {
+                        <hlm-skeleton class="h-36 w-full rounded-xl" />
+                    } @else {
+                        <div id="vision" hlmItemContent class="items-center justify-center fade-in">
+                            <button
+                                hlmBtn
+                                variant="link"
+                                class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit! text-base! py-1.5!"
+                                (click)="openModalVision()"
+                                [disabled]="actualizandoMisionVisionValores()"
+                            >
+                                @if (actualizandoMisionVisionValores() && tipoActualizando() === 'vision') {
+                                    <div class="flex flex-row items-center justify-center gap-2 fade-in">
+                                        <hlm-spinner class="text-lg" />
+                                        <p hlmP class="text-base">Guardando...</p>
+                                    </div>
+                                } @else {
+                                    @if (visionMostrar()) {
+                                        <app-editor-texto
+                                            [content]="visionMostrar()"
+                                            class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
+                                        ></app-editor-texto>
+                                    } @else {
+                                        Click para definir tu visión, describe el objetivo y las aspiraciones del negocio ¿Cómo quieres ser reconocido en el
+                                        futuro?
+                                    }
+                                }
+                            </button>
+                        </div>
+                    }
+                </div>
+                <div hlmItem class="gap-0.5 p-0">
+                    <div hlmItemHeader class="flex flex-row items-center justify-center fade-in">
+                        <ng-icon hlm name="lucideUserStar" size="20px" />
+                        <h4 hlmH4 class="">Mis Valores</h4>
+                    </div>
+                    @if (!negocioSeleccionado()) {
+                        <hlm-skeleton class="h-36 w-full rounded-xl" />
+                    } @else {
+                        <div id="valores" hlmItemContent class="items-center justify-center fade-in">
+                            <button
+                                hlmBtn
+                                variant="link"
+                                class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit! text-base! py-1.5!"
+                                (click)="openModalValores()"
+                                [disabled]="actualizandoMisionVisionValores()"
+                            >
+                                @if (actualizandoMisionVisionValores() && tipoActualizando() === 'valores') {
+                                    <div class="flex flex-row items-center justify-center gap-2 fade-in">
+                                        <hlm-spinner class="text-lg" />
+                                        <p hlmP class="text-base">Guardando...</p>
+                                    </div>
+                                } @else {
+                                    @if (valoresMostrar()) {
+                                        <app-editor-texto
+                                            [content]="valoresMostrar()"
+                                            class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
+                                        ></app-editor-texto>
+                                    } @else {
+                                        Click para definir tus valores, los principios éticos y morales que definen la identidad de tu negocio.
+                                    }
+                                }
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+            @if (error()) {
+                <div hlmAlert variant="destructive" class="mt-2">
+                    <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                    <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                    <p hlmAlertDescription>{{ error() }}</p>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@if (showModalMision()) {
+    <app-modal-edicion
+        [campos]="camposEdicionMision()"
+        [item]="negocioSeleccionado()"
+        titulo="Misión:"
+        descripcion="
+            <p class='px-1 text-left text-sm opacity-90 font-medium'>Describe la razón de existir de tu negocio, su propósito central, ¿Qué necesidad de las personas satisface?</p>
+            <p class='px-1 pt-1 text-left text-sm opacity-80'>Por ejemplo, la misión de Viña Sutil es:</p>
+            <p class='px-1 pb-3 text-left text-sm opacity-80'><i>&quot;Entregar la mejor expresión de nuestra tierra, nuestra fruta y nuestra gente a través de nuestros vinos.&quot;</i></p>
+        "
+        textoBotonGuardar="Guardar"
+        (cerrar)="closeModalMision()"
+        (editar)="actualizarMisionVisionValores($event, 'mision')"
+    >
+    </app-modal-edicion>
+}
+
+@if (showModalVision()) {
+    <app-modal-edicion
+        [campos]="camposEdicionVision()"
+        [item]="negocioSeleccionado()"
+        titulo="Visión:"
+        descripcion="
+            <p class='px-1 text-left text-sm opacity-90 font-medium'>Describe el objetivo y las aspiraciones del negocio, ¿Cómo quieres ser reconocido en el futuro?</p>
+            <p class='px-1 pt-1 text-left text-sm opacity-80'>Por ejemplo, la visión de Viña Sutil es:</p>
+            <p class='px-1 pb-3 text-left text-sm opacity-80'><i>&quot;Ser reconocidos por entregar una propuesta de alto valor a través de nuestro diverso portafolio de marcas y productos,<br/> y por nuestra integridad y capacidad de comprender y adaptarse a las necesidades de nuestros clientes.&quot;</i></p>
+        "
+        textoBotonGuardar="Guardar"
+        (cerrar)="closeModalVision()"
+        (editar)="actualizarMisionVisionValores($event, 'vision')"
+    >
+    </app-modal-edicion>
+}
+
+@if (showModalValores()) {
+    <app-modal-edicion
+        [campos]="camposEdicionValores()"
+        [item]="negocioSeleccionado()"
+        titulo="Valores:"
+        descripcion="
+            <p class='px-1 text-left text-sm opacity-90 font-medium'>Describe los principios éticos y morales que definen la identidad de tu negocio:</p>
+            <p class='px-1 pt-1 text-left text-sm opacity-80'>Por ejemplo, los valores de Viña Sutil son:</p>
+            <p class='px-1 pb-3 text-left text-sm opacity-80'><i>&quot;Integridad - Compromiso - Calidez - Orgullo por el trabajo bien hecho - Proactividad&quot;</i></p>
+        "
+        textoBotonGuardar="Guardar"
+        (cerrar)="closeModalValores()"
+        (editar)="actualizarMisionVisionValores($event, 'valores')"
+    >
+    </app-modal-edicion>
+}

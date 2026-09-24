@@ -45,6 +45,7 @@ import { RedirectToHome } from './components/redirect-to-home/redirect-to-home';
 import { MantenedorTipoProcesoAutomatico } from './features/mantenedores/mantenedor-tipo-proceso-automatico/mantenedor-tipo-proceso-automatico';
 import { MantenedorProcesoAutomatico } from './features/mantenedores/mantenedor-proceso-automatico/mantenedor-proceso-automatico';
 import { MantenedorModelosCanvas } from './features/mantenedores/mantenedor-modelos-canvas/mantenedor-modelos-canvas';
+import { MantenedorMision } from './features/mantenedores/mantenedor-mision/mantenedor-mision';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -173,6 +174,12 @@ export const routes: Routes = [
         title: 'Mi Equipo',
         path: 'mi-equipo',
         component: MantenedorEmpleado,
+        canActivate: [chainActivateGuards(sesionIniciada)],
+    },
+    {
+        title: 'Mi Misión',
+        path: 'mi-mision',
+        component: MantenedorMision,
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
