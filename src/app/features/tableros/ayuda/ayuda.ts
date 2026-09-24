@@ -276,12 +276,34 @@ export class Ayuda implements OnInit, OnDestroy {
             ] as DriveStep[],
         },
         {
+            id: 'mision',
+            nombre: 'Mi Misión',
+            link: ['/mi-mision'],
+            steps: [
+                {
+                    element: '#group-negocio-seleccionado-item-estrategia-subitem-mi-mision',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Mi Misión deberás hacer click aquí, ¡Vamos allá!',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                        this.menuHelper.abrirItem('group-negocio-seleccionado-item-estrategia');
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
+        },
+        {
             id: 'modelo-de-negocio',
             nombre: 'Modelo de Negocio',
             link: ['/modelo-de-negocio'],
             steps: [
                 {
-                    element: '#group-negocio-seleccionado-item-modelo-de-negocio',
+                    element: '#group-negocio-seleccionado-item-estrategia-subitem-modelo-de-negocio',
                     popover: {
                         title: '¿Cómo llegar?',
                         description: 'Primero, debes saber que para llegar a tu Modelo de Negocio deberás hacer click aquí, ¡Vamos allá!',
@@ -289,6 +311,7 @@ export class Ayuda implements OnInit, OnDestroy {
                     },
                     onHighlightStarted: () => {
                         this.menuHelper.abrirMenu();
+                        this.menuHelper.abrirItem('group-negocio-seleccionado-item-estrategia');
                     },
                     onDeselected: () => {
                         this.menuHelper.cerrarMenu();
