@@ -77,4 +77,14 @@ export class MenuHelper {
     cerrarMenu(): void {
         this.onCerrarMenu?.();
     }
+
+    private onAbrirItem?: (id: string) => void;
+
+    registrarAbrirItem(fn: ((id: string) => void) | undefined): void {
+        this.onAbrirItem = fn;
+    }
+
+    abrirItem(id: string): void {
+        this.onAbrirItem?.(id);
+    }
 }
