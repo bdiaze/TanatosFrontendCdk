@@ -19,28 +19,32 @@
         </h4>
         <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
             <ng-icon hlm name="lucideGoal" />
-            <h3 hlmH3>Mi Misión</h3>
+            <h3 hlmH3>Misión, Visión y Valores</h3>
         </div>
     </div>
 
-    <div class="flex flex-col relative">
-        <div class="flex flex-col items-center justify-center">
-            @if (!negocioSeleccionado()) {
-                <hlm-skeleton class="h-48 w-full rounded-xl" />
-            } @else {
-                <div id="mision" hlmItem class="gap-0.5 p-0 fade-in">
-                    <div hlmItemContent class="items-center justify-center">
+    <div class="flex flex-col items-center justify-center">
+        <div class="flex flex-col items-center justify-center gap-5 md:gap-6 w-full">
+            <div hlmItem id="mision" class="gap-0.5 p-0 border border-azul">
+                <div hlmItemHeader class="flex flex-row items-center justify-center text-blanco border border-azul bg-azul py-2.5">
+                    <ng-icon hlm name="lucideGoal" size="20px" />
+                    <h4 hlmH4 class="">Mi Misión</h4>
+                </div>
+                @if (!negocioSeleccionado()) {
+                    <hlm-skeleton class="h-36 w-full rounded-xl" />
+                } @else {
+                    <div hlmItemContent class="items-center justify-center fade-in p-5">
                         <button
                             hlmBtn
                             variant="link"
-                            class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! text-lg! size-fit! py-0!"
+                            class="text-negro/80! font-normal! p-0! text-balance! size-fit! text-base! py-0!"
                             (click)="openModalMision()"
                             [disabled]="actualizandoMisionVisionValores()"
                         >
                             @if (actualizandoMisionVisionValores() && tipoActualizando() === 'mision') {
                                 <div class="flex flex-row items-center justify-center gap-2 fade-in">
                                     <hlm-spinner class="text-lg" />
-                                    <p hlmP class="text-lg">Guardando...</p>
+                                    <p hlmP class="text-base">Guardando...</p>
                                 </div>
                             } @else {
                                 @if (misionMostrar()) {
@@ -55,89 +59,86 @@
                             }
                         </button>
                     </div>
-                </div>
-            }
-            <div class="flex flex-col items-center justify-center gap-5 md:gap-6 w-full pt-8">
-                <div hlmItem class="gap-0.5 p-0">
-                    <div hlmItemHeader class="flex flex-row items-center justify-center fade-in">
-                        <ng-icon hlm name="lucideChartNoAxesCombined" size="20px" />
-                        <h4 hlmH4 class="">Mi Visión</h4>
-                    </div>
-                    @if (!negocioSeleccionado()) {
-                        <hlm-skeleton class="h-36 w-full rounded-xl" />
-                    } @else {
-                        <div id="vision" hlmItemContent class="items-center justify-center fade-in">
-                            <button
-                                hlmBtn
-                                variant="link"
-                                class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit! text-base! py-1.5!"
-                                (click)="openModalVision()"
-                                [disabled]="actualizandoMisionVisionValores()"
-                            >
-                                @if (actualizandoMisionVisionValores() && tipoActualizando() === 'vision') {
-                                    <div class="flex flex-row items-center justify-center gap-2 fade-in">
-                                        <hlm-spinner class="text-lg" />
-                                        <p hlmP class="text-base">Guardando...</p>
-                                    </div>
-                                } @else {
-                                    @if (visionMostrar()) {
-                                        <app-editor-texto
-                                            [content]="visionMostrar()"
-                                            class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
-                                        ></app-editor-texto>
-                                    } @else {
-                                        Click para definir tu visión, describe el objetivo y las aspiraciones del negocio ¿Cómo quieres ser reconocido en el
-                                        futuro?
-                                    }
-                                }
-                            </button>
-                        </div>
-                    }
-                </div>
-                <div hlmItem class="gap-0.5 p-0">
-                    <div hlmItemHeader class="flex flex-row items-center justify-center fade-in">
-                        <ng-icon hlm name="lucideUserStar" size="20px" />
-                        <h4 hlmH4 class="">Mis Valores</h4>
-                    </div>
-                    @if (!negocioSeleccionado()) {
-                        <hlm-skeleton class="h-36 w-full rounded-xl" />
-                    } @else {
-                        <div id="valores" hlmItemContent class="items-center justify-center fade-in">
-                            <button
-                                hlmBtn
-                                variant="link"
-                                class="text-negro/70! md:text-negro/60! font-normal! p-0! text-balance! size-fit! text-base! py-1.5!"
-                                (click)="openModalValores()"
-                                [disabled]="actualizandoMisionVisionValores()"
-                            >
-                                @if (actualizandoMisionVisionValores() && tipoActualizando() === 'valores') {
-                                    <div class="flex flex-row items-center justify-center gap-2 fade-in">
-                                        <hlm-spinner class="text-lg" />
-                                        <p hlmP class="text-base">Guardando...</p>
-                                    </div>
-                                } @else {
-                                    @if (valoresMostrar()) {
-                                        <app-editor-texto
-                                            [content]="valoresMostrar()"
-                                            class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
-                                        ></app-editor-texto>
-                                    } @else {
-                                        Click para definir tus valores, los principios éticos y morales que definen la identidad de tu negocio.
-                                    }
-                                }
-                            </button>
-                        </div>
-                    }
-                </div>
+                }
             </div>
-            @if (error()) {
-                <div hlmAlert variant="destructive" class="mt-2">
-                    <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
-                    <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-                    <p hlmAlertDescription>{{ error() }}</p>
+            <div hlmItem id="vision" class="gap-0.5 p-0 border border-calipso">
+                <div hlmItemHeader class="flex flex-row items-center justify-center text-blanco border border-calipso bg-calipso py-2.5">
+                    <ng-icon hlm name="lucideChartNoAxesCombined" size="20px" />
+                    <h4 hlmH4 class="">Mi Visión</h4>
                 </div>
-            }
+                @if (!negocioSeleccionado()) {
+                    <hlm-skeleton class="h-36 w-full rounded-xl" />
+                } @else {
+                    <div hlmItemContent class="items-center justify-center fade-in p-5">
+                        <button
+                            hlmBtn
+                            variant="link"
+                            class="text-negro/80! font-normal! p-0! text-balance! size-fit! text-base! py-0! decoration-calipso!"
+                            (click)="openModalVision()"
+                            [disabled]="actualizandoMisionVisionValores()"
+                        >
+                            @if (actualizandoMisionVisionValores() && tipoActualizando() === 'vision') {
+                                <div class="flex flex-row items-center justify-center gap-2 fade-in">
+                                    <hlm-spinner class="text-lg" />
+                                    <p hlmP class="text-base">Guardando...</p>
+                                </div>
+                            } @else {
+                                @if (visionMostrar()) {
+                                    <app-editor-texto
+                                        [content]="visionMostrar()"
+                                        class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
+                                    ></app-editor-texto>
+                                } @else {
+                                    Click para definir tu visión, describe el objetivo y las aspiraciones del negocio ¿Cómo quieres ser reconocido en el futuro?
+                                }
+                            }
+                        </button>
+                    </div>
+                }
+            </div>
+            <div hlmItem id="valores" class="gap-0.5 p-0 border border-naranjo">
+                <div hlmItemHeader class="flex flex-row items-center justify-center text-blanco border border-naranjo bg-naranjo py-2.5">
+                    <ng-icon hlm name="lucideUserStar" size="20px" />
+                    <h4 hlmH4 class="">Mis Valores</h4>
+                </div>
+                @if (!negocioSeleccionado()) {
+                    <hlm-skeleton class="h-36 w-full rounded-xl" />
+                } @else {
+                    <div hlmItemContent class="items-center justify-center fade-in p-5">
+                        <button
+                            hlmBtn
+                            variant="link"
+                            class="text-negro/80! font-normal! p-0! text-balance! size-fit! text-base! py-0! decoration-naranjo!"
+                            (click)="openModalValores()"
+                            [disabled]="actualizandoMisionVisionValores()"
+                        >
+                            @if (actualizandoMisionVisionValores() && tipoActualizando() === 'valores') {
+                                <div class="flex flex-row items-center justify-center gap-2 fade-in">
+                                    <hlm-spinner class="text-lg" />
+                                    <p hlmP class="text-base">Guardando...</p>
+                                </div>
+                            } @else {
+                                @if (valoresMostrar()) {
+                                    <app-editor-texto
+                                        [content]="valoresMostrar()"
+                                        class="**:cursor-pointer! [&_p]:text-center! [&_p]:text-base! [&_p]:text-negro/80! fade-in"
+                                    ></app-editor-texto>
+                                } @else {
+                                    Click para definir tus valores, los principios éticos y morales que definen la identidad de tu negocio.
+                                }
+                            }
+                        </button>
+                    </div>
+                }
+            </div>
         </div>
+        @if (error()) {
+            <div hlmAlert variant="destructive" class="mt-2">
+                <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                <p hlmAlertDescription>{{ error() }}</p>
+            </div>
+        }
     </div>
 </section>
 

@@ -229,8 +229,8 @@ export class MantenedorMision {
         if (this.ayuda() === '1') {
             steps.push({
                 popover: {
-                    title: '¡Listo! Llegamos a Mi Misión',
-                    description: 'Ahora que ya estamos en Mi Misión, te mostraremos sus principales funciones.',
+                    title: '¡Listo! Llegamos a Misión, Visión y Valores',
+                    description: 'Ahora que ya estamos en Misión, Visión y Valores, te mostraremos sus principales funciones.',
                 },
             });
         } else {
