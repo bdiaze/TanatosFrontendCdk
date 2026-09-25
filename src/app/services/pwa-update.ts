@@ -10,9 +10,7 @@ export class PwaUpdate {
 
     readonly updateAvailable = signal(false);
 
-    private readonly newVersion = signal<string | null>(null);
-
-    private readonly CHECK_INTERVAL = 10 * 60 * 1000; // 10 minutos
+    private readonly CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutos
 
     constructor() {
         if (!this.swUpdate.isEnabled) {
@@ -21,7 +19,6 @@ export class PwaUpdate {
 
         this.swUpdate.versionUpdates.pipe(filter((event): event is VersionReadyEvent => event.type === 'VERSION_READY')).subscribe((event) => {
             console.log('Nueva versión descargada:', event.latestVersion.hash);
-            this.newVersion.set(event.latestVersion.hash);
             this.updateAvailable.set(true);
         });
 
@@ -30,12 +27,22 @@ export class PwaUpdate {
             .subscribe(() => {
                 this.checkForUpdate();
             });
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') {
+                this.checkForUpdate();
+            }
+        });
     }
 
+    private updateCheckInProgress = false;
+
     private async checkForUpdate(): Promise<void> {
-        if (!this.swUpdate.isEnabled) {
+        if (!this.swUpdate.isEnabled || this.updateCheckInProgress) {
             return;
         }
+
+        this.updateCheckInProgress = true;
 
         try {
             console.log('Verificando por nueva versión de PWA...');
@@ -43,6 +50,8 @@ export class PwaUpdate {
             console.log('Verificación de versión de PWA finalizada');
         } catch (error) {
             console.error('Error al verificar nueva versión de PWA', error);
+        } finally {
+            this.updateCheckInProgress = false;
         }
     }
 
