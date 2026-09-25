@@ -17,9 +17,10 @@ import { CanActivateRunning } from './services/can-activate-running';
 import { EmptyHero } from './components/empty-hero/empty-hero';
 import { GoogleAnalytics } from './services/google-analytics';
 import { RedirectToLogin } from './services/redirect-to-login';
+import { UpdateNotification } from './components/update-notification/update-notification';
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionPorVencer, EmptyHero],
+    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionPorVencer, EmptyHero, UpdateNotification],
     templateUrl: './app.html',
 })
 export class App implements OnInit, OnDestroy {
