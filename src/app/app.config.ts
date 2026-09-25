@@ -1,4 +1,4 @@
-import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners, isDevMode } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners, isDevMode, provideAppInitializer, inject } from '@angular/core';
 import { provideRouter, TitleStrategy, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
@@ -11,6 +11,7 @@ import { provideBrnCalendarI18n } from '@spartan-ng/brain/calendar';
 import { dedupInterceptor } from './interceptors/dedup-interceptor';
 import { AppTitleStrategy } from './providers/app-title-strategy';
 import { provideServiceWorker } from '@angular/service-worker';
+import { PwaUpdate } from './services/pwa-update';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -67,6 +68,10 @@ export const appConfig: ApplicationConfig = {
         provideServiceWorker('ngsw-worker.js', {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000',
+        }),
+        provideAppInitializer(() => {
+            const pwaUpdate = inject(PwaUpdate);
+            pwaUpdate.checkForUpdate();
         }),
     ],
 };
