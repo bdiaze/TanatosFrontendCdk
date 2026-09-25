@@ -593,12 +593,12 @@ export class Vencimiento implements OnInit {
                 .subscribe({
                     next: (salida) => {
                         // Se descarga el archivo...
-                        this.s3Service.bajarArchivo(salida.preSignedUrl);
+                        const timeout = this.s3Service.bajarArchivo(salida.preSignedUrl);
 
                         // Se deja spinner corriendo mientras navegador procesa la descarga...
                         setTimeout(() => {
                             this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: false } : doc)));
-                        }, 1500);
+                        }, timeout);
                     },
                     error: (err) => {
                         console.error('Error al generar URL de bajada de documento', err);
@@ -614,12 +614,12 @@ export class Vencimiento implements OnInit {
                 .subscribe({
                     next: (salida) => {
                         // Se descarga el archivo...
-                        this.s3Service.bajarArchivo(salida.preSignedUrl);
+                        const timeout = this.s3Service.bajarArchivo(salida.preSignedUrl);
 
                         // Se deja spinner corriendo mientras navegador procesa la descarga...
                         setTimeout(() => {
                             this.documentosAdjuntos.update((docs) => docs.map((doc) => (doc.id === idDocumento ? { ...doc, descargando: false } : doc)));
-                        }, 1500);
+                        }, timeout);
                     },
                     error: (err) => {
                         console.error('Error al generar URL de bajada de documento', err);

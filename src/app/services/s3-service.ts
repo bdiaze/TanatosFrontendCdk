@@ -45,13 +45,40 @@ export class S3Service {
             );
     }
 
-    bajarArchivo(presignedUrl: string) {
-        const link = document.createElement('a');
-        link.href = presignedUrl;
-        link.download = '';
+    private readonly colaDescarga: string[] = [];
+    private descargando = false;
 
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
+    bajarArchivo(presignedUrl: string): number {
+        let cant = this.colaDescarga.push(presignedUrl);
+        if (this.descargando) cant++;
+
+        this.procesarColaDescarga();
+
+        return 500 + cant * 1_000;
+    }
+
+    private async procesarColaDescarga(): Promise<void> {
+        if (this.descargando || this.colaDescarga.length === 0) {
+            return;
+        }
+
+        this.descargando = true;
+
+        const url = this.colaDescarga.shift()!;
+
+        try {
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = '';
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+
+            await new Promise((resolve) => setTimeout(resolve, 1_000));
+        } finally {
+            this.descargando = false;
+            this.procesarColaDescarga();
+        }
     }
 }
