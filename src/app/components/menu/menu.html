@@ -243,6 +243,9 @@
                                                                     queryParams: 'ignored',
                                                                 }"
                                                                 class="w-full! items-center justify-start text-negro/80 font-normal my-0.5!"
+                                                                [ngClass]="{
+                                                                    'px-3.5!': !subItem.icon,
+                                                                }"
                                                                 (click)="click()"
                                                             >
                                                                 @if (subItem.icon) {
