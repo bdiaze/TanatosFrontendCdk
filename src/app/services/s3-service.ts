@@ -46,6 +46,12 @@ export class S3Service {
     }
 
     bajarArchivo(presignedUrl: string) {
-        window.location.href = presignedUrl;
+        const link = document.createElement('a');
+        link.href = presignedUrl;
+        link.download = '';
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
     }
 }
