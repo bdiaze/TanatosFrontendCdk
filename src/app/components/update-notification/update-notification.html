@@ -1,12 +1,17 @@
 @if (pwaUpdate.updateAvailable()) {
-    <div class="fixed bottom-0 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 animate-in slide-in-from-bottom-38 duration-800">
+    <div class="fixed bottom-0 left-1/2 z-50 w-[calc(100%-2rem)] max-w-md -translate-x-1/2 animate-in slide-in-from-bottom-38 duration-800 ease-linear">
         <div class="border-t border-x border-azul bg-blanco px-4 py-3.5 flex flex-col items-center justify-center gap-2">
             <div class="flex flex-row items-center justify-center gap-3">
                 <ng-icon hlm name="lucideRefreshCw" size="20px" />
                 <h4 hlmH4 class="">Nueva versión disponible</h4>
             </div>
             <p hlmP class="text-center text-sm text-balance">Te tenemos una nueva versión de Todo en Orden. Recarga para usarla.</p>
-            <button hlmBtn class="mt-1.5 w-full px-4 py-3" (click)="update()">Recargar Todo en Orden</button>
+            <button hlmBtn class="mt-1.5 w-full px-4 py-3" (click)="update()" [disabled]="ejecutandoUpdate()">
+                @if (ejecutandoUpdate()) {
+                    <hlm-spinner class="text-base" />
+                }
+                Recargar Todo en Orden
+            </button>
         </div>
     </div>
 }
