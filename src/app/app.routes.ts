@@ -177,8 +177,8 @@ export const routes: Routes = [
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
-        title: 'Mi Misión',
-        path: 'mi-mision',
+        title: 'Misión, Visión y Valores',
+        path: 'mision-vision-valores',
         component: MantenedorMision,
         canActivate: [chainActivateGuards(sesionIniciada)],
     },

@@ -276,15 +276,15 @@ export class Ayuda implements OnInit, OnDestroy {
             ] as DriveStep[],
         },
         {
-            id: 'mision',
-            nombre: 'Mi Misión',
-            link: ['/mi-mision'],
+            id: 'mision-vision-valores',
+            nombre: 'Misión, Visión y Valores',
+            link: ['/mision-vision-valores'],
             steps: [
                 {
-                    element: '#group-negocio-seleccionado-item-estrategia-subitem-mi-mision',
+                    element: '#group-negocio-seleccionado-item-estrategia-subitem-mision-vision-valores',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Mi Misión deberás hacer click aquí, ¡Vamos allá!',
+                        description: 'Primero, debes saber que para llegar a tu Misión, Visión y Valores deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {

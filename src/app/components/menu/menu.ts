@@ -32,6 +32,7 @@ import {
     lucideStar,
     lucideStore,
     lucideUser,
+    lucideWaypoints,
     lucideX,
 } from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -88,6 +89,7 @@ import { filter, map } from 'rxjs';
             lucideLayers,
             lucideRoute,
             lucideGoal,
+            lucideWaypoints,
         }),
     ],
 })
@@ -161,20 +163,18 @@ export class Menu implements OnInit, OnDestroy {
                     {
                         id: 'group-negocio-seleccionado-item-estrategia',
                         tipo: 'item',
-                        icon: 'lucideRoute',
+                        icon: 'lucideWaypoints',
                         titulo: 'Estrategia',
                         items: [
                             {
-                                id: 'group-negocio-seleccionado-item-estrategia-subitem-mi-mision',
+                                id: 'group-negocio-seleccionado-item-estrategia-subitem-mision-vision-valores',
                                 tipo: 'item',
-                                icon: 'lucideGoal',
-                                titulo: 'Mi Misión',
-                                url: '/mi-mision',
+                                titulo: 'Misión, Visión y Valores',
+                                url: '/mision-vision-valores',
                             },
                             {
                                 id: 'group-negocio-seleccionado-item-estrategia-subitem-modelo-de-negocio',
                                 tipo: 'item',
-                                icon: 'lucideLayers',
                                 titulo: 'Modelo de Negocio',
                                 url: '/modelo-de-negocio',
                             },
