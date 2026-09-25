@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { SwUpdate, VersionReadyEvent } from '@angular/service-worker';
-import { filter } from 'rxjs';
+import { filter, interval, startWith, switchMap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -12,6 +12,8 @@ export class PwaUpdate {
 
     private readonly newVersion = signal<string | null>(null);
 
+    private readonly CHECK_INTERVAL = 10 * 60 * 1000; // 10 minutos
+
     constructor() {
         if (!this.swUpdate.isEnabled) {
             return;
@@ -22,9 +24,15 @@ export class PwaUpdate {
             this.newVersion.set(event.latestVersion.hash);
             this.updateAvailable.set(true);
         });
+
+        interval(this.CHECK_INTERVAL)
+            .pipe(startWith(0))
+            .subscribe(() => {
+                this.checkForUpdate();
+            });
     }
 
-    async checkForUpdate(): Promise<void> {
+    private async checkForUpdate(): Promise<void> {
         if (!this.swUpdate.isEnabled) {
             return;
         }

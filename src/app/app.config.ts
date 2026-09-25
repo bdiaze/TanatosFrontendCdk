@@ -69,9 +69,5 @@ export const appConfig: ApplicationConfig = {
             enabled: !isDevMode(),
             registrationStrategy: 'registerWhenStable:30000',
         }),
-        provideAppInitializer(() => {
-            const pwaUpdate = inject(PwaUpdate);
-            pwaUpdate.checkForUpdate();
-        }),
     ],
 };
