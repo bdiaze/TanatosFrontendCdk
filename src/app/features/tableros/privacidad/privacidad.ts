@@ -1,5 +1,6 @@
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideUserLock } from '@ng-icons/lucide';
 import { HlmButton } from '@spartan-ng/helm/button';
@@ -8,7 +9,7 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-privacidad',
-    imports: [HlmH3, HlmH4, HlmP, HlmButton, HlmIcon, NgIcon],
+    imports: [HlmH3, HlmH4, HlmP, HlmButton, HlmIcon, NgIcon, RouterLink],
     templateUrl: './privacidad.html',
     providers: [
         provideIcons({
