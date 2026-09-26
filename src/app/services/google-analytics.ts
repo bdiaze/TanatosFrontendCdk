@@ -52,24 +52,43 @@ export class GoogleAnalytics {
         window.gtag?.('event', eventName, parameters);
     }
 
-    private previousPageUrl: string | undefined;
+    private previousPageLocation: string | undefined;
+    private hasTrackedInitialPage = false;
 
     trackPage(pageTitle: string, pageLocation: string, pagePath: string): void {
         if (!this.isEnabled) {
             return;
         }
 
-        if (this.previousPageUrl === pageLocation) {
+        if (this.previousPageLocation === pageLocation) {
             return;
         }
+
+        const pageReferrer = this.hasTrackedInitialPage ? this.previousPageLocation : this.getInitialPageReferrer();
 
         this.event('page_view', {
             page_title: pageTitle,
             page_location: pageLocation,
             page_path: pagePath,
-            page_referrer: this.previousPageUrl ?? document.referrer,
+            page_referrer: pageReferrer,
         });
 
-        this.previousPageUrl = pageLocation;
+        this.previousPageLocation = pageLocation;
+        this.hasTrackedInitialPage = true;
+    }
+
+    private getInitialPageReferrer(): string | undefined {
+        const referrer = document.referrer;
+
+        if (!referrer) {
+            return undefined;
+        }
+
+        // Si venimos de nuestro propio sitio, no lo consideramos referrer externo de la primera carga.
+        if (referrer.startsWith(window.location.origin)) {
+            return undefined;
+        }
+
+        return referrer;
     }
 }
