@@ -1,0 +1,52 @@
+@if (isOpen()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 md:p-8">
+        <div
+            class="max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4 bg-blanco py-5 md:py-8 px-6 md:px-10 flex flex-col gap-4"
+        >
+            <div class="flex flex-col gap-2">
+                <div class="flex flex-row items-center gap-2">
+                    <div class="size-6">
+                        <ng-icon hlm name="lucideCookie" />
+                    </div>
+                    <h3 hlmH3 class="text-xl md:text-2xl">Preferencias de Cookies</h3>
+                </div>
+                <p hlmP class="text-sm md:text-base">
+                    Utilizamos cookies y tecnologías similares para el funcionamiento de Todo En Orden, conocer cómo se utiliza el servicio y medir nuestras
+                    campañas publicitarias.
+                </p>
+            </div>
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-row items-center justify-between gap-3">
+                    <div class="flex flex-col gap-1">
+                        <h4 hlmH4 class="text-lg md:text-xl">Necesarias</h4>
+                        <p hlmP class="text-xs md:text-sm">Son necesarias para el funcionamiento y la seguridad del servicio.</p>
+                    </div>
+                    <hlm-switch class="scale-[110%] md:scale-[130%]" [checked]="true" [disabled]="true" />
+                </div>
+                <hlm-separator />
+                <div class="flex flex-row items-center justify-between gap-3">
+                    <div class="flex flex-col gap-1">
+                        <h4 hlmH4 class="text-lg md:text-xl">Analítica</h4>
+                        <p hlmP class="text-xs md:text-sm">Nos ayuda a entender cómo se utiliza Todo En Orden para mejorar el servicio.</p>
+                    </div>
+                    <hlm-switch class="scale-[110%] md:scale-[130%]" [checked]="consent().analytics" (checkedChange)="setAnalytics($event)" />
+                </div>
+                <hlm-separator />
+                <div class="flex flex-row items-center justify-between gap-3">
+                    <div class="flex flex-col gap-1">
+                        <h4 hlmH4 class="text-lg md:text-xl">Publicidad</h4>
+                        <p hlmP class="text-xs md:text-sm">Nos permite medir nuestras campañas publicitarias y su efectividad.</p>
+                    </div>
+                    <hlm-switch class="scale-[110%] md:scale-[130%]" [checked]="consent().advertising" (checkedChange)="setAdvertising($event)" />
+                </div>
+            </div>
+            <div class="flex flex-wrap md:flex-row items-center justify-evenly gap-3 md:gap-2 w-full pb-1 pt-2">
+                <button hlmBtn variant="link" (click)="rejectNonEssential()" class="w-2/3 md:w-1/4 h-fit! py-0! order-3 md:order-1">
+                    Rechazar No Esenciales
+                </button>
+                <button hlmBtn (click)="acceptAll()" class="w-2/3 md:w-1/4 py-4.5! md:py-5.5! order-1 md:order-2">Aceptar Todas</button>
+                <button hlmBtn variant="secondary" (click)="save()" class="w-2/3 md:w-1/4 py-4! md:py-5! order-2 md:order-3">Guardar Preferencias</button>
+            </div>
+        </div>
+    </div>
+}
