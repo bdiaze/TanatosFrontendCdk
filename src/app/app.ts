@@ -102,6 +102,7 @@ export class App implements OnInit, OnDestroy {
     onConsentChange(consent: CookieConsent): void {
         if (consent.analytics) {
             this.googleAnalytics.load();
+            this.googleAnalytics.trackCurrentPage();
         }
 
         if (consent.advertising) {

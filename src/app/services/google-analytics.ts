@@ -1,11 +1,15 @@
 import { environment } from '@/environments/environment';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Injectable({
     providedIn: 'root',
 })
 export class GoogleAnalytics {
+    private readonly title = inject(Title);
+
     private isInitialized = false;
+    private isEnabled = false;
 
     private initGtag(): void {
         if (this.isInitialized) return;
@@ -27,6 +31,8 @@ export class GoogleAnalytics {
             return;
         }
 
+        this.isEnabled = true;
+
         this.initGtag();
 
         if (document.getElementById('google-analytics-script')) {
@@ -41,12 +47,18 @@ export class GoogleAnalytics {
     }
 
     event(eventName: string, parameters?: Record<string, unknown>): void {
-        if (!environment.production) {
+        if (!environment.production || !this.isEnabled) {
             return;
         }
 
-        this.initGtag();
-
         window.gtag?.('event', eventName, parameters);
+    }
+
+    trackCurrentPage(): void {
+        this.event('page_view', {
+            page_title: this.title.getTitle(),
+            page_location: window.location.href,
+            page_path: window.location.pathname,
+        });
     }
 }
