@@ -18,9 +18,10 @@ import { EmptyHero } from './components/empty-hero/empty-hero';
 import { GoogleAnalytics } from './services/google-analytics';
 import { RedirectToLogin } from './services/redirect-to-login';
 import { UpdateNotification } from './components/update-notification/update-notification';
+import { CookieConsent, PopupCookieConsent } from './components/popup-cookie-consent/popup-cookie-consent';
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionPorVencer, EmptyHero, UpdateNotification],
+    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionPorVencer, EmptyHero, UpdateNotification, PopupCookieConsent],
     templateUrl: './app.html',
 })
 export class App implements OnInit, OnDestroy {
@@ -61,7 +62,6 @@ export class App implements OnInit, OnDestroy {
 
     ngOnInit() {
         void this.recaptchHelper.load().catch((err) => console.error(err));
-        this.googleAnalytics.load();
 
         const skipRefreshRoutes = ['callback'];
         const currentPath = window.location.pathname.split('/').pop() ?? '';
@@ -97,5 +97,15 @@ export class App implements OnInit, OnDestroy {
             .subscribe((e: NavigationEnd) => {
                 window.scrollTo({ top: 0, behavior: 'instant' });
             });
+    }
+
+    onConsentChange(consent: CookieConsent): void {
+        if (consent.analytics) {
+            this.googleAnalytics.load();
+        }
+
+        if (consent.advertising) {
+            // this.metaPixel.load();
+        }
     }
 }
