@@ -19,10 +19,6 @@ export class AppTitleStrategy extends TitleStrategy {
 
         this.title.setTitle(finalTitle);
 
-        this.googleAnalytics.event('page_view', {
-            page_title: finalTitle,
-            page_location: window.location.href,
-            page_path: snapshot.url,
-        });
+        this.googleAnalytics.trackPage(finalTitle, window.location.href, snapshot.url);
     }
 }

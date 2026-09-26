@@ -19,6 +19,7 @@ import { GoogleAnalytics } from './services/google-analytics';
 import { RedirectToLogin } from './services/redirect-to-login';
 import { UpdateNotification } from './components/update-notification/update-notification';
 import { CookieConsent, PopupCookieConsent } from './components/popup-cookie-consent/popup-cookie-consent';
+import { Title } from '@angular/platform-browser';
 @Component({
     selector: 'app-root',
     imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionPorVencer, EmptyHero, UpdateNotification, PopupCookieConsent],
@@ -30,6 +31,7 @@ export class App implements OnInit, OnDestroy {
     private readonly router = inject(Router);
     private readonly viewportScroller = inject(ViewportScroller);
     private readonly googleAnalytics = inject(GoogleAnalytics);
+    private readonly title = inject(Title);
 
     authStore = inject(AuthStore);
     authRefreshService = inject(AuthRefreshService);
@@ -102,7 +104,7 @@ export class App implements OnInit, OnDestroy {
     onConsentChange(consent: CookieConsent): void {
         if (consent.analytics) {
             this.googleAnalytics.load();
-            this.googleAnalytics.trackCurrentPage();
+            this.googleAnalytics.trackPage(this.title.getTitle(), window.location.href, window.location.pathname);
         }
 
         if (consent.advertising) {

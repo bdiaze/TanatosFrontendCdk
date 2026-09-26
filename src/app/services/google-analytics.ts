@@ -6,8 +6,6 @@ import { Title } from '@angular/platform-browser';
     providedIn: 'root',
 })
 export class GoogleAnalytics {
-    private readonly title = inject(Title);
-
     private isInitialized = false;
     private isEnabled = false;
 
@@ -54,11 +52,24 @@ export class GoogleAnalytics {
         window.gtag?.('event', eventName, parameters);
     }
 
-    trackCurrentPage(): void {
+    private previousPageUrl: string | undefined;
+
+    trackPage(pageTitle: string, pageLocation: string, pagePath: string): void {
+        if (!this.isEnabled) {
+            return;
+        }
+
+        if (this.previousPageUrl === pageLocation) {
+            return;
+        }
+
         this.event('page_view', {
-            page_title: this.title.getTitle(),
-            page_location: window.location.href,
-            page_path: window.location.pathname,
+            page_title: pageTitle,
+            page_location: pageLocation,
+            page_path: pagePath,
+            page_referrer: this.previousPageUrl ?? document.referrer,
         });
+
+        this.previousPageUrl = pageLocation;
     }
 }
