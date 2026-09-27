@@ -60,16 +60,18 @@ export class PopupCookieConsent implements OnInit {
         localStorage.setItem(this.storageKey, JSON.stringify(consent));
 
         this.isOpen.set(false);
-        this.isPersonalizacionOpen.set(false);
+        this.cerrarPersonalizacion();
         this.consentChange.emit(consent);
     }
 
     openPersonalizacion(): void {
         this.isPersonalizacionOpen.set(true);
+        document.body.classList.add('overflow-hidden!');
     }
 
     cerrarPersonalizacion(): void {
         this.isPersonalizacionOpen.set(false);
+        document.body.classList.remove('overflow-hidden!');
     }
 
     acceptAll(): void {
