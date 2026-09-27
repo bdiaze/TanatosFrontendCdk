@@ -64,14 +64,17 @@ export class PopupCookieConsent implements OnInit {
         this.consentChange.emit(consent);
     }
 
+    private bodyOverflow = '';
+
     openPersonalizacion(): void {
         this.isPersonalizacionOpen.set(true);
-        document.body.classList.add('overflow-hidden!');
+        this.bodyOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
     }
 
     cerrarPersonalizacion(): void {
         this.isPersonalizacionOpen.set(false);
-        document.body.classList.remove('overflow-hidden!');
+        document.body.style.overflow = this.bodyOverflow;
     }
 
     acceptAll(): void {
