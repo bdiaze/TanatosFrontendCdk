@@ -23,8 +23,13 @@
             </div>
         </div>
     } @else {
-        <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 md:p-8 faster-fade-in">
-            <div class="max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer bg-blanco py-5 md:py-8 px-6 md:px-10 flex flex-col gap-4">
+        <div class="fixed top-0 left-0 w-lvw h-lvh z-50 flex items-center justify-center bg-black/70 p-4 md:p-8 faster-fade-in">
+            <div
+                class="relative max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer bg-blanco py-5 md:py-8 px-6 md:px-10 flex flex-col gap-4"
+            >
+                <button hlmBtn variant="ghost" (click)="cerrarPersonalizacion()" class="absolute top-2 right-2 p-1! opacity-80">
+                    <ng-icon hlm name="lucideX" />
+                </button>
                 <div class="flex flex-col gap-2">
                     <div class="flex flex-row items-center gap-2">
                         <div class="size-6">
@@ -34,7 +39,11 @@
                     </div>
                     <p hlmP class="text-sm md:text-base">
                         Utilizamos cookies y tecnologías similares para el funcionamiento de Todo En Orden, conocer cómo se utiliza el servicio y medir nuestras
-                        campañas publicitarias.
+                        campañas publicitarias. Revisa nuestra
+                        <a hlmBtn variant="link" class="p-0! text-sm md:text-base h-fit!" routerLink="/politica-de-cookies" (click)="cerrarPersonalizacion()">
+                            Política de Cookies
+                        </a>
+                        para más información
                     </p>
                 </div>
                 <div class="flex flex-col gap-3">

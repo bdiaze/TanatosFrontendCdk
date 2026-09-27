@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, output, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideCookie } from '@ng-icons/lucide';
+import { lucideCookie, lucideX } from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
@@ -9,12 +10,13 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
     selector: 'app-popup-cookie-consent',
-    imports: [HlmButtonImports, NgIcon, HlmIcon, HlmH3, HlmH4, HlmP, HlmSwitch, HlmSeparatorImports],
+    imports: [HlmButtonImports, NgIcon, HlmIcon, HlmH3, HlmH4, HlmP, HlmSwitch, HlmSeparatorImports, RouterLink],
     templateUrl: './popup-cookie-consent.html',
     styleUrl: './popup-cookie-consent.scss',
     providers: [
         provideIcons({
             lucideCookie,
+            lucideX,
         }),
     ],
 })
@@ -57,6 +59,10 @@ export class PopupCookieConsent implements OnInit {
 
     openPersonalizacion(): void {
         this.isPersonalizacionOpen.set(true);
+    }
+
+    cerrarPersonalizacion(): void {
+        this.isPersonalizacionOpen.set(false);
     }
 
     acceptAll(): void {
