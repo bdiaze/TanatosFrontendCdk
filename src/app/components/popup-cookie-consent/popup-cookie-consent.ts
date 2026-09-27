@@ -24,6 +24,7 @@ export class PopupCookieConsent implements OnInit {
     readonly consentChange = output<CookieConsent>();
 
     readonly isOpen = signal(false);
+    readonly isPersonalizacionOpen = signal(false);
 
     readonly consent = signal<CookieConsent>({
         analytics: true,
@@ -52,6 +53,10 @@ export class PopupCookieConsent implements OnInit {
 
         this.isOpen.set(false);
         this.consentChange.emit(consent);
+    }
+
+    openPersonalizacion(): void {
+        this.isPersonalizacionOpen.set(true);
     }
 
     acceptAll(): void {
