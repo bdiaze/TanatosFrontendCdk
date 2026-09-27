@@ -7,7 +7,6 @@ import { Menu } from './components/menu/menu';
 import { AuthStore } from './services/auth-store';
 import { RecaptchaHelper } from './helpers/recaptcha-helper';
 import { MobileHelper } from './helpers/mobile-helper';
-import { ListonBeta } from './components/liston-beta/liston-beta';
 import { PaginaSinMenuEstaticoHelper } from './helpers/pagina-sin-menu-estatico-helper';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ViewportScroller } from '@angular/common';
@@ -22,7 +21,7 @@ import { CookieConsent, PopupCookieConsent } from './components/popup-cookie-con
 import { Title } from '@angular/platform-browser';
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, Header, Footer, Menu, ListonBeta, RecordatorioSuscripcionPorVencer, EmptyHero, UpdateNotification, PopupCookieConsent],
+    imports: [RouterOutlet, Header, Footer, Menu, RecordatorioSuscripcionPorVencer, EmptyHero, UpdateNotification, PopupCookieConsent],
     templateUrl: './app.html',
 })
 export class App implements OnInit, OnDestroy {
@@ -39,16 +38,6 @@ export class App implements OnInit, OnDestroy {
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
     canActivateRunning = inject(CanActivateRunning);
     redirectToLogin = inject(RedirectToLogin);
-
-    mostrarListon = computed(() => {
-        return (
-            !this.authStore.sesionIniciada() &&
-            !this.authStore.callbackRunning() &&
-            !this.authStore.logoutRunning() &&
-            !this.canActivateRunning.running() &&
-            !this.redirectToLogin.cargandoLogin()
-        );
-    });
 
     mostrarRecordatorioSuscripcion = computed(() => {
         return this.authStore.sesionIniciada() && !this.authStore.callbackRunning() && !this.authStore.logoutRunning();
