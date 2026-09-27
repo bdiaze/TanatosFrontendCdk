@@ -22,6 +22,8 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 })
 export class PopupCookieConsent implements OnInit {
     private readonly storageKey = 'todoenorden_cookie_consent';
+    private readonly consentVersion = 1;
+    private readonly monthsExpiration = 12;
 
     readonly consentChange = output<CookieConsent>();
 
@@ -31,7 +33,7 @@ export class PopupCookieConsent implements OnInit {
     readonly consent = signal<CookieConsent>({
         analytics: true,
         advertising: true,
-    });
+    } as CookieConsent);
 
     ngOnInit(): void {
         const storedConsent = this.loadConsent();
@@ -49,11 +51,16 @@ export class PopupCookieConsent implements OnInit {
     }
 
     save(): void {
-        const consent = this.consent();
+        const consent: CookieConsent = {
+            ...this.consent(),
+            consentedAt: new Date().toISOString(),
+            version: this.consentVersion,
+        };
 
         localStorage.setItem(this.storageKey, JSON.stringify(consent));
 
         this.isOpen.set(false);
+        this.isPersonalizacionOpen.set(false);
         this.consentChange.emit(consent);
     }
 
@@ -69,7 +76,7 @@ export class PopupCookieConsent implements OnInit {
         this.consent.set({
             analytics: true,
             advertising: true,
-        });
+        } as CookieConsent);
 
         this.save();
     }
@@ -78,7 +85,7 @@ export class PopupCookieConsent implements OnInit {
         this.consent.set({
             analytics: false,
             advertising: false,
-        });
+        } as CookieConsent);
 
         this.save();
     }
@@ -107,13 +114,38 @@ export class PopupCookieConsent implements OnInit {
         try {
             const parsed = JSON.parse(stored);
 
-            if (typeof parsed !== 'object' || parsed === null || typeof parsed.analytics !== 'boolean' || typeof parsed.advertising !== 'boolean') {
+            if (
+                typeof parsed !== 'object' ||
+                parsed === null ||
+                typeof parsed.analytics !== 'boolean' ||
+                typeof parsed.advertising !== 'boolean' ||
+                typeof parsed.consentedAt !== 'string' ||
+                typeof parsed.version !== 'number'
+            ) {
+                return null;
+            }
+
+            if (parsed.version !== this.consentVersion) {
+                return null;
+            }
+
+            const consentedAt = new Date(parsed.consentedAt);
+            if (Number.isNaN(consentedAt.getTime())) {
+                return null;
+            }
+
+            const expiration = new Date(consentedAt);
+            expiration.setMonth(expiration.getMonth() + this.monthsExpiration);
+
+            if (new Date() >= expiration) {
                 return null;
             }
 
             return {
                 analytics: parsed.analytics,
                 advertising: parsed.advertising,
+                consentedAt: parsed.consentedAt,
+                version: parsed.version,
             };
         } catch {
             return null;
@@ -124,4 +156,6 @@ export class PopupCookieConsent implements OnInit {
 export interface CookieConsent {
     analytics: boolean;
     advertising: boolean;
+    consentedAt: string;
+    version: number;
 }
