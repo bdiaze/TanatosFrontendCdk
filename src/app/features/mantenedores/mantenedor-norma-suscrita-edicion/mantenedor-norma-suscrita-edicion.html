@@ -377,7 +377,7 @@
                                             >
                                                 <hlm-date-picker-trigger
                                                     buttonId="proximoVencimientoFecha"
-                                                    class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal!"
+                                                    class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
                                                 >
                                                     Seleccionar fecha...
                                                 </hlm-date-picker-trigger>
@@ -398,15 +398,18 @@
                                                 >Debes seleccionar la hora</hlm-field-error
                                             >
                                         </div>
-                                        <div class="pb-2 px-2 w-full">
+                                        <div class="pb-2 px-2 w-full relative">
                                             <input
                                                 hlmInput
                                                 id="proximoVencimientoHora"
                                                 type="time"
                                                 step="60"
                                                 [formControl]="form.controls['horaProximoVencimiento']"
-                                                class="text-sm bg-background [&::-webkit-calendar-picker-indicator]:opacity-80"
+                                                class="text-sm bg-background [&::-webkit-calendar-picker-indicator]:opacity-0 pr-1.25"
                                             />
+                                            <div class="absolute top-1 bottom-3 right-4.25 bg-blanco flex items-center pointer-events-none">
+                                                <ng-icon hlm name="lucideChevronDown" size="sm" class="opacity-80 pointer-events-none" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
