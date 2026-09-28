@@ -52,6 +52,8 @@ export class App implements OnInit, OnDestroy {
     });
 
     ngOnInit() {
+        this.redirectToLogin.limpiarPkceExpirados();
+
         void this.recaptchHelper.load().catch((err) => console.error(err));
 
         const skipRefreshRoutes = ['callback'];

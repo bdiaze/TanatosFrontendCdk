@@ -51,13 +51,10 @@ export class RedirectToLogin {
         const codeVerifier = this.generateRandomString(64);
         const codeChallenge = await this.generateCodeChallenge(codeVerifier);
 
-        const statePayload = {
-            nonce: this.generateRandomString(32),
-            redirect: redirectAfterLogin,
-        };
-        const state = btoa(JSON.stringify(statePayload));
-        sessionStorage.setItem('pkce_state', state);
-        sessionStorage.setItem('pkce_code_verifier', codeVerifier);
+        const nonce = this.generateRandomString(32);
+        const state = btoa(JSON.stringify({ nonce, redirect: redirectAfterLogin }));
+
+        localStorage.setItem(`pkce:${nonce}`, JSON.stringify({ verifier: codeVerifier, ts: Date.now() }));
 
         const publicScopes = [
             'api/perfil.read.self',
@@ -92,5 +89,17 @@ export class RedirectToLogin {
                 lang: 'es',
             })
         );
+    }
+
+    limpiarPkceExpirados() {
+        for (const k of Object.keys(localStorage)) {
+            if (!k.startsWith('pkce:')) continue;
+            try {
+                const { ts } = JSON.parse(localStorage.getItem(k)!);
+                if (Date.now() - ts > 10 * 60 * 1000 /* 10 minutos*/) localStorage.removeItem(k);
+            } catch {
+                localStorage.removeItem(k);
+            }
+        }
     }
 }

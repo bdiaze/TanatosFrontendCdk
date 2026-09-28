@@ -1,5 +1,5 @@
 import { environment } from '@environment';
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthStore } from '@services/auth-store';
 import { EntAuthObtenerAccessToken } from '@/app/entities/others/ent-auth-obtener-access-token';
@@ -12,7 +12,6 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { NegocioDao } from '@/app/daos/negocio-dao';
-import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 
 @Component({
     selector: 'app-callback',
@@ -43,15 +42,22 @@ export class Callback implements OnInit {
             const code = params['code'];
             const returnedState = params['state'];
 
-            const storedState = sessionStorage.getItem('pkce_state');
-            const codeVerifier = sessionStorage.getItem('pkce_code_verifier');
+            let nonce: string | undefined;
+            let statePayload: { nonce?: string; redirect?: string } = {};
+            try {
+                statePayload = JSON.parse(atob(returnedState));
+                nonce = statePayload.nonce;
+            } catch {
+                /* state inválido - No se emite error acá dado que se emitirá posteriormente */
+            }
 
-            // Se valida que venga code, que state sea válido, y que se tenga code verifier almacenado...
-            if (!code || !returnedState || !storedState || !codeVerifier) {
+            const key = nonce ? `pkce:${nonce}` : null;
+            const raw = key ? localStorage.getItem(key) : null;
+
+            if (!code || !raw) {
                 this.authStore.callbackRunning.set(false);
                 if (!this.authStore.sesionIniciada()) {
-                    const mensajeError = this.getMensajeErrorCallback(code, returnedState, storedState, codeVerifier);
-                    console.error(mensajeError);
+                    console.error('Callback sin code o con state desconocido/expirado');
                     this.error.set('¡Ups! parece que algo salió mal mientras procesabamos tu inicio de sesión, favor intenta nuevamente.');
                 } else {
                     this.router.navigateByUrl('/inicio');
@@ -59,15 +65,11 @@ export class Callback implements OnInit {
                 return;
             }
 
-            if (returnedState !== storedState) {
-                console.error('El state incluido en la URL es inválido');
-                this.error.set('¡Ups! parece que algo salió mal mientras procesabamos tu inicio de sesión, favor intenta nuevamente.');
-                this.authStore.callbackRunning.set(false);
-                return;
-            }
+            localStorage.removeItem(key!);
 
-            const statePayload = JSON.parse(atob(returnedState));
-            let redirectUrl: string | undefined = statePayload.redirect;
+            const { verifier: codeVerifier } = JSON.parse(raw);
+
+            let redirectUrl = statePayload.redirect;
             if (redirectUrl && (!redirectUrl.startsWith('/') || redirectUrl.startsWith('//'))) {
                 redirectUrl = undefined;
             }
@@ -84,9 +86,6 @@ export class Callback implements OnInit {
                 .subscribe({
                     next: (tokens) => {
                         this.authStore.setAccessToken(tokens.accessToken);
-
-                        sessionStorage.removeItem('pkce_state');
-                        sessionStorage.removeItem('pkce_code_verifier');
 
                         if (redirectUrl) {
                             this.router.navigateByUrl(redirectUrl);
@@ -111,13 +110,5 @@ export class Callback implements OnInit {
                     this.authStore.callbackRunning.set(false);
                 });
         });
-    }
-
-    private getMensajeErrorCallback(code: string | null, returnedState: string | null, storedState: string | null, codeVerifier: string | null): string {
-        if (!code) return 'No se incluyó code en URL de callback';
-        if (!returnedState) return 'No se incluyó state en URL de callback';
-        if (!storedState) return 'No se encontró pkce_state en session storage';
-        if (!codeVerifier) return 'No se encontró pkce_code_verifier en session storage';
-        return '';
     }
 }
