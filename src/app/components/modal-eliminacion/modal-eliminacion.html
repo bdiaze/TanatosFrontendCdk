@@ -30,12 +30,7 @@
             <button hlmBtn (click)="cerrar.emit()" class="btnOutlineAzul">
                 {{ textoBotonCancelar }}
             </button>
-            <button
-                hlmBtn
-                variant="destructive"
-                (click)="confirmarEliminacion()"
-                [disabled]="textoVerificacion && textoVerificacion !== textoVerificacionIngresado()"
-            >
+            <button hlmBtn variant="destructive" (click)="confirmarEliminacion()" [disabled]="textoVerificacion && !textoVerificacionCorrecto()">
                 {{ textoBotonEliminar }}
             </button>
         </div>

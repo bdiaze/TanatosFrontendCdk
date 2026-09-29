@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, HostListener, Input, Output, signal, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, EventEmitter, HostListener, Input, Output, signal, ViewChild } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
@@ -55,4 +55,26 @@ export class ModalEliminacion {
 
         this.pointerStartedInOverlay = false;
     }
+
+    textoVerificacionCorrecto = computed(() => {
+        const textoConfigurado = this.textoVerificacion
+            ?.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // tildes
+            .replace(/,/g, '') // comas
+            .replace(/./g, '') // puntos
+            .replace(/\s+/g, ' ') // espacios múltiples → uno
+            .trim()
+            .toLowerCase();
+
+        const textoIngresado = this.textoVerificacionIngresado()
+            ?.normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // tildes
+            .replace(/,/g, '') // comas
+            .replace(/./g, '') // puntos
+            .replace(/\s+/g, ' ') // espacios múltiples → uno
+            .trim()
+            .toLowerCase();
+
+        return textoConfigurado === textoIngresado;
+    });
 }
