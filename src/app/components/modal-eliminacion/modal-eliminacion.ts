@@ -61,7 +61,7 @@ export class ModalEliminacion {
             ?.normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '') // tildes
             .replace(/,/g, '') // comas
-            .replace(/./g, '') // puntos
+            .replace(/\./g, '') // puntos
             .replace(/\s+/g, ' ') // espacios múltiples → uno
             .trim()
             .toLowerCase();
@@ -70,7 +70,7 @@ export class ModalEliminacion {
             ?.normalize('NFD')
             .replace(/[\u0300-\u036f]/g, '') // tildes
             .replace(/,/g, '') // comas
-            .replace(/./g, '') // puntos
+            .replace(/\./g, '') // puntos
             .replace(/\s+/g, ' ') // espacios múltiples → uno
             .trim()
             .toLowerCase();
