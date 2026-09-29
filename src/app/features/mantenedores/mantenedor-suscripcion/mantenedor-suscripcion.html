@@ -339,8 +339,11 @@
 @if (showModalDesuscribirse()) {
     <app-modal-eliminacion
         titulo="Cancela tu suscripción:"
-        [descripcion]="`¿Seguro que deseas cancelar tu suscripción <b>&quot;${resumenSuscripcion()?.nombrePlanPagoEnCurso}&quot;</b>?`"
-        textoBotonEliminar="Cancelar suscripción"
+        [descripcion]="
+            `¿Seguro que deseas cancelar tu suscripción al <span class='text-lg font-semibold font-serif'>${resumenSuscripcion()?.nombrePlanPagoEnCurso}</span>?<p class='text-sm mt-2 max-w-150'>Una vez cancelado tu plan, <b>no se realizarán nuevos cobros</b> y podrás seguir utilizando las funcionalidades de tu plan hasta el término del período que ya hayas pagado.</p>`
+        "
+        textoVerificacion="Sí, deseo cancelar"
+        textoBotonEliminar="Cancelar Plan"
         textoBotonCancelar="Cerrar"
         (cerrar)="closeModalDesuscribirse()"
         (eliminar)="desuscribirse()"
