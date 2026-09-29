@@ -1,3 +1,35 @@
+@theme {
+    --animate-attention: attention 1.5s ease-in-out infinite;
+
+    @keyframes attention {
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 100%;
+        }
+
+        40% {
+            transform: scale(1);
+            opacity: 100%;
+        }
+
+        55% {
+            transform: scale(1.05);
+            opacity: 80%;
+        }
+
+        70% {
+            transform: scale(1);
+            opacity: 100%;
+        }
+
+        85% {
+            transform: scale(1.05);
+            opacity: 80%;
+        }
+    }
+}
+
 @layer components {
     .fade-in {
         @apply opacity-0 transition-opacity duration-1000 ease-out;

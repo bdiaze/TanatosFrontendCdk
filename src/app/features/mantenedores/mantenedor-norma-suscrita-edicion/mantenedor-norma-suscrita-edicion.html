@@ -198,6 +198,7 @@
                                                 variant="default"
                                                 class="size-9! bg-azul hover:bg-(--azul)/80"
                                                 (click)="agregarFiscalizador()"
+                                                [class.animate-attention]="(formFiscalizador.controls.idFiscalizador.value ?? 0) > 0"
                                                 [disabled]="(formFiscalizador.controls.idFiscalizador.value ?? 0) <= 0"
                                             >
                                                 <ng-icon hlm size="sm" name="lucidePlus" />
@@ -518,6 +519,10 @@
                                                 size="icon"
                                                 variant="default"
                                                 class="size-9! bg-azul hover:bg-(--azul)/80"
+                                                [class.animate-attention]="
+                                                    (formNotificacion.controls.idUnidadTiempo.value ?? 0) > 0 &&
+                                                    (formNotificacion.controls.cantTiempo.value ?? 0) > 0
+                                                "
                                                 (click)="agregarNotificacionPrevia()"
                                                 [disabled]="
                                                     (formNotificacion.controls.idUnidadTiempo.value ?? 0) <= 0 ||
