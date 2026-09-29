@@ -1,0 +1,214 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 pt-4 pb-6">
+    <div class="flex flex-row items-start justify-between">
+        <nav hlmBreadcrumb class="mb-4 pl-2">
+            <ol hlmBreadcrumbList>
+                <li hlmBreadcrumbItem>
+                    <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                </li>
+                <li hlmBreadcrumbSeparator></li>
+                <li hlmBreadcrumbItem>
+                    <a hlmBreadcrumbLink link="/mi-plan">Mi Plan</a>
+                </li>
+                <li hlmBreadcrumbSeparator></li>
+                <li hlmBreadcrumbItem>
+                    <span hlmBreadcrumbPage>Contratación de Plan</span>
+                </li>
+            </ol>
+        </nav>
+        <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+    </div>
+    <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+        <ng-icon hlm name="lucideGem" />
+        <h3 hlmH3>Contratación de Plan</h3>
+    </div>
+
+    <div class="w-full flex flex-col items-center gap-5 fade-in">
+        @if (cargando() && !ayudaRunning()) {
+            <hlm-skeleton class="h-35.5 w-full rounded-none" />
+        } @else {
+            <div id="plan_seleccionado" class="border-azul border w-full flex flex-col items-stretch justify-center fade-in">
+                <div class="bg-azul text-blanco flex flex-row items-center justify-between py-4 px-8 md:px-12">
+                    <div class="flex flex-col items-start justify-center">
+                        <h4 hlmH4>{{ planSeleccionadoMostrar()?.nombre }}</h4>
+                    </div>
+                    <div id="precio_plan">
+                        <h4 hlmH4>${{ planSeleccionadoMostrar()?.precio | number: '1.0-0' }}</h4>
+                    </div>
+                </div>
+                <div class="flex flex-row items-stretch justify-around gap-4 py-4 px-4 md:px-8">
+                    <div id="periodicidad" class="flex flex-col items-center justify-start">
+                        <p hlmP class="text-xs md:text-sm">Periodicidad:</p>
+                        <p hlmP class="font-semibold text-center">{{ periodicidadPlan(planSeleccionadoMostrar()?.duracionMeses) }}</p>
+                    </div>
+                    <div id="inicio_plan" class="flex flex-col items-center justify-start">
+                        <p hlmP class="text-xs md:text-sm text-center">Inicio del plan:</p>
+                        <div class="flex-col items-center">
+                            <p hlmP class="font-semibold text-center">{{ fechaInicioPlan() | date: 'dd MMM. yyyy' }}</p>
+                        </div>
+                    </div>
+                    <div id="primer_cobro" class="flex flex-col items-center justify-start">
+                        <p hlmP class="text-xs md:text-sm text-center">Primer cobro:</p>
+                        <p hlmP class="font-semibold text-center">{{ fechaPrimerPago() | date: 'dd MMM. yyyy' }}</p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="w-full flex flex-col px-4 gap-3 mb-1">
+            <div class="flex flex-row items-center justify-center gap-2">
+                <h4 id="caracteristicas_plan" hlmH4>Características:</h4>
+            </div>
+            <div class="flex flex-col gap-3">
+                <div class="flex flex-row items-center gap-3">
+                    <div class="size-6">
+                        <ng-icon hlm name="lucideCircleCheck" class="text-azul" />
+                    </div>
+                    <p hlmP>Cantidad ilimitada de negocios.</p>
+                </div>
+                <div class="flex flex-row items-center gap-3">
+                    <div class="size-6">
+                        <ng-icon hlm name="lucideCircleCheck" class="text-azul" />
+                    </div>
+                    <p hlmP>Creación de obligaciones personalizadas ilimitadas.</p>
+                </div>
+                <div id="acceso_plantillas" class="flex flex-row items-center gap-3">
+                    <div class="size-6">
+                        <ng-icon hlm name="lucideCircleCheck" class="text-azul" />
+                    </div>
+                    <p hlmP>Acceso completo a plantillas de obligaciones.</p>
+                </div>
+                <div class="flex flex-row items-center gap-3">
+                    <div class="size-6">
+                        <ng-icon hlm name="lucideCircleCheck" class="text-azul" />
+                    </div>
+                    <p hlmP>Delegación de obligaciones a integrantes de tu negocio.</p>
+                </div>
+                <div id="notificaciones_whatsapp" class="flex flex-row items-center gap-3">
+                    <div class="size-6">
+                        <ng-icon hlm name="lucideCircleCheck" class="text-azul" />
+                    </div>
+                    <p hlmP>Recordatorios de vencimientos por WhatsApp.</p>
+                </div>
+                <div class="flex flex-row items-center gap-3">
+                    <div class="size-6">
+                        <ng-icon hlm name="lucideCircleCheck" class="text-azul" />
+                    </div>
+                    <p hlmP>Subida de documentos de respaldo al completar una obligación.</p>
+                </div>
+                <div class="flex flex-row items-center gap-3">
+                    <div class="size-6">
+                        <ng-icon hlm name="lucideCircleCheck" class="text-azul" />
+                    </div>
+                    <p hlmP>Soporte prioritario.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col border border-naranjo">
+            <div id="condiciones_importantes" class="flex flex-row items-center gap-2 p-3 text-blanco bg-naranjo">
+                <ng-icon hlm name="lucideInfo" size="20px" />
+                <p hlmP class="text-sm">Condiciones importantes:</p>
+            </div>
+            <div class="flex flex-col gap-2 p-4">
+                <div class="flex flex-row items-start gap-2">
+                    <div class="size-6 mt-0.5">
+                        <ng-icon hlm name="lucideDot" class="text-naranjo" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <h4 hlmH4 class="text-base font-normal">Medio de pago</h4>
+                        <p hlmP class="text-sm">
+                            El pago es procesado por Flow, plataforma externa especializada en procesamiento de pagos. Al registrar tu medio de pago, Flow
+                            <span class="font-semibold">podría realizar un pequeño cobro o cargo temporal para validar la tarjeta</span>. Cualquier validación
+                            de este tipo es gestionada por Flow.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-row items-start gap-2">
+                    <div class="size-6 mt-0.5">
+                        <ng-icon hlm name="lucideDot" class="text-naranjo" />
+                    </div>
+                    <div id="pago_recurrente" class="flex flex-col gap-1">
+                        <h4 hlmH4 class="text-base font-normal">Pago recurrente</h4>
+                        <p hlmP class="text-sm">
+                            Tu suscripción <span class="font-semibold">se renueva automáticamente</span> cada
+                            {{ cadaXMesPlan(planSeleccionadoMostrar()?.duracionMeses) }}. En cada renovación se realizará un nuevo cobro de ${{
+                                planSeleccionadoMostrar()?.precio | number: '1.0-0'
+                            }}, utilizando el medio de pago registrado en Flow.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-row items-start gap-2">
+                    <div class="size-6 mt-0.5">
+                        <ng-icon hlm name="lucideDot" class="text-naranjo" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <h4 hlmH4 class="text-base font-normal">Cancelación</h4>
+                        <p hlmP class="text-sm">
+                            <span class="font-semibold">Puedes cancelar tu suscripción en cualquier momento</span> desde <span class="italic">Mi Plan</span>. Al
+                            cancelarla, no se realizarán nuevos cobros y podrás seguir utilizando las funcionalidades de tu plan
+                            <span class="font-semibold">hasta el término del período que ya hayas pagado</span>. Una vez finalizado dicho período, tu
+                            suscripción terminará y dejarás de tener acceso a las funcionalidades asociadas al plan.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex flex-row items-start gap-2">
+                    <div class="size-6 mt-0.5">
+                        <ng-icon hlm name="lucideDot" class="text-naranjo" />
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <h4 hlmH4 class="text-base font-normal">Derecho a retracto</h4>
+                        <p hlmP class="text-sm">
+                            De acuerdo con las condiciones establecidas para este servicio, Todo en Orden ha
+                            <span class="font-semibold">dispuesto expresamente la exclusión del derecho a retracto</span> para la contratación de sus planes de
+                            suscripción.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col md:flex-row items-center justify-between gap-5 md:gap-2 w-full">
+            <div class="flex flex-col gap-2">
+                <div id="aviso_legal" class="flex flex-row items-center gap-2">
+                    <div class="w-11 h-5.75 flex items-center justify-center ml-2 md:ml-0">
+                        <hlm-switch class="scale-125" [checked]="avisoLegalAceptado()" (checkedChange)="avisoLegalAceptado.set($event)" />
+                    </div>
+                    <p hlmP class="text-sm md:text-base">
+                        He leído y acepto el
+                        <a hlmBtn variant="link" class="p-0! text-sm md:text-base h-fit!" routerLink="/aviso-legal" target="_blank">Aviso Legal</a>
+                    </p>
+                </div>
+                <div id="politica_privacidad" class="flex flex-row items-center gap-3">
+                    <div class="w-11 h-5.75 flex items-center justify-center ml-2 md:ml-0">
+                        <hlm-switch class="scale-125" [checked]="avisoPrivacidadAceptado()" (checkedChange)="avisoPrivacidadAceptado.set($event)" />
+                    </div>
+                    <p hlmP class="text-sm md:text-base">
+                        He leído y acepto la
+                        <a hlmBtn variant="link" class="p-0! text-sm md:text-base h-fit!" routerLink="/privacidad" target="_blank">Política de Privacidad</a>
+                    </p>
+                </div>
+            </div>
+            <button
+                hlmBtn
+                id="boton_contratar"
+                class="text-lg px-6! py-8! mr-1"
+                [ngClass]="{
+                    'pr-7!': procesandoPago(),
+                }"
+                [disabled]="!avisoLegalAceptado() || !avisoPrivacidadAceptado() || procesandoPago()"
+                (click)="generarUrlPago()"
+            >
+                @if (procesandoPago()) {
+                    <hlm-spinner class="text-base md:text-lg" />
+                }
+                ¡Contratar!
+            </button>
+        </div>
+        @if (error()) {
+            <div hlmAlert variant="destructive">
+                <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                <p hlmAlertDescription>{{ error() }}</p>
+            </div>
+        }
+    </div>
+</section>

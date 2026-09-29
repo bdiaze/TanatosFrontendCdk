@@ -10,7 +10,7 @@ import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideChevronRight,
@@ -62,6 +62,7 @@ import { interval, map, Subscription } from 'rxjs';
         HlmButtonImports,
         ModalEliminacion,
         HlmTableImports,
+        RouterLink,
     ],
     templateUrl: './mantenedor-suscripcion.html',
     styleUrl: './mantenedor-suscripcion.scss',
@@ -259,37 +260,6 @@ export class MantenedorSuscripcion implements OnInit {
             });
     }
 
-    procesandoPago = signal(false);
-    idPlanProcesandoPago = signal<number | null>(null);
-
-    generarUrlPago(idPlan: number) {
-        if (this.procesandoPago()) return;
-
-        this.procesandoPago.set(true);
-        this.idPlanProcesandoPago.set(idPlan);
-        this.suscripcionDao
-            .crear({
-                idPlan: idPlan,
-            } as EntSuscripcionCrear)
-            .subscribe({
-                next: (res) => {
-                    if (res.urlSuscripcion) {
-                        window.location.href = res.urlSuscripcion;
-                    } else {
-                        this.obtenerResumenSuscripcion();
-                        this.procesandoPago.set(false);
-                        this.idPlanProcesandoPago.set(null);
-                    }
-                },
-                error: (err) => {
-                    console.error('Error al generar URL para pago de la suscripción', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al generar URL para pago de la suscripción');
-                    this.procesandoPago.set(false);
-                    this.idPlanProcesandoPago.set(null);
-                },
-            });
-    }
-
     showModalDesuscribirse = signal(false);
 
     openModalDesuscribirse() {
@@ -336,7 +306,7 @@ export class MantenedorSuscripcion implements OnInit {
             steps.push({
                 popover: {
                     title: 'Acá está tu plan',
-                    description: 'Aquí encontrarás la información de tu plan actual, además de inscribirte o cancelar tus suscripciones.',
+                    description: 'Aquí encontrarás la información de tu plan actual, además de poder contratar o cancelar nuevas suscripciones.',
                 },
             });
         }
@@ -347,7 +317,7 @@ export class MantenedorSuscripcion implements OnInit {
                     element: '#plan_actual',
                     popover: {
                         title: 'Resumen de tu plan',
-                        description: 'Comenzando, tenemos el resumen de tu plan actual.',
+                        description: 'Comenzando, tenemos el resumen de tu plan contratado actual.',
                     },
                 },
                 {
@@ -410,12 +380,13 @@ export class MantenedorSuscripcion implements OnInit {
                     element: '#contrata_plan',
                     popover: {
                         title: 'Contrata el plan para ti',
-                        description:
-                            '¿Y cómo consigo todos estos beneficios? ¡Simple! solo selecciona el plan que desees y te redireccionaremos a nuestra plataforma de pago.',
+                        description: '¿Y cómo consigo todos estos beneficios? ¡Simple! solo selecciona el plan que desees.',
                     },
                 },
             ] as DriveStep[]),
         );
+
+        let cambiandoASiguiente = false;
 
         let config: {
             pasos: DriveStep[];
@@ -427,8 +398,14 @@ export class MantenedorSuscripcion implements OnInit {
             pasos: steps,
             onFinish: () => {
                 this.ayudaRunning.set(false);
-                if (this.ayuda() === '1') {
+                if (!cambiandoASiguiente && this.ayuda() === '1') {
                     this.router.navigate(['/ayuda']);
+                }
+            },
+            onNextFromLast: () => {
+                if (this.ayuda() === '1') {
+                    cambiandoASiguiente = true;
+                    this.router.navigate(['/contratacion-plan', 0], { queryParams: { ayuda: 1 } });
                 }
             },
         };
@@ -436,7 +413,8 @@ export class MantenedorSuscripcion implements OnInit {
         if (this.ayuda() === '1') {
             config = {
                 ...config,
-                showProgress: true,
+                showProgress: false,
+                doneBtnText: 'Siguiente',
             };
         }
 

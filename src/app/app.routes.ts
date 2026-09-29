@@ -46,6 +46,7 @@ import { MantenedorTipoProcesoAutomatico } from './features/mantenedores/mantene
 import { MantenedorProcesoAutomatico } from './features/mantenedores/mantenedor-proceso-automatico/mantenedor-proceso-automatico';
 import { MantenedorModelosCanvas } from './features/mantenedores/mantenedor-modelos-canvas/mantenedor-modelos-canvas';
 import { MantenedorMision } from './features/mantenedores/mantenedor-mision/mantenedor-mision';
+import { ConfirmarSuscripcion } from './features/tableros/confirmar-suscripcion/confirmar-suscripcion';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -198,6 +199,12 @@ export const routes: Routes = [
         title: 'Mi Plan',
         path: 'mi-plan',
         component: MantenedorSuscripcion,
+        canActivate: [chainActivateGuards(sesionIniciada)],
+    },
+    {
+        title: 'Contratación de Plan',
+        path: 'contratacion-plan/:idPlan',
+        component: ConfirmarSuscripcion,
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
