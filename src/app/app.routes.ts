@@ -110,7 +110,9 @@ export const routes: Routes = [
     },
     {
         path: 'flow-callback',
-        redirectTo: 'mi-plan',
+        redirectTo: () => {
+            return '/mi-plan?fc=1';
+        },
         pathMatch: 'full',
     },
     {

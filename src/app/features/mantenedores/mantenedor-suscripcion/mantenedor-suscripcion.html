@@ -17,6 +17,26 @@
         <ng-icon hlm name="lucideGem" />
         <h3 hlmH3>Mi Plan</h3>
     </div>
+    @if (contratadoPlanFuturo()) {
+        <div class="border-calipso border text-negro w-full flex flex-col items-center justify-center mb-6 fade-in">
+            <div class="border-calipso border bg-calipso text-blanco w-full flex flex-row items-center justify-start gap-3 p-4 px-5">
+                <ng-icon hlm name="lucidePartyPopper" />
+                <h4 hlmH4>¡Plan contratado exitosamente!</h4>
+            </div>
+            <div class="py-5 px-8 flex flex-col gap-2">
+                <p hlmP class="text-center text-balance">
+                    ¡Felicidades! Tu suscripción al {{ resumenSuscripcion()?.nombrePlanPagoEnCurso }} fue
+                    <span class="font-semibold">procesada exitosamente</span>.
+                </p>
+                <p hlmP class="text-center text-balance">
+                    Te recordamos que tu próximo cobro será el
+                    <span class="font-semibold">{{ fechaProximoCobroFormateada()?.toLocaleLowerCase() }}</span> por un monto de
+                    <span class="font-semibold">${{ resumenSuscripcion()?.precioPlanPagoEnCurso | number: '1.0-0' }}</span
+                    >.
+                </p>
+            </div>
+        </div>
+    }
     @if (procesandoPrimerPago()) {
         <div class="border-naranjo border text-negro w-full flex flex-col items-center justify-center mb-6 fade-in">
             <div class="border-naranjo border bg-naranjo text-blanco w-full flex flex-row items-center justify-start gap-3 p-4 px-5">

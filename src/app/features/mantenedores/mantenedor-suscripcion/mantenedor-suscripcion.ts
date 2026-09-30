@@ -1,7 +1,6 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { PlanDao } from '@/app/daos/plan-dao';
 import { SuscripcionDao } from '@/app/daos/suscripcion-dao';
-import { EntSuscripcionCrear } from '@/app/entities/others/ent-suscripcion-crear';
 import { SalPlan } from '@/app/entities/others/sal-plan';
 import { SalSuscripcionResumen } from '@/app/entities/others/sal-suscripcion-resumen';
 import { getErrorMessage } from '@/app/helpers/error-message';
@@ -20,6 +19,7 @@ import {
     lucideDot,
     lucideGem,
     lucideHourglass,
+    lucidePartyPopper,
     lucideRefreshCw,
     lucideRefreshCwOff,
     lucideUserRound,
@@ -79,6 +79,7 @@ import { interval, map, Subscription } from 'rxjs';
             lucideCircleX,
             lucideUsersRound,
             lucideUserRound,
+            lucidePartyPopper,
         }),
         DatePipe,
     ],
@@ -95,6 +96,7 @@ export class MantenedorSuscripcion implements OnInit {
 
     private readonly route = inject(ActivatedRoute);
     private readonly ayuda = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('ayuda'))));
+    private readonly flowCallback = toSignal(this.route.queryParamMap.pipe(map((p) => p.get('fc'))));
 
     planesVigentes = signal([] as SalPlan[]);
 
@@ -182,6 +184,12 @@ export class MantenedorSuscripcion implements OnInit {
     procesandoPrimerPago = computed(() => {
         const resumenSuscripcion = this.resumenSuscripcion();
         return resumenSuscripcion && !resumenSuscripcion.nombrePlanEnCurso && resumenSuscripcion.nombrePlanPagoEnCurso;
+    });
+
+    contratadoPlanFuturo = computed(() => {
+        const resumenSuscripcion = this.resumenSuscripcion();
+        const devueltaDeFlow = this.flowCallback() === '1';
+        return devueltaDeFlow && resumenSuscripcion && resumenSuscripcion.nombrePlanEnCurso && resumenSuscripcion.nombrePlanPagoEnCurso;
     });
 
     private pollingSub?: Subscription;
