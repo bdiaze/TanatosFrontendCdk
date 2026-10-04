@@ -1,0 +1,118 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    @if (authStore.sesionIniciada()) {
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/mi-calendario">Mi Calendario</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>
+                            @if (cargandoObligacion() && !ayudaRunning()) {
+                                <hlm-skeleton class="h-5 w-30 rounded-xl" />
+                            } @else {
+                                {{ obligacion()?.nombre ?? obligacion()?.templateNorma?.nombre }}
+                            }
+                        </span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
+    } @else {
+        <div class="flex flex-row items-start justify-end">
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
+    }
+    <div class="fade-in">
+        <div id="cabecera_obligacion">
+            <div class="flex justify-center-safe items-center gap-3 pt-1 pb-2">
+                <div class="size-7 flex items-center justify-center">
+                    <ng-icon hlm name="lucideCalendarSearch" />
+                </div>
+                <h3 hlmH3 class="text-center">{{ obligacion()?.nombre ?? obligacion()?.templateNorma?.nombre }}</h3>
+            </div>
+            <div class="flex flex-col items-center justify-center pb-5">
+                @if (obligacion()?.nombreCategoriaNorma || obligacion()?.templateNorma?.nombreCategoriaNorma) {
+                    <p HlmP>
+                        {{ obligacion()?.nombreCategoriaNorma ?? obligacion()?.templateNorma?.nombreCategoriaNorma }}
+                    </p>
+                }
+                @if (fiscalizadores().length > 0) {
+                    <div class="flex flex-row items-center justify-center gap-3 pt-2">
+                        <div class="flex flex-wrap justify-center items-center gap-1 pt-1">
+                            @for (fiscalizador of fiscalizadores(); track fiscalizador.id) {
+                                <span hlmBadge class="badgeAzul">
+                                    {{ fiscalizador.nombreTipoFiscalizador }}
+                                </span>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="flex flex-col gap-6">
+            <div id="periodicidad_multa" class="flex flex-row items-stretch gap-4 w-full">
+                <div hlmItem variant="outline" size="sm" class="w-fit!">
+                    <div hlmItemContent>
+                        <div hlmItemTitle>Periodicidad</div>
+                        <div hlmItemDescription class="whitespace-nowrap">
+                            {{ obligacion()?.nombreTipoPeriodicidad ?? obligacion()?.templateNorma?.nombreTipoPeriodicidad }}
+                        </div>
+                    </div>
+                </div>
+                <div hlmItem variant="outline" size="sm" class="w-full!">
+                    <div hlmItemContent>
+                        <div hlmItemTitle>Multa</div>
+                        <div hlmItemDescription>
+                            {{ obligacion()?.multa ?? obligacion()?.templateNorma?.multa ?? 'Sin multa registrada' }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @if (obligacion()?.descripcion || obligacion()?.templateNorma?.descripcion) {
+                <div id="descripcion" class="flex flex-col items-center justify-start">
+                    <div class="relative w-full">
+                        <div #contenedorDescripcion class="overflow-y-hidden px-2" [class.max-h-60]="!expandido()" [class.max-h-1000]="expandido()">
+                            <app-editor-texto [content]="obligacion()?.descripcion ?? obligacion()?.templateNorma?.descripcion"></app-editor-texto>
+                        </div>
+                        @if (!expandido() && mostrarBotonExpandir()) {
+                            <div class="absolute bottom-0 left-0 right-0 h-60 bg-linear-to-t from-white to-transparent pointer-events-none"></div>
+                        }
+                    </div>
+                    @if (mostrarBotonExpandir()) {
+                        @if (!expandido()) {
+                            <button hlmBtn variant="link" (click)="mostrarMasMenos(true)" class="mt-2!">Mostrar más...</button>
+                        } @else {
+                            <button hlmBtn variant="link" (click)="mostrarMasMenos(false)" class="mt-2!">Mostrar menos...</button>
+                        }
+                    }
+                </div>
+            }
+            @if (error()) {
+                <div hlmAlert variant="destructive">
+                    <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                    <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                    <p hlmAlertDescription class="whitespace-pre-line">{{ error() }}</p>
+                </div>
+            }
+            <div id="proximo_vencimiento" class="flex flex-row items-stretch gap-4 w-full">
+                <div hlmItem variant="outline" size="sm" class="w-full">
+                    <div hlmItemContent>
+                        <div hlmItemTitle>Próximo Vencimiento:</div>
+                        <div hlmItemDescription class="text-center text-lg md:text-xl">
+                            {{ obligacion()?.proximoVencimiento | date: 'EEEE' | titlecase }}
+                            {{ obligacion()?.proximoVencimiento | date: "d 'de' MMMM 'de' yyyy" }}
+                            <p class="text-base md:text-lg">{{ obligacion()?.proximoVencimiento | date: "'A las' HH:mm" }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

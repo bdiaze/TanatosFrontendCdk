@@ -47,6 +47,7 @@ import { MantenedorProcesoAutomatico } from './features/mantenedores/mantenedor-
 import { MantenedorModelosCanvas } from './features/mantenedores/mantenedor-modelos-canvas/mantenedor-modelos-canvas';
 import { MantenedorMision } from './features/mantenedores/mantenedor-mision/mantenedor-mision';
 import { ConfirmarSuscripcion } from './features/tableros/confirmar-suscripcion/confirmar-suscripcion';
+import { DetalleObligacion } from './features/tableros/detalle-obligacion/detalle-obligacion';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -154,6 +155,11 @@ export const routes: Routes = [
         path: 'mis-obligaciones',
         component: MantenedorNormaSuscrita,
         canActivate: [chainActivateGuards(sesionIniciada)],
+    },
+    {
+        title: 'Tu obligación',
+        path: 'ver-obligacion/:idNormaSuscrita',
+        component: DetalleObligacion,
     },
     {
         title: 'Crea una obligación',

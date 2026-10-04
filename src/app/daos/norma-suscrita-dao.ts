@@ -1,5 +1,5 @@
 import { environment } from '@/environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SalNormaSuscrita } from '../entities/others/sal-norma-suscrita';
@@ -25,6 +25,13 @@ export class NormaSuscritaDao {
 
     obtenerPorId(idNormaSuscrita: number): Observable<SalNormaSuscrita> {
         return this.http.get<SalNormaSuscrita>(environment.tanatosService.apiUrl + `/NormaSuscrita/ObtenerPorId/${idNormaSuscrita}`);
+    }
+
+    obtenerPorIdConCodigoAcceso(idNormaSuscrita: number, codigoAcceso: string): Observable<SalNormaSuscrita> {
+        let params = new HttpParams().set('codigoAcceso', codigoAcceso);
+        return this.http.get<SalNormaSuscrita>(environment.tanatosService.apiUrl + `/public/NormaSuscrita/ObtenerPorIdConCodigoAcceso/${idNormaSuscrita}`, {
+            params,
+        });
     }
 
     obtenerConVencimiento(idNegocio: number): Observable<SalNormaSuscritaObtenerConVencimiento[]> {
