@@ -103,7 +103,14 @@
                 @if (itemMostrar()?.descripcion || itemMostrar()?.templateNorma?.descripcion) {
                     <div id="descripcion" class="flex flex-col items-center justify-start">
                         <div class="relative w-full">
-                            <div #contenedorDescripcion class="overflow-y-hidden px-2" [class.max-h-60]="!expandido()" [class.max-h-1000]="expandido()">
+                            <div
+                                #contenedorDescripcion
+                                class="overflow-y-hidden px-2"
+                                [class.transition-[max-height]]="expandido()"
+                                [class.duration-500]="expandido()"
+                                [class.max-h-60]="!expandido()"
+                                [class.max-h-1000]="expandido()"
+                            >
                                 <app-editor-texto [content]="itemMostrar()?.descripcion ?? itemMostrar()?.templateNorma?.descripcion"></app-editor-texto>
                             </div>
                             @if (!expandido() && mostrarBotonExpandir()) {

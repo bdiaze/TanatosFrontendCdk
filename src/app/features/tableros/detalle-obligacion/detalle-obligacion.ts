@@ -93,12 +93,28 @@ export class DetalleObligacion implements OnInit {
 
     error = signal<string>('');
     obligacion = signal<SalNormaSuscrita | null>(null);
+    obligacionMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return {
+                nombre: 'Obligación de Ejemplo',
+                nombreCategoriaNorma: 'Tributación, SII y facturación',
+                fiscalizadores: [{ nombreTipoFiscalizador: 'Servicio de Impuestos Internos' }],
+                nombreTipoPeriodicidad: 'Mensual',
+                multa: 'Multa de 1 UF + intereses',
+                descripcion:
+                    '<h2>Una obligación de ejemplo</h2><p>Esta es una <strong>obligación de ejemplo</strong> para explicar como funciona esta pantalla.</p><br/><h3>1. Con un primer paso de ejemplo</h3><h3>2. Y un segundo paso para completar</h3>',
+                proximoVencimiento: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+            } as SalNormaSuscrita;
+        }
+        return this.obligacion();
+    });
+
     cargandoObligacion = signal(true);
 
     fiscalizadores = computed<SalFiscalizadorNormaSuscrita[]>(() => {
-        let listado = this.obligacion()?.fiscalizadores;
+        let listado = this.obligacionMostrar()?.fiscalizadores;
         if (!listado || listado.length == 0) {
-            listado = this.obligacion()?.templateNorma?.fiscalizadores;
+            listado = this.obligacionMostrar()?.templateNorma?.fiscalizadores;
         }
 
         if (!listado) {
@@ -194,6 +210,45 @@ export class DetalleObligacion implements OnInit {
     ayudaRunning = signal<boolean>(false);
     ayudaClick(): void {
         const steps: DriveStep[] = [];
+
+        steps.push(
+            ...[
+                {
+                    popover: {
+                        title: 'Detalle de tu obligación',
+                        description: 'Aquí podrás conocer los detalles de una de tus obligaciones, como la descripción, multa y próximo vencimiento.',
+                    },
+                },
+                {
+                    element: '#cabecera_obligacion',
+                    popover: {
+                        title: 'La obligación',
+                        description: 'Primero te mostramos cuál es la obligación, a qué categoría pertenece y quién la fiscaliza.',
+                    },
+                },
+                {
+                    element: '#periodicidad_multa',
+                    popover: {
+                        title: 'Periodicidad y multa',
+                        description: 'Luego te indicamos cada cuánto se repite, y qué multa arriesgas en caso de no cumplirla a tiempo.',
+                    },
+                },
+                {
+                    element: '#descripcion',
+                    popover: {
+                        title: '¿En qué consiste la obligación?',
+                        description: 'Además, te entregamos una descripción de la obligación, explicando de qué se trata y cómo se completa.',
+                    },
+                },
+                {
+                    element: '#proximo_vencimiento',
+                    popover: {
+                        title: '¿Cuándo vence?',
+                        description: 'Y por último, tienes la fecha del próximo vencimiento de tu obligación.',
+                    },
+                },
+            ],
+        );
 
         let config: {
             pasos: DriveStep[];
