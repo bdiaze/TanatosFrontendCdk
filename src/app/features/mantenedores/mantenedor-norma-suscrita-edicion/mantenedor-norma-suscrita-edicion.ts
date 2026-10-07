@@ -19,6 +19,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
     lucideBadgeX,
+    lucideCheck,
     lucideChevronDown,
     lucideCircleAlert,
     lucideGem,
@@ -104,6 +105,7 @@ import { SalTipoPeriodicidad } from '@/app/entities/others/sal-tipo-periodicidad
             lucideGem,
             lucideTrash2,
             lucideChevronDown,
+            lucideCheck,
         }),
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,
