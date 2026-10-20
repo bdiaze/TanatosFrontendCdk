@@ -5,7 +5,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { TourService } from '@/app/helpers/tour-service';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { NgClass } from '@angular/common';
-import { Component, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Component, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -32,7 +32,6 @@ import { map } from 'rxjs';
     imports: [
         HlmH3,
         HlmH4,
-        HlmP,
         HlmSpinnerImports,
         HlmSkeletonImports,
         NgIcon,
@@ -54,7 +53,7 @@ import { map } from 'rxjs';
     styleUrl: './datos-usuario.scss',
     providers: [provideIcons({ lucideTriangleAlert, lucideUserRoundPen, lucideSave, lucideUserRound, lucidePhone, lucideBadgeCheck, lucideClockAlert })],
 })
-export class DatosUsuario {
+export class DatosUsuario implements OnInit {
     private readonly destroyRef = inject(DestroyRef);
     private readonly router = inject(Router);
     private readonly tourService = inject(TourService);
@@ -95,6 +94,10 @@ export class DatosUsuario {
                 }
             });
         });
+    }
+
+    ngOnInit(): void {
+        this.obtenerPerfil();
     }
 
     whatsappForm = new FormGroup({
