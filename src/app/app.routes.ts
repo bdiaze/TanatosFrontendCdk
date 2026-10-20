@@ -48,6 +48,8 @@ import { MantenedorModelosCanvas } from './features/mantenedores/mantenedor-mode
 import { MantenedorMision } from './features/mantenedores/mantenedor-mision/mantenedor-mision';
 import { ConfirmarSuscripcion } from './features/tableros/confirmar-suscripcion/confirmar-suscripcion';
 import { DetalleObligacion } from './features/tableros/detalle-obligacion/detalle-obligacion';
+import { DatosUsuario } from './features/perfil/datos-usuario/datos-usuario';
+import { ValidarWhatsapp } from './features/perfil/validar-whatsapp/validar-whatsapp';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -120,6 +122,11 @@ export const routes: Routes = [
         title: 'Confirmar o rechazar',
         path: 'validar-destinatario',
         component: ValidarDestinatario,
+    },
+    {
+        title: 'Validar WhatsApp',
+        path: 'validar-whatsapp/:idWhatsappUsuario',
+        component: ValidarWhatsapp,
     },
     {
         title: 'Completa tu obligación',
@@ -213,6 +220,12 @@ export const routes: Routes = [
         title: 'Contratación de Plan',
         path: 'contratacion-plan/:idPlan',
         component: ConfirmarSuscripcion,
+        canActivate: [chainActivateGuards(sesionIniciada)],
+    },
+    {
+        title: 'Mi Perfil',
+        path: 'mi-perfil',
+        component: DatosUsuario,
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {

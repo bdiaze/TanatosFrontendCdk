@@ -14,7 +14,7 @@ export class FormatoTelefono implements AfterViewInit {
         if (!input.value) return;
 
         const oldValue = input.value;
-        let formatted = this.formatear(input.value);
+        let formatted = formatearTelefono(input.value);
         if (formatted === oldValue) return;
         input.value = formatted;
     }
@@ -29,7 +29,7 @@ export class FormatoTelefono implements AfterViewInit {
         const oldValue = input.value;
         const oldSelectionStart = input.selectionStart ?? input.value.length;
 
-        const formatted = this.formatear(input.value);
+        const formatted = formatearTelefono(input.value);
         if (formatted === oldValue) return;
         input.value = formatted;
 
@@ -41,27 +41,30 @@ export class FormatoTelefono implements AfterViewInit {
 
         input.dispatchEvent(new Event('input', { bubbles: true }));
     }
+}
 
-    private formatear(value: string): string {
-        let digitos = value.replace(/\D+/g, '');
+export function formatearTelefono(value: string): string {
+    let digitos = value.replace(/\D+/g, '');
 
-        let formatted = '';
-        if (digitos.length > 0) {
-            formatted = '+' + digitos.substring(0, 2);
-        }
-        if (digitos.length > 2) {
-            formatted += ' ' + digitos.substring(2, 3);
-        }
-        if (digitos.length > 3) {
-            formatted += ' ' + digitos.substring(3, 7);
-        }
-        if (digitos.length > 7) {
-            formatted += ' ' + digitos.substring(7, 11);
-        }
-        if (digitos.length > 11) {
-            formatted += ' ' + digitos.substring(11);
-        }
-
-        return formatted;
+    let formatted = '';
+    if (digitos.length > 0) {
+        formatted = '+' + digitos.substring(0, 2);
+    } else if (value.startsWith('+')) {
+        formatted = '+';
     }
+
+    if (digitos.length > 2) {
+        formatted += ' ' + digitos.substring(2, 3);
+    }
+    if (digitos.length > 3) {
+        formatted += ' ' + digitos.substring(3, 7);
+    }
+    if (digitos.length > 7) {
+        formatted += ' ' + digitos.substring(7, 11);
+    }
+    if (digitos.length > 11) {
+        formatted += ' ' + digitos.substring(11);
+    }
+
+    return formatted;
 }

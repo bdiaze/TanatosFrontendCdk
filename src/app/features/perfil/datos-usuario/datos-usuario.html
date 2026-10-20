@@ -1,0 +1,130 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Mi Perfil</span>
+                    </li>
+                </ol>
+            </nav>
+            <!--
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+            -->
+        </div>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <ng-icon hlm name="lucideUserRoundPen" />
+            <h3 hlmH3>Mi Perfil</h3>
+        </div>
+    </div>
+    <div class="flex flex-col items-center justify-center w-full gap-5">
+        <div class="w-full flex flex-col border border-calipso">
+            <div class="w-full flex flex-row items-center justify-center text-blanco border border-calipso bg-calipso py-2.5 gap-2.5">
+                <ng-icon hlm name="lucideUserRound" size="20px" />
+                <h4 hlmH4>Datos Personales</h4>
+            </div>
+            <div class="flex flex-col gap-2 p-4">
+                <hlm-input-group>
+                    <input
+                        hlmInputGroupInput
+                        id="nombre"
+                        type="text"
+                        class="transition-all duration-500 ease-out text-sm"
+                        [value]="negocioStore.informacionUsuario()?.nombre ?? ''"
+                        disabled
+                    />
+                    <hlm-input-group-addon align="block-start">
+                        <label for="nombre" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Mi nombre:</label>
+                    </hlm-input-group-addon>
+                </hlm-input-group>
+                <hlm-input-group>
+                    <input
+                        hlmInputGroupInput
+                        id="apellido"
+                        type="text"
+                        class="transition-all duration-500 ease-out text-sm"
+                        [value]="negocioStore.informacionUsuario()?.apellido ?? ''"
+                        disabled
+                    />
+                    <hlm-input-group-addon align="block-start">
+                        <label for="apellido" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Mi apellido:</label>
+                    </hlm-input-group-addon>
+                </hlm-input-group>
+            </div>
+        </div>
+        <div class="w-full flex flex-col border border-azul">
+            <div class="w-full flex flex-row items-center justify-center text-blanco border border-azul bg-azul py-2.5 gap-2.5">
+                <ng-icon hlm name="lucidePhone" size="20px" />
+                <h4 hlmH4>Datos de Contacto</h4>
+            </div>
+            <div class="flex flex-col gap-2 p-4">
+                <hlm-input-group>
+                    <input
+                        hlmInputGroupInput
+                        id="correo_electronico"
+                        type="text"
+                        class="transition-all duration-500 ease-out text-sm"
+                        [value]="negocioStore.informacionUsuario()?.email ?? ''"
+                        disabled
+                    />
+                    <hlm-input-group-addon align="block-start">
+                        <label for="correo_electronico" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Mi correo electrónico:</label>
+                    </hlm-input-group-addon>
+                </hlm-input-group>
+                <form [formGroup]="whatsappForm" (ngSubmit)="actualizarWhatsapp()">
+                    <hlm-input-group>
+                        <input
+                            hlmInputGroupInput
+                            id="whatsapp"
+                            type="text"
+                            formControlName="whatsapp"
+                            [formatoTelefono]="true"
+                            class="transition-all duration-500 ease-out text-sm"
+                            [ngClass]="{
+                                'pl-9!': negocioStore.informacionUsuario()?.whatsapp,
+                            }"
+                        />
+                        <hlm-input-group-addon align="block-start" class="relative">
+                            <label for="whatsapp" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Mi número de WhatsApp:</label>
+                        </hlm-input-group-addon>
+                        @if (negocioStore.informacionUsuario()?.whatsapp) {
+                            <div class="absolute bottom-0 left-0 size-10.5 fade-in flex items-center justify-center">
+                                @if (negocioStore.informacionUsuario()?.whatsappValidado) {
+                                    <ng-icon hlm hlmTooltip="Número validado correctamente" name="lucideBadgeCheck" class="text-azul" size="18px" />
+                                } @else {
+                                    <ng-icon
+                                        hlm
+                                        hlmTooltip="Revisa tu WhatsApp para validar el número"
+                                        name="lucideClockAlert"
+                                        [class.opacity-40]="obteniendoPerfil() || actualizandoWhatsapp()"
+                                        size="18px"
+                                    />
+                                }
+                            </div>
+                        }
+                        <div class="absolute top-0 bottom-0 right-3 flex items-center justify-center">
+                            <button hlmBtn type="submit" size="icon" [disabled]="obteniendoPerfil() || actualizandoWhatsapp()">
+                                @if (obteniendoPerfil() || actualizandoWhatsapp()) {
+                                    <hlm-spinner class="text-lg" />
+                                } @else {
+                                    <ng-icon hlm name="lucideSave" size="20px" />
+                                }
+                            </button>
+                        </div>
+                    </hlm-input-group>
+                </form>
+            </div>
+        </div>
+        @if (error()) {
+            <div hlmAlert variant="destructive">
+                <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                <p hlmAlertDescription>{{ error() }}</p>
+            </div>
+        }
+    </div>
+</section>

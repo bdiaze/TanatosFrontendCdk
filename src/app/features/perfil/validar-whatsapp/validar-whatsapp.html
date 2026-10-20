@@ -1,0 +1,37 @@
+<section class="h-full md:max-w-2xl mx-auto px-4 py-4 flex">
+    <div class="flex-1 flex flex-col justify-center-safe items-center-safe gap-6 md:gap-10">
+        <h4 hlmH2 class="text-center text-balance text-2xl md:text-3xl">¡Valida tu número de WhatsApp!</h4>
+        <p class="text-center text-balance">Los recordatorios y las notificaciones te llegarán tanto a tu número de WhatsApp como a tu correo electrónico.</p>
+        @if (!error() && !whatsappValidadoOk()) {
+            <div class="flex flex-col items-center justify-center gap-3 md:gap-6">
+                <p hlmH4 class="text-center text-balance text-lg md:text-xl">Si deseas confirmar, haz click a continuación:</p>
+                <button hlmBtn (click)="validarWhatsapp()" size="lg" [disabled]="validandoWhatsapp()" class="pl-5! pr-8!">
+                    @if (validandoWhatsapp()) {
+                        <hlm-spinner />
+                    } @else {
+                        <ng-icon hlm hlmAlertIcon name="lucideMessageCirclePlus" />
+                    }
+                    Validar mi número de WhatsApp
+                </button>
+            </div>
+        }
+        @if (error()) {
+            <div hlmAlert variant="destructive">
+                <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                <p hlmAlertDescription>{{ error() }}</p>
+            </div>
+        }
+        @if (whatsappValidadoOk()) {
+            <div hlmAlert class="border-azul text-azul bg-azul/10">
+                <ng-icon hlm hlmAlertIcon name="lucideCircleCheck" />
+                <h4 hlmAlertTitle>¡WhatsApp validado correctamente!</h4>
+                <div hlmAlertDescription class="text-azul">
+                    Tu número de WhatsApp ha sido validado correctamente. A partir de ahora, recibirás recordatorios y notificaciones en tu número de
+                    WhatsApp.<br />
+                    <p class="text-xs italic text-center mt-2">Ya puedes cerrar esta página.</p>
+                </div>
+            </div>
+        }
+    </div>
+</section>

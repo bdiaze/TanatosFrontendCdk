@@ -32,6 +32,7 @@ import {
     lucideStar,
     lucideStore,
     lucideUser,
+    lucideUserRoundPen,
     lucideWaypoints,
     lucideX,
 } from '@ng-icons/lucide';
@@ -90,6 +91,7 @@ import { filter, map } from 'rxjs';
             lucideRoute,
             lucideGoal,
             lucideWaypoints,
+            lucideUserRoundPen,
         }),
     ],
 })
@@ -202,6 +204,13 @@ export class Menu implements OnInit, OnDestroy {
                     titulo: 'Mi Plan',
                     icon: 'lucideGem',
                     url: '/mi-plan',
+                },
+                {
+                    id: 'group-general-item-mi-perfil',
+                    tipo: 'item',
+                    titulo: 'Mi Perfil',
+                    icon: 'lucideUserRoundPen',
+                    url: '/mi-perfil',
                 },
                 {
                     id: 'group-general-item-ayuda',
