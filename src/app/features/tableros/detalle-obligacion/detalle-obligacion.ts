@@ -17,7 +17,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
-import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmH3 } from '@spartan-ng/helm/typography';
 import { DriveStep } from 'driver.js';
 import { combineLatest, map } from 'rxjs';
 
@@ -27,8 +27,6 @@ import { combineLatest, map } from 'rxjs';
         NgIcon,
         HlmIcon,
         HlmH3,
-        HlmH4,
-        HlmP,
         HlmAlertImports,
         HlmBreadcrumbImports,
         EditorTexto,

@@ -1,13 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { SalSuscripcion } from '../entities/others/sal-suscripcion';
 import { environment } from '@/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { EntSuscripcionCrear } from '../entities/others/ent-suscripcion-crear';
 import { SalSuscripcionCrear } from '../entities/others/sal-suscripcion-crear';
 import { NegocioStore } from '../services/negocio-store';
 import { SalSuscripcionResumen } from '../entities/others/sal-suscripcion-resumen';
-import { SalNegocioInformacionUsuario } from '../entities/others/sal-negocio-informacion-usuario';
+import { SalPerfil } from '../entities/others/sal-perfil';
 
 @Injectable({
     providedIn: 'root',
@@ -40,7 +39,7 @@ export class SuscripcionDao {
                             ({
                                 ...info,
                                 tienePlanEmpresa: r.tienePlanEmpresa,
-                            }) as SalNegocioInformacionUsuario,
+                            }) as SalPerfil,
                     );
                 }
             }),

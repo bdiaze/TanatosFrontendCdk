@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { SalNegocio } from '../entities/others/sal-negocio';
-import { finalize, Observable, share, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from '@/environments/environment';
 import { EntNegocioCrear } from '../entities/others/ent-negocio-crear';
 import { EntNegocioActualizar } from '../entities/others/ent-negocio-actualizar';
 import { NegocioStore } from '../services/negocio-store';
 import { clearCookie, getCookie, setCookie } from '../helpers/cookie-helper';
-import { SalNegocioInformacionUsuario } from '../entities/others/sal-negocio-informacion-usuario';
 import { EntNegocioMisionVisionValores } from '../entities/others/ent-negocio-mision-vision-valores';
 
 @Injectable({
@@ -17,22 +16,6 @@ export class NegocioDao {
     constructor(private readonly http: HttpClient) {}
 
     negocioStore = inject(NegocioStore);
-
-    obtenerInformacionUsuario(): Observable<SalNegocioInformacionUsuario> {
-        return this.http.get<SalNegocioInformacionUsuario>(environment.tanatosService.apiUrl + '/Negocio/InformacionUsuario').pipe(
-            tap((v) => {
-                const informacionExistente = this.negocioStore.informacionUsuario();
-                if (
-                    v.nombre !== informacionExistente?.nombre ||
-                    v.apellido !== informacionExistente?.apellido ||
-                    v.email !== informacionExistente?.email ||
-                    v.tienePlanEmpresa !== informacionExistente?.tienePlanEmpresa
-                ) {
-                    this.negocioStore.informacionUsuario.set(v);
-                }
-            }),
-        );
-    }
 
     obtenerVigentes(): Observable<SalNegocio[]> {
         return this.http.get<SalNegocio[]>(environment.tanatosService.apiUrl + '/Negocio/Vigentes').pipe(

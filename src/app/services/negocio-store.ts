@@ -1,7 +1,7 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { SalNegocio } from '../entities/others/sal-negocio';
-import { SalNegocioInformacionUsuario } from '../entities/others/sal-negocio-informacion-usuario';
 import { SalSuscripcionResumen } from '../entities/others/sal-suscripcion-resumen';
+import { SalPerfil } from '../entities/others/sal-perfil';
 
 @Injectable({
     providedIn: 'root',
@@ -9,6 +9,6 @@ import { SalSuscripcionResumen } from '../entities/others/sal-suscripcion-resume
 export class NegocioStore {
     negocioSeleccionado = signal<SalNegocio | null>(null);
     negociosUsuario = signal<SalNegocio[]>([]);
-    informacionUsuario = signal<SalNegocioInformacionUsuario | null>(null);
+    informacionUsuario = signal<SalPerfil | null>(null);
     resumenSuscripcionUsuario = signal<SalSuscripcionResumen | null>(null);
 }

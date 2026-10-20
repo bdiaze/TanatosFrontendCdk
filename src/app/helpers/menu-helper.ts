@@ -2,6 +2,7 @@ import { DestroyRef, effect, inject, Injectable, signal, untracked } from '@angu
 import { AuthStore } from '../services/auth-store';
 import { NegocioDao } from '../daos/negocio-dao';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { PerfilDao } from '../daos/perfil-dao';
 
 @Injectable({
     providedIn: 'root',
@@ -11,6 +12,7 @@ export class MenuHelper {
 
     private readonly authStore = inject(AuthStore);
     private readonly negocioDao = inject(NegocioDao);
+    private readonly perfilDao = inject(PerfilDao);
 
     private readonly logicaEjecutada = signal(false);
 
@@ -49,8 +51,8 @@ export class MenuHelper {
     cargandoInformacionUsuario = signal<boolean>(false);
     obtenerInformacionUsuario() {
         this.cargandoInformacionUsuario.set(true);
-        this.negocioDao
-            .obtenerInformacionUsuario()
+        this.perfilDao
+            .obtener()
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({})
             .add(() => {
