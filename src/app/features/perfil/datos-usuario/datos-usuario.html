@@ -92,9 +92,16 @@
                             <label for="whatsapp" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Mi número de WhatsApp:</label>
                         </hlm-input-group-addon>
                         @if (negocioStore.informacionUsuario()?.whatsapp) {
-                            <div class="absolute bottom-0 left-0 size-10.5 fade-in flex items-center justify-center">
+                            <div class="absolute bottom-0 left-0 size-10.5 faster-fade-in flex items-center justify-center">
                                 @if (negocioStore.informacionUsuario()?.whatsappValidado) {
-                                    <ng-icon hlm hlmTooltip="Número validado correctamente" name="lucideBadgeCheck" class="text-azul" size="18px" />
+                                    <ng-icon
+                                        hlm
+                                        hlmTooltip="Número validado correctamente"
+                                        name="lucideBadgeCheck"
+                                        class="text-azul"
+                                        [class.opacity-40]="obteniendoPerfil() || actualizandoWhatsapp()"
+                                        size="18px"
+                                    />
                                 } @else {
                                     <ng-icon
                                         hlm
