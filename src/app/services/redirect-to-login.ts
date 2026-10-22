@@ -67,6 +67,10 @@ export class RedirectToLogin {
             'api/vencimientos.write.self',
             'api/suscripciones.read.self',
             'api/suscripciones.write.self',
+            'api/documentos.read.self',
+            'api/documentos.write.self',
+            'api/finanzas.read.self',
+            'api/finanzas.write.self',
             'api/templates.read.public',
             'api/sistema.read.public',
         ];
