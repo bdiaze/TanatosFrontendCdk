@@ -50,6 +50,8 @@ import { ConfirmarSuscripcion } from './features/tableros/confirmar-suscripcion/
 import { DetalleObligacion } from './features/tableros/detalle-obligacion/detalle-obligacion';
 import { DatosUsuario } from './features/perfil/datos-usuario/datos-usuario';
 import { ValidarWhatsapp } from './features/perfil/validar-whatsapp/validar-whatsapp';
+import { CartolaMovimientos } from './features/finanzas/cartola-movimientos/cartola-movimientos';
+import { MantenedorTipoCuentaFinanciera } from './features/mantenedores/mantenedor-tipo-cuenta-financiera/mantenedor-tipo-cuenta-financiera';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -193,6 +195,12 @@ export const routes: Routes = [
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {
+        title: 'Mis Finanzas',
+        path: 'mis-finanzas',
+        component: CartolaMovimientos,
+        canActivate: [chainActivateGuards(sesionIniciada)],
+    },
+    {
         title: 'Misión, Visión y Valores',
         path: 'mision-vision-valores',
         component: MantenedorMision,
@@ -286,6 +294,12 @@ export const routes: Routes = [
         title: 'Edición plantilla',
         path: 'administracion/mantenedores/template/:idTemplate',
         component: MantenedorTemplateEdicion,
+        canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
+    },
+    {
+        title: 'Tipos de Cuentas Financieras',
+        path: 'administracion/mantenedores/tipo-cuenta-financiera',
+        component: MantenedorTipoCuentaFinanciera,
         canActivate: [chainActivateGuards(sesionIniciada, esAdmin)],
     },
     {

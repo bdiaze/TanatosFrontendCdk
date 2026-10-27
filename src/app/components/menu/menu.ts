@@ -33,6 +33,7 @@ import {
     lucideStore,
     lucideUser,
     lucideUserRoundPen,
+    lucideWallet,
     lucideWaypoints,
     lucideX,
 } from '@ng-icons/lucide';
@@ -92,6 +93,7 @@ import { filter, map } from 'rxjs';
             lucideGoal,
             lucideWaypoints,
             lucideUserRoundPen,
+            lucideWallet,
         }),
     ],
 })
@@ -161,6 +163,13 @@ export class Menu implements OnInit, OnDestroy {
                         icon: 'lucideContactRound',
                         titulo: 'Mi Equipo',
                         url: '/mi-equipo',
+                    },
+                    {
+                        id: 'group-negocio-seleccionado-item-mis-finanzas',
+                        tipo: 'item',
+                        icon: 'lucideWallet',
+                        titulo: 'Mis Finanzas',
+                        url: '/mis-finanzas',
                     },
                     {
                         id: 'group-negocio-seleccionado-item-estrategia',
@@ -286,6 +295,12 @@ export class Menu implements OnInit, OnDestroy {
                                 tipo: 'subitem',
                                 titulo: 'Plantillas',
                                 url: '/administracion/mantenedores/template',
+                            },
+                            {
+                                id: 'group-administracion-item-mantenedores-subitem-tipo-cuenta-financiera',
+                                tipo: 'subitem',
+                                titulo: 'Tipo Cuenta Financiera',
+                                url: '/administracion/mantenedores/tipo-cuenta-financiera',
                             },
                             {
                                 id: 'group-administracion-item-mantenedores-subitem-categoria-norma',
