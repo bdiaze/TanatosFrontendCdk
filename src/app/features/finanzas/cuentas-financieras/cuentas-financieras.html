@@ -1,0 +1,121 @@
+<div class="flex flex-row items-stretch justify-start w-max">
+    @if (cargando() || cargandoTiposCuentas()) {
+        @for (_ of [1, 2]; track $index; let first = $first; let last = $last) {
+            <div
+                class="bg-blanco text-negro px-2 py-2 w-42 h-21 fade-in border flex flex-col items-center justify-center gap-1"
+                [ngClass]="{
+                    '-ml-px': !first,
+                }"
+            >
+                <div class="flex flex-col items-center justify-center gap-0.5">
+                    <hlm-skeleton class="h-4 w-18" />
+                    <hlm-skeleton class="h-4.5 w-26" />
+                </div>
+                <div>
+                    <hlm-skeleton class="h-6 w-28" />
+                </div>
+            </div>
+        }
+    } @else {
+        @for (cuenta of cuentasMostrar(); track cuenta.id; let first = $first; let last = $last) {
+            <button
+                class="relative bg-blanco text-negro px-2 py-2 w-42 min-h-20 fade-in border flex flex-col items-center justify-center gap-1"
+                [ngClass]="{
+                    '-ml-px': !first,
+                    'border-gris cursor-pointer!': itemSeleccionado()?.id != cuenta.id,
+                    'border-azul z-10!': itemSeleccionado()?.id == cuenta.id,
+                }"
+                (click)="seleccionarCuenta(cuenta)"
+                (keydown.enter)="seleccionarCuenta(cuenta)"
+                (keydown.space)="$event.preventDefault(); seleccionarCuenta(cuenta)"
+            >
+                <div class="flex flex-col items-center justify-center gap-0.5">
+                    <p hlmP class="text-xs">{{ cuenta.nombreTipoCuentaFinanciera }}</p>
+                    <h4 hlmH4 class="text-sm font-medium">{{ cuenta.nombre }}</h4>
+                </div>
+                <div>
+                    <p hlmP class="text-base">${{ cuenta.saldoActual | number: '1.0-0' }}</p>
+                </div>
+                <button
+                    hlmBtn
+                    size="sm"
+                    variant="outline"
+                    [hlmDropdownMenuTrigger]="menu"
+                    class="absolute bottom-1 right-1 size-4.25 rounded-none! border-0! p-0! h-fit! text-negro/70! hover:text-negro/60! active:text-negro/70!"
+                    [ngClass]="{
+                        'text-azul! hover:text-azul/80! active:text-azul!': itemSeleccionado()?.id == cuenta.id,
+                    }"
+                    (click)="$event.stopPropagation()"
+                >
+                    <ng-icon hlm size="17px" name="lucideSquareChevronDown" />
+                </button>
+                <ng-template #menu>
+                    <hlm-dropdown-menu>
+                        <hlm-dropdown-menu-group>
+                            <button hlmDropdownMenuItem (click)="openModalEditar(cuenta)">Editar</button>
+                            <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(cuenta)">Eliminar</button>
+                        </hlm-dropdown-menu-group>
+                    </hlm-dropdown-menu>
+                </ng-template>
+            </button>
+        }
+        <button
+            hlmBtn
+            class="min-h-21 h-auto! w-33! rounded-none! border! border-gris! text-negro! font-normal! hover:text-negro/70! active:font-normal! group"
+            [ngClass]="{
+                'border-azul! hover:border-azul/80! text-azul! hover:text-azul/80!': cuentasMostrar().length === 0,
+            }"
+            variant="outline"
+            (click)="openModalCrear()"
+            [class.-ml-px]="cuentasMostrar().length > 0"
+        >
+            <div class="flex flex-col items-center justify-center gap-0.5 underline underline-offset-3 decoration-azul group-hover:decoration-azul/80">
+                <ng-icon hlm name="lucidePlus" size="sm" class="text-azul group-hover:text-azul/80" />
+                Nueva Cuenta
+            </div>
+        </button>
+    }
+</div>
+@if (error()) {
+    <div hlmAlert variant="destructive" class="w-full mt-3">
+        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+        <p hlmAlertDescription>{{ error() }}</p>
+    </div>
+}
+@if (showModalEliminar()) {
+    <app-modal-eliminacion
+        [item]="itemEliminacion()"
+        titulo="Eliminar una cuenta financiera:"
+        [descripcion]="
+            `¿Seguro que deseas eliminar la cuenta <b>${itemEliminacion()?.nombre}</b>?
+            <p class='text-sm mt-2'>Tipo de cuenta:</p>
+            <p class='text-base'><b>${itemEliminacion()?.nombreTipoCuentaFinanciera}</b></p>
+            <p class='text-sm mt-1'>Saldo actual:</p>
+            <p class='text-base'><b>$${(itemEliminacion()?.saldoActual | number)}</b></p>`
+        "
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    >
+    </app-modal-eliminacion>
+}
+@if (showModalEditar()) {
+    <app-modal-edicion
+        [campos]="camposEdicion()"
+        [item]="itemEdicion()"
+        titulo="Editar una cuenta financiera:"
+        (cerrar)="closeModalEditar()"
+        (editar)="editar($event)"
+    >
+    </app-modal-edicion>
+}
+@if (showModalCrear()) {
+    <app-modal-edicion
+        [campos]="camposCreacion()"
+        [item]="{ idTipoCuentaFinanciera: 100, fechaSaldoInicialUtc: fechaActual() }"
+        titulo="Crear una cuenta financiera:"
+        (cerrar)="closeModalCrear()"
+        (editar)="crear($event)"
+    >
+    </app-modal-edicion>
+}
