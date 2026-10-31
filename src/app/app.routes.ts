@@ -52,6 +52,7 @@ import { DatosUsuario } from './features/perfil/datos-usuario/datos-usuario';
 import { ValidarWhatsapp } from './features/perfil/validar-whatsapp/validar-whatsapp';
 import { CartolaMovimientos } from './features/finanzas/cartola-movimientos/cartola-movimientos';
 import { MantenedorTipoCuentaFinanciera } from './features/mantenedores/mantenedor-tipo-cuenta-financiera/mantenedor-tipo-cuenta-financiera';
+import { MantenedorCategoriasFinancieras } from './features/finanzas/mantenedor-categorias-financieras/mantenedor-categorias-financieras';
 
 export const routes: Routes = [
     { path: '', component: Inicio },
@@ -198,6 +199,12 @@ export const routes: Routes = [
         title: 'Mis Finanzas',
         path: 'mis-finanzas',
         component: CartolaMovimientos,
+        canActivate: [chainActivateGuards(sesionIniciada)],
+    },
+    {
+        title: 'Mis Categorías',
+        path: 'mis-categorias',
+        component: MantenedorCategoriasFinancieras,
         canActivate: [chainActivateGuards(sesionIniciada)],
     },
     {

@@ -1,0 +1,134 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/mis-finanzas">Mis Finanzas</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Mis Categorías</span>
+                    </li>
+                </ol>
+            </nav>
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+        </div>
+        <h4 hlmH4 class="text-center">
+            {{ negocioStore.negocioSeleccionado()?.nombre }}
+        </h4>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <ng-icon hlm name="lucideTags" />
+            <h3 hlmH3>Mis Categorías</h3>
+        </div>
+    </div>
+    <div hlmTableContainer class="fade-in">
+        <table hlmTable>
+            <thead hlmTHead>
+                <tr hlmTr>
+                    <th hlmTh class="text-xs md:text-sm">Nombre</th>
+                    <th hlmTh class="text-xs md:text-sm text-center w-14 px-0">Tipo</th>
+                    <th hlmTh class="w-10 md:w-16"></th>
+                </tr>
+            </thead>
+            <tbody hlmTBody>
+                @if (cargando()) {
+                    @for (_ of [1, 2, 3]; track $index) {
+                        <tr hlmTr>
+                            @for (_ of [1, 2]; track $index) {
+                                <td hlmTd>
+                                    <hlm-skeleton class="h-8 rounded-xl" />
+                                </td>
+                            }
+                            <td hlmTd></td>
+                        </tr>
+                    }
+                } @else {
+                    @for (item of listado(); track item.id) {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd class="text-xs md:text-sm whitespace-normal wrap-break-word">
+                                {{ item.nombre }}
+                            </td>
+                            <td hlmTd class="text-xs md:text-sm text-center">
+                                <div class="flex items-center gap-1">
+                                    @if (item.tipoMovimiento === 1) {
+                                        <ng-icon hlm name="lucidePlus" size="sm" class="text-azul" />
+                                        Ingreso
+                                    } @else if (item.tipoMovimiento === 2) {
+                                        <ng-icon hlm name="lucideMinus" size="sm" class="text-destructive" />
+                                        Gasto
+                                    } @else {
+                                        <ng-icon hlm name="lucideDiff" size="sm" class="text-naranjo" />
+                                        Ambos
+                                    }
+                                </div>
+                            </td>
+                            <td hlmTd>
+                                <div class="flex items-center justify-center-safe">
+                                    <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
+                                        <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                    </button>
+                                    <ng-template #menu>
+                                        <hlm-dropdown-menu>
+                                            <hlm-dropdown-menu-group>
+                                                <button hlmDropdownMenuItem (click)="openModalEditar(item)">Editar</button>
+                                                <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
+                                            </hlm-dropdown-menu-group>
+                                        </hlm-dropdown-menu>
+                                    </ng-template>
+                                </div>
+                            </td>
+                        </tr>
+                    } @empty {
+                        <tr hlmTr class="fade-in">
+                            <td hlmTd colspan="4" class="text-center">Aún no tienes categorías financieras registradas</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+        <button hlmBtn (click)="openModalCrear()" class="btnAzul m-4!">Nueva Categoría</button>
+    </div>
+    @if (error()) {
+        <div hlmAlert variant="destructive" class="mt-2">
+            <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+            <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+            <p hlmAlertDescription>{{ error() }}</p>
+        </div>
+    }
+</section>
+
+@if (showModalEliminar()) {
+    <app-modal-eliminacion
+        [item]="itemSeleccionado()"
+        titulo="Eliminar la categoría:"
+        [descripcion]="`¿Seguro que deseas eliminar la categoría: <b>${itemSeleccionado()?.nombre}</b>?`"
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    >
+    </app-modal-eliminacion>
+}
+@if (showModalEditar()) {
+    <app-modal-edicion
+        [campos]="camposEdicion()"
+        [item]="itemSeleccionado()"
+        titulo="Editar la categoría:"
+        (cerrar)="closeModalEditar()"
+        (editar)="editar($event)"
+    >
+    </app-modal-edicion>
+}
+@if (showModalCrear()) {
+    <app-modal-edicion
+        [campos]="camposCreacion()"
+        [item]="{ tipoMovimiento: 3 }"
+        titulo="Crear una categoría:"
+        (cerrar)="closeModalCrear()"
+        (editar)="crear($event)"
+    >
+    </app-modal-edicion>
+}
