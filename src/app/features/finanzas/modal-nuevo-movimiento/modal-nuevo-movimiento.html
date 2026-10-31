@@ -1,0 +1,136 @@
+<div #overlay class="fixed inset-0 bg-black/70 flex justify-center items-center z-50 p-5">
+    <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
+        <div hlmCard class="min-w-xs md:w-sm max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4">
+            <div hlmCardHeader class="faster-fade-in">
+                <div class="w-full flex flex-row items-center gap-2">
+                    <button
+                        hlmBtn
+                        type="button"
+                        class="flex-1 flex flex-col h-fit! gap-0 rounded-sm! py-3! border-2! border-azul!"
+                        [ngClass]="{
+                            'bg-azul!': tipoMovimiento() === 1,
+                            'bg-blanco! text-azul!': tipoMovimiento() !== 1,
+                        }"
+                        (click)="seleccionarTipoMovimiento(1)"
+                    >
+                        <ng-icon hlm name="lucidePlus" />
+                        Ingreso
+                    </button>
+                    <button
+                        hlmBtn
+                        type="button"
+                        class="flex-1 flex flex-col h-fit! gap-0 rounded-sm! py-3! border-2! border-destructive!"
+                        [ngClass]="{
+                            'bg-destructive!': tipoMovimiento() === 2,
+                            'bg-blanco! text-destructive!': tipoMovimiento() !== 2,
+                        }"
+                        (click)="seleccionarTipoMovimiento(2)"
+                    >
+                        <ng-icon hlm name="lucideMinus" />
+                        Gasto
+                    </button>
+                </div>
+            </div>
+            <div hlmCardContent class="faster-fade-in -mt-2">
+                <fieldset hlmFieldSet class="gap-2">
+                    <div id="fecha" class="fade-in w-full flex flex-row items-center gap-2">
+                        <hlm-date-picker
+                            class="text-sm w-full flex-1"
+                            [date]="form.controls.fechaMovimiento.value"
+                            (dateChange)="form.controls.fechaMovimiento.setValue($event)"
+                        >
+                            <hlm-date-picker-trigger
+                                class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
+                            >
+                            </hlm-date-picker-trigger>
+                        </hlm-date-picker>
+                        <div class="w-full relative flex-1">
+                            <input
+                                hlmInput
+                                type="time"
+                                step="60"
+                                [formControl]="form.controls.horaMovimiento"
+                                class="text-sm bg-background [&::-webkit-calendar-picker-indicator]:opacity-0 pr-1.25"
+                            />
+                            <div class="absolute top-1.5 bottom-1.5 right-1.5 rounded-md px-1.75 bg-blanco flex items-center pointer-events-none">
+                                <ng-icon hlm name="lucideChevronDown" size="sm" class="opacity-80 pointer-events-none" />
+                            </div>
+                        </div>
+                    </div>
+                    <div hlmFieldGroup>
+                        <div hlmField>
+                            <div id="monto" hlmInputGroup class="fade-in">
+                                <div hlmInputGroupAddon align="block-start">
+                                    <label for="monto" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Monto</label>
+                                    <hlm-field-error
+                                        class="transition-[opacity,max-height] duration-500 ease-out text-xs ml-auto text-balance text-right"
+                                        [class.opacity-100]="invalid('monto')"
+                                        [class.opacity-0]="!invalid('monto')"
+                                        [class.max-h-10]="invalid('monto')"
+                                        [class.max-h-0]="!invalid('monto')"
+                                    >
+                                        Debes ingresar un monto
+                                    </hlm-field-error>
+                                </div>
+                                <input
+                                    #inputMonto
+                                    hlmInputGroupInput
+                                    [formatoDinero]="true"
+                                    class="transition-all duration-500 ease-out text-sm"
+                                    id="monto"
+                                    formControlName="monto"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div hlmFieldGroup>
+                        <div hlmField>
+                            <div id="descripcion" hlmInputGroup class="fade-in">
+                                <div hlmInputGroupAddon align="block-start">
+                                    <label for="descripcion" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Descripción</label>
+                                </div>
+                                <input hlmInputGroupInput class="transition-all duration-500 ease-out text-sm" id="nombre" formControlName="descripcion" />
+                            </div>
+                        </div>
+                    </div>
+                    @if (cargandoCategorias()) {
+                        <hlm-skeleton class="h-9 rounded-sm" />
+                    } @else if (categoriasMostrar().length > 1) {
+                        <hlm-select class="inline-block z-10 w-full" formControlName="idCategoriaFinanciera" [itemToString]="categoriaItemToString">
+                            <hlm-select-trigger>
+                                <div class="flex justify-start items-center gap-2">
+                                    <hlm-select-value class="text-sm! truncate" />
+                                </div>
+                            </hlm-select-trigger>
+                            <hlm-select-content *hlmSelectPortal showScroll>
+                                <hlm-select-group>
+                                    @for (categoria of categoriasMostrar(); track categoria.id) {
+                                        <hlm-select-item [value]="categoria.id" class="text-sm!">{{ categoria.nombre }}</hlm-select-item>
+                                    }
+                                </hlm-select-group>
+                            </hlm-select-content>
+                        </hlm-select>
+                    }
+                </fieldset>
+                @if (error()) {
+                    <div hlmAlert variant="destructive" class="mt-3">
+                        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                        <p hlmAlertDescription class="whitespace-break-spaces">{{ error() }}</p>
+                    </div>
+                }
+            </div>
+            <div hlmCardFooter class="flex flex-col items-center gap-4 faster-fade-in">
+                <div class="w-full flex items-center justify-end gap-3">
+                    <button hlmBtn type="button" (click)="cerrar.emit()" class="btnOutlineAzul">Cancelar</button>
+                    <button hlmBtn id="guardar_empleado" type="submit" class="btnAzul">
+                        @if (procesando()) {
+                            <hlm-spinner />
+                        }
+                        Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
