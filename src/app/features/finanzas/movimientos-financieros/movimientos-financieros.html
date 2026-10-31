@@ -1,0 +1,172 @@
+@if (error()) {
+    <div hlmAlert variant="destructive" class="w-full">
+        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+        <p hlmAlertDescription>{{ error() }}</p>
+    </div>
+}
+<div class="w-full flex flex-col md:flex-row items-stretch justify-between mt-2 md:mt-1 mb-2 gap-3 fade-in">
+    <div class="flex items-end order-2 md:order-1">
+        <div class="flex flex-row items-center justify-center gap-2 w-full">
+            <hlm-date-picker class="text-sm w-full" [date]="fechaDesde()" (dateChange)="fechaDesde.set($event)">
+                <hlm-date-picker-trigger
+                    class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
+                >
+                </hlm-date-picker-trigger>
+            </hlm-date-picker>
+            <p hlmP class="text-sm">al</p>
+            <hlm-date-picker class="text-sm w-full" [date]="fechaHasta()" (dateChange)="fechaHasta.set($event)">
+                <hlm-date-picker-trigger
+                    class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
+                >
+                </hlm-date-picker-trigger>
+            </hlm-date-picker>
+        </div>
+    </div>
+    <div class="order-1 md:order-2 flex flex-row items-center justify-end gap-2">
+        <button hlmBtn class="pr-6! flex-1" (click)="openModalCrear()">
+            <ng-icon hlm name="lucidePlus" size="sm" />
+            Nuevo Movimiento
+        </button>
+        <button hlmBtn size="sm" variant="secondary" [hlmDropdownMenuTrigger]="otras_opciones" class="p-0! w-8!">
+            <ng-icon hlm size="xs" name="lucideEllipsis" />
+        </button>
+        <ng-template #otras_opciones>
+            <hlm-dropdown-menu class="w-47">
+                <hlm-dropdown-menu-group>
+                    <button hlmDropdownMenuItem routerLink="/mis-categorias" class="hover:bg-gris! focus:bg-gris!">
+                        <ng-icon hlm name="lucideTags" size="14px" />
+                        Gestionar Categorías
+                    </button>
+                </hlm-dropdown-menu-group>
+            </hlm-dropdown-menu>
+        </ng-template>
+    </div>
+</div>
+<div hlmTableContainer class="fade-in">
+    <table hlmTable>
+        <thead hlmTHead>
+            <tr hlmTr>
+                <th hlmTh class="text-xs md:text-sm text-center">Fecha</th>
+                <th hlmTh class="text-xs md:text-sm">Descripcion</th>
+                <th hlmTh class="text-xs md:text-sm text-center">Monto</th>
+                <th hlmTh class="text-xs md:text-sm text-center">Saldo</th>
+                <th hlmTh class="w-10 md:w-16"></th>
+            </tr>
+        </thead>
+        <tbody hlmTBody>
+            @if (cargando()) {
+                @for (_ of [1, 2, 3]; track $index) {
+                    <tr hlmTr>
+                        @for (_ of [1, 2, 3, 4]; track $index) {
+                            <td hlmTd>
+                                <hlm-skeleton class="h-8 rounded-xl" />
+                            </td>
+                        }
+                        <td hlmTd></td>
+                    </tr>
+                }
+            } @else {
+                @for (item of movimientosMostrar(); track item.id) {
+                    <tr hlmTr class="fade-in">
+                        <td hlmTd class="text-center">
+                            <p
+                                hlmP
+                                class="text-xs md:text-sm whitespace-break-spaces"
+                                [hlmTooltip]="item.fechaMovimiento | date: 'd MMM yyyy HH:mm'"
+                                position="right"
+                            >
+                                {{ item.fechaMovimiento | date: 'd MMM yyyy' }}
+                            </p>
+                        </td>
+                        <td hlmTd>
+                            @if (item.nombreCategoriaFinanciera) {
+                                <p
+                                    hlmP
+                                    class="mb-0.5 text-xs underline underline-offset-2"
+                                    [ngClass]="{
+                                        'md:text-sm': !item.descripcion,
+                                    }"
+                                >
+                                    {{ item.nombreCategoriaFinanciera }}
+                                </p>
+                            }
+                            <p hlmP class="text-xs md:text-sm whitespace-break-spaces">{{ item.descripcion }}</p>
+                        </td>
+                        <td hlmTd class="text-xs md:text-sm text-right">
+                            <div
+                                class="flex flex-row items-center justify-end gap-1.5 font-medium"
+                                [class.text-azul]="item.tipoMovimiento === 1"
+                                [class.text-destructive]="item.tipoMovimiento === 2"
+                            >
+                                @if (item.tipoMovimiento === 1) {
+                                    <ng-icon hlm name="lucidePlus" size="xs" class="hidden! md:inline-block!" />
+                                } @else if (item.tipoMovimiento === 2) {
+                                    <ng-icon hlm name="lucideMinus" size="xs" class="hidden! md:inline-block!" />
+                                }
+                                ${{ item.monto | number: '1.0-0' }}
+                            </div>
+                        </td>
+                        <td hlmTd class="text-xs md:text-sm text-right">${{ item.saldo | number: '1.0-0' }}</td>
+                        <td hlmTd>
+                            <div class="flex items-center justify-center-safe">
+                                <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
+                                    <ng-icon hlm size="xs" name="lucideEllipsis" />
+                                </button>
+                                <ng-template #menu>
+                                    <hlm-dropdown-menu>
+                                        <hlm-dropdown-menu-group>
+                                            <button hlmDropdownMenuItem class="hover:bg-gris! focus:bg-gris!" (click)="openModalEditar(item)">Editar</button>
+                                            <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
+                                        </hlm-dropdown-menu-group>
+                                    </hlm-dropdown-menu>
+                                </ng-template>
+                            </div>
+                        </td>
+                    </tr>
+                } @empty {
+                    <tr hlmTr class="fade-in">
+                        <td hlmTd colspan="5" class="text-center">Sin movimientos registrados</td>
+                    </tr>
+                }
+                @if (siguienteFecha() && siguienteId()) {
+                    <tr hlmTr class="fade-in">
+                        <td hlmTd colspan="5" class="text-center">
+                            <button hlmBtn variant="link" (click)="obtenerMasMovimientos()" [disabled]="cargandoMasMovimientos()">
+                                @if (cargandoMasMovimientos()) {
+                                    <hlm-spinner />
+                                }
+                                Mostrar más movimientos
+                            </button>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+@if (showModalEliminar()) {
+    <app-modal-eliminacion
+        [item]="itemSeleccionado()"
+        titulo="Eliminar el movimiento financiero:"
+        [descripcion]="descripcionModalEliminar()"
+        (cerrar)="closeModalEliminar()"
+        (eliminar)="eliminar($event)"
+    >
+    </app-modal-eliminacion>
+}
+@if (showModalCrear()) {
+    <app-modal-nuevo-movimiento
+        [idCuentaFinanciera]="idCuentaFinanciera()"
+        (notificarCambio)="movimientoActualizado($event)"
+        (cerrar)="closeModalCrear()"
+    ></app-modal-nuevo-movimiento>
+}
+@if (showModalEditar()) {
+    <app-modal-nuevo-movimiento
+        [idCuentaFinanciera]="idCuentaFinanciera()"
+        [movimiento]="itemSeleccionado()"
+        (notificarCambio)="movimientoActualizado($event)"
+        (cerrar)="closeModalEditar()"
+    ></app-modal-nuevo-movimiento>
+}
