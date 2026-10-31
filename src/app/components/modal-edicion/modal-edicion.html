@@ -19,11 +19,21 @@
                     @for (campo of campos(); track campo.llave) {
                         @if (campo.tipo !== 'oculto') {
                             <div [id]="`input_${campo.llave}`" hlmField class="gap-1">
-                                @if (campo.tipo === 'string' || campo.tipo === 'number' || campo.tipo === 'textarea') {
+                                @if (campo.tipo === 'string' || campo.tipo === 'money' || campo.tipo === 'number' || campo.tipo === 'textarea') {
                                     <hlm-input-group>
                                         @if (campo.tipo === 'string') {
                                             <input
                                                 hlmInputGroupInput
+                                                type="text"
+                                                class="transition-all duration-500 ease-out text-sm"
+                                                [id]="campo.llave"
+                                                [formControl]="form.controls[campo.llave]"
+                                            />
+                                        }
+                                        @if (campo.tipo === 'money') {
+                                            <input
+                                                hlmInputGroupInput
+                                                [formatoDinero]="true"
                                                 type="text"
                                                 class="transition-all duration-500 ease-out text-sm"
                                                 [id]="campo.llave"
@@ -62,6 +72,36 @@
                                             >
                                         </hlm-input-group-addon>
                                     </hlm-input-group>
+                                }
+                                @if (campo.tipo === 'fecha') {
+                                    <div hlmField class="flex flex-col justify-start items-center">
+                                        <hlm-input-group>
+                                            <hlm-input-group-addon align="block-start">
+                                                <label
+                                                    [for]="campo.llave"
+                                                    hlmLabel
+                                                    class="text-xs opacity-80 font-semibold whitespace-nowrap text-muted-foreground"
+                                                    >{{ campo.nombre ?? campo.llave }}</label
+                                                >
+                                                <hlm-field-error
+                                                    class="transition-all duration-500 ease-out text-xs ml-auto"
+                                                    [class.opacity-100]="invalid(campo.llave)"
+                                                    [class.opacity-0]="!invalid(campo.llave)"
+                                                    [class.max-h-10]="invalid(campo.llave)"
+                                                    [class.max-h-0]="!invalid(campo.llave)"
+                                                    >Debes ingresar "{{ campo.nombre ?? campo.llave }}"</hlm-field-error
+                                                >
+                                            </hlm-input-group-addon>
+                                            <div class="pb-2 px-2 w-full">
+                                                <hlm-date-picker class="text-sm w-full" [formControl]="form.controls[campo.llave]">
+                                                    <hlm-date-picker-trigger
+                                                        class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
+                                                    >
+                                                    </hlm-date-picker-trigger>
+                                                </hlm-date-picker>
+                                            </div>
+                                        </hlm-input-group>
+                                    </div>
                                 }
                                 @if (campo.tipo === 'boolean') {
                                     <div class="flex justify-end-safe items-center gap-4">
@@ -209,7 +249,7 @@
         </div>
         <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-6 faster-fade-in">
             <button hlmBtn (click)="cerrar.emit()" class="btnOutlineAzul px-4! md:px-6!">Cancelar</button>
-            <button hlmBtn id="boton_confirmar" (click)="confirmar()" [disabled]="form.invalid" class="btnAzul px-4! md:px-6!">
+            <button hlmBtn id="boton_confirmar" (click)="confirmar()" class="btnAzul px-4! md:px-6!">
                 {{ textoBotonGuardar }}
             </button>
         </div>
@@ -221,7 +261,7 @@
                 }
             </div>
             <div hlmCardFooter class="flex items-center justify-end gap-2 md:gap-4 faster-fade-in">
-                <button hlmBtn (click)="funcionSecundaria.emit(this.form.getRawValue())" [disabled]="form.invalid" class="btnAzul px-4! md:px-6!">
+                <button hlmBtn (click)="confirmarSecundario()" class="btnAzul px-4! md:px-6!">
                     {{ textoBotonSecundario }}
                 </button>
             </div>

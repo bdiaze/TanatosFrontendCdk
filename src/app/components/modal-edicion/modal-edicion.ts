@@ -33,6 +33,8 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
 import { EditorTexto } from '../editor-texto/editor-texto';
 import { NgClass } from '@angular/common';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
+import { FormatoDinero } from '@/app/directives/formato-dinero';
+import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
 
 @Component({
     selector: 'app-modal-edicion',
@@ -55,9 +57,23 @@ import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
         EditorTexto,
         NgClass,
         HlmTextareaImports,
+        FormatoDinero,
+        HlmDatePickerImports,
     ],
     templateUrl: './modal-edicion.html',
-    providers: [provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideSquarePen })],
+    providers: [
+        provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideSquarePen }),
+        provideHlmDatePickerConfig({
+            autoCloseOnSelect: true,
+            formatDate: (date: Date) => {
+                return new Intl.DateTimeFormat('es-CL', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                }).format(date);
+            },
+        }),
+    ],
 })
 export class ModalEdicion implements OnInit {
     campos = input<CampoDinamico[]>([]);
@@ -129,8 +145,34 @@ export class ModalEdicion implements OnInit {
         this.form = new FormGroup(camposForm);
     }
 
+    getRawValue() {
+        const rawValue = this.form?.getRawValue();
+
+        this.campos().forEach((campo) => {
+            if (campo.tipo === 'money') {
+                rawValue[campo.llave] = Number(rawValue[campo.llave].replace(/\D+/g, ''));
+            }
+        });
+
+        return rawValue;
+    }
+
     confirmar() {
-        this.editar.emit(this.form?.getRawValue());
+        if (this.form.invalid) {
+            this.form.markAllAsTouched();
+            return;
+        }
+
+        this.editar.emit(this.getRawValue());
+    }
+
+    confirmarSecundario() {
+        if (this.form.invalid) {
+            this.form.markAllAsTouched();
+            return;
+        }
+
+        this.funcionSecundaria.emit(this.getRawValue());
     }
 
     invalid(llave: string) {
@@ -166,7 +208,7 @@ export class ModalEdicion implements OnInit {
 export interface CampoDinamico {
     llave: string;
     nombre?: string;
-    tipo: 'string' | 'textarea' | 'number' | 'boolean' | 'select' | 'autocomplete' | 'oculto' | 'editor-texto';
+    tipo: 'string' | 'textarea' | 'number' | 'money' | 'fecha' | 'boolean' | 'select' | 'autocomplete' | 'oculto' | 'editor-texto';
     requerido: boolean;
     deshabilitado: boolean;
     toolbarEditarTexto?: (string[] | { header: (number | boolean)[] }[] | { script: string }[] | { indent: string }[] | { list: string }[])[];
