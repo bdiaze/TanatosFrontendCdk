@@ -28,7 +28,6 @@ import { map } from 'rxjs';
 @Component({
     selector: 'app-mantenedor-categorias-financieras',
     imports: [
-        HlmP,
         HlmH3,
         HlmH4,
         HlmIcon,

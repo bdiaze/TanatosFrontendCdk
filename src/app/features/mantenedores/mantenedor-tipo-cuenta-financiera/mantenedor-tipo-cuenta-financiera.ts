@@ -24,7 +24,6 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
         ModalEdicion,
         HlmButtonImports,
         HlmTableImports,
-        HlmP,
         HlmH3,
         HlmAlertImports,
         NgIcon,
