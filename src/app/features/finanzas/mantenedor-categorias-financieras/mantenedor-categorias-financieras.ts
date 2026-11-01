@@ -152,7 +152,12 @@ export class MantenedorCategoriasFinancieras {
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe({
                 next: (res) => {
-                    const sorted = res.sort((a, b) => a.id - b.id);
+                    const sorted = res.sort((a, b) => {
+                        if (a.tipoMovimiento == b.tipoMovimiento) {
+                            return a.nombre.toLocaleLowerCase().localeCompare(b.nombre.toLocaleLowerCase());
+                        }
+                        return a.tipoMovimiento - b.tipoMovimiento;
+                    });
                     this.listado.set(sorted);
                 },
                 error: (err) => {
