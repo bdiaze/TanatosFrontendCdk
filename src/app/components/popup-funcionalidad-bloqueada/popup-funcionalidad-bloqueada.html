@@ -1,7 +1,7 @@
 <hlm-popover sideOffset="5">
-    <span #trigger hlmPopoverTrigger class="inline-block w-full">
+    <button #trigger hlmPopoverTrigger class="inline-block w-full">
         <ng-content></ng-content>
-    </span>
+    </button>
     <hlm-popover-content *hlmPopoverPortal="let ctx" class="rounded-none w-80 shadow-none">
         <div class="flex flex-col items-center justify-center gap-1.5">
             <h4 hlmH4 class="text-lg text-center">Funcionalidad Restringida 😦</h4>
