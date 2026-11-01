@@ -9,7 +9,19 @@ import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
 import { Component, computed, DestroyRef, effect, inject, input, OnInit, output, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideBookmark, lucideEllipsis, lucideMinus, lucidePlus, lucideSquareChevronDown, lucideTag, lucideTags, lucideTriangleAlert } from '@ng-icons/lucide';
+import {
+    lucideDownload,
+    lucideEllipsis,
+    lucideFile,
+    lucideMinus,
+    lucidePaperclip,
+    lucidePlus,
+    lucideSearch,
+    lucideSettings,
+    lucideSquareChevronDown,
+    lucideTags,
+    lucideTriangleAlert,
+} from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/helm/date-picker';
@@ -19,15 +31,22 @@ import { HlmScrollAreaImports } from '@spartan-ng/helm/scroll-area';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
+import { HlmP } from '@spartan-ng/helm/typography';
 import { ModalNuevoMovimiento } from '../modal-nuevo-movimiento/modal-nuevo-movimiento';
 import { HlmTooltipImports } from '@spartan-ng/helm/tooltip';
 import { RouterLink } from '@angular/router';
+import { DocumentoAdjuntoDao } from '@/app/daos/documento-adjunto-dao';
+import { EntDocumentoAdjuntoGenerarUrlBajada } from '@/app/entities/others/ent-documento-adjunto-generar-url-bajada';
+import { S3Service } from '@/app/services/s3-service';
+import { SalDocumentoAdjunto } from '@/app/entities/others/sal-documento-adjunto';
+import { HistoryService } from '@/app/services/history-service';
+import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-documento/modal-visualizador-documento';
 
 @Component({
     selector: 'app-movimientos-financieros',
     imports: [
         ModalEliminacion,
+        ModalVisualizadorDocumento,
         RouterLink,
         HlmIcon,
         NgIcon,
@@ -49,7 +68,19 @@ import { RouterLink } from '@angular/router';
     templateUrl: './movimientos-financieros.html',
     styleUrl: './movimientos-financieros.scss',
     providers: [
-        provideIcons({ lucidePlus, lucideMinus, lucideSquareChevronDown, lucideTriangleAlert, lucideEllipsis, lucideTags }),
+        provideIcons({
+            lucidePlus,
+            lucideMinus,
+            lucideSquareChevronDown,
+            lucideTriangleAlert,
+            lucideEllipsis,
+            lucideTags,
+            lucideSettings,
+            lucidePaperclip,
+            lucideFile,
+            lucideSearch,
+            lucideDownload,
+        }),
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,
             formatDate: (date: Date) => {
@@ -71,6 +102,9 @@ export class MovimientosFinancieros implements OnInit {
 
     private readonly destroyRef = inject(DestroyRef);
     private readonly movimientoFinancieroDao = inject(MovimientoFinancieroDao);
+    private readonly documentoAdjuntoDao = inject(DocumentoAdjuntoDao);
+    private readonly s3Service = inject(S3Service);
+    private readonly historyService = inject(HistoryService);
 
     negocioStore = inject(NegocioStore);
     private readonly datePipe = inject(DatePipe);
@@ -102,6 +136,19 @@ export class MovimientosFinancieros implements OnInit {
         }
         return this.movimientos();
     });
+
+    idMovimientosAdjuntosAbiertos = signal<Set<number>>(new Set());
+    toggleAdjuntosAbiertos(idMovimiento: number) {
+        this.idMovimientosAdjuntosAbiertos.update((ids) => {
+            if (ids.has(idMovimiento)) {
+                const nuevos = new Set(ids);
+                nuevos.delete(idMovimiento);
+                return nuevos;
+            } else {
+                return new Set(ids).add(idMovimiento);
+            }
+        });
+    }
 
     cargando = signal(true);
     error = signal('');
@@ -310,5 +357,96 @@ export class MovimientosFinancieros implements OnInit {
         }
 
         this.notificarCambio.emit(movimiento);
+    }
+
+    urlDocumentoVisualizacion = signal<string | null>(null);
+    documentoSeleccionadoVisualizacion = signal<SalDocumentoAdjunto | null>(null);
+    verDocumento(url: string | null, documento: SalDocumentoAdjunto | null) {
+        this.urlDocumentoVisualizacion.set(url);
+        this.documentoSeleccionadoVisualizacion.set(documento);
+        if (url && documento) {
+            this.historyService.registrarEstado('verDocumentoOpen');
+            document.body.classList.add('overflow-hidden!');
+        }
+    }
+    closeModalVerDocumento() {
+        this.verDocumento(null, null);
+        this.historyService.removerEstado('verDocumentoOpen');
+        document.body.classList.remove('overflow-hidden!');
+    }
+
+    idsDocumentosVisualizando = signal<Set<number>>(new Set());
+    obtenerUrlVisualizacion(documento: SalDocumentoAdjunto) {
+        // Se deja documento como "visualizando"...
+        this.idsDocumentosVisualizando.update((ids) => {
+            return new Set(ids).add(documento.id);
+        });
+
+        this.documentoAdjuntoDao
+            .generarUrlBajada({
+                idDocumentoAdjunto: documento.id,
+                paraVisualizacion: true,
+            } as EntDocumentoAdjuntoGenerarUrlBajada)
+            .subscribe({
+                next: (salida) => {
+                    this.verDocumento(salida.preSignedUrl, documento);
+
+                    this.idsDocumentosVisualizando.update((ids) => {
+                        const nuevos = new Set(ids);
+                        nuevos.delete(documento.id);
+                        return nuevos;
+                    });
+                },
+                error: (err) => {
+                    console.error('Error al generar URL para visualizar documento', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al generar URL para visualizar documento');
+
+                    this.idsDocumentosVisualizando.update((ids) => {
+                        const nuevos = new Set(ids);
+                        nuevos.delete(documento.id);
+                        return nuevos;
+                    });
+                },
+            });
+    }
+
+    idsDocumentosDescargando = signal<Set<number>>(new Set());
+    descargaArchivo(idDocumento: number) {
+        // Se deja documento como "descargando"...
+        this.idsDocumentosDescargando.update((ids) => {
+            return new Set(ids).add(idDocumento);
+        });
+
+        // Se obtiene URL prefirmada para descarga...
+        this.documentoAdjuntoDao
+            .generarUrlBajada({
+                idDocumentoAdjunto: idDocumento,
+                paraVisualizacion: false,
+            } as EntDocumentoAdjuntoGenerarUrlBajada)
+            .subscribe({
+                next: (salida) => {
+                    // Se descarga el archivo...
+                    const timeout = this.s3Service.bajarArchivo(salida.preSignedUrl);
+
+                    // Se deja spinner corriendo mientras navegador procesa la descarga...
+                    setTimeout(() => {
+                        this.idsDocumentosDescargando.update((ids) => {
+                            const nuevos = new Set(ids);
+                            nuevos.delete(idDocumento);
+                            return nuevos;
+                        });
+                    }, timeout);
+                },
+                error: (err) => {
+                    console.error('Error al generar URL de bajada de documento', err);
+                    this.error.set(getErrorMessage(err) ?? 'Error al generar URL de bajada de documento');
+
+                    this.idsDocumentosDescargando.update((ids) => {
+                        const nuevos = new Set(ids);
+                        nuevos.delete(idDocumento);
+                        return nuevos;
+                    });
+                },
+            });
     }
 }

@@ -29,14 +29,16 @@
             Nuevo Movimiento
         </button>
         <button hlmBtn size="sm" variant="secondary" [hlmDropdownMenuTrigger]="otras_opciones" class="p-0! w-8!">
-            <ng-icon hlm size="xs" name="lucideEllipsis" />
+            <ng-icon hlm size="sm" name="lucideSettings" />
         </button>
         <ng-template #otras_opciones>
-            <hlm-dropdown-menu class="w-47">
+            <hlm-dropdown-menu class="min-w-40">
                 <hlm-dropdown-menu-group>
+                    <hlm-dropdown-menu-label>Configuración</hlm-dropdown-menu-label>
+                    <hlm-dropdown-menu-separator />
                     <button hlmDropdownMenuItem routerLink="/mis-categorias" class="hover:bg-gris! focus:bg-gris!">
                         <ng-icon hlm name="lucideTags" size="14px" />
-                        Gestionar Categorías
+                        Mis Categorías
                     </button>
                 </hlm-dropdown-menu-group>
             </hlm-dropdown-menu>
@@ -47,7 +49,7 @@
     <table hlmTable>
         <thead hlmTHead>
             <tr hlmTr>
-                <th hlmTh class="text-xs md:text-sm text-center">Fecha</th>
+                <th hlmTh class="text-xs md:text-sm text-center w-15 md:w-26">Fecha</th>
                 <th hlmTh class="text-xs md:text-sm">Descripcion</th>
                 <th hlmTh class="text-xs md:text-sm text-center">Monto</th>
                 <th hlmTh class="text-xs md:text-sm text-center">Saldo</th>
@@ -79,19 +81,48 @@
                                 {{ item.fechaMovimiento | date: 'd MMM yyyy' }}
                             </p>
                         </td>
-                        <td hlmTd>
-                            @if (item.nombreCategoriaFinanciera) {
-                                <p
-                                    hlmP
-                                    class="mb-0.5 text-xs underline underline-offset-2"
-                                    [ngClass]="{
-                                        'md:text-sm': !item.descripcion,
-                                    }"
-                                >
-                                    {{ item.nombreCategoriaFinanciera }}
-                                </p>
-                            }
-                            <p hlmP class="text-xs md:text-sm whitespace-break-spaces">{{ item.descripcion }}</p>
+                        <td hlmTd class="px-0">
+                            <div class="flex flex-row items-center gap-1 md:gap-2">
+                                @if (item.documentoAdjuntos.length > 0) {
+                                    @if (!idMovimientosAdjuntosAbiertos().has(item.id)) {
+                                        <button
+                                            hlmBtn
+                                            variant="outline"
+                                            size="icon-sm"
+                                            type="button"
+                                            class="flex flex-row items-center gap-0.5 fade-in"
+                                            (click)="toggleAdjuntosAbiertos(item.id)"
+                                        >
+                                            <ng-icon hlm name="lucidePaperclip" size="sm" />
+                                        </button>
+                                    } @else {
+                                        <button
+                                            hlmBtn
+                                            variant="secondary"
+                                            size="icon-sm"
+                                            type="button"
+                                            class="flex flex-row items-center gap-0.5 fade-in"
+                                            (click)="toggleAdjuntosAbiertos(item.id)"
+                                        >
+                                            <ng-icon hlm name="lucidePaperclip" size="sm" />
+                                        </button>
+                                    }
+                                }
+                                <div class="flex flex-col">
+                                    @if (item.nombreCategoriaFinanciera) {
+                                        <p
+                                            hlmP
+                                            class="mb-0.5 text-xs underline underline-offset-2"
+                                            [ngClass]="{
+                                                'md:text-sm': !item.descripcion,
+                                            }"
+                                        >
+                                            {{ item.nombreCategoriaFinanciera }}
+                                        </p>
+                                    }
+                                    <p hlmP class="text-xs md:text-sm whitespace-break-spaces">{{ item.descripcion }}</p>
+                                </div>
+                            </div>
                         </td>
                         <td hlmTd class="text-xs md:text-sm text-right">
                             <div
@@ -107,7 +138,7 @@
                                 ${{ item.monto | number: '1.0-0' }}
                             </div>
                         </td>
-                        <td hlmTd class="text-xs md:text-sm text-right">${{ item.saldo | number: '1.0-0' }}</td>
+                        <td hlmTd class="text-xs md:text-sm text-right px-0">${{ item.saldo | number: '1.0-0' }}</td>
                         <td hlmTd>
                             <div class="flex items-center justify-center-safe">
                                 <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
@@ -116,7 +147,9 @@
                                 <ng-template #menu>
                                     <hlm-dropdown-menu>
                                         <hlm-dropdown-menu-group>
-                                            <button hlmDropdownMenuItem class="hover:bg-gris! focus:bg-gris!" (click)="openModalEditar(item)">Editar</button>
+                                            <hlm-dropdown-menu-label>Acciones</hlm-dropdown-menu-label>
+                                            <hlm-dropdown-menu-separator />
+                                            <button hlmDropdownMenuItem class="hover:bg-gris! focus:bg-gris!" (click)="openModalEditar(item)">Modificar</button>
                                             <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(item)">Eliminar</button>
                                         </hlm-dropdown-menu-group>
                                     </hlm-dropdown-menu>
@@ -124,6 +157,53 @@
                             </div>
                         </td>
                     </tr>
+                    @if (idMovimientosAdjuntosAbiertos().has(item.id)) {
+                        @for (documento of item.documentoAdjuntos; track documento.id) {
+                            <tr hlmTr class="fade-in">
+                                <td hlmTd class="text-left px-4 bg-gris/30" colspan="5">
+                                    <div class="flex flex-row items-center justify-between gap-2">
+                                        <div class="flex flex-row items-center gap-2">
+                                            <div class="flex items-center justify-center size-4">
+                                                <ng-icon hlm size="sm" name="lucideFile" class="text-azul" />
+                                            </div>
+                                            <p hlmP class="text-xs md:text-sm whitespace-break-spaces">{{ documento.nombreArchivo }}</p>
+                                        </div>
+                                        <div class="flex flex-row items-center gap-1">
+                                            <button
+                                                hlmBtn
+                                                type="button"
+                                                size="icon-sm"
+                                                hlmTooltip="Abrir"
+                                                (click)="obtenerUrlVisualizacion(documento)"
+                                                [disabled]="idsDocumentosVisualizando().size > 0"
+                                            >
+                                                @if (idsDocumentosVisualizando().size > 0) {
+                                                    <hlm-spinner />
+                                                } @else {
+                                                    <ng-icon hlm size="sm" name="lucideSearch" />
+                                                }
+                                            </button>
+                                            <button
+                                                hlmBtn
+                                                type="button"
+                                                size="icon-sm"
+                                                variant="secondary"
+                                                hlmTooltip="Descargar"
+                                                (click)="descargaArchivo(documento.id)"
+                                                [disabled]="idsDocumentosDescargando().has(documento.id)"
+                                            >
+                                                @if (idsDocumentosDescargando().has(documento.id)) {
+                                                    <hlm-spinner />
+                                                } @else {
+                                                    <ng-icon hlm size="sm" name="lucideDownload" />
+                                                }
+                                            </button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
                 } @empty {
                     <tr hlmTr class="fade-in">
                         <td hlmTd colspan="5" class="text-center">Sin movimientos registrados</td>
@@ -169,4 +249,13 @@
         (notificarCambio)="movimientoActualizado($event)"
         (cerrar)="closeModalEditar()"
     ></app-modal-nuevo-movimiento>
+}
+
+@if (urlDocumentoVisualizacion() && documentoSeleccionadoVisualizacion()) {
+    <app-modal-visualizador-documento
+        [url]="urlDocumentoVisualizacion()!"
+        [nombre]="documentoSeleccionadoVisualizacion()!.nombreArchivo"
+        [mime]="documentoSeleccionadoVisualizacion()!.mime"
+        (cerrar)="closeModalVerDocumento()"
+    ></app-modal-visualizador-documento>
 }
