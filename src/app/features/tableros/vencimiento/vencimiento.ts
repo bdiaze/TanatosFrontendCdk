@@ -2,10 +2,9 @@ import { DocumentoAdjuntoDao } from '@/app/daos/documento-adjunto-dao';
 import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
 import { SalNormaSuscritaObtenerPorIdConVencimiento } from '@/app/entities/others/sal-norma-suscrita-obtener-por-id-con-vencimiento';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
+import { Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {

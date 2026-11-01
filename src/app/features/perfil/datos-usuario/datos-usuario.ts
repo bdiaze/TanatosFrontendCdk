@@ -1,3 +1,4 @@
+import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { PerfilDao } from '@/app/daos/perfil-dao';
 import { formatearTelefono, FormatoTelefono } from '@/app/directives/formato-telefono';
 import { EntPerfilActualizarWhatsapp } from '@/app/entities/others/ent-perfil-actualizar-whatsapp';
@@ -5,7 +6,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { TourService } from '@/app/helpers/tour-service';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { NgClass } from '@angular/common';
-import { Component, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -30,6 +31,7 @@ import { map } from 'rxjs';
 @Component({
     selector: 'app-datos-usuario',
     imports: [
+        PopupFuncionalidadBloqueada,
         HlmH3,
         HlmH4,
         HlmSpinnerImports,
@@ -65,6 +67,10 @@ export class DatosUsuario implements OnInit {
     readonly negocioStore = inject(NegocioStore);
 
     error = signal<string>('');
+
+    puedeConfigurarWhatsapp = computed(() => {
+        return this.negocioStore.resumenSuscripcionUsuario()?.tienePlanEmpresa ?? false;
+    });
 
     constructor() {
         effect(() => {
