@@ -82,16 +82,18 @@
                                 <hlm-skeleton class="h-18.25 w-full rounded-md" />
                             } @else {
                                 <div class="flex flex-row items-center justify-center pb-1.5 relative fade-in">
-                                    <div class="flex-1 flex flex-row items-center justify-center gap-2">
+                                    <div class="flex-1 flex flex-row items-center justify-center gap-2 relative">
                                         @if (!tienePlanEmpresa()) {
-                                            <ng-icon
-                                                hlm
-                                                name="lucideGem"
-                                                size="sm"
-                                                hlmTooltip="Tu plan restringe el envío de notificaciones a tu equipo"
-                                                class="opacity-90"
-                                                routerLink="/mi-plan"
-                                            />
+                                            <div class="absolute top-0 bottom-0 left-3.5 flex items-center justify-center">
+                                                <ng-icon
+                                                    hlm
+                                                    name="lucideGem"
+                                                    size="sm"
+                                                    hlmTooltip="Tu plan restringe el envío de notificaciones a tu equipo"
+                                                    class="opacity-90"
+                                                    routerLink="/mi-plan"
+                                                />
+                                            </div>
                                         }
                                         <h4 hlmH4 class="text-center text-base text-negro/90!">Enviar notificaciones por:</h4>
                                     </div>
@@ -130,7 +132,7 @@
                                             </hlm-dropdown-menu>
                                         </ng-template>
                                     } @else {
-                                        <app-popup-funcionalidad-bloqueada class="ml-auto size-7 absolute right-1.5">
+                                        <app-popup-funcionalidad-bloqueada class="ml-auto size-7 absolute right-1.5" [offsetX]="28" align="end">
                                             <button hlmBtn size="icon" class="size-7!" type="button">
                                                 <ng-icon name="lucidePlus" class="text-base" />
                                             </button>
