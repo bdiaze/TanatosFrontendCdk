@@ -175,6 +175,10 @@ export class MovimientosFinancieros implements OnInit {
                 }
             });
         });
+
+        this.historyService.popState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((_) => {
+            this.closeModalVerDocumento();
+        });
     }
 
     ngOnInit(): void {
