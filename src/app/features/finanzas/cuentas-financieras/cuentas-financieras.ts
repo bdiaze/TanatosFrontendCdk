@@ -89,14 +89,14 @@ export class CuentasFinancieras implements OnInit {
         },
         {
             llave: 'saldoInicial',
-            nombre: 'Saldo Inicial',
+            nombre: 'Saldo',
             tipo: 'money',
             requerido: true,
             deshabilitado: false,
         },
         {
             llave: 'fechaSaldoInicialUtc',
-            nombre: 'Fecha Inicial',
+            nombre: 'Fecha',
             tipo: 'fecha',
             requerido: true,
             deshabilitado: false,

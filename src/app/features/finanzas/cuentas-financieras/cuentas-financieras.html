@@ -52,7 +52,9 @@
                 <ng-template #menu>
                     <hlm-dropdown-menu>
                         <hlm-dropdown-menu-group>
-                            <button hlmDropdownMenuItem (click)="openModalEditar(cuenta)">Editar</button>
+                            <hlm-dropdown-menu-label>Acciones</hlm-dropdown-menu-label>
+                            <hlm-dropdown-menu-separator />
+                            <button hlmDropdownMenuItem (click)="openModalEditar(cuenta)">Modificar</button>
                             <button hlmDropdownMenuItem variant="destructive" (click)="openModalEliminar(cuenta)">Eliminar</button>
                         </hlm-dropdown-menu-group>
                     </hlm-dropdown-menu>
@@ -86,7 +88,7 @@
 @if (showModalEliminar()) {
     <app-modal-eliminacion
         [item]="itemEliminacion()"
-        titulo="Eliminar una cuenta financiera:"
+        titulo="Eliminar la cuenta financiera:"
         [descripcion]="
             `¿Seguro que deseas eliminar la cuenta <b>${itemEliminacion()?.nombre}</b>?
             <p class='text-sm mt-2'>Tipo de cuenta:</p>
@@ -103,7 +105,7 @@
     <app-modal-edicion
         [campos]="camposEdicion()"
         [item]="itemEdicion()"
-        titulo="Editar una cuenta financiera:"
+        titulo="Modificar la cuenta financiera:"
         (cerrar)="closeModalEditar()"
         (editar)="editar($event)"
     >
