@@ -265,20 +265,25 @@ export class Vencimiento implements OnInit {
                             return fechaA.getTime() - fechaB.getTime();
                         }) ?? null;
 
-                    this.documentosAdjuntos.set(
-                        normaSuscritaConVencimiento.documentosAdjuntos?.map(
-                            (x) =>
-                                ({
+                    this.documentosAdjuntos.update((actuales) => {
+                        const estadosActuales = new Map(actuales.map((doc) => [doc.id, doc]));
+                        return (
+                            normaSuscritaConVencimiento.documentosAdjuntos?.map((x) => {
+                                const actual = estadosActuales.get(x.id);
+
+                                return {
                                     id: x.id,
                                     nombreArchivo: x.nombreArchivo,
                                     mime: x.mime,
                                     tamanno: x.tamanno,
                                     fechaSubida: x.fechaSubida,
-                                    descargando: false,
-                                    borrando: false,
-                                }) as DocumentoAdjunto,
-                        ) ?? [],
-                    );
+                                    visualizando: actual?.visualizando ?? false,
+                                    descargando: actual?.descargando ?? false,
+                                    borrando: actual?.borrando ?? false,
+                                } as DocumentoAdjunto;
+                            }) ?? []
+                        );
+                    });
                 },
                 error: (err) => {
                     console.error('Error al obtener los documentos adjuntos', err);
@@ -356,6 +361,7 @@ export class Vencimiento implements OnInit {
                         mime: x.mime,
                         tamanno: x.tamanno,
                         fechaSubida: x.fechaSubida,
+                        visualizando: false,
                         descargando: false,
                         borrando: false,
                     }) as DocumentoAdjunto,
