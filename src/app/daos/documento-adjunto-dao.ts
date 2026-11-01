@@ -22,6 +22,10 @@ export class DocumentoAdjuntoDao {
         return this.http.get<SalDocumentoAdjunto[]>(environment.tanatosService.apiUrl + `/DocumentoAdjunto/Vigentes/${idHistorialNormaSuscrita}`);
     }
 
+    obtenerVigentesPorMovimiento(idMovimientoFinanciero: number): Observable<SalDocumentoAdjunto[]> {
+        return this.http.get<SalDocumentoAdjunto[]>(environment.tanatosService.apiUrl + `/DocumentoAdjunto/VigentesPorMovimiento/${idMovimientoFinanciero}`);
+    }
+
     generarUrlSubida(entrada: EntDocumentoAdjuntoGenerarUrlSubida): Observable<SalDocumentoAdjuntoGenerarUrlSubida> {
         return this.http.post<SalDocumentoAdjuntoGenerarUrlSubida>(environment.tanatosService.apiUrl + '/DocumentoAdjunto/GenerarUrlSubida', entrada);
     }
