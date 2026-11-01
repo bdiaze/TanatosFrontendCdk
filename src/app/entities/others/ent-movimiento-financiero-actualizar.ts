@@ -7,4 +7,5 @@ export interface EntMovimientoFinancieroActualizar {
     monto: number;
     fechaMovimiento: string;
     descripcion: string | null;
+    estado: number; // 0: Preliminar - 1: Confirmado
 }

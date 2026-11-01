@@ -1,3 +1,5 @@
+import { SalDocumentoAdjunto } from './sal-documento-adjunto';
+
 export interface SalMovimientoFinanciero {
     id: number;
     idCategoriaFinanciera: number | null;
@@ -7,4 +9,5 @@ export interface SalMovimientoFinanciero {
     saldo: number;
     fechaMovimiento: string;
     descripcion: string | null;
+    documentoAdjuntos: SalDocumentoAdjunto[];
 }

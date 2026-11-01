@@ -5,4 +5,5 @@ export interface EntMovimientoFinancieroCrear {
     monto: number;
     fechaMovimientoUtc: string;
     descripcion: string | null;
+    estado: number; // 0: Preliminar - 1: Confirmado
 }
