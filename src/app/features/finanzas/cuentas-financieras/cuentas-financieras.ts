@@ -324,7 +324,6 @@ export class CuentasFinancieras implements OnInit {
         this.error.set('');
 
         item.fechaSaldoInicialUtc.setHours(0, 0, 0, 0);
-        console.log(item);
 
         this.cuentaFinancieraDao
             .crear({

@@ -36,7 +36,7 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideChevronDown, lucideFile, lucideFileUp, lucideMinus, lucidePlus, lucideTrash2, lucideWallet } from '@ng-icons/lucide';
+import { lucideChevronDown, lucideFile, lucideFileUp, lucideGem, lucideMinus, lucidePlus, lucideTrash2, lucideWallet } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
@@ -87,7 +87,7 @@ import { catchError, debounceTime, defer, EMPTY, filter, map, mergeMap, Observab
     templateUrl: './modal-nuevo-movimiento.html',
     styleUrl: './modal-nuevo-movimiento.scss',
     providers: [
-        provideIcons({ lucideWallet, lucidePlus, lucideMinus, lucideChevronDown, lucideFileUp, lucideFile, lucideTrash2 }),
+        provideIcons({ lucideWallet, lucidePlus, lucideMinus, lucideChevronDown, lucideFileUp, lucideFile, lucideTrash2, lucideGem }),
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,
             formatDate: (date: Date) => {
@@ -176,6 +176,10 @@ export class ModalNuevoMovimiento implements OnInit, OnDestroy {
     private readonly refrescarAdjuntos$ = new Subject<void>();
 
     cargandoDocumentos = signal(false);
+
+    puedeSubirArchivos = computed(() => {
+        return this.negocioStore.resumenSuscripcionUsuario()?.tienePlanEmpresa ?? false;
+    });
 
     ngOnInit(): void {
         document.body.classList.add('overflow-hidden!', 'md:pr-1.25');
@@ -398,6 +402,13 @@ export class ModalNuevoMovimiento implements OnInit, OnDestroy {
         }
 
         this.subirArchivos(files);
+        this.draggingFile.set(false);
+    }
+
+    @ViewChild(PopupFuncionalidadBloqueada) popupFuncionalidadBloqueada?: any;
+    onDropRestringido(event: DragEvent) {
+        event.preventDefault();
+        this.popupFuncionalidadBloqueada?.openFromParent?.();
         this.draggingFile.set(false);
     }
 

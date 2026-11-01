@@ -187,24 +187,52 @@
                                         'border-(--negro)/20': deshabilitarSubida(),
                                     }"
                                 >
-                                    <div class="py-2" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDropFile($event)">
-                                        <button hlmBtn variant="link" type="button" (click)="fileInput.click()" [disabled]="deshabilitarSubida()" class="py-0!">
-                                            <ng-icon hlm size="sm" name="lucideFileUp" />
-                                            <label for="subir-documento" class="cursor-pointer">Click para subir un documento</label>
-                                        </button>
-                                        <p hlmP class="text-xs mb-1! font-normal italic opacity-80" [class.opacity-50]="deshabilitarSubida()">
-                                            (también los puedes arrastrar aquí)
-                                        </p>
-                                        <input
-                                            id="subir-documento"
-                                            type="file"
-                                            #fileInput
-                                            hidden
-                                            [accept]="allowedFileTypes.join(',')"
-                                            (change)="archivosSeleccionados($event)"
-                                            multiple
-                                        />
-                                    </div>
+                                    @if (puedeSubirArchivos()) {
+                                        <div class="py-2" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDropFile($event)">
+                                            <button
+                                                hlmBtn
+                                                variant="link"
+                                                type="button"
+                                                (click)="fileInput.click()"
+                                                [disabled]="deshabilitarSubida()"
+                                                class="py-0!"
+                                            >
+                                                <ng-icon hlm size="sm" name="lucideFileUp" />
+                                                <label for="subir-documento" class="cursor-pointer">Click para subir un documento</label>
+                                            </button>
+                                            <p hlmP class="text-xs mb-1! font-normal italic opacity-80" [class.opacity-50]="deshabilitarSubida()">
+                                                (también los puedes arrastrar aquí)
+                                            </p>
+                                            <input
+                                                id="subir-documento"
+                                                type="file"
+                                                #fileInput
+                                                hidden
+                                                [accept]="allowedFileTypes.join(',')"
+                                                (change)="archivosSeleccionados($event)"
+                                                multiple
+                                            />
+                                        </div>
+                                    } @else {
+                                        <div class="py-2" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDropRestringido($event)">
+                                            <app-popup-funcionalidad-bloqueada class="w-full" #pop>
+                                                <button hlmBtn variant="link" type="button" class="py-0!">
+                                                    <ng-icon hlm size="sm" name="lucideGem" />
+                                                    <label for="subir-documento-bloqueado" class="cursor-pointer">Click para subir un documento</label>
+                                                </button>
+                                                <p hlmP class="text-xs mb-1! font-normal italic opacity-80">(también los puedes arrastrar aquí)</p>
+                                                <input
+                                                    id="subir-documento-bloqueado"
+                                                    type="file"
+                                                    #fileInput
+                                                    hidden
+                                                    disabled
+                                                    [accept]="allowedFileTypes.join(',')"
+                                                    multiple
+                                                />
+                                            </app-popup-funcionalidad-bloqueada>
+                                        </div>
+                                    }
                                 </td>
                             </tr>
                         </tfoot>
