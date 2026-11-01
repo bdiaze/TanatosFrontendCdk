@@ -1,135 +1,233 @@
-<div #overlay class="fixed inset-0 bg-black/70 flex justify-center items-center z-50 p-5">
-    <form [formGroup]="form" (ngSubmit)="clickConfirmar()">
-        <div hlmCard class="min-w-xs md:w-sm max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4">
-            <div hlmCardHeader class="faster-fade-in">
-                <div class="w-full flex flex-row items-center gap-2">
-                    <button
-                        hlmBtn
-                        type="button"
-                        class="flex-1 flex flex-col h-fit! gap-0 rounded-sm! py-3! border-2! border-azul!"
-                        [ngClass]="{
-                            'bg-azul!': tipoMovimiento() === 1,
-                            'bg-blanco! text-azul!': tipoMovimiento() !== 1,
-                        }"
-                        (click)="seleccionarTipoMovimiento(1)"
-                    >
-                        <ng-icon hlm name="lucidePlus" />
-                        Ingreso
-                    </button>
-                    <button
-                        hlmBtn
-                        type="button"
-                        class="flex-1 flex flex-col h-fit! gap-0 rounded-sm! py-3! border-2! border-destructive!"
-                        [ngClass]="{
-                            'bg-destructive!': tipoMovimiento() === 2,
-                            'bg-blanco! text-destructive!': tipoMovimiento() !== 2,
-                        }"
-                        (click)="seleccionarTipoMovimiento(2)"
-                    >
-                        <ng-icon hlm name="lucideMinus" />
-                        Gasto
-                    </button>
-                </div>
+<div #overlay class="fixed inset-0 bg-black/70 flex justify-center items-center z-50 p-4">
+    <form
+        hlmCard
+        class="min-w-xs md:w-sm max-w-full max-h-full overflow-y-auto overscroll-contain scrollContainer [&::-webkit-scrollbar-track]:my-4"
+        [formGroup]="form"
+        (ngSubmit)="clickConfirmar()"
+    >
+        <div hlmCardHeader class="faster-fade-in">
+            <div class="w-full flex flex-row items-center gap-2">
+                <button
+                    hlmBtn
+                    type="button"
+                    class="flex-1 flex flex-col h-fit! gap-0 rounded-sm! py-3! border-2! border-azul!"
+                    [ngClass]="{
+                        'bg-azul!': tipoMovimiento() === 1,
+                        'bg-blanco! text-azul!': tipoMovimiento() !== 1,
+                    }"
+                    (click)="seleccionarTipoMovimiento(1)"
+                >
+                    <ng-icon hlm name="lucidePlus" />
+                    Ingreso
+                </button>
+                <button
+                    hlmBtn
+                    type="button"
+                    class="flex-1 flex flex-col h-fit! gap-0 rounded-sm! py-3! border-2! border-destructive!"
+                    [ngClass]="{
+                        'bg-destructive!': tipoMovimiento() === 2,
+                        'bg-blanco! text-destructive!': tipoMovimiento() !== 2,
+                    }"
+                    (click)="seleccionarTipoMovimiento(2)"
+                >
+                    <ng-icon hlm name="lucideMinus" />
+                    Gasto
+                </button>
             </div>
-            <div hlmCardContent class="faster-fade-in -mt-2">
-                <fieldset hlmFieldSet class="gap-2">
-                    <div id="fecha" class="fade-in w-full flex flex-row items-center gap-2">
-                        <hlm-date-picker
-                            class="text-sm w-full flex-1"
-                            [date]="form.controls.fechaMovimiento.value"
-                            (dateChange)="form.controls.fechaMovimiento.setValue($event)"
+        </div>
+        <div hlmCardContent class="faster-fade-in -mt-2">
+            <fieldset hlmFieldSet class="gap-2">
+                <div id="fecha" class="fade-in w-full flex flex-row items-center gap-2">
+                    <hlm-date-picker
+                        class="text-sm w-full flex-1"
+                        [date]="form.controls.fechaMovimiento.value"
+                        (dateChange)="form.controls.fechaMovimiento.setValue($event)"
+                    >
+                        <hlm-date-picker-trigger
+                            class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
                         >
-                            <hlm-date-picker-trigger
-                                class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
-                            >
-                            </hlm-date-picker-trigger>
-                        </hlm-date-picker>
-                        <div class="w-full relative flex-1">
-                            <input
-                                hlmInput
-                                type="time"
-                                step="60"
-                                [formControl]="form.controls.horaMovimiento"
-                                class="text-sm bg-background [&::-webkit-calendar-picker-indicator]:opacity-0 pr-1.25"
-                            />
-                            <div class="absolute top-1.5 bottom-1.5 right-1.5 rounded-md px-1.75 bg-blanco flex items-center pointer-events-none">
-                                <ng-icon hlm name="lucideChevronDown" size="sm" class="opacity-80 pointer-events-none" />
-                            </div>
+                        </hlm-date-picker-trigger>
+                    </hlm-date-picker>
+                    <div class="w-full relative flex-1">
+                        <input
+                            hlmInput
+                            type="time"
+                            step="60"
+                            [formControl]="form.controls.horaMovimiento"
+                            class="text-sm bg-background [&::-webkit-calendar-picker-indicator]:opacity-0 pr-1.25"
+                        />
+                        <div class="absolute top-1.5 bottom-1.5 right-1.5 rounded-md px-1.75 bg-blanco flex items-center pointer-events-none">
+                            <ng-icon hlm name="lucideChevronDown" size="sm" class="opacity-80 pointer-events-none" />
                         </div>
                     </div>
-                    <div hlmFieldGroup>
-                        <div hlmField>
-                            <div id="monto" hlmInputGroup class="fade-in">
-                                <div hlmInputGroupAddon align="block-start">
-                                    <label for="monto" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Monto</label>
-                                    <hlm-field-error
-                                        class="transition-[opacity,max-height] duration-500 ease-out text-xs ml-auto text-balance text-right"
-                                        [class.opacity-100]="invalid('monto')"
-                                        [class.opacity-0]="!invalid('monto')"
-                                        [class.max-h-10]="invalid('monto')"
-                                        [class.max-h-0]="!invalid('monto')"
-                                    >
-                                        Debes ingresar un monto
-                                    </hlm-field-error>
-                                </div>
-                                <input
-                                    #inputMonto
-                                    hlmInputGroupInput
-                                    [formatoDinero]="true"
-                                    class="transition-all duration-500 ease-out text-sm"
-                                    id="monto"
-                                    formControlName="monto"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div hlmFieldGroup>
-                        <div hlmField>
-                            <div id="descripcion" hlmInputGroup class="fade-in">
-                                <div hlmInputGroupAddon align="block-start">
-                                    <label for="descripcion" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Descripción</label>
-                                </div>
-                                <input hlmInputGroupInput class="transition-all duration-500 ease-out text-sm" id="nombre" formControlName="descripcion" />
-                            </div>
-                        </div>
-                    </div>
-                    @if (cargandoCategorias()) {
-                        <hlm-skeleton class="h-9 rounded-sm" />
-                    } @else if (categoriasMostrar().length > 1) {
-                        <hlm-select class="inline-block z-10 w-full" formControlName="idCategoriaFinanciera" [itemToString]="categoriaItemToString">
-                            <hlm-select-trigger>
-                                <div class="flex justify-start items-center gap-2">
-                                    <hlm-select-value class="text-sm! truncate" />
-                                </div>
-                            </hlm-select-trigger>
-                            <hlm-select-content *hlmSelectPortal showScroll>
-                                <hlm-select-group>
-                                    @for (categoria of categoriasMostrar(); track categoria.id) {
-                                        <hlm-select-item [value]="categoria.id" class="text-sm!">{{ categoria.nombre }}</hlm-select-item>
-                                    }
-                                </hlm-select-group>
-                            </hlm-select-content>
-                        </hlm-select>
-                    }
-                </fieldset>
-                @if (error()) {
-                    <div hlmAlert variant="destructive" class="mt-3">
-                        <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
-                        <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
-                        <p hlmAlertDescription class="whitespace-break-spaces">{{ error() }}</p>
-                    </div>
-                }
-            </div>
-            <div hlmCardFooter class="flex flex-col items-center gap-4 faster-fade-in">
-                <div class="w-full flex items-center justify-end gap-3">
-                    <button hlmBtn type="button" (click)="cerrar.emit()" class="btnOutlineAzul">Cancelar</button>
-                    <button hlmBtn id="guardar_empleado" type="submit" class="btnAzul">
-                        @if (procesando()) {
-                            <hlm-spinner />
-                        }
-                        Guardar
-                    </button>
                 </div>
+                <div hlmFieldGroup>
+                    <div hlmField>
+                        <div id="monto" hlmInputGroup class="fade-in">
+                            <div hlmInputGroupAddon align="block-start">
+                                <label for="monto" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Monto</label>
+                                <hlm-field-error
+                                    class="transition-[opacity,max-height] duration-500 ease-out text-xs ml-auto text-balance text-right"
+                                    [class.opacity-100]="invalid('monto')"
+                                    [class.opacity-0]="!invalid('monto')"
+                                    [class.max-h-10]="invalid('monto')"
+                                    [class.max-h-0]="!invalid('monto')"
+                                >
+                                    Debes ingresar un monto
+                                </hlm-field-error>
+                            </div>
+                            <input
+                                #inputMonto
+                                hlmInputGroupInput
+                                [formatoDinero]="true"
+                                class="transition-all duration-500 ease-out text-sm"
+                                id="monto"
+                                formControlName="monto"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div hlmFieldGroup>
+                    <div hlmField>
+                        <div id="descripcion" hlmInputGroup class="fade-in">
+                            <div hlmInputGroupAddon align="block-start">
+                                <label for="descripcion" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Descripción</label>
+                            </div>
+                            <input hlmInputGroupInput class="transition-all duration-500 ease-out text-sm" id="nombre" formControlName="descripcion" />
+                        </div>
+                    </div>
+                </div>
+                @if (cargandoCategorias()) {
+                    <hlm-skeleton class="h-9 rounded-sm" />
+                } @else if (categoriasMostrar().length > 1) {
+                    <hlm-select class="inline-block z-10 w-full" formControlName="idCategoriaFinanciera" [itemToString]="categoriaItemToString">
+                        <hlm-select-trigger>
+                            <div class="flex justify-start items-center gap-2">
+                                <hlm-select-value class="text-sm! truncate" />
+                            </div>
+                        </hlm-select-trigger>
+                        <hlm-select-content *hlmSelectPortal showScroll>
+                            <hlm-select-group>
+                                @for (categoria of categoriasMostrar(); track categoria.id) {
+                                    <hlm-select-item [value]="categoria.id" class="text-sm!">{{ categoria.nombre }}</hlm-select-item>
+                                }
+                            </hlm-select-group>
+                        </hlm-select-content>
+                    </hlm-select>
+                }
+            </fieldset>
+            @if (cargandoDocumentos()) {
+                <hlm-skeleton class="h-18 rounded-sm mt-2" />
+            } @else {
+                <div hlmTableContainer class="mt-2 fade-in" [ngClass]="{ 'mt-1!': documentosAdjuntos().length > 0 || documentosEnProgreso().length > 0 }">
+                    <table hlmTable>
+                        <tbody hlmTBody>
+                            @for (documento of documentosAdjuntos(); track documento.id) {
+                                <tr hlmTr class="fade-in">
+                                    <td hlmTd class="pl-1 pr-0 w-full">
+                                        <div class="flex flex-row items-center gap-1">
+                                            <ng-icon hlm size="sm" name="lucideFile" />
+                                            <p class="truncate max-w-54 md:max-w-68">{{ documento.nombreArchivo }}</p>
+                                        </div>
+                                    </td>
+                                    <td hlmTd class="text-end pr-0">
+                                        <button
+                                            hlmBtn
+                                            variant="link"
+                                            typw="button"
+                                            [disabled]="documento.borrando"
+                                            class="p-0! flex items-center justify-center size-7! text-destructive! hover:text-destructive/70!"
+                                            [hlmDropdownMenuTrigger]="menu"
+                                        >
+                                            @if (documento.borrando) {
+                                                <hlm-spinner />
+                                            } @else {
+                                                <ng-icon hlm size="sm" name="lucideTrash2" />
+                                            }
+                                        </button>
+                                        <ng-template #menu>
+                                            <hlm-dropdown-menu>
+                                                <hlm-dropdown-menu-group>
+                                                    <hlm-dropdown-menu-label>¿Seguro?</hlm-dropdown-menu-label>
+                                                    <hlm-dropdown-menu-separator />
+                                                    <button hlmDropdownMenuItem variant="destructive" (click)="eliminar(documento)">
+                                                        <ng-icon hlm size="sm" name="lucideTrash2" />
+                                                        Eliminar
+                                                    </button>
+                                                </hlm-dropdown-menu-group>
+                                            </hlm-dropdown-menu>
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                            }
+                            @for (documentoEnProgreso of documentosEnProgreso(); track documentoEnProgreso.idTemporal) {
+                                <tr hlmTr class="fade-in">
+                                    <td hlmTd colspan="2" class="px-1">
+                                        <div class="flex flex-col gap-1">
+                                            <div class="flex flex-row items-center gap-1">
+                                                <ng-icon hlm size="sm" name="lucideFileUp" />
+                                                <p class="truncate max-w-63 md:max-w-75">{{ documentoEnProgreso.nombre }}</p>
+                                            </div>
+                                            <hlm-progress [value]="documentoEnProgreso.progreso">
+                                                <hlm-progress-indicator />
+                                            </hlm-progress>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot hlmTFoot>
+                            <tr hlmTr>
+                                <td
+                                    hlmTd
+                                    colspan="2"
+                                    class="text-center p-0 border-dashed border-(--negro)/60 border-2 transition-colors duration-200"
+                                    [ngClass]="{
+                                        'bg-(--negro)/10! border-azul/90!': draggingFile(),
+                                        'border-(--negro)/20': deshabilitarSubida(),
+                                    }"
+                                >
+                                    <div class="py-2" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDropFile($event)">
+                                        <button hlmBtn variant="link" type="button" (click)="fileInput.click()" [disabled]="deshabilitarSubida()" class="py-0!">
+                                            <ng-icon hlm size="sm" name="lucideFileUp" />
+                                            <label for="subir-documento" class="cursor-pointer">Click para subir un documento</label>
+                                        </button>
+                                        <p hlmP class="text-xs mb-1! font-normal italic opacity-80" [class.opacity-50]="deshabilitarSubida()">
+                                            (también los puedes arrastrar aquí)
+                                        </p>
+                                        <input
+                                            id="subir-documento"
+                                            type="file"
+                                            #fileInput
+                                            hidden
+                                            [accept]="allowedFileTypes.join(',')"
+                                            (change)="archivosSeleccionados($event)"
+                                            multiple
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            }
+            @if (error()) {
+                <div hlmAlert variant="destructive" class="mt-3">
+                    <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
+                    <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
+                    <p hlmAlertDescription class="whitespace-break-spaces">{{ error() }}</p>
+                </div>
+            }
+        </div>
+        <div hlmCardFooter class="flex flex-col items-center gap-4 faster-fade-in">
+            <div class="w-full flex items-center justify-between md:justify-end gap-3">
+                <button hlmBtn type="button" (click)="ejecutarCerrado()" class="btnOutlineAzul flex-1" [disabled]="deshabilitarBoton()">Cancelar</button>
+                <button hlmBtn id="guardar_empleado" type="submit" class="btnAzul flex-1" [disabled]="deshabilitarBoton()">
+                    @if (confirmando()) {
+                        <hlm-spinner />
+                    }
+                    Guardar
+                </button>
             </div>
         </div>
     </form>
