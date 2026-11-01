@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, input, ViewChild } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideArrowLeft, lucideArrowRight } from '@ng-icons/lucide';
@@ -22,6 +22,9 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
     },
 })
 export class PopupFuncionalidadBloqueada {
+    align = input<'start' | 'center' | 'end'>('center');
+    offsetX = input<number>(0);
+
     @ViewChild('trigger', { read: ElementRef }) trigger!: ElementRef;
 
     openFromParent() {
