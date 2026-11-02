@@ -112,6 +112,9 @@ export class MenuInicial {
                         title: 'Menú general',
                         description: 'Y por acá encontrarás los menús asociados a tu cuenta en general.',
                     },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
                 },
             ],
         );
@@ -136,6 +139,9 @@ export class MenuInicial {
                     popover: {
                         title: 'Tu calendario',
                         description: 'Este es tu acceso rápido al calendario de obligaciones de tu negocio.',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.cerrarMenu();
                     },
                 },
                 {
