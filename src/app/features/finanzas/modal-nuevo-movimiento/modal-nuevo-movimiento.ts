@@ -17,22 +17,22 @@ import { S3Service } from '@/app/services/s3-service';
 import { NgClass } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import {
-  Component,
-  computed,
-  DestroyRef,
-  effect,
-  ElementRef,
-  HostListener,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-  output,
-  signal,
-  untracked,
-  viewChild,
-  ViewChild,
-  ChangeDetectionStrategy
+    Component,
+    computed,
+    DestroyRef,
+    effect,
+    ElementRef,
+    HostListener,
+    inject,
+    input,
+    OnDestroy,
+    OnInit,
+    output,
+    signal,
+    untracked,
+    viewChild,
+    ViewChild,
+    ChangeDetectionStrategy,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -103,6 +103,7 @@ import { catchError, debounceTime, defer, EMPTY, filter, map, mergeMap, Observab
     ],
 })
 export class ModalNuevoMovimiento implements OnInit, OnDestroy {
+    ayudaRunning = input<boolean>(false);
     idCuentaFinanciera = input.required<number>();
     movimiento = input<SalMovimientoFinanciero | null>(null);
     notificarCambio = output<SalMovimientoFinanciero>();
@@ -266,6 +267,21 @@ export class ModalNuevoMovimiento implements OnInit, OnDestroy {
 
     categorias = signal([] as SalCategoriaFinanciera[]);
     categoriasMostrar = computed(() => {
+        if (this.ayudaRunning()) {
+            return [
+                {
+                    id: 0,
+                    nombre: 'Categoría de ejemplo',
+                    tipoMovimiento: 3,
+                } as SalCategoriaFinanciera,
+                {
+                    id: -1,
+                    nombre: 'Otra categoría de ejemplo',
+                    tipoMovimiento: 3,
+                } as SalCategoriaFinanciera,
+            ] as SalCategoriaFinanciera[];
+        }
+
         const categorias = this.categorias();
         const tipoMovimiento = this.tipoMovimiento(); // 1: Ingreso - 2: Gasto - 3: Ambos
         return [

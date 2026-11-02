@@ -114,24 +114,35 @@ export class MovimientosFinancieros implements OnInit {
     private readonly movimientos = signal([] as SalMovimientoFinanciero[]);
     movimientosMostrar = computed(() => {
         if (this.ayudaRunning()) {
+            const fechaActual = new Date();
+            const fechaAnterior = new Date(fechaActual);
+            fechaAnterior.setDate(fechaAnterior.getDate() - 1);
+
             return [
                 {
                     id: -1,
                     nombreCategoriaFinanciera: 'Ventas',
                     tipoMovimiento: 1,
                     monto: 100_000,
-                    saldo: 1_350_000,
-                    fechaMovimiento: '2026-10-28T15:42:10Z',
-                    descripcion: 'Venta de plan anual Todo en Orden',
+                    saldo: 430_000,
+                    fechaMovimiento: fechaActual.toISOString(),
+                    descripcion: 'Venta de mercadería',
+                    documentoAdjuntos: [] as SalDocumentoAdjunto[],
                 },
                 {
                     id: -2,
-                    nombreCategoriaFinanciera: 'AWS',
+                    nombreCategoriaFinanciera: 'Proveedor',
                     tipoMovimiento: 2,
-                    monto: 45_000,
-                    saldo: 1_295_000,
-                    fechaMovimiento: '2026-10-27T15:42:10Z',
-                    descripcion: 'Pago Invoice AWS Agosto 2026',
+                    monto: 70_000,
+                    saldo: 330_000,
+                    fechaMovimiento: fechaAnterior.toISOString(),
+                    descripcion: 'Pago de proveedor de matería prima',
+                    documentoAdjuntos: [
+                        {
+                            id: -1,
+                            nombreArchivo: 'Factura de proveedor de ejemplo.pdf',
+                        },
+                    ] as SalDocumentoAdjunto[],
                 },
             ] as SalMovimientoFinanciero[];
         }
@@ -139,9 +150,10 @@ export class MovimientosFinancieros implements OnInit {
     });
 
     idMovimientosAdjuntosAbiertos = signal<Set<number>>(new Set());
-    toggleAdjuntosAbiertos(idMovimiento: number) {
+    toggleAdjuntosAbiertos(idMovimiento: number, abierto: boolean | null = null) {
         this.idMovimientosAdjuntosAbiertos.update((ids) => {
-            if (ids.has(idMovimiento)) {
+            const estadoDeseado = abierto !== null ? abierto : !ids.has(idMovimiento);
+            if (!estadoDeseado) {
                 const nuevos = new Set(ids);
                 nuevos.delete(idMovimiento);
                 return nuevos;

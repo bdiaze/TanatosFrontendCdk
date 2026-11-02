@@ -1,5 +1,5 @@
 <div class="flex flex-row items-stretch justify-start w-max">
-    @if (cargando() || cargandoTiposCuentas()) {
+    @if ((cargando() || cargandoTiposCuentas()) && !ayudaRunning()) {
         @for (_ of [1, 2]; track $index; let first = $first; let last = $last) {
             <div
                 class="bg-blanco text-negro px-2 py-2 w-42 h-21 fade-in border flex flex-col items-center justify-center gap-1"
@@ -22,12 +22,13 @@
                 class="relative bg-blanco text-negro px-2 py-2 w-42 min-h-20 fade-in border flex flex-col items-center justify-center gap-1"
                 [ngClass]="{
                     '-ml-px': !first,
-                    'border-gris cursor-pointer!': itemSeleccionado()?.id != cuenta.id,
-                    'border-azul z-10!': itemSeleccionado()?.id == cuenta.id,
+                    'border-gris cursor-pointer!': itemSeleccionado()?.id != cuenta.id && !ayudaRunning(),
+                    'border-azul z-10!': itemSeleccionado()?.id == cuenta.id || ayudaRunning(),
                 }"
                 (click)="seleccionarCuenta(cuenta)"
                 (keydown.enter)="seleccionarCuenta(cuenta)"
                 (keydown.space)="$event.preventDefault(); seleccionarCuenta(cuenta)"
+                [id]="ayudaRunning() ? 'cuenta_financiera' : null"
             >
                 <div class="flex flex-col items-center justify-center gap-0.5">
                     <p hlmP class="text-xs">{{ cuenta.nombreTipoCuentaFinanciera }}</p>
@@ -43,9 +44,10 @@
                     [hlmDropdownMenuTrigger]="menu"
                     class="absolute bottom-1 right-1 size-4.25 rounded-none! border-0! p-0! h-fit! text-negro/70! hover:text-negro/60! active:text-negro/70!"
                     [ngClass]="{
-                        'text-azul! hover:text-azul/80! active:text-azul!': itemSeleccionado()?.id == cuenta.id,
+                        'text-azul! hover:text-azul/80! active:text-azul!': itemSeleccionado()?.id == cuenta.id || ayudaRunning(),
                     }"
                     (click)="$event.stopPropagation()"
+                    [id]="ayudaRunning() ? 'accion_cuenta' : null"
                 >
                     <ng-icon hlm size="17px" name="lucideSquareChevronDown" />
                 </button>
@@ -70,6 +72,7 @@
             variant="outline"
             (click)="openModalCrear()"
             [class.-ml-px]="cuentasMostrar().length > 0"
+            id="nueva_cuenta"
         >
             <div class="flex flex-col items-center justify-center gap-0.5 underline underline-offset-3 decoration-azul group-hover:decoration-azul/80">
                 <ng-icon hlm name="lucidePlus" size="sm" class="text-azul group-hover:text-azul/80" />

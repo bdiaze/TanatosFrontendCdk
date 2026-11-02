@@ -7,7 +7,7 @@
 }
 <div class="w-full flex flex-col md:flex-row items-stretch justify-between mt-2 md:mt-1 mb-2 gap-3 fade-in">
     <div class="flex items-end order-2 md:order-1">
-        <div class="flex flex-row items-center justify-center gap-2 w-full">
+        <div id="filtro_fechas" class="flex flex-row items-center justify-center gap-2 w-full">
             <hlm-date-picker class="text-sm w-full" [date]="fechaDesde()" (dateChange)="fechaDesde.set($event)">
                 <hlm-date-picker-trigger
                     class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
@@ -24,11 +24,18 @@
         </div>
     </div>
     <div class="order-1 md:order-2 flex flex-row items-center justify-end gap-2">
-        <button hlmBtn class="pr-6! flex-1" (click)="openModalCrear()">
+        <button hlmBtn class="pr-6! flex-1" (click)="openModalCrear()" [id]="ayudaRunning() ? 'nuevo_movimiento' : null">
             <ng-icon hlm name="lucidePlus" size="sm" />
             Nuevo Movimiento
         </button>
-        <button hlmBtn size="sm" variant="secondary" [hlmDropdownMenuTrigger]="otras_opciones" class="p-0! w-8!">
+        <button
+            hlmBtn
+            size="sm"
+            variant="secondary"
+            [hlmDropdownMenuTrigger]="otras_opciones"
+            class="p-0! w-8!"
+            [id]="ayudaRunning() ? 'otras_configuraciones' : null"
+        >
             <ng-icon hlm size="sm" name="lucideSettings" />
         </button>
         <ng-template #otras_opciones>
@@ -57,7 +64,7 @@
             </tr>
         </thead>
         <tbody hlmTBody>
-            @if (cargando()) {
+            @if (cargando() && !ayudaRunning()) {
                 @for (_ of [1, 2, 3]; track $index) {
                     <tr hlmTr>
                         @for (_ of [1, 2, 3, 4]; track $index) {
@@ -69,9 +76,9 @@
                     </tr>
                 }
             } @else {
-                @for (item of movimientosMostrar(); track item.id) {
-                    <tr hlmTr class="fade-in">
-                        <td hlmTd class="text-center">
+                @for (item of movimientosMostrar(); track item.id; let first = $first) {
+                    <tr hlmTr class="fade-in" [id]="first && ayudaRunning() ? 'movimiento' : null">
+                        <td hlmTd class="text-center" [id]="first && ayudaRunning() ? 'fecha_movimiento' : null">
                             <p
                                 hlmP
                                 class="text-xs md:text-sm whitespace-break-spaces"
@@ -81,7 +88,7 @@
                                 {{ item.fechaMovimiento | date: 'd MMM yyyy' }}
                             </p>
                         </td>
-                        <td hlmTd class="px-0">
+                        <td hlmTd class="px-0" [id]="first && ayudaRunning() ? 'descripcion_movimiento' : null">
                             <div class="flex flex-row items-center gap-1 md:gap-2">
                                 @if (item.documentoAdjuntos.length > 0) {
                                     @if (!idMovimientosAdjuntosAbiertos().has(item.id)) {
@@ -92,6 +99,7 @@
                                             type="button"
                                             class="flex flex-row items-center gap-0.5 fade-in"
                                             (click)="toggleAdjuntosAbiertos(item.id)"
+                                            [id]="ayudaRunning() ? 'toggle_documentos' : null"
                                         >
                                             <ng-icon hlm name="lucidePaperclip" size="sm" />
                                         </button>
@@ -103,6 +111,7 @@
                                             type="button"
                                             class="flex flex-row items-center gap-0.5 fade-in"
                                             (click)="toggleAdjuntosAbiertos(item.id)"
+                                            [id]="ayudaRunning() ? 'toggle_documentos' : null"
                                         >
                                             <ng-icon hlm name="lucidePaperclip" size="sm" />
                                         </button>
@@ -124,7 +133,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td hlmTd class="text-xs md:text-sm text-right">
+                        <td hlmTd class="text-xs md:text-sm text-right" [id]="first && ayudaRunning() ? 'monto_movimiento' : null">
                             <div
                                 class="flex flex-row items-center justify-end gap-1.5 font-medium"
                                 [class.text-azul]="item.tipoMovimiento === 1"
@@ -138,10 +147,18 @@
                                 ${{ item.monto | number: '1.0-0' }}
                             </div>
                         </td>
-                        <td hlmTd class="text-xs md:text-sm text-right px-0">${{ item.saldo | number: '1.0-0' }}</td>
+                        <td hlmTd class="text-xs md:text-sm text-right px-0" [id]="first && ayudaRunning() ? 'saldo_movimiento' : null">
+                            ${{ item.saldo | number: '1.0-0' }}
+                        </td>
                         <td hlmTd>
                             <div class="flex items-center justify-center-safe">
-                                <button hlmBtn size="sm" variant="outline" [hlmDropdownMenuTrigger]="menu">
+                                <button
+                                    hlmBtn
+                                    size="sm"
+                                    variant="outline"
+                                    [hlmDropdownMenuTrigger]="menu"
+                                    [id]="first && ayudaRunning() ? 'acciones_movimiento' : null"
+                                >
                                     <ng-icon hlm size="xs" name="lucideEllipsis" />
                                 </button>
                                 <ng-template #menu>
@@ -162,7 +179,7 @@
                             <tr hlmTr class="fade-in">
                                 <td hlmTd class="text-left px-4 bg-gris/30" colspan="5">
                                     <div class="flex flex-row items-center justify-between gap-2">
-                                        <div class="flex flex-row items-center gap-2">
+                                        <div class="flex flex-row items-center gap-2" [id]="ayudaRunning() ? 'nombre_documento' : null">
                                             <div class="flex items-center justify-center size-4">
                                                 <ng-icon hlm size="sm" name="lucideFile" class="text-azul" />
                                             </div>
@@ -176,6 +193,7 @@
                                                 hlmTooltip="Abrir"
                                                 (click)="obtenerUrlVisualizacion(documento)"
                                                 [disabled]="idsDocumentosVisualizando().size > 0"
+                                                [id]="ayudaRunning() ? 'ver_documento' : null"
                                             >
                                                 @if (idsDocumentosVisualizando().has(documento.id)) {
                                                     <hlm-spinner />
@@ -191,6 +209,7 @@
                                                 hlmTooltip="Descargar"
                                                 (click)="descargaArchivo(documento.id)"
                                                 [disabled]="idsDocumentosDescargando().has(documento.id)"
+                                                [id]="ayudaRunning() ? 'descargar_documento' : null"
                                             >
                                                 @if (idsDocumentosDescargando().has(documento.id)) {
                                                     <hlm-spinner />
@@ -237,6 +256,7 @@
 }
 @if (showModalCrear()) {
     <app-modal-nuevo-movimiento
+        [ayudaRunning]="ayudaRunning()"
         [idCuentaFinanciera]="idCuentaFinanciera()"
         (notificarCambio)="movimientoActualizado($event)"
         (cerrar)="closeModalCrear()"

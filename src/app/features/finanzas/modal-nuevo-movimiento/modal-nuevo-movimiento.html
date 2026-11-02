@@ -6,7 +6,7 @@
         (ngSubmit)="clickConfirmar()"
     >
         <div hlmCardHeader class="faster-fade-in">
-            <div class="w-full flex flex-row items-center gap-2">
+            <div class="w-full flex flex-row items-center gap-2" id="tipo_movimiento">
                 <button
                     hlmBtn
                     type="button"
@@ -37,7 +37,7 @@
         </div>
         <div hlmCardContent class="faster-fade-in -mt-2">
             <fieldset hlmFieldSet class="gap-2">
-                <div id="fecha" class="fade-in w-full flex flex-row items-center gap-2">
+                <div class="fade-in w-full flex flex-row items-center gap-2" id="fecha_movimiento_modal">
                     <hlm-date-picker
                         class="text-sm w-full flex-1"
                         [date]="form.controls.fechaMovimiento.value"
@@ -63,7 +63,7 @@
                 </div>
                 <div hlmFieldGroup>
                     <div hlmField>
-                        <div id="monto" hlmInputGroup class="fade-in">
+                        <div id="monto_movimiento_modal" hlmInputGroup class="fade-in">
                             <div hlmInputGroupAddon align="block-start">
                                 <label for="monto" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Monto</label>
                                 <hlm-field-error
@@ -89,7 +89,7 @@
                 </div>
                 <div hlmFieldGroup>
                     <div hlmField>
-                        <div id="descripcion" hlmInputGroup class="fade-in">
+                        <div id="descripcion_movimiento_modal" hlmInputGroup class="fade-in">
                             <div hlmInputGroupAddon align="block-start">
                                 <label for="descripcion" hlmLabel class="text-xs opacity-80 font-semibold whitespace-nowrap">Descripción</label>
                             </div>
@@ -97,10 +97,15 @@
                         </div>
                     </div>
                 </div>
-                @if (cargandoCategorias()) {
+                @if (cargandoCategorias() && ayudaRunning()) {
                     <hlm-skeleton class="h-9 rounded-sm" />
                 } @else if (categoriasMostrar().length > 1) {
-                    <hlm-select class="inline-block z-10 w-full" formControlName="idCategoriaFinanciera" [itemToString]="categoriaItemToString">
+                    <hlm-select
+                        class="inline-block z-10 w-full"
+                        formControlName="idCategoriaFinanciera"
+                        [itemToString]="categoriaItemToString"
+                        id="categoria_movimiento_modal"
+                    >
                         <hlm-select-trigger>
                             <div class="flex justify-start items-center gap-2">
                                 <hlm-select-value class="text-sm! truncate" />
@@ -116,7 +121,7 @@
                     </hlm-select>
                 }
             </fieldset>
-            @if (cargandoDocumentos()) {
+            @if (cargandoDocumentos() && ayudaRunning()) {
                 <hlm-skeleton class="h-18 rounded-sm mt-2" />
             } @else {
                 <div hlmTableContainer class="mt-2 fade-in" [ngClass]="{ 'mt-1!': documentosAdjuntos().length > 0 || documentosEnProgreso().length > 0 }">
@@ -177,7 +182,7 @@
                             }
                         </tbody>
                         <tfoot hlmTFoot>
-                            <tr hlmTr>
+                            <tr hlmTr id="subida_archivos_modal">
                                 <td
                                     hlmTd
                                     colspan="2"
@@ -250,7 +255,7 @@
         <div hlmCardFooter class="flex flex-col items-center gap-4 faster-fade-in">
             <div class="w-full flex items-center justify-between md:justify-end gap-3">
                 <button hlmBtn type="button" (click)="ejecutarCerrado()" class="btnOutlineAzul flex-1" [disabled]="deshabilitarBoton()">Cancelar</button>
-                <button hlmBtn id="guardar_empleado" type="submit" class="btnAzul flex-1" [disabled]="deshabilitarBoton()">
+                <button hlmBtn id="guardar_movimiento" type="submit" class="btnAzul flex-1" [disabled]="deshabilitarBoton()">
                     @if (confirmando()) {
                         <hlm-spinner />
                     }

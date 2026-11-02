@@ -277,6 +277,27 @@ export class Ayuda implements OnInit, OnDestroy {
             ] as DriveStep[],
         },
         {
+            id: 'mis-finanzas',
+            nombre: 'Mis Finanzas',
+            link: ['/mis-finanzas'],
+            steps: [
+                {
+                    element: '#group-negocio-seleccionado-item-mis-finanzas',
+                    popover: {
+                        title: '¿Cómo llegar?',
+                        description: 'Primero, debes saber que para llegar a Mis Finanzas deberás hacer click aquí, ¡Vamos allá!',
+                        side: 'bottom',
+                    },
+                    onHighlightStarted: () => {
+                        this.menuHelper.abrirMenu();
+                    },
+                    onDeselected: () => {
+                        this.menuHelper.cerrarMenu();
+                    },
+                },
+            ] as DriveStep[],
+        },
+        {
             id: 'mision-vision-valores',
             nombre: 'Misión, Visión y Valores',
             link: ['/mision-vision-valores'],

@@ -111,14 +111,8 @@ export class CuentasFinancieras implements OnInit {
                 {
                     id: -1,
                     nombre: 'Cuenta de Prueba',
-                    nombreTipoCuentaFinanciera: 'Banco',
-                    saldoActual: 850_000,
-                },
-                {
-                    id: -3,
-                    nombre: 'Caja Fuerte',
-                    nombreTipoCuentaFinanciera: 'Efectivo',
-                    saldoActual: 2_750_000,
+                    nombreTipoCuentaFinanciera: 'Cuenta Corriente',
+                    saldoActual: 430_000,
                 },
             ] as SalCuentaFinanciera[];
         }
