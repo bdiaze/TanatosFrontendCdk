@@ -25,7 +25,7 @@
     <div class="w-full overflow-x-auto scrollContainerHorizontal pb-2">
         <app-cuentas-financieras [ayudaRunning]="ayudaRunning()" (selectionChanged)="cuentaFinancieraCambiada($event)"></app-cuentas-financieras>
     </div>
-    @if (idCuentaFinancieraSeleccionada()) {
+    @if (idCuentaFinancieraSeleccionada() || ayudaRunning()) {
         <div class="w-full py-2">
             <app-movimientos-financieros
                 [ayudaRunning]="ayudaRunning()"
