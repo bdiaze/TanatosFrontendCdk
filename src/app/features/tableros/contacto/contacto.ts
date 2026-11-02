@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormularioContacto } from '@/app/components/formulario-contacto/formulario-contacto';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -11,6 +11,7 @@ import { FadeIn } from '@/app/directives/fade-in';
     selector: 'app-contacto',
     imports: [FormularioContacto, HlmIcon, NgIcon, HlmH3, FadeIn],
     templateUrl: './contacto.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideMailbox,

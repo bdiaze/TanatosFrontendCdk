@@ -7,7 +7,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { TourService } from '@/app/helpers/tour-service';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -66,6 +66,7 @@ import { interval, map, Subscription } from 'rxjs';
     ],
     templateUrl: './mantenedor-suscripcion.html',
     styleUrl: './mantenedor-suscripcion.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideCreditCard,

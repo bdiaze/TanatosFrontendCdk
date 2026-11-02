@@ -5,7 +5,7 @@ import { EntTipoProcesoAutomaticoActualizar } from '@/app/entities/others/ent-ti
 import { EntTipoProcesoAutomaticoCrear } from '@/app/entities/others/ent-tipo-proceso-automatico-crear';
 import { SalTipoProcesoAutomatico } from '@/app/entities/others/sal-tipo-proceso-automatico';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -38,6 +38,7 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './mantenedor-tipo-proceso-automatico.html',
     styleUrl: './mantenedor-tipo-proceso-automatico.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoProcesoAutomatico implements OnInit {

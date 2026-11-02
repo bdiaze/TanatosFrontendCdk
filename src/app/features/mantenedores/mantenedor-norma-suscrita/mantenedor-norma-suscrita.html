@@ -237,9 +237,9 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Quitar una obligación:"
-        [descripcion]="`¿Seguro que deseas quitar la obligación ${itemSeleccionado()?.nombre}?`"
+        [descripcion]="`¿Seguro que deseas quitar la obligación ${itemSeleccionado()!.nombre}?`"
         descripcionTextVerificacion="Para confirmar, escribe a continuación el nombre de la obligación:"
-        [textoVerificacion]="itemSeleccionado()?.nombre!"
+        [textoVerificacion]="itemSeleccionado()!.nombre!"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

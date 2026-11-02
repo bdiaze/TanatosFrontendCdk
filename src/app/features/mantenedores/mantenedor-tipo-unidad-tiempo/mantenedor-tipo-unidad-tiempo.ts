@@ -3,7 +3,7 @@ import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-elimi
 import { TipoUnidadTiempoDao } from '@/app/daos/tipo-unidad-tiempo-dao';
 import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { DecimalPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -32,6 +32,7 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-unidad-tiempo.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoUnidadTiempo implements OnInit {

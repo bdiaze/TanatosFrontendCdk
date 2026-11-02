@@ -1,13 +1,14 @@
 import { AuthRefreshService } from '@/app/services/auth-refresh-service';
 import { AuthStore } from '@/app/services/auth-store';
 import { RedirectToLogin } from '@/app/services/redirect-to-login';
-import { Component, computed, inject, Input, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, Input, OnDestroy, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 
 @Component({
     selector: 'app-login',
     imports: [HlmButtonImports, HlmSpinnerImports],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './login.html',
 })
 export class Login implements OnInit, OnDestroy {

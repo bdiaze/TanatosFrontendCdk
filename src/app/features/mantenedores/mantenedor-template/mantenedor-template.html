@@ -93,7 +93,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un template:"
-        [descripcion]="`¿Seguro que deseas eliminar el template (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
+        [descripcion]="`¿Seguro que deseas eliminar el template (${itemSeleccionado()!.id} - ${itemSeleccionado()!.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     ></app-modal-eliminacion>

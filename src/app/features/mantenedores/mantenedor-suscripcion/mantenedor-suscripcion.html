@@ -31,7 +31,7 @@
                 <p hlmP class="text-center text-balance">
                     Te recordamos que tu próximo cobro será el
                     <span class="font-semibold">{{ fechaProximoCobroFormateada()?.toLocaleLowerCase() }}</span> por un monto de
-                    <span class="font-semibold">${{ resumenSuscripcion()?.precioPlanPagoEnCurso | number: '1.0-0' }}</span
+                    <span class="font-semibold">${{ resumenSuscripcion()!.precioPlanPagoEnCurso | number: '1.0-0' }}</span
                     >.
                 </p>
             </div>
@@ -360,7 +360,7 @@
     <app-modal-eliminacion
         titulo="Cancela tu suscripción:"
         [descripcion]="
-            `¿Seguro que deseas cancelar tu suscripción al <span class='text-lg font-semibold font-serif'>${resumenSuscripcion()?.nombrePlanPagoEnCurso}</span>?<p class='text-sm mt-2 max-w-150'>Una vez cancelado tu plan, <b>no se realizarán nuevos cobros</b> y podrás seguir utilizando las funcionalidades de tu plan hasta el término del período que ya hayas pagado.</p>`
+            `¿Seguro que deseas cancelar tu suscripción al <span class='text-lg font-semibold font-serif'>${resumenSuscripcion()!.nombrePlanPagoEnCurso}</span>?<p class='text-sm mt-2 max-w-150'>Una vez cancelado tu plan, <b>no se realizarán nuevos cobros</b> y podrás seguir utilizando las funcionalidades de tu plan hasta el término del período que ya hayas pagado.</p>`
         "
         textoVerificacion="Sí, deseo cancelar"
         textoBotonEliminar="Cancelar Plan"

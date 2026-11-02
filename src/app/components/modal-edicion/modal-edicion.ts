@@ -1,17 +1,18 @@
 import {
-    Component,
-    computed,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    input,
-    Input,
-    OnInit,
-    Output,
-    Signal,
-    signal,
-    ViewChild,
-    WritableSignal,
+  Component,
+  computed,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  input,
+  Input,
+  OnInit,
+  Output,
+  Signal,
+  signal,
+  ViewChild,
+  WritableSignal,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -61,6 +62,7 @@ import { HlmDatePickerImports, provideHlmDatePickerConfig } from '@spartan-ng/he
         HlmDatePickerImports,
     ],
     templateUrl: './modal-edicion.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({ lucideBadgeCheck, lucideBadgeX, lucideSquarePen }),
         provideHlmDatePickerConfig({

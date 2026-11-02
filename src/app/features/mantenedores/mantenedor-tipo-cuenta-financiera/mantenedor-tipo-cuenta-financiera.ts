@@ -3,7 +3,7 @@ import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-elimi
 import { TipoCuentaFinancieraDao } from '@/app/daos/tipo-cuenta-financiera-dao';
 import { TipoCuentaFinanciera } from '@/app/entities/models/tipo-cuenta-financiera';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -35,6 +35,7 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './mantenedor-tipo-cuenta-financiera.html',
     styleUrl: './mantenedor-tipo-cuenta-financiera.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoCuentaFinanciera implements OnInit {

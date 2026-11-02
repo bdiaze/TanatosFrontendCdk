@@ -184,14 +184,14 @@
     <app-modal-eliminacion
         [item]="empleadoSeleccionado()"
         titulo="Quitar a un empleado:"
-        [descripcion]="`¿Seguro que deseas quitar al empleado ${empleadoSeleccionado()?.nombre}?`"
+        [descripcion]="`¿Seguro que deseas quitar al empleado ${empleadoSeleccionado()!.nombre}?`"
         (cerrar)="closeModalEliminarEmpleado()"
         (eliminar)="eliminarEmpleado($event)"
     >
     </app-modal-eliminacion>
 }
 @if (showModalEditarEmpleado()) {
-    <app-modal-mantenedor-empleado [idEmpleado]="empleadoSeleccionado()?.id!" (cerrar)="closeModalEditarEmpleado()" (postGuardar)="postGuardar()">
+    <app-modal-mantenedor-empleado [idEmpleado]="empleadoSeleccionado()!.id!" (cerrar)="closeModalEditarEmpleado()" (postGuardar)="postGuardar()">
     </app-modal-mantenedor-empleado>
 }
 @if (showModalCrearEmpleado()) {
@@ -203,7 +203,7 @@
     <app-modal-eliminacion
         [item]="cargoSeleccionado()"
         titulo="Eliminar un cargo:"
-        [descripcion]="`¿Seguro que deseas eliminar el cargo ${cargoSeleccionado()?.nombre}?`"
+        [descripcion]="`¿Seguro que deseas eliminar el cargo ${cargoSeleccionado()!.nombre}?`"
         (cerrar)="closeModalEliminarCargo()"
         (eliminar)="eliminarCargo($event)"
     >

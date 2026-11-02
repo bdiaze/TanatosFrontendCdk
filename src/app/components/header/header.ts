@@ -1,5 +1,5 @@
 import { AuthStore } from '@services/auth-store';
-import { Component, computed, DestroyRef, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Login } from '@/app/features/auth/login/login';
 import { Logout } from '@/app/features/auth/logout/logout';
@@ -22,6 +22,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     selector: 'app-header',
     imports: [HlmButtonImports, Login, Logout, RouterLink, HlmSeparatorImports, NgIcon, HlmIcon, Menu, ClickOutside, CommonModule, FadeIn],
     templateUrl: './header.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideMenu,

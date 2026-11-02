@@ -6,7 +6,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { TourService } from '@/app/helpers/tour-service';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -53,6 +53,7 @@ import { map } from 'rxjs';
     ],
     templateUrl: './datos-usuario.html',
     styleUrl: './datos-usuario.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideUserRoundPen, lucideSave, lucideUserRound, lucidePhone, lucideBadgeCheck, lucideClockAlert })],
 })
 export class DatosUsuario implements OnInit {

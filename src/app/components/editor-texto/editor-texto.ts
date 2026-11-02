@@ -1,5 +1,5 @@
 import { HtmlSanitizerHelper } from '@/app/helpers/html-sanitizer-helper';
-import { AfterViewInit, Component, computed, ElementRef, forwardRef, inject, input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, computed, ElementRef, forwardRef, inject, input, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import Quill from 'quill';
@@ -9,6 +9,7 @@ import Quill from 'quill';
     imports: [],
     templateUrl: './editor-texto.html',
     styleUrl: './editor-texto.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         {
             provide: NG_VALUE_ACCESSOR,

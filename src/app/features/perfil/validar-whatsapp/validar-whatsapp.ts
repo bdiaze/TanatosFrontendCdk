@@ -1,7 +1,7 @@
 import { PerfilDao } from '@/app/daos/perfil-dao';
 import { EntPerfilValidarWhatsapp } from '@/app/entities/others/ent-perfil-validar-whatsapp';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, effect, inject, signal, untracked } from '@angular/core';
+import { Component, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -19,6 +19,7 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
     imports: [NgIcon, HlmIcon, HlmAlertImports, HlmSpinnerImports, HlmH2, HlmH4, HlmButtonImports, HlmSeparatorImports],
     templateUrl: './validar-whatsapp.html',
     styleUrl: './validar-whatsapp.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideTriangleAlert,

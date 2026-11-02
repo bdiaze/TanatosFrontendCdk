@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, EventEmitter, HostListener, Input, Output, signal, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, EventEmitter, HostListener, Input, Output, signal, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmCardImports } from '@spartan-ng/helm/card';
 import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
@@ -13,6 +13,7 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
     standalone: true,
     imports: [HlmButtonImports, HlmCardImports, HlmP, HlmH3, HlmSeparatorImports, NgIcon, HlmIcon, HlmInputImports],
     templateUrl: './modal-eliminacion.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideCircleAlert })],
 })
 export class ModalEliminacion {

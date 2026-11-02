@@ -17,7 +17,7 @@ import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
 import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { TipoUnidadTiempo } from '@/app/entities/models/tipo-unidad-tiempo';
 import { normalize } from '@/app/helpers/string-comparator';
-import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -81,6 +81,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     ],
     templateUrl: './mantenedor-template-edicion.html',
     styleUrl: './mantenedor-template-edicion.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideBadgeCheck,

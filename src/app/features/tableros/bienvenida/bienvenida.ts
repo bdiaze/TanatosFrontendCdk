@@ -6,7 +6,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { normalize } from '@/app/helpers/string-comparator';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { afterNextRender, Component, computed, DestroyRef, effect, inject, Injector, OnDestroy, OnInit, signal, untracked } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, effect, inject, Injector, OnDestroy, OnInit, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -49,6 +49,7 @@ import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
     ],
     templateUrl: './bienvenida.html',
     styleUrl: './bienvenida.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideMoveLeft, lucideMoveRight, lucideX, lucideStar, lucideCheck, lucideGem, lucideStore })],
 })
 export class Bienvenida implements OnInit, OnDestroy {

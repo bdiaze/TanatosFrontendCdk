@@ -184,7 +184,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Cancelar la inscripción:"
-        [descripcion]="`¿Seguro que deseas cancelar la inscripción a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?`"
+        [descripcion]="`¿Seguro que deseas cancelar la inscripción a la plantilla <b>${itemSeleccionado()!.nombreTemplate}</b>?`"
         textoBotonEliminar="Cancelar inscripción"
         textoBotonCancelar="Cerrar"
         (cerrar)="closeModalDesinscribirse()"
@@ -199,7 +199,7 @@
             [item]="itemSeleccionado()"
             titulo="Inscribirte a una plantilla:"
             [descripcion]="
-                `<p class='text-left'>¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?</p><div class='mx-2'>${listadoHTMLNormas(itemSeleccionado())}</div>`
+                `<p class='text-left'>¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()!.nombreTemplate}</b>?</p><div class='mx-2'>${listadoHTMLNormas(itemSeleccionado())}</div>`
             "
             [descripcionSecundaria]="`<div class='mx-2'>${informacionHTMLPadres(itemSeleccionado())}</div>`"
             [conFuncionSecundaria]="true"
@@ -216,7 +216,7 @@
             [item]="itemSeleccionado()"
             titulo="Inscribirte a una plantilla:"
             [descripcion]="
-                `<p class='text-left'>¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()?.nombreTemplate}</b>?</p><div class='mx-2'>${listadoHTMLNormas(itemSeleccionado())}</div>`
+                `<p class='text-left'>¿Seguro que deseas inscribirte a la plantilla <b>${itemSeleccionado()!.nombreTemplate}</b>?</p><div class='mx-2'>${listadoHTMLNormas(itemSeleccionado())}</div>`
             "
             textoBotonGuardar="Inscribirse"
             (cerrar)="closeModalInscribirse()"

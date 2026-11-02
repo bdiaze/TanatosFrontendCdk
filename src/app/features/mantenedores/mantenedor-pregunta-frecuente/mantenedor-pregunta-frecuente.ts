@@ -7,7 +7,7 @@ import { EntPreguntaFrecuenteCrear } from '@/app/entities/others/ent-pregunta-fr
 import { SalPreguntaFrecuente } from '@/app/entities/others/sal-pregunta-frecuente';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -40,6 +40,7 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './mantenedor-pregunta-frecuente.html',
     styleUrl: './mantenedor-pregunta-frecuente.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorPreguntaFrecuente implements OnInit {

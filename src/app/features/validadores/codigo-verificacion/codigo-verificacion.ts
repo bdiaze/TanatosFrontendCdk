@@ -2,7 +2,7 @@ import { PerfilDao } from '@/app/daos/perfil-dao';
 import { EntPerfilConfirmarRegistro } from '@/app/entities/others/ent-perfil-confirmar-registro';
 import { EntPerfilReenviarCodigoVerificacion } from '@/app/entities/others/ent-perfil-reenviar-codigo-verificacion';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -34,6 +34,7 @@ import { RedirectToLogin } from '@/app/services/redirect-to-login';
     ],
     templateUrl: './codigo-verificacion.html',
     styleUrl: './codigo-verificacion.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideCircleX })],
 })
 export class CodigoVerificacion implements OnInit, OnDestroy {

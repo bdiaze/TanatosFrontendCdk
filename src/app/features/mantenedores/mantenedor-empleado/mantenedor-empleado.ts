@@ -8,7 +8,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { TourService } from '@/app/helpers/tour-service';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -61,6 +61,7 @@ import { map } from 'rxjs';
         RouterLink,
     ],
     templateUrl: './mantenedor-empleado.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideTriangleAlert,

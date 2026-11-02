@@ -1,5 +1,5 @@
 import { WhatsappConversaciones } from '@/app/components/whatsapp-conversaciones/whatsapp-conversaciones';
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMessageCircleMore } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -10,6 +10,7 @@ import { WhatsappMensajes } from '@/app/components/whatsapp-mensajes/whatsapp-me
     selector: 'app-chats-whatsapp',
     imports: [WhatsappConversaciones, HlmH3, HlmIcon, NgIcon, WhatsappMensajes],
     templateUrl: './chats-whatsapp.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideMessageCircleMore })],
 })
 export class ChatsWhatsapp {

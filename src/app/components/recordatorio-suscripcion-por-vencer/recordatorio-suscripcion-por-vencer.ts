@@ -1,7 +1,7 @@
 import { SuscripcionDao } from '@/app/daos/suscripcion-dao';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HlmP } from '@spartan-ng/helm/typography';
 import { RouterLink } from '@angular/router';
@@ -14,6 +14,7 @@ import { lucideBan, lucideConstruction, lucideGem, lucideKey, lucideKeyRound, lu
     imports: [HlmP, RouterLink, NgIcon, HlmIcon],
     templateUrl: './recordatorio-suscripcion-por-vencer.html',
     styleUrl: './recordatorio-suscripcion-por-vencer.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideGem,

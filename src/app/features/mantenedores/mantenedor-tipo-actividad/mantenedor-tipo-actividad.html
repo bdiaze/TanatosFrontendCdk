@@ -89,7 +89,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar una actividad:"
-        [descripcion]="`¿Seguro que deseas eliminar la actividad <b>${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre}</b>?`"
+        [descripcion]="`¿Seguro que deseas eliminar la actividad <b>${itemSeleccionado()!.id} - ${itemSeleccionado()!.nombre}</b>?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

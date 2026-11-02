@@ -5,7 +5,7 @@ import { Plan } from '@/app/entities/models/plan';
 import { EntPlanCrearEditar } from '@/app/entities/others/ent-plan-crear-editar';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { DecimalPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -37,6 +37,7 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
         DecimalPipe,
     ],
     templateUrl: './mantenedor-plan.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorPlan implements OnInit {

@@ -176,15 +176,15 @@
                     </tr>
                     <tr hlmTr>
                         <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Inicio Ejecución UTC</th>
-                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()?.inicioEjecucionUtc) }}</td>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()!.inicioEjecucionUtc) }}</td>
                     </tr>
                     <tr hlmTr>
                         <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Fecha Creación</th>
-                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()?.fechaCreacion) }}</td>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()!.fechaCreacion) }}</td>
                     </tr>
                     <tr hlmTr>
                         <th hlmTh class="p-1.5 text-xs md:text-sm text-right whitespace-normal wrap-break-word">Fecha Eliminación</th>
-                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()?.fechaEliminacion) }}</td>
+                        <td hlmTd class="p-1.5 text-xs md:text-sm text-left">{{ formatearFecha(procesoAutomaticoSeleccionado()!.fechaEliminacion) }}</td>
                     </tr>
                     <tr hlmTr>
                         <th hlmTh class="p-1.5 text-xs md:text-sm text-right">Vigencia</th>

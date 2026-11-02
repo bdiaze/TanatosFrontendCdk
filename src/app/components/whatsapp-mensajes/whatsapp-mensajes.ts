@@ -3,7 +3,7 @@ import { SalWhatsappMensaje } from '@/app/entities/others/sal-whatsapp-mensaje';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { DatePipe } from '@angular/common';
-import { AfterViewChecked, Component, computed, DestroyRef, effect, ElementRef, inject, input, OnInit, signal, untracked, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, computed, DestroyRef, effect, ElementRef, inject, input, OnInit, signal, untracked, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { BrnTooltipImports } from '@spartan-ng/brain/tooltip';
 import { HlmBadgeImports } from '@spartan-ng/helm/badge';
@@ -45,6 +45,7 @@ import { S3Service } from '@/app/services/s3-service';
     ],
     templateUrl: './whatsapp-mensajes.html',
     styleUrl: './whatsapp-mensajes.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideDownload,

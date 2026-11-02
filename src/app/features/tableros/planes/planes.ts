@@ -1,7 +1,7 @@
 import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
 import { DecimalPipe } from '@angular/common';
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCalendarHeart, lucideDot, lucideGem, lucideRocket, lucideStar, lucideStore } from '@ng-icons/lucide';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -14,6 +14,7 @@ import { RouterLink } from '@angular/router';
     selector: 'app-planes',
     imports: [HlmItemImports, HlmH3, HlmH4, HlmP, HlmIcon, NgIcon, HlmButtonImports, DecimalPipe, FadeIn, RouterLink],
     templateUrl: './planes.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideGem,

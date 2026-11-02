@@ -93,7 +93,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un plan:"
-        [descripcion]="`¿Seguro que deseas eliminar el plan <b>${itemSeleccionado()?.nombre}</b>?`"
+        [descripcion]="`¿Seguro que deseas eliminar el plan <b>${itemSeleccionado()!.nombre}</b>?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

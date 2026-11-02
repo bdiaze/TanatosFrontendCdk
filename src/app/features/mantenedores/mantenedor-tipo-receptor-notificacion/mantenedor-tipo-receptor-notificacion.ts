@@ -1,6 +1,6 @@
 import { TipoReceptorNotificacionDao } from '@/app/daos/tipo-receptor-notificacion-dao';
 import { TipoReceptorNotificacion } from '@/app/entities/models/tipo-receptor-notificacion';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { catchError, combineLatest, of } from 'rxjs';
 import { ModalEliminacion } from '@components/modal-eliminacion/modal-eliminacion';
 import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
@@ -30,6 +30,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-receptor-notificacion.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoReceptorNotificacion implements OnInit {

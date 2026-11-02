@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -13,6 +13,7 @@ import { AuthStore } from '@/app/services/auth-store';
     imports: [HlmButtonImports, RouterLink, NgIcon, HlmIcon, FadeIn, Icon],
     templateUrl: './footer.html',
     styleUrl: './footer.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideInstagram,

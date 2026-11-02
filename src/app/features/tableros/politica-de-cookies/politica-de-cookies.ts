@@ -1,5 +1,5 @@
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCookie } from '@ng-icons/lucide';
@@ -11,6 +11,7 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-politica-de-cookies',
     imports: [HlmH3, HlmH4, HlmP, HlmButton, HlmIcon, NgIcon, RouterLink],
     templateUrl: './politica-de-cookies.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideCookie,

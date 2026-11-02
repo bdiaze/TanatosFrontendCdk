@@ -83,7 +83,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un tipo de proceso automático:"
-        [descripcion]="`¿Seguro que deseas eliminar el tipo: <b>${itemSeleccionado()?.nombre}</b>?`"
+        [descripcion]="`¿Seguro que deseas eliminar el tipo: <b>${itemSeleccionado()!.nombre}</b>?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

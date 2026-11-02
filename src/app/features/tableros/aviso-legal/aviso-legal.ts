@@ -1,5 +1,5 @@
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideScale, lucideUserLock } from '@ng-icons/lucide';
@@ -11,6 +11,7 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-aviso-legal',
     imports: [HlmH3, HlmH4, HlmP, HlmButton, HlmIcon, NgIcon, RouterLink],
     templateUrl: './aviso-legal.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideScale,

@@ -2,7 +2,7 @@ import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
 import { SalNormaSuscritaObtenerConVencimiento } from '@/app/entities/others/sal-norma-suscrita-obtener-con-vencimiento';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCalendarRange, lucideChevronDown, lucideCircleAlert, lucideCircleCheck, lucideX } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -44,6 +44,7 @@ import { TarjetaVencimiento } from '@/app/components/tarjeta-vencimiento/tarjeta
         TarjetaVencimiento,
     ],
     templateUrl: './tablero-vencimientos.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideCalendarRange,

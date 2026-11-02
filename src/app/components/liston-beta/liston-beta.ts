@@ -1,5 +1,5 @@
 import { RedirectToLogin } from '@/app/services/redirect-to-login';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { provideIcons } from '@ng-icons/core';
 import { HlmP } from '@spartan-ng/helm/typography';
 
@@ -7,6 +7,7 @@ import { HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-liston-beta',
     imports: [HlmP],
     templateUrl: './liston-beta.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({})],
 })
 export class ListonBeta {

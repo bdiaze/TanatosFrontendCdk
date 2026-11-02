@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmP } from '@spartan-ng/helm/typography';
@@ -8,6 +8,7 @@ import { HlmP } from '@spartan-ng/helm/typography';
     selector: 'app-document-viewer',
     imports: [HlmSpinnerImports, HlmP, NgClass],
     templateUrl: './document-viewer.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './document-viewer.scss',
 })
 export class DocumentViewer {

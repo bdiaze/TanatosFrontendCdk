@@ -92,7 +92,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar una unidad de tiempo:"
-        [descripcion]="`¿Seguro que deseas eliminar la unidad de tiempo (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
+        [descripcion]="`¿Seguro que deseas eliminar la unidad de tiempo (${itemSeleccionado()!.id} - ${itemSeleccionado()!.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

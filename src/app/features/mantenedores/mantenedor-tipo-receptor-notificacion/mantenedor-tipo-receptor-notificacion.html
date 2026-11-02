@@ -87,7 +87,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un tipo de destinatario:"
-        [descripcion]="`¿Seguro que deseas eliminar el tipo de destinatario (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
+        [descripcion]="`¿Seguro que deseas eliminar el tipo de destinatario (${itemSeleccionado()!.id} - ${itemSeleccionado()!.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

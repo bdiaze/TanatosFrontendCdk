@@ -2,7 +2,7 @@ import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/moda
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { TipoRubroDao } from '@/app/daos/tipo-rubro-dao';
 import { TipoRubro } from '@/app/entities/models/tipo-rubro';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -31,6 +31,7 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-rubro.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoRubro implements OnInit {

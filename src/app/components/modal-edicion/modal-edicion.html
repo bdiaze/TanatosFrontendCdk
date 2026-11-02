@@ -202,7 +202,7 @@
                                                 >
                                                     <hlm-autocomplete-input
                                                         [id]="campo.llave"
-                                                        [placeholder]="`Seleccionar ${campo.nombre?.toLocaleLowerCase()}...`"
+                                                        [placeholder]="`Seleccionar ${campo.nombre?.toLocaleLowerCase() ?? campo.llave.toLocaleLowerCase()}...`"
                                                         class="[&_input]:text-sm!"
                                                         showClear
                                                     />

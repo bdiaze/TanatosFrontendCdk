@@ -82,7 +82,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un video tutorial:"
-        [descripcion]="`¿Seguro que deseas eliminar el video: <b>${itemSeleccionado()?.titulo}</b>?`"
+        [descripcion]="`¿Seguro que deseas eliminar el video: <b>${itemSeleccionado()!.titulo}</b>?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

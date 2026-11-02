@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, ViewChild } from '@angular/core';
+import { Component, ElementRef, input, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideArrowLeft, lucideArrowRight } from '@ng-icons/lucide';
@@ -17,6 +17,7 @@ import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
             lucideArrowLeft,
         }),
     ],
+    changeDetection: ChangeDetectionStrategy.Eager,
     host: {
         class: 'inline-block',
     },

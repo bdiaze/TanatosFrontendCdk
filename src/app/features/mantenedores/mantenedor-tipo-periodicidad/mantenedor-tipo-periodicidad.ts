@@ -4,7 +4,7 @@ import { TipoPeriodicidadDao } from '@/app/daos/tipo-periodicidad-dao';
 import { TipoPeriodicidad } from '@/app/entities/models/tipo-periodicidad';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { DecimalPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -33,6 +33,7 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-periodicidad.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoPeriodicidad implements OnInit {

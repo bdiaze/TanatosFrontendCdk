@@ -1,4 +1,4 @@
-import { afterNextRender, Component, computed, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
+import { afterNextRender, Component, computed, DestroyRef, inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Header } from '@components/header/header';
 import { Footer } from '@components/footer/footer';
@@ -22,6 +22,7 @@ import { Title } from '@angular/platform-browser';
 @Component({
     selector: 'app-root',
     imports: [RouterOutlet, Header, Footer, Menu, RecordatorioSuscripcionPorVencer, EmptyHero, UpdateNotification, PopupCookieConsent],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './app.html',
 })
 export class App implements OnInit, OnDestroy {

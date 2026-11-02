@@ -1,5 +1,5 @@
 import { environment } from '@environment';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthStore } from '@services/auth-store';
 import { EntAuthObtenerAccessToken } from '@/app/entities/others/ent-auth-obtener-access-token';
@@ -20,6 +20,7 @@ import { NegocioDao } from '@/app/daos/negocio-dao';
     host: {
         class: 'inline-block h-full w-full',
     },
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideTriangleAlert,

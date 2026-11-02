@@ -13,20 +13,21 @@ import { SalEmpleado, SalEmpleadoDestinatario } from '@/app/entities/others/sal-
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import {
-    Component,
-    computed,
-    DestroyRef,
-    effect,
-    ElementRef,
-    EventEmitter,
-    HostListener,
-    inject,
-    input,
-    Input,
-    Output,
-    signal,
-    untracked,
-    ViewChild,
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  inject,
+  input,
+  Input,
+  Output,
+  signal,
+  untracked,
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -85,6 +86,7 @@ import { AutoFocus } from '@/app/directives/auto-focus';
         HlmH3,
     ],
     templateUrl: './modal-mantenedor-empleado.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideContactRound, lucidePlus, lucideMail, lucideSmartphone, lucideTrash2, lucideGem })],
 })
 export class ModalMantenedorEmpleado {

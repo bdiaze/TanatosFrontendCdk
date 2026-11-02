@@ -4,7 +4,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { RecaptchaHelper } from '@/app/helpers/recaptcha-helper';
 import { AuthStore } from '@/app/services/auth-store';
 import { NgClass } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMailCheck, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -32,6 +32,7 @@ import { HlmTextarea } from '@spartan-ng/helm/textarea';
         NgClass,
     ],
     templateUrl: './formulario-contacto.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideTriangleAlert,

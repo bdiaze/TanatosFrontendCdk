@@ -6,7 +6,7 @@ import { SalMovimientoFinanciero } from '@/app/entities/others/sal-movimiento-fi
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, effect, inject, input, OnInit, output, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, input, OnInit, output, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -67,6 +67,7 @@ import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-
     ],
     templateUrl: './movimientos-financieros.html',
     styleUrl: './movimientos-financieros.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucidePlus,

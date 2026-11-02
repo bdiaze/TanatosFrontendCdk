@@ -1,7 +1,7 @@
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { TemplateDao } from '@/app/daos/template-dao';
 import { Template } from '@/app/entities/models/template';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -31,6 +31,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-template.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTemplate implements OnInit {

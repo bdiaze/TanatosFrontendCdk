@@ -3,7 +3,7 @@ import { SalCuentaFinanciera } from '@/app/entities/others/sal-cuenta-financiera
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DecimalPipe, NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, effect, inject, input, OnInit, output, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, input, OnInit, output, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -40,6 +40,7 @@ import { EntCuentaFinancieraActualizar } from '@/app/entities/others/ent-cuenta-
     ],
     templateUrl: './cuentas-financieras.html',
     styleUrl: './cuentas-financieras.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucidePlus, lucideSquareChevronDown, lucideTriangleAlert })],
 })
 export class CuentasFinancieras implements OnInit {

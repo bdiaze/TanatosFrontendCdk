@@ -6,7 +6,7 @@ import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { CdkMenuTrigger } from '@angular/cdk/menu';
 import { NgClass } from '@angular/common';
-import { Component, computed, effect, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, untracked, ViewChild } from '@angular/core';
+import { Component, computed, effect, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, untracked, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -67,6 +67,7 @@ import { filter, map } from 'rxjs';
     ],
     templateUrl: './menu.html',
     styleUrl: './menu.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideX,

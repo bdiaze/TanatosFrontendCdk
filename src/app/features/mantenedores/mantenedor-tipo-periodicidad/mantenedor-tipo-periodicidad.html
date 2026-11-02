@@ -108,7 +108,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar una periodicidad:"
-        [descripcion]="`¿Seguro que deseas eliminar la periodicidad (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
+        [descripcion]="`¿Seguro que deseas eliminar la periodicidad (${itemSeleccionado()!.id} - ${itemSeleccionado()!.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

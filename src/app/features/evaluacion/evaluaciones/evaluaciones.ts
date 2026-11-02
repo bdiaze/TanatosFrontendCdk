@@ -2,7 +2,7 @@ import { EvaluacionDao } from '@/app/daos/evaluacion-dao';
 import { SalEvaluacion } from '@/app/entities/others/sal-evaluacion';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -34,6 +34,7 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './evaluaciones.html',
     styleUrl: './evaluaciones.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({ lucideTriangleAlert, lucideStar, lucideSearch }),
         provideHlmDatePickerConfig({

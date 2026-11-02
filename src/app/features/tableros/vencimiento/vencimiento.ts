@@ -4,7 +4,7 @@ import { SalNormaSuscritaObtenerPorIdConVencimiento } from '@/app/entities/other
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { S3Service } from '@/app/services/s3-service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
+import { Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -85,6 +85,7 @@ import { HistoryService } from '@/app/services/history-service';
         HlmTooltipImports,
     ],
     templateUrl: './vencimiento.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideCalendarCheck,

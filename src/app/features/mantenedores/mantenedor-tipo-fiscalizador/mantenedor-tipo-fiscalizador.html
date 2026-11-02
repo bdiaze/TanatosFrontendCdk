@@ -85,7 +85,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un fiscalizador:"
-        [descripcion]="`¿Seguro que deseas eliminar el fiscalizador (${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre})?`"
+        [descripcion]="`¿Seguro que deseas eliminar el fiscalizador (${itemSeleccionado()!.id} - ${itemSeleccionado()!.nombre})?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

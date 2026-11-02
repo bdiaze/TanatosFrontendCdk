@@ -8,7 +8,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { TourService } from '@/app/helpers/tour-service';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { DatePipe, NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -46,6 +46,7 @@ import { map } from 'rxjs';
     ],
     templateUrl: './mantenedor-modelos-canvas.html',
     styleUrl: './mantenedor-modelos-canvas.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideTriangleAlert,

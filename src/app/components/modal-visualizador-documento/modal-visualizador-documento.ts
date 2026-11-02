@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { DocumentViewer } from '../document-viewer/document-viewer';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -10,6 +10,7 @@ import { HlmH4 } from '@spartan-ng/helm/typography';
     imports: [DocumentViewer, NgIcon, HlmIcon, HlmH4],
     templateUrl: './modal-visualizador-documento.html',
     styleUrl: './modal-visualizador-documento.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideX,

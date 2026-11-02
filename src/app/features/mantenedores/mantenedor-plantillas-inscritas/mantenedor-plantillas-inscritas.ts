@@ -8,7 +8,7 @@ import { TemplateConInscripcion, TemplateNormasConInscripcion } from '@/app/enti
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideBadgeCheck,
@@ -63,6 +63,7 @@ import { DriveStep } from 'driver.js';
         RouterModule,
     ],
     templateUrl: './mantenedor-plantillas-inscritas.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideTriangleAlert,

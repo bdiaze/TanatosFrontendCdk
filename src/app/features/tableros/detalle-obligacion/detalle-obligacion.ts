@@ -5,7 +5,7 @@ import { getErrorMessage } from '@/app/helpers/error-message';
 import { TourService } from '@/app/helpers/tour-service';
 import { AuthStore } from '@/app/services/auth-store';
 import { DatePipe, TitleCasePipe } from '@angular/common';
-import { Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild } from '@angular/core';
+import { Component, computed, DestroyRef, effect, ElementRef, inject, OnInit, signal, untracked, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -39,6 +39,7 @@ import { combineLatest, map } from 'rxjs';
     ],
     templateUrl: './detalle-obligacion.html',
     styleUrl: './detalle-obligacion.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideTriangleAlert,

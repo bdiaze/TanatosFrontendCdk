@@ -1,6 +1,6 @@
 import { AuthDao } from '@daos/auth-dao';
 import { AuthStore } from '@services/auth-store';
-import { Component, computed, inject, Input, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, Input, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@environment';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -13,6 +13,7 @@ import { AuthRefreshService } from '@/app/services/auth-refresh-service';
 @Component({
     selector: 'app-logout',
     imports: [HlmButtonImports, HlmSpinnerImports, CommonModule],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './logout.html',
 })
 export class Logout {

@@ -2,7 +2,7 @@ import { EvaluacionDao } from '@/app/daos/evaluacion-dao';
 import { EntEvaluacionCrear } from '@/app/entities/others/ent-evaluacion-crear';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NgClass } from '@angular/common';
-import { Component, effect, ElementRef, inject, input, signal, untracked, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, signal, untracked, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideSend, lucideStar, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -18,6 +18,7 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
     imports: [HlmH3, HlmP, NgIcon, HlmIcon, HlmSpinnerImports, HlmButtonImports, HlmTextareaImports, NgClass, ReactiveFormsModule, HlmAlertImports],
     templateUrl: './nueva-evaluacion.html',
     styleUrl: './nueva-evaluacion.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideStar, lucideSend })],
 })
 export class NuevaEvaluacion {

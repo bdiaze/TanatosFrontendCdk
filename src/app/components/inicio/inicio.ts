@@ -1,4 +1,4 @@
-import { Component, effect, inject, untracked } from '@angular/core';
+import { Component, effect, inject, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { Hero } from '@/app/components/hero/hero';
 import { getCookie } from '@/app/helpers/cookie-helper';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { map } from 'rxjs';
     selector: 'app-inicio',
     imports: [Hero],
     templateUrl: './inicio.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     host: {
         class: 'inline-block h-full w-full',
     },

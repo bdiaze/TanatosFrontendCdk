@@ -1,4 +1,4 @@
-import { Component, effect, inject, signal, untracked } from '@angular/core';
+import { Component, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { HlmItemImports } from '@spartan-ng/helm/item';
 import { HlmH1, HlmP } from '@spartan-ng/helm/typography';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -17,6 +17,7 @@ import { HlmAlertImports } from '@spartan-ng/helm/alert';
 @Component({
     selector: 'app-menu-inicial',
     imports: [HlmH1, HlmP, HlmItemImports, RouterLink, HlmSpinnerImports, HlmSkeletonImports, FadeIn, HlmButton, HlmSpinnerImports, HlmAlertImports],
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './menu-inicial.html',
 })
 export class MenuInicial {

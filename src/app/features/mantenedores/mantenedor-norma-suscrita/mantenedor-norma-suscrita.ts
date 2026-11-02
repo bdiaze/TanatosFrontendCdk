@@ -3,7 +3,7 @@ import { NormaSuscritaDao } from '@/app/daos/norma-suscrita-dao';
 import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
@@ -52,6 +52,7 @@ import { map } from 'rxjs';
         HlmBreadcrumbImports,
     ],
     templateUrl: './mantenedor-norma-suscrita.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideTriangleAlert,

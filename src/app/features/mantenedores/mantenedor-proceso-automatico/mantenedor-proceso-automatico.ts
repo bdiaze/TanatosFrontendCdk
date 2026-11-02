@@ -4,7 +4,7 @@ import { ProcesoAutomatico } from '@/app/entities/models/proceso-automatico';
 import { SalTipoProcesoAutomatico } from '@/app/entities/others/sal-tipo-proceso-automatico';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { DatePipe, JsonPipe, NgClass } from '@angular/common';
-import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -50,6 +50,7 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './mantenedor-proceso-automatico.html',
     styleUrl: './mantenedor-proceso-automatico.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX }), DatePipe],
 })
 export class MantenedorProcesoAutomatico implements OnInit {

@@ -1,6 +1,6 @@
 import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
-import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
     lucideHeartHandshake,
@@ -19,6 +19,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
     selector: 'app-nosotros',
     imports: [HlmIcon, NgIcon, FadeIn],
     templateUrl: './nosotros.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideStore,

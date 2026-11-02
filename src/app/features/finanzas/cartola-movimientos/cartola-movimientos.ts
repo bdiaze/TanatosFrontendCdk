@@ -1,4 +1,4 @@
-import { Component, DestroyRef, inject, signal, viewChild } from '@angular/core';
+import { Component, DestroyRef, inject, signal, viewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideWallet } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
@@ -20,6 +20,7 @@ import { SalMovimientoFinanciero } from '@/app/entities/others/sal-movimiento-fi
     imports: [HlmH3, HlmH4, HlmIcon, NgIcon, CuentasFinancieras, MovimientosFinancieros, HlmBreadcrumbImports, HlmButtonImports],
     templateUrl: './cartola-movimientos.html',
     styleUrl: './cartola-movimientos.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideWallet })],
 })
 export class CartolaMovimientos {

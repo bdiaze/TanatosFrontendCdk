@@ -5,7 +5,7 @@ import { EntVideoTutorialActualizar } from '@/app/entities/others/ent-video-tuto
 import { EntVideoTutorialCrear } from '@/app/entities/others/ent-video-tutorial-crear';
 import { SalVideoTutorial } from '@/app/entities/others/sal-video-tutorial';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -37,6 +37,7 @@ import { HlmH3 } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './mantenedor-video-tutorial.html',
     styleUrl: './mantenedor-video-tutorial.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorVideoTutorial implements OnInit {

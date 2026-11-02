@@ -78,7 +78,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un tipo de cuenta financiera:"
-        [descripcion]="`¿Seguro que deseas eliminar el tipo de cuenta: <b>${itemSeleccionado()?.nombre}</b>?`"
+        [descripcion]="`¿Seguro que deseas eliminar el tipo de cuenta: <b>${itemSeleccionado()!.nombre}</b>?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

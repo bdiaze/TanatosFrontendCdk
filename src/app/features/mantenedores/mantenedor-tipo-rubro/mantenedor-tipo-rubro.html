@@ -85,7 +85,7 @@
     <app-modal-eliminacion
         [item]="itemSeleccionado()"
         titulo="Eliminar un rubro:"
-        [descripcion]="`¿Seguro que deseas eliminar el rubro <b>${itemSeleccionado()?.id} - ${itemSeleccionado()?.nombre}</b>?`"
+        [descripcion]="`¿Seguro que deseas eliminar el rubro <b>${itemSeleccionado()!.id} - ${itemSeleccionado()!.nombre}</b>?`"
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"
     >

@@ -17,21 +17,22 @@ import { S3Service } from '@/app/services/s3-service';
 import { NgClass } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import {
-    Component,
-    computed,
-    DestroyRef,
-    effect,
-    ElementRef,
-    HostListener,
-    inject,
-    input,
-    OnDestroy,
-    OnInit,
-    output,
-    signal,
-    untracked,
-    viewChild,
-    ViewChild,
+  Component,
+  computed,
+  DestroyRef,
+  effect,
+  ElementRef,
+  HostListener,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  output,
+  signal,
+  untracked,
+  viewChild,
+  ViewChild,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -86,6 +87,7 @@ import { catchError, debounceTime, defer, EMPTY, filter, map, mergeMap, Observab
     ],
     templateUrl: './modal-nuevo-movimiento.html',
     styleUrl: './modal-nuevo-movimiento.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({ lucideWallet, lucidePlus, lucideMinus, lucideChevronDown, lucideFileUp, lucideFile, lucideTrash2, lucideGem }),
         provideHlmDatePickerConfig({

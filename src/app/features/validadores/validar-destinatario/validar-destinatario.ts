@@ -1,6 +1,6 @@
 import { DestinatarioNotificacionDao } from '@/app/daos/destinatario-notificacion-dao';
 import { EntDestinatarioNotificacionValidar } from '@/app/entities/others/ent-destinatario-notificacion-validar';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideSend, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -16,6 +16,7 @@ import { HlmH2, HlmH4 } from '@spartan-ng/helm/typography';
     imports: [HlmButtonImports, HlmH2, HlmH4, HlmAlertImports, NgIcon, HlmIcon, HlmSpinnerImports, HlmSeparatorImports],
     templateUrl: './validar-destinatario.html',
     providers: [provideIcons({ lucideTriangleAlert, lucideSend })],
+    changeDetection: ChangeDetectionStrategy.Eager,
     host: {
         class: 'inline-block h-full w-full',
     },

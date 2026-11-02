@@ -2,7 +2,7 @@ import { MensajeDao } from '@/app/daos/mensaje-dao';
 import { SalMensaje } from '@/app/entities/others/sal-mensaje';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -34,6 +34,7 @@ import { HlmH3, HlmP } from '@spartan-ng/helm/typography';
     ],
     templateUrl: './consulta-mensajes.html',
     styleUrl: './consulta-mensajes.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({ lucideTriangleAlert, lucideMail, lucideUserRound, lucideSearch, lucideHash }),
         provideHlmDatePickerConfig({

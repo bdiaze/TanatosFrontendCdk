@@ -3,7 +3,7 @@ import { SalWhatsappConversacion } from '@/app/entities/others/sal-whatsapp-conv
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { FormatearTelefonoPipe } from '@/app/pipes/formatear-telefono-pipe';
 import { DatePipe, NgClass } from '@angular/common';
-import { Component, DestroyRef, effect, EventEmitter, inject, OnInit, Output, signal } from '@angular/core';
+import { Component, DestroyRef, effect, EventEmitter, inject, OnInit, Output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideMessageCircleMore, lucideTag, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -32,6 +32,7 @@ import { interval, switchMap } from 'rxjs';
         NgClass,
     ],
     templateUrl: './whatsapp-conversaciones.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideMessageCircleMore, lucideTag, lucideTriangleAlert })],
 })
 export class WhatsappConversaciones implements OnInit {

@@ -5,7 +5,7 @@ import { TipoRubroDao } from '@/app/daos/tipo-rubro-dao';
 import { TipoActividad } from '@/app/entities/models/tipo-actividad';
 import { TipoRubro } from '@/app/entities/models/tipo-rubro';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
@@ -37,6 +37,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-actividad.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoActividad implements OnInit {

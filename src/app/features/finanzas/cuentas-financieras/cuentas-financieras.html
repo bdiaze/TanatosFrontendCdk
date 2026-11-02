@@ -90,11 +90,11 @@
         [item]="itemEliminacion()"
         titulo="Eliminar la cuenta financiera:"
         [descripcion]="
-            `¿Seguro que deseas eliminar la cuenta <b>${itemEliminacion()?.nombre}</b>?
+            `¿Seguro que deseas eliminar la cuenta <b>${itemEliminacion()!.nombre}</b>?
             <p class='text-sm mt-2'>Tipo de cuenta:</p>
-            <p class='text-base'><b>${itemEliminacion()?.nombreTipoCuentaFinanciera}</b></p>
+            <p class='text-base'><b>${itemEliminacion()!.nombreTipoCuentaFinanciera}</b></p>
             <p class='text-sm mt-1'>Saldo actual:</p>
-            <p class='text-base'><b>$${(itemEliminacion()?.saldoActual | number)}</b></p>`
+            <p class='text-base'><b>$${(itemEliminacion()!.saldoActual | number)}</b></p>`
         "
         (cerrar)="closeModalEliminar()"
         (eliminar)="eliminar($event)"

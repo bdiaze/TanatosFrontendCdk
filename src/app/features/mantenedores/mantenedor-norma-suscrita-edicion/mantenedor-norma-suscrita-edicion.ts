@@ -12,7 +12,7 @@ import { EntNormaSuscritaCrear } from '@/app/entities/others/ent-norma-suscrita-
 import { SalNormaSuscrita } from '@/app/entities/others/sal-norma-suscrita';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnInit, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -94,6 +94,7 @@ import { SalTipoPeriodicidad } from '@/app/entities/others/sal-tipo-periodicidad
     ],
     templateUrl: './mantenedor-norma-suscrita-edicion.html',
     styleUrl: './mantenedor-norma-suscrita-edicion.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideBadgeCheck,

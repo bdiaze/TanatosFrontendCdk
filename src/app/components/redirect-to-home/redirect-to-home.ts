@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-redirect-to-home',
     imports: [],
     templateUrl: './redirect-to-home.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './redirect-to-home.scss',
 })
 export class RedirectToHome {

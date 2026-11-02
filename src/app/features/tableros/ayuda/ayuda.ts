@@ -1,7 +1,7 @@
 import { PreguntaFrecuenteDao } from '@/app/daos/pregunta-frecuente-dao';
 import { SalPreguntaFrecuenteHabilitado } from '@/app/entities/others/sal-pregunta-frecuente-habilitado';
 import { getErrorMessage } from '@/app/helpers/error-message';
-import { Component, computed, DestroyRef, effect, inject, OnDestroy, OnInit, signal, untracked } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, OnDestroy, OnInit, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideCircleQuestionMark, lucideX } from '@ng-icons/lucide';
@@ -26,6 +26,7 @@ import { HistoryService } from '@/app/services/history-service';
     imports: [HlmP, HlmH3, HlmH4, NgIcon, HlmIcon, HlmAccordionImports, EditorTexto, HlmSkeletonImports, HlmButtonImports],
     templateUrl: './ayuda.html',
     styleUrl: './ayuda.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideCircleQuestionMark, lucideX })],
 })
 export class Ayuda implements OnInit, OnDestroy {

@@ -2,7 +2,7 @@ import { CampoDinamico, ModalEdicion } from '@/app/components/modal-edicion/moda
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
 import { TipoFiscalizadorDao } from '@/app/daos/tipo-fiscalizador-dao';
 import { TipoFiscalizador } from '@/app/entities/models/tipo-fiscalizador';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideBadgeCheck, lucideBadgeX, lucideEllipsis, lucideTriangleAlert } from '@ng-icons/lucide';
@@ -30,6 +30,7 @@ import { catchError, combineLatest, of } from 'rxjs';
         HlmSkeletonImports,
     ],
     templateUrl: './mantenedor-tipo-fiscalizador.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideEllipsis, lucideBadgeCheck, lucideBadgeX })],
 })
 export class MantenedorTipoFiscalizador implements OnInit {

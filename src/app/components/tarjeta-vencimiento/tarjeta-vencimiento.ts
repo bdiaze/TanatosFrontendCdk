@@ -1,7 +1,7 @@
 import { SalNormaSuscritaObtenerConVencimiento } from '@/app/entities/others/sal-norma-suscrita-obtener-con-vencimiento';
 import { PlainTextPipe } from '@/app/pipes/plain-text-pipe';
 import { DatePipe } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, input, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideClipboardList, lucideUser } from '@ng-icons/lucide';
@@ -16,6 +16,7 @@ import dayjs from 'dayjs';
     imports: [NgIcon, HlmIcon, RouterLink, HlmItemImports, HlmBadgeImports, HlmTooltipImports, DatePipe, PlainTextPipe],
     templateUrl: './tarjeta-vencimiento.html',
     styleUrl: './tarjeta-vencimiento.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
         provideIcons({
             lucideUser,

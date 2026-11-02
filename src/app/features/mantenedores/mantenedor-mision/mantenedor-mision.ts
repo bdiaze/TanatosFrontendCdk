@@ -6,7 +6,7 @@ import { SalNegocio } from '@/app/entities/others/sal-negocio';
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { TourService } from '@/app/helpers/tour-service';
 import { NegocioStore } from '@/app/services/negocio-store';
-import { Component, computed, effect, inject, signal, untracked } from '@angular/core';
+import { Component, computed, effect, inject, signal, untracked, ChangeDetectionStrategy } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -41,6 +41,7 @@ import { map } from 'rxjs';
     ],
     templateUrl: './mantenedor-mision.html',
     styleUrl: './mantenedor-mision.scss',
+    changeDetection: ChangeDetectionStrategy.Eager,
     providers: [provideIcons({ lucideTriangleAlert, lucideGoal, lucideChartNoAxesCombined, lucideUserStar })],
 })
 export class MantenedorMision {

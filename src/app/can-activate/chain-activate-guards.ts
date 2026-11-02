@@ -1,5 +1,15 @@
 import { inject, Injector, runInInjectionContext } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivateFn, CanMatchFn, GuardResult, MaybeAsync, Route, RouterStateSnapshot, UrlSegment } from '@angular/router';
+import {
+    ActivatedRouteSnapshot,
+    CanActivateFn,
+    CanMatchFn,
+    GuardResult,
+    MaybeAsync,
+    PartialMatchRouteSnapshot,
+    Route,
+    RouterStateSnapshot,
+    UrlSegment,
+} from '@angular/router';
 import { from, isObservable, Observable, of } from 'rxjs';
 import { finalize, switchMap } from 'rxjs/operators';
 import { CanActivateRunning } from '../services/can-activate-running';
@@ -14,8 +24,8 @@ export function chainActivateGuards(...guards: CanActivateFn[]): CanActivateFn {
 }
 
 export function chainMatchGuards(...guards: CanMatchFn[]): CanMatchFn {
-    return (route: Route, segments: UrlSegment[]): MaybeAsync<GuardResult> => {
-        return chainGuards((guard) => guard(route, segments), guards);
+    return (route: Route, segments: UrlSegment[], currentSnapshot: PartialMatchRouteSnapshot): MaybeAsync<GuardResult> => {
+        return chainGuards((guard) => guard(route, segments, currentSnapshot), guards);
     };
 }
 
