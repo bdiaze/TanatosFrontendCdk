@@ -42,6 +42,7 @@ export class Callback implements OnInit {
         this.route.queryParams.subscribe((params) => {
             const code = params['code'];
             const returnedState = params['state'];
+            const oauthError = params['error'];
 
             let nonce: string | undefined;
             let statePayload: { nonce?: string; redirect?: string } = {};
@@ -50,6 +51,14 @@ export class Callback implements OnInit {
                 nonce = statePayload.nonce;
             } catch {
                 /* state inválido - No se emite error acá dado que se emitirá posteriormente */
+            }
+
+            if (oauthError) {
+                if (nonce) localStorage.removeItem(`pkce:${nonce}`);
+                this.authStore.callbackRunning.set(false);
+                console.error('Cognito devolvió error en callback', oauthError, params['error_description']);
+                this.error.set('¡Ups! parece que algo salió mal mientras procesabamos tu inicio de sesión, favor intenta nuevamente.');
+                return;
             }
 
             const key = nonce ? `pkce:${nonce}` : null;

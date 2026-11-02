@@ -37,11 +37,11 @@ export class AuthRefreshService {
                     catchError((err) => {
                         this._isRefreshing = false;
                         this.authStore.setAccessToken(null);
-                        this.refreshTokenSubject.error(err);
                         if (!sinRedirect) {
                             this.redirectToLogin.redireccionarALogin('login', this.router.url, true);
                             return NEVER;
                         }
+                        this.refreshTokenSubject.error(err);
                         return throwError(() => err);
                     }),
                 )

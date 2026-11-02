@@ -1,5 +1,7 @@
 import { environment } from '@/environments/environment';
 import { Injectable, signal } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
+import { AuthClaims } from '../entities/others/auth-claims';
 
 @Injectable({
     providedIn: 'root',
@@ -47,6 +49,25 @@ export class RedirectToLogin {
             .replaceAll('=', '');
     }
 
+    readonly publicScopes = [
+        'api/perfil.read.self',
+        'api/perfil.write.self',
+        'api/negocios.read.self',
+        'api/negocios.write.self',
+        'api/obligaciones.read.self',
+        'api/obligaciones.write.self',
+        'api/vencimientos.read.self',
+        'api/vencimientos.write.self',
+        'api/suscripciones.read.self',
+        'api/suscripciones.write.self',
+        'api/documentos.read.self',
+        'api/documentos.write.self',
+        'api/finanzas.read.self',
+        'api/finanzas.write.self',
+        'api/templates.read.public',
+        'api/sistema.read.public',
+    ];
+
     async generarUrlALogin(accion: 'login' | 'signup' = 'login', redirectAfterLogin?: string): Promise<string> {
         const codeVerifier = this.generateRandomString(64);
         const codeChallenge = await this.generateCodeChallenge(codeVerifier);
@@ -55,25 +76,6 @@ export class RedirectToLogin {
         const state = btoa(JSON.stringify({ nonce, redirect: redirectAfterLogin }));
 
         localStorage.setItem(`pkce:${nonce}`, JSON.stringify({ verifier: codeVerifier, ts: Date.now() }));
-
-        const publicScopes = [
-            'api/perfil.read.self',
-            'api/perfil.write.self',
-            'api/negocios.read.self',
-            'api/negocios.write.self',
-            'api/obligaciones.read.self',
-            'api/obligaciones.write.self',
-            'api/vencimientos.read.self',
-            'api/vencimientos.write.self',
-            'api/suscripciones.read.self',
-            'api/suscripciones.write.self',
-            'api/documentos.read.self',
-            'api/documentos.write.self',
-            'api/finanzas.read.self',
-            'api/finanzas.write.self',
-            'api/templates.read.public',
-            'api/sistema.read.public',
-        ];
 
         let urlBase = `${environment.cognitoService.baseUrl}/login?`;
         if (accion === 'signup') {
@@ -86,7 +88,7 @@ export class RedirectToLogin {
                 response_type: 'code',
                 client_id: environment.cognitoService.clientId,
                 redirect_uri: environment.cognitoService.redirectUrl,
-                scope: `openid profile email ${publicScopes.join(' ')}`,
+                scope: `openid profile email ${this.publicScopes.join(' ')}`,
                 state: state,
                 code_challenge_method: 'S256',
                 code_challenge: codeChallenge,
@@ -104,6 +106,17 @@ export class RedirectToLogin {
             } catch {
                 localStorage.removeItem(k);
             }
+        }
+    }
+
+    obtenerScopesFaltantes(token: string): string[] {
+        try {
+            const { scope } = jwtDecode<AuthClaims>(token);
+            const tokenScopes = new Set((scope ?? '').split(/\s+/).filter(Boolean));
+
+            return this.publicScopes.filter((scope) => !tokenScopes.has(scope));
+        } catch {
+            return [...this.publicScopes];
         }
     }
 }
