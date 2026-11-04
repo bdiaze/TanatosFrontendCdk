@@ -97,7 +97,7 @@
                         </div>
                     </div>
                 </div>
-                @if (cargandoCategorias() && ayudaRunning()) {
+                @if (cargandoCategorias() && !ayudaRunning()) {
                     <hlm-skeleton class="h-9 rounded-sm" />
                 } @else if (categoriasMostrar().length > 1) {
                     <hlm-select
@@ -121,10 +121,20 @@
                     </hlm-select>
                 }
             </fieldset>
-            @if (cargandoDocumentos() && ayudaRunning()) {
-                <hlm-skeleton class="h-18 rounded-sm mt-2" />
+            <div class="w-full flex items-center justify-between md:justify-end gap-3 mt-3">
+                <button hlmBtn type="button" (click)="ejecutarCerrado()" class="btnOutlineAzul flex-1" [disabled]="deshabilitarBoton()">Cancelar</button>
+                <button hlmBtn id="guardar_movimiento" type="submit" class="btnAzul flex-1" [disabled]="deshabilitarBoton()">
+                    @if (confirmando()) {
+                        <hlm-spinner />
+                    }
+                    Guardar
+                </button>
+            </div>
+
+            @if (cargandoDocumentos() && !ayudaRunning()) {
+                <hlm-skeleton class="h-18 rounded-sm mt-3" />
             } @else {
-                <div hlmTableContainer class="mt-2 fade-in" [ngClass]="{ 'mt-1!': documentosAdjuntos().length > 0 || documentosEnProgreso().length > 0 }">
+                <div hlmTableContainer class="fade-in mt-1" [class.mt-3]="documentosAdjuntos().length === 0 && documentosEnProgreso().length === 0">
                     <table hlmTable>
                         <tbody hlmTBody>
                             @for (documento of documentosAdjuntos(); track documento.id) {
@@ -251,17 +261,6 @@
                     <p hlmAlertDescription class="whitespace-break-spaces">{{ error() }}</p>
                 </div>
             }
-        </div>
-        <div hlmCardFooter class="flex flex-col items-center gap-4 faster-fade-in">
-            <div class="w-full flex items-center justify-between md:justify-end gap-3">
-                <button hlmBtn type="button" (click)="ejecutarCerrado()" class="btnOutlineAzul flex-1" [disabled]="deshabilitarBoton()">Cancelar</button>
-                <button hlmBtn id="guardar_movimiento" type="submit" class="btnAzul flex-1" [disabled]="deshabilitarBoton()">
-                    @if (confirmando()) {
-                        <hlm-spinner />
-                    }
-                    Guardar
-                </button>
-            </div>
         </div>
     </form>
 </div>
