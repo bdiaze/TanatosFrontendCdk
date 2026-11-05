@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SalMovimientoFinancieroObtenerPorPaginacion } from '../entities/others/sal-movimiento-financiero-obtener-por-paginacion';
@@ -29,6 +29,15 @@ export class MovimientoFinancieroDao {
             environment.tanatosService.apiUrl + `/MovimientoFinanciero/Vigentes/${idNegocio}/${idCuentaFinanciera}`,
             { params },
         );
+    }
+
+    exportarCsv(idNegocio: number, idCuentaFinanciera: number, fechaDesde: Date, fechaHasta: Date): Observable<HttpResponse<Blob>> {
+        let params = new HttpParams().set('fechaDesde', fechaDesde.toISOString()).set('fechaHasta', fechaHasta.toISOString());
+        return this.http.get(environment.tanatosService.apiUrl + `/MovimientoFinanciero/ExportarCsv/${idNegocio}/${idCuentaFinanciera}`, {
+            params,
+            responseType: 'blob',
+            observe: 'response',
+        });
     }
 
     crear(entrada: EntMovimientoFinancieroCrear): Observable<SalMovimientoFinanciero> {

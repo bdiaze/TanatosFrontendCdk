@@ -1,12 +1,12 @@
 @if (error()) {
-    <div hlmAlert variant="destructive" class="w-full">
+    <div hlmAlert variant="destructive" class="w-full mb-3">
         <ng-icon hlm hlmAlertIcon name="lucideTriangleAlert" />
         <h4 hlmAlertTitle>¡Ocurrió un error!</h4>
         <p hlmAlertDescription>{{ error() }}</p>
     </div>
 }
 <div class="w-full flex flex-col md:flex-row items-stretch justify-between mt-2 md:mt-1 mb-2 gap-3 fade-in">
-    <div class="flex items-end order-2 md:order-1">
+    <div class="flex items-center order-2 md:order-1 gap-2">
         <div id="filtro_fechas" class="flex flex-row items-center justify-center gap-2 w-full">
             <hlm-date-picker class="text-sm w-full" [date]="fechaDesde()" (dateChange)="fechaDesde.set($event)">
                 <hlm-date-picker-trigger
@@ -22,6 +22,37 @@
                 </hlm-date-picker-trigger>
             </hlm-date-picker>
         </div>
+        @if (puedeExportarCsv()) {
+            <button
+                hlmBtn
+                type="button"
+                size="icon-sm"
+                variant="secondary"
+                hlmTooltip="Exportar a un archivo CSV"
+                (click)="exportarCsv()"
+                [disabled]="exportandoCsv()"
+                [id]="ayudaRunning() ? 'exportar_csv' : null"
+            >
+                @if (exportandoCsv()) {
+                    <hlm-spinner />
+                } @else {
+                    <ng-icon hlm size="sm" name="lucideFileInput" />
+                }
+            </button>
+        } @else {
+            <app-popup-funcionalidad-bloqueada [offsetX]="0" align="end">
+                <button
+                    hlmBtn
+                    type="button"
+                    size="icon-sm"
+                    variant="secondary"
+                    hlmTooltip="Exportar a un archivo CSV"
+                    [id]="ayudaRunning() ? 'exportar_csv' : null"
+                >
+                    <ng-icon hlm size="sm" name="lucideFileInput" />
+                </button>
+            </app-popup-funcionalidad-bloqueada>
+        }
     </div>
     <div class="order-1 md:order-2 flex flex-row items-center justify-end gap-2">
         <button hlmBtn class="pr-6! flex-1" (click)="openModalCrear()" [id]="ayudaRunning() ? 'nuevo_movimiento' : null">

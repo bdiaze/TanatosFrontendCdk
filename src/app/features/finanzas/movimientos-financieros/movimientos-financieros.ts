@@ -13,6 +13,9 @@ import {
     lucideDownload,
     lucideEllipsis,
     lucideFile,
+    lucideFileInput,
+    lucideFilePenLine,
+    lucideGem,
     lucideMinus,
     lucidePaperclip,
     lucidePlus,
@@ -41,10 +44,13 @@ import { S3Service } from '@/app/services/s3-service';
 import { SalDocumentoAdjunto } from '@/app/entities/others/sal-documento-adjunto';
 import { HistoryService } from '@/app/services/history-service';
 import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-documento/modal-visualizador-documento';
+import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-movimientos-financieros',
     imports: [
+        PopupFuncionalidadBloqueada,
         ModalEliminacion,
         ModalVisualizadorDocumento,
         RouterLink,
@@ -81,6 +87,9 @@ import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-
             lucideFile,
             lucideSearch,
             lucideDownload,
+            lucideFilePenLine,
+            lucideFileInput,
+            lucideGem,
         }),
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,
@@ -162,6 +171,10 @@ export class MovimientosFinancieros implements OnInit {
             }
         });
     }
+
+    puedeExportarCsv = computed(() => {
+        return this.negocioStore.resumenSuscripcionUsuario()?.tienePlanEmpresa ?? false;
+    });
 
     cargando = signal(true);
     error = signal('');
@@ -399,6 +412,8 @@ export class MovimientosFinancieros implements OnInit {
             return new Set(ids).add(documento.id);
         });
 
+        this.error.set('');
+
         this.documentoAdjuntoDao
             .generarUrlBajada({
                 idDocumentoAdjunto: documento.id,
@@ -434,6 +449,8 @@ export class MovimientosFinancieros implements OnInit {
             return new Set(ids).add(idDocumento);
         });
 
+        this.error.set('');
+
         // Se obtiene URL prefirmada para descarga...
         this.documentoAdjuntoDao
             .generarUrlBajada({
@@ -465,5 +482,66 @@ export class MovimientosFinancieros implements OnInit {
                     });
                 },
             });
+    }
+
+    exportandoCsv = signal(false);
+    exportarCsv() {
+        const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+        const idCuentaFinanciera = this.idCuentaFinanciera();
+        const fechaDesde = this.fechaDesde();
+        const fechaHasta = this.fechaHasta();
+
+        if (negocioSeleccionado && idCuentaFinanciera && fechaDesde && fechaHasta) {
+            // Se setean horas 00:00:00 y 23:59:59 a fecha "Desde" y "Hasta"...
+            fechaDesde.setHours(0, 0, 0, 0);
+            fechaHasta.setHours(23, 59, 59, 999);
+
+            this.error.set('');
+
+            this.exportandoCsv.set(true);
+            this.movimientoFinancieroDao
+                .exportarCsv(negocioSeleccionado.id, idCuentaFinanciera, fechaDesde, fechaHasta)
+                .subscribe({
+                    next: (response) => {
+                        const blob = response.body!;
+                        const disposition = response.headers.get('Content-Disposition');
+
+                        console.log('Disposition:', disposition);
+
+                        const filename =
+                            disposition
+                                ?.split(';')
+                                .map((parametro) => parametro.trim())
+                                .find((parametro) => /^filename=/i.test(parametro))
+                                ?.split('=')
+                                .slice(1)
+                                .join('=')
+                                .replace(/^"|"$/g, '') ?? 'Movimientos.csv';
+
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+
+                        URL.revokeObjectURL(link.href);
+                    },
+                    error: async (err: HttpErrorResponse) => {
+                        let mensaje = 'Error al exportar los movimientos a un archivo CSV';
+                        if (err.error instanceof Blob) {
+                            try {
+                                mensaje = JSON.parse(await err.error.text());
+                            } catch {}
+                        }
+
+                        console.error(mensaje, err);
+                        this.error.set(getErrorMessage(err) ?? mensaje);
+                    },
+                })
+                .add(() => {
+                    setTimeout(() => {
+                        this.exportandoCsv.set(false);
+                    }, 1000);
+                });
+        }
     }
 }

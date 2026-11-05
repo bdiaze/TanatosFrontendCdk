@@ -165,6 +165,14 @@ export class CartolaMovimientos {
                         description: 'Por acá podrás gestionar otras configuraciones, como administrar tus categorías financieras.',
                     },
                 },
+
+                {
+                    element: '#exportar_csv',
+                    popover: {
+                        title: 'Exportar movimientos',
+                        description: 'Si necesitas un archivo CSV, puedes exportar los movimientos desde acá.',
+                    },
+                },
                 {
                     element: '#nuevo_movimiento',
                     popover: {
