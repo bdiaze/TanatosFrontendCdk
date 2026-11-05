@@ -121,7 +121,19 @@
                     </hlm-select>
                 }
             </fieldset>
-            <div class="w-full flex items-center justify-between md:justify-end gap-3 mt-3">
+            <div class="w-full flex items-center justify-end gap-1 my-1.5 pr-1">
+                @if (descartandoMovimiento()) {
+                    <p hlmP class="text-xs fade-in text-negro/60">Descartando</p>
+                    <hlm-spinner class="text-sm text-negro/50" />
+                } @else if (movimientoConCambios()) {
+                    <p hlmP class="text-xs fade-in text-negro/60">Cambios sin guardar</p>
+                    <ng-icon hlm name="lucideCircleAlert" size="sm" class="text-negro/40 fade-in" />
+                } @else if (movimientoGuardado()) {
+                    <p hlmP class="text-xs fade-in text-azul/80">Movimiento guardado</p>
+                    <ng-icon hlm name="lucideCircleCheck" size="sm" class="fade-in text-azul/60" />
+                }
+            </div>
+            <div class="w-full flex items-center justify-between md:justify-end gap-3 mt-1.5 pb-4">
                 <button hlmBtn type="button" (click)="ejecutarCerrado()" class="btnOutlineAzul flex-1" [disabled]="deshabilitarBoton()">Cancelar</button>
                 <button hlmBtn id="guardar_movimiento" type="submit" class="btnAzul flex-1" [disabled]="deshabilitarBoton()">
                     @if (confirmando()) {
@@ -131,10 +143,28 @@
                 </button>
             </div>
 
+            <div class="border-b -ml-6 -mr-6"></div>
+
+            <div class="w-full flex flex-row items-center justify-between mt-2 px-1">
+                <h4 hlmH4 class="text-base">Documentos:</h4>
+                <div class="flex items-center justify-end gap-1">
+                    @if (descartandoDocumentos()) {
+                        <p hlmP class="text-xs fade-in text-negro/60">Descartando</p>
+                        <hlm-spinner class="text-sm text-negro/50" />
+                    } @else if (documentosEnProceso()) {
+                        <p hlmP class="text-xs fade-in text-negro/60">Sincronizando</p>
+                        <hlm-spinner class="text-sm text-negro/50" />
+                    } @else if (documentosGuardados()) {
+                        <p hlmP class="text-xs fade-in text-azul/80">Sincronizados</p>
+                        <ng-icon hlm name="lucideCircleCheck" size="sm" class="fade-in text-azul/60" />
+                    }
+                </div>
+            </div>
+
             @if (cargandoDocumentos() && !ayudaRunning()) {
-                <hlm-skeleton class="h-18 rounded-sm mt-3" />
+                <hlm-skeleton class="h-18 rounded-none mt-2" />
             } @else {
-                <div hlmTableContainer class="fade-in mt-1" [class.mt-3]="documentosAdjuntos().length === 0 && documentosEnProgreso().length === 0">
+                <div hlmTableContainer class="fade-in" [class.mt-2]="documentosAdjuntos().length === 0 && documentosEnProgreso().length === 0">
                     <table hlmTable>
                         <tbody hlmTBody>
                             @for (documento of documentosAdjuntos(); track documento.id) {

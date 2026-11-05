@@ -99,7 +99,7 @@ import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-
 export class MovimientosFinancieros implements OnInit {
     ayudaRunning = input<boolean>(false);
     idCuentaFinanciera = input.required<number>();
-    notificarCambio = output<SalMovimientoFinanciero>();
+    notificarCambio = output<SalMovimientoFinanciero | null>();
 
     private readonly destroyRef = inject(DestroyRef);
     private readonly movimientoFinancieroDao = inject(MovimientoFinancieroDao);
@@ -363,7 +363,7 @@ export class MovimientosFinancieros implements OnInit {
         this.showModalCrear.set(false);
     }
 
-    movimientoActualizado(movimiento: SalMovimientoFinanciero) {
+    movimientoActualizado(movimiento: SalMovimientoFinanciero | null) {
         const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
         const idCuentaFinanciera = this.idCuentaFinanciera();
         const fechaDesde = this.fechaDesde();

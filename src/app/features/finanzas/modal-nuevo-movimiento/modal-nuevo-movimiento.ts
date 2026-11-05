@@ -14,7 +14,7 @@ import { SalMovimientoFinanciero } from '@/app/entities/others/sal-movimiento-fi
 import { getErrorMessage } from '@/app/helpers/error-message';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { S3Service } from '@/app/services/s3-service';
-import { NgClass } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import {
     Component,
@@ -37,7 +37,18 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideChevronDown, lucideFile, lucideFileUp, lucideGem, lucideMinus, lucidePlus, lucideTrash2, lucideWallet } from '@ng-icons/lucide';
+import {
+    lucideChevronDown,
+    lucideCircleAlert,
+    lucideCircleCheck,
+    lucideFile,
+    lucideFileUp,
+    lucideGem,
+    lucideMinus,
+    lucidePlus,
+    lucideTrash2,
+    lucideWallet,
+} from '@ng-icons/lucide';
 import { HlmAlertImports } from '@spartan-ng/helm/alert';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmButtonGroupImports } from '@spartan-ng/helm/button-group';
@@ -55,7 +66,7 @@ import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { HlmSpinnerImports } from '@spartan-ng/helm/spinner';
 import { HlmTableImports } from '@spartan-ng/helm/table';
-import { HlmP } from '@spartan-ng/helm/typography';
+import { HlmH4, HlmP } from '@spartan-ng/helm/typography';
 import { catchError, debounceTime, defer, EMPTY, filter, map, mergeMap, Observable, of, shareReplay, Subject, switchMap, tap, throwError } from 'rxjs';
 
 @Component({
@@ -82,6 +93,7 @@ import { catchError, debounceTime, defer, EMPTY, filter, map, mergeMap, Observab
         HlmProgressImports,
         NgClass,
         HlmP,
+        HlmH4,
         HlmTableImports,
         HlmDropdownMenuImports,
     ],
@@ -89,7 +101,18 @@ import { catchError, debounceTime, defer, EMPTY, filter, map, mergeMap, Observab
     styleUrl: './modal-nuevo-movimiento.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
     providers: [
-        provideIcons({ lucideWallet, lucidePlus, lucideMinus, lucideChevronDown, lucideFileUp, lucideFile, lucideTrash2, lucideGem }),
+        provideIcons({
+            lucideWallet,
+            lucidePlus,
+            lucideMinus,
+            lucideChevronDown,
+            lucideFileUp,
+            lucideFile,
+            lucideTrash2,
+            lucideGem,
+            lucideCircleAlert,
+            lucideCircleCheck,
+        }),
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,
             formatDate: (date: Date) => {
@@ -100,13 +123,14 @@ import { catchError, debounceTime, defer, EMPTY, filter, map, mergeMap, Observab
                 }).format(date);
             },
         }),
+        DatePipe,
     ],
 })
 export class ModalNuevoMovimiento implements OnInit, OnDestroy {
     ayudaRunning = input<boolean>(false);
     idCuentaFinanciera = input.required<number>();
     movimiento = input<SalMovimientoFinanciero | null>(null);
-    notificarCambio = output<SalMovimientoFinanciero>();
+    notificarCambio = output<SalMovimientoFinanciero | null>();
     cerrar = output<void>();
 
     private readonly destroyRef = inject(DestroyRef);
@@ -117,6 +141,7 @@ export class ModalNuevoMovimiento implements OnInit, OnDestroy {
     private readonly s3Service = inject(S3Service);
 
     private readonly negocioStore = inject(NegocioStore);
+    private readonly datePipe = inject(DatePipe);
 
     error = signal('');
 
@@ -136,7 +161,11 @@ export class ModalNuevoMovimiento implements OnInit, OnDestroy {
         idCategoriaFinanciera: new FormControl<number | null>({ value: 0, disabled: false }),
     });
 
+    readonly descripcion = toSignal(this.form.controls.descripcion.valueChanges, { initialValue: this.form.controls.descripcion.value });
+    readonly monto = toSignal(this.form.controls.monto.valueChanges, { initialValue: this.form.controls.monto.value });
     readonly tipoMovimiento = toSignal(this.form.controls.tipoMovimiento.valueChanges, { initialValue: this.form.controls.tipoMovimiento.value });
+    readonly fechaMovimiento = toSignal(this.form.controls.fechaMovimiento.valueChanges, { initialValue: this.form.controls.fechaMovimiento.value });
+    readonly horaMovimiento = toSignal(this.form.controls.horaMovimiento.valueChanges, { initialValue: this.form.controls.horaMovimiento.value });
     readonly idCategoriaFinanciera = toSignal(this.form.controls.idCategoriaFinanciera.valueChanges, {
         initialValue: this.form.controls.idCategoriaFinanciera.value,
     });
@@ -184,6 +213,52 @@ export class ModalNuevoMovimiento implements OnInit, OnDestroy {
         return this.negocioStore.resumenSuscripcionUsuario()?.tienePlanEmpresa ?? false;
     });
 
+    movimientoConCambios = computed(() => {
+        const movimientoOriginal = this.movimiento();
+
+        const nuevaDescripcion = this.descripcion();
+        const nuevoMonto = this.monto();
+        const nuevoTipoMovimiento = this.tipoMovimiento();
+        const nuevaFechaMovimiento = this.fechaMovimiento();
+        const nuevaHoraMovimiento = this.horaMovimiento();
+        const nuevaIdCategoriaFinanciera = this.idCategoriaFinanciera();
+
+        if (!movimientoOriginal) return true;
+
+        const cambioDescripcion = (movimientoOriginal.descripcion ?? '') !== (nuevaDescripcion?.trim() ?? '');
+        const cambioMonto = movimientoOriginal.monto !== (nuevoMonto === null ? null : Number(nuevoMonto.replace(/\D+/g, '')));
+        const cambioTipoMovimiento = movimientoOriginal.tipoMovimiento !== nuevoTipoMovimiento;
+        const cambioIdCategoriaFinanciera = movimientoOriginal.idCategoriaFinanciera !== (nuevaIdCategoriaFinanciera === 0 ? null : nuevaIdCategoriaFinanciera);
+        const cambioFechaMovimiento =
+            this.datePipe.transform(movimientoOriginal.fechaMovimiento, 'yyyy-MM-dd') !==
+            (nuevaFechaMovimiento === null ? null : this.datePipe.transform(nuevaFechaMovimiento, 'yyyy-MM-dd'));
+        const cambioHoraMovimiento = this.datePipe.transform(movimientoOriginal.fechaMovimiento, 'HH:mm') !== nuevaHoraMovimiento;
+
+        return cambioDescripcion || cambioMonto || cambioTipoMovimiento || cambioIdCategoriaFinanciera || cambioFechaMovimiento || cambioHoraMovimiento;
+    });
+
+    movimientoGuardado = computed(() => {
+        return this.movimiento() && !this.movimientoConCambios();
+    });
+
+    documentosEnProceso = computed(() => {
+        return this.documentosAdjuntos().some((d) => d.borrando) || this.documentosEnProgreso().length > 0;
+    });
+
+    documentosGuardados = computed(() => {
+        return this.documentosAdjuntos().length > 0 && !this.documentosEnProceso();
+    });
+
+    descartandoMovimiento = computed(() => {
+        return this.eliminandoPreliminar();
+    });
+
+    descartandoDocumentos = computed(() => {
+        return this.documentosAdjuntos().length > 0 && this.eliminandoPreliminar();
+    });
+
+    documentosOriginales = signal<SalDocumentoAdjunto[] | null>(null);
+
     ngOnInit(): void {
         document.body.classList.add('overflow-hidden!', 'md:pr-1.25');
 
@@ -225,6 +300,8 @@ export class ModalNuevoMovimiento implements OnInit, OnDestroy {
             )
             .subscribe({
                 next: (documentos: SalDocumentoAdjunto[]) => {
+                    if (this.documentosOriginales() === null) this.documentosOriginales.set(documentos);
+
                     documentos.forEach((doc) => {
                         this.documentosEnProgreso.update((docs) => docs.filter((d) => d.idDocumentoAdjunto !== doc.id));
                     });
@@ -641,6 +718,13 @@ export class ModalNuevoMovimiento implements OnInit, OnDestroy {
                     this.eliminandoPreliminar.set(false);
                 });
         } else {
+            // Se notifica cambio si cambio algún documentos...
+            const previos = this.documentosOriginales() ?? [];
+            const actuales = this.documentosAdjuntos();
+            const conCambios = previos.length !== actuales.length || !previos.every((p) => actuales.some((a) => a.id === p.id));
+            if (conCambios) {
+                this.notificarCambio.emit(null);
+            }
             this.cerrar.emit();
         }
     }
