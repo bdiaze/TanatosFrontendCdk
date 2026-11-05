@@ -165,17 +165,17 @@
                 <hlm-skeleton class="h-18 rounded-none mt-2" />
             } @else {
                 <div hlmTableContainer class="fade-in" [class.mt-2]="documentosAdjuntos().length === 0 && documentosEnProgreso().length === 0">
-                    <table hlmTable>
+                    <table hlmTable class="w-full table-fixed">
                         <tbody hlmTBody>
                             @for (documento of documentosAdjuntos(); track documento.id) {
                                 <tr hlmTr class="fade-in">
-                                    <td hlmTd class="pl-1 pr-0 w-full">
-                                        <div class="flex flex-row items-center gap-1">
-                                            <ng-icon hlm size="sm" name="lucideFile" />
-                                            <p class="truncate max-w-54 md:max-w-68">{{ documento.nombreArchivo }}</p>
+                                    <td hlmTd class="pl-1 pr-0">
+                                        <div class="flex flex-row items-center gap-1 min-w-0">
+                                            <ng-icon hlm size="sm" name="lucideFile" class="shrink-0" />
+                                            <p class="truncate min-w-0">{{ documento.nombreArchivo }}</p>
                                         </div>
                                     </td>
-                                    <td hlmTd class="text-end pr-0">
+                                    <td hlmTd class="w-7! px-0">
                                         <button
                                             hlmBtn
                                             variant="link"
@@ -209,9 +209,9 @@
                                 <tr hlmTr class="fade-in">
                                     <td hlmTd colspan="2" class="px-1">
                                         <div class="flex flex-col gap-1">
-                                            <div class="flex flex-row items-center gap-1">
-                                                <ng-icon hlm size="sm" name="lucideFileUp" />
-                                                <p class="truncate max-w-63 md:max-w-75">{{ documentoEnProgreso.nombre }}</p>
+                                            <div class="flex flex-row items-center gap-1 min-w-0">
+                                                <ng-icon hlm size="sm" name="lucideFileUp" class="shrink-0" />
+                                                <p class="truncate min-w-0">{{ documentoEnProgreso.nombre }}</p>
                                             </div>
                                             <hlm-progress [value]="documentoEnProgreso.progreso">
                                                 <hlm-progress-indicator />
