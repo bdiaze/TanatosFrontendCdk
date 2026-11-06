@@ -1,6 +1,4 @@
-import { ModalEdicion } from '@/app/components/modal-edicion/modal-edicion';
 import { ModalEliminacion } from '@/app/components/modal-eliminacion/modal-eliminacion';
-import { CategoriaFinancieraDao } from '@/app/daos/categoria-financiera-dao';
 import { MovimientoFinancieroDao } from '@/app/daos/movimiento-financiero-dao';
 import { SalMovimientoFinanciero } from '@/app/entities/others/sal-movimiento-financiero';
 import { getErrorMessage } from '@/app/helpers/error-message';
@@ -46,6 +44,7 @@ import { HistoryService } from '@/app/services/history-service';
 import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-documento/modal-visualizador-documento';
 import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, EMPTY, finalize, Subject, switchMap, tap } from 'rxjs';
 
 @Component({
     selector: 'app-movimientos-financieros',
@@ -105,7 +104,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         DecimalPipe,
     ],
 })
-export class MovimientosFinancieros implements OnInit {
+export class MovimientosFinancieros {
     ayudaRunning = input<boolean>(false);
     idCuentaFinanciera = input.required<number>();
     notificarCambio = output<SalMovimientoFinanciero | null>();
@@ -185,8 +184,17 @@ export class MovimientosFinancieros implements OnInit {
 
     itemSeleccionado = signal<SalMovimientoFinanciero | null>(null);
 
-    fechaDesde = signal<Date | null>(null);
-    fechaHasta = signal<Date | null>(null);
+    fechaDesde = signal<Date>(this.restarMes(new Date()));
+    fechaHasta = signal<Date>(new Date());
+
+    private readonly solicitudesMovimientos$ = new Subject<{
+        idNegocio: number;
+        idCuentaFinanciera: number;
+        fechaDesde: Date;
+        fechaHasta: Date;
+        primeraFecha: Date | null;
+        primerId: number | null;
+    }>();
 
     constructor() {
         effect(() => {
@@ -205,14 +213,47 @@ export class MovimientosFinancieros implements OnInit {
         this.historyService.popState$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((_) => {
             this.closeModalVerDocumento();
         });
-    }
 
-    ngOnInit(): void {
-        const hoy = new Date();
-        const haceUnMes = this.restarMes(hoy);
+        this.solicitudesMovimientos$
+            .pipe(
+                switchMap((solicitud) => {
+                    const esPrimeraPagina = solicitud.primeraFecha === null && solicitud.primerId === null;
 
-        this.fechaHasta.set(hoy);
-        this.fechaDesde.set(haceUnMes);
+                    if (esPrimeraPagina) {
+                        this.cargando.set(true);
+                    } else {
+                        this.cargandoMasMovimientos.set(true);
+                    }
+
+                    return this.movimientoFinancieroDao
+                        .obtenerVigentes(
+                            solicitud.idNegocio,
+                            solicitud.idCuentaFinanciera,
+                            solicitud.fechaDesde,
+                            solicitud.fechaHasta,
+                            solicitud.primeraFecha,
+                            solicitud.primerId,
+                        )
+                        .pipe(
+                            tap((res) => {
+                                this.movimientos.update((m) => [...m, ...res.items]);
+                                this.siguienteFecha.set(res.siguienteFecha === null ? null : new Date(res.siguienteFecha));
+                                this.siguienteId.set(res.siguienteId);
+                            }),
+                            catchError((err) => {
+                                console.error('Error al obtener los movimientos financieros', err);
+                                this.error.set(getErrorMessage(err) ?? 'Error al obtener los movimientos financieros');
+                                return EMPTY;
+                            }),
+                            finalize(() => {
+                                this.cargando.set(false);
+                                this.cargandoMasMovimientos.set(false);
+                            }),
+                        );
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe();
     }
 
     siguienteFecha = signal<Date | null>(null);
@@ -239,40 +280,25 @@ export class MovimientosFinancieros implements OnInit {
         primeraFecha: Date | null = null,
         primerId: number | null = null,
     ) {
-        if (primeraFecha && primerId) {
-            this.cargandoMasMovimientos.set(true);
-        } else {
-            this.cargando.set(true);
-        }
+        const esPrimeraPagina = primeraFecha === null && primerId === null;
 
-        // Se setean horas 00:00:00 y 23:59:59 a fecha "Desde" y "Hasta"...
         fechaDesde.setHours(0, 0, 0, 0);
         fechaHasta.setHours(23, 59, 59, 999);
 
-        if (!primeraFecha && !primerId) {
+        if (esPrimeraPagina) {
             this.movimientos.set([]);
         }
 
         this.error.set('');
 
-        this.movimientoFinancieroDao
-            .obtenerVigentes(idNegocio, idCuentaFinanciera, fechaDesde, fechaHasta, primeraFecha, primerId)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
-                next: (res) => {
-                    this.movimientos.update((m) => [...m, ...res.items]);
-                    this.siguienteFecha.set(res.siguienteFecha === null ? null : new Date(res.siguienteFecha));
-                    this.siguienteId.set(res.siguienteId);
-                },
-                error: (err) => {
-                    console.error('Error al obtener los movimientos financieros', err);
-                    this.error.set(getErrorMessage(err) ?? 'Error al obtener los movimientos financieros');
-                },
-            })
-            .add(() => {
-                this.cargando.set(false);
-                this.cargandoMasMovimientos.set(false);
-            });
+        this.solicitudesMovimientos$.next({
+            idNegocio,
+            idCuentaFinanciera,
+            fechaDesde,
+            fechaHasta,
+            primeraFecha,
+            primerId,
+        });
     }
 
     restarMes(fecha: Date): Date {
