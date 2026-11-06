@@ -506,8 +506,6 @@ export class MovimientosFinancieros implements OnInit {
                         const blob = response.body!;
                         const disposition = response.headers.get('Content-Disposition');
 
-                        console.log('Disposition:', disposition);
-
                         const filename =
                             disposition
                                 ?.split(';')
