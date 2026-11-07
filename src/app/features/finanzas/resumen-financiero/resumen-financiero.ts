@@ -109,17 +109,26 @@ export class ResumenFinanciero implements OnInit {
         return 0;
     });
 
+    // Se usa de-DE para forzar separador de miles en números de 4 dígitos
+    formatoMonto = (v: number) => `${v < 0 ? '-' : ''} $${Math.abs(v).toLocaleString('de-DE')}`;
+
     optionsBar: ChartOptions<'bar'> = {
         responsive: true,
         scales: {
             x: { stacked: true },
-            y: { stacked: true },
+            y: {
+                stacked: true,
+                ticks: { callback: (value) => this.formatoMonto(Number(value)) },
+            },
         },
         plugins: {
             tooltip: {
                 backgroundColor: '#2a2d34',
                 displayColors: false,
                 padding: { top: 10, bottom: 10, left: 14, right: 14 },
+                callbacks: {
+                    label: (ctx) => this.formatoMonto(ctx.parsed.y ?? 0),
+                },
             },
         },
         maintainAspectRatio: false,
@@ -153,6 +162,9 @@ export class ResumenFinanciero implements OnInit {
         responsive: true,
         scales: {
             x: { offset: true },
+            y: {
+                ticks: { callback: (value) => this.formatoMonto(Number(value)) },
+            },
         },
         plugins: {
             legend: { display: false },
@@ -160,6 +172,9 @@ export class ResumenFinanciero implements OnInit {
                 backgroundColor: '#2a2d34',
                 displayColors: false,
                 padding: { top: 10, bottom: 10, left: 14, right: 14 },
+                callbacks: {
+                    label: (ctx) => this.formatoMonto(ctx.parsed.y ?? 0),
+                },
             },
         },
         maintainAspectRatio: false,
@@ -185,9 +200,11 @@ export class ResumenFinanciero implements OnInit {
                 {
                     data: resultados,
                     label: 'Resultado',
-                    backgroundColor: '#02b2cb',
                     borderColor: '#02b2cb',
-                    borderWidth: 1,
+                    borderWidth: 3,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: '#02b2cb',
                 },
             ],
         };
@@ -208,6 +225,9 @@ export class ResumenFinanciero implements OnInit {
                 backgroundColor: '#2a2d34',
                 padding: { top: 10, bottom: 10, left: 14, right: 14 },
                 displayColors: false,
+                callbacks: {
+                    label: (ctx) => this.formatoMonto(ctx.parsed ?? 0),
+                },
             },
         },
         locale: 'es-CL',
