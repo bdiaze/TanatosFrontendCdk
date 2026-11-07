@@ -7,15 +7,23 @@
 }
 <div class="w-full flex flex-col md:flex-row items-stretch justify-between mt-2 md:mt-1 mb-2 gap-3 fade-in">
     <div class="flex items-center order-2 md:order-1 gap-2">
-        <div id="filtro_fechas" class="flex flex-row items-center justify-center gap-2 w-full">
-            <hlm-date-picker class="text-sm w-full" [date]="fechaDesde()" (dateChange)="fechaDesde.set($event)">
+        <div id="filtro_fechas" class="flex flex-row items-center justify-center gap-2 w-full md:w-72">
+            <hlm-date-picker
+                class="text-sm w-full"
+                [date]="formFiltroFechas.fechaDesde().value() ?? undefined"
+                (dateChange)="formFiltroFechas.fechaDesde().value.set($event)"
+            >
                 <hlm-date-picker-trigger
                     class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
                 >
                 </hlm-date-picker-trigger>
             </hlm-date-picker>
             <p hlmP class="text-sm">al</p>
-            <hlm-date-picker class="text-sm w-full" [date]="fechaHasta()" (dateChange)="fechaHasta.set($event)">
+            <hlm-date-picker
+                class="text-sm w-full"
+                [date]="formFiltroFechas.fechaHasta().value() ?? undefined"
+                (dateChange)="formFiltroFechas.fechaHasta().value.set($event)"
+            >
                 <hlm-date-picker-trigger
                     class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
                 >

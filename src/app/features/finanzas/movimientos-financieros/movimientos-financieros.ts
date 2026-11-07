@@ -45,6 +45,7 @@ import { ModalVisualizadorDocumento } from '@/app/components/modal-visualizador-
 import { PopupFuncionalidadBloqueada } from '@/app/components/popup-funcionalidad-bloqueada/popup-funcionalidad-bloqueada';
 import { HttpErrorResponse } from '@angular/common/http';
 import { catchError, EMPTY, finalize, Subject, switchMap, tap } from 'rxjs';
+import { form, required } from '@angular/forms/signals';
 
 @Component({
     selector: 'app-movimientos-financieros',
@@ -93,11 +94,19 @@ import { catchError, EMPTY, finalize, Subject, switchMap, tap } from 'rxjs';
         provideHlmDatePickerConfig({
             autoCloseOnSelect: true,
             formatDate: (date: Date) => {
-                return new Intl.DateTimeFormat('es-CL', {
+                const dia = new Intl.DateTimeFormat('es-CL', {
                     day: 'numeric',
+                }).format(date);
+
+                const mes = new Intl.DateTimeFormat('es-CL', {
                     month: 'short',
+                }).format(date);
+
+                const anno = new Intl.DateTimeFormat('es-CL', {
                     year: 'numeric',
                 }).format(date);
+
+                return `${dia} ${mes} ${anno}`;
             },
         }),
         DatePipe,
@@ -184,8 +193,11 @@ export class MovimientosFinancieros {
 
     itemSeleccionado = signal<SalMovimientoFinanciero | null>(null);
 
-    fechaDesde = signal<Date>(this.restarMes(new Date()));
-    fechaHasta = signal<Date>(new Date());
+    filtraFechas = signal({ fechaDesde: this.restarMes(new Date()), fechaHasta: new Date() });
+    formFiltroFechas = form(this.filtraFechas, (path) => {
+        required(path.fechaDesde, { message: 'Debes ingresar la fecha inferior del filtro' });
+        required(path.fechaHasta, { message: 'Debes ingresar la fecha superior del filtro' });
+    });
 
     private readonly solicitudesMovimientos$ = new Subject<{
         idNegocio: number;
@@ -198,9 +210,11 @@ export class MovimientosFinancieros {
 
     constructor() {
         effect(() => {
+            if (this.formFiltroFechas().invalid()) return;
+
             const idCuentaFinanciera = this.idCuentaFinanciera();
-            const fechaDesde = this.fechaDesde();
-            const fechaHasta = this.fechaHasta();
+            const fechaDesde = this.formFiltroFechas.fechaDesde().value();
+            const fechaHasta = this.formFiltroFechas.fechaHasta().value();
 
             untracked(() => {
                 const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
@@ -260,10 +274,12 @@ export class MovimientosFinancieros {
     siguienteId = signal<number | null>(null);
 
     obtenerMasMovimientos() {
+        if (this.formFiltroFechas().invalid()) return;
+
         const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
         const idCuentaFinanciera = this.idCuentaFinanciera();
-        const fechaDesde = this.fechaDesde();
-        const fechaHasta = this.fechaHasta();
+        const fechaDesde = this.formFiltroFechas.fechaDesde().value();
+        const fechaHasta = this.formFiltroFechas.fechaHasta().value();
 
         if (negocioSeleccionado && idCuentaFinanciera && fechaDesde && fechaHasta) {
             this.obtenerMovimientos(negocioSeleccionado.id, idCuentaFinanciera, fechaDesde, fechaHasta, this.siguienteFecha(), this.siguienteId());
@@ -364,13 +380,15 @@ export class MovimientosFinancieros {
 
         this.movimientoFinancieroDao.eliminar(this.negocioStore.negocioSeleccionado()!.id, this.idCuentaFinanciera(), item.id).subscribe({
             next: () => {
-                const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
-                const idCuentaFinanciera = this.idCuentaFinanciera();
-                const fechaDesde = this.fechaDesde();
-                const fechaHasta = this.fechaHasta();
+                if (!this.formFiltroFechas().invalid()) {
+                    const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+                    const idCuentaFinanciera = this.idCuentaFinanciera();
+                    const fechaDesde = this.formFiltroFechas.fechaDesde().value();
+                    const fechaHasta = this.formFiltroFechas.fechaHasta().value();
 
-                if (negocioSeleccionado && idCuentaFinanciera && fechaDesde && fechaHasta) {
-                    this.obtenerMovimientos(negocioSeleccionado.id, idCuentaFinanciera, fechaDesde, fechaHasta);
+                    if (negocioSeleccionado && idCuentaFinanciera && fechaDesde && fechaHasta) {
+                        this.obtenerMovimientos(negocioSeleccionado.id, idCuentaFinanciera, fechaDesde, fechaHasta);
+                    }
                 }
 
                 this.notificarCambio.emit(item);
@@ -403,13 +421,15 @@ export class MovimientosFinancieros {
     }
 
     movimientoActualizado(movimiento: SalMovimientoFinanciero | null) {
-        const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
-        const idCuentaFinanciera = this.idCuentaFinanciera();
-        const fechaDesde = this.fechaDesde();
-        const fechaHasta = this.fechaHasta();
+        if (!this.formFiltroFechas().invalid()) {
+            const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
+            const idCuentaFinanciera = this.idCuentaFinanciera();
+            const fechaDesde = this.formFiltroFechas.fechaDesde().value();
+            const fechaHasta = this.formFiltroFechas.fechaHasta().value();
 
-        if (negocioSeleccionado && idCuentaFinanciera && fechaDesde && fechaHasta) {
-            this.obtenerMovimientos(negocioSeleccionado.id, idCuentaFinanciera, fechaDesde, fechaHasta);
+            if (negocioSeleccionado && idCuentaFinanciera && fechaDesde && fechaHasta) {
+                this.obtenerMovimientos(negocioSeleccionado.id, idCuentaFinanciera, fechaDesde, fechaHasta);
+            }
         }
 
         this.notificarCambio.emit(movimiento);
@@ -512,10 +532,12 @@ export class MovimientosFinancieros {
 
     exportandoCsv = signal(false);
     exportarCsv() {
+        if (this.formFiltroFechas().invalid()) return;
+
         const negocioSeleccionado = this.negocioStore.negocioSeleccionado();
         const idCuentaFinanciera = this.idCuentaFinanciera();
-        const fechaDesde = this.fechaDesde();
-        const fechaHasta = this.fechaHasta();
+        const fechaDesde = this.formFiltroFechas.fechaDesde().value();
+        const fechaHasta = this.formFiltroFechas.fechaHasta().value();
 
         if (negocioSeleccionado && idCuentaFinanciera && fechaDesde && fechaHasta) {
             // Se setean horas 00:00:00 y 23:59:59 a fecha "Desde" y "Hasta"...

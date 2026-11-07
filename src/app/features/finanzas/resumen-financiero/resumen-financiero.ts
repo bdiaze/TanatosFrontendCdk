@@ -11,16 +11,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
-import {
-    lucideChartNoAxesCombined,
-    lucideMinus,
-    lucidePlus,
-    lucideSearchAlert,
-    lucideSearchCheck,
-    lucideSquareDashed,
-    lucideTrendingDown,
-    lucideTrendingUp,
-} from '@ng-icons/lucide';
+import { lucideChartNoAxesCombined, lucideEqual, lucideMinus, lucidePlus, lucideSearchAlert, lucideTrendingDown, lucideTrendingUp } from '@ng-icons/lucide';
 import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
 import { SalCuentaFinanciera } from '@/app/entities/others/sal-cuenta-financiera';
 import { TotalIngresosGastos } from '@/app/entities/others/total-ingresos-gastos';
@@ -29,7 +20,7 @@ import { IngresosGastosPorPeriodo } from '@/app/entities/others/ingresos-gastos-
 import { HlmSeparatorImports } from '@spartan-ng/helm/separator';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { ChartData, ChartOptions } from 'chart.js';
-import { HlmDatePickerImports, provideHlmDatePickerConfig, provideHlmMonthYearPickerConfig } from '@spartan-ng/helm/date-picker';
+import { HlmDatePickerImports, provideHlmMonthYearPickerConfig } from '@spartan-ng/helm/date-picker';
 import { injectBrnCalendarI18n } from '@spartan-ng/brain/calendar';
 import { HlmSkeletonImports } from '@spartan-ng/helm/skeleton';
 import { RouterLink } from '@angular/router';
@@ -56,7 +47,7 @@ import { RouterLink } from '@angular/router';
     styleUrl: './resumen-financiero.scss',
     templateUrl: './resumen-financiero.html',
     providers: [
-        provideIcons({ lucideChartNoAxesCombined, lucidePlus, lucideMinus, lucideTrendingUp, lucideTrendingDown, lucideSearchAlert }),
+        provideIcons({ lucideChartNoAxesCombined, lucidePlus, lucideMinus, lucideTrendingUp, lucideTrendingDown, lucideSearchAlert, lucideEqual }),
         provideCharts(withDefaultRegisterables()),
         DatePipe,
         provideHlmMonthYearPickerConfig({
@@ -132,6 +123,7 @@ export class ResumenFinanciero implements OnInit {
             },
         },
         maintainAspectRatio: false,
+        locale: 'es-CL',
     };
 
     dataPeriodos = computed<ChartData<'bar'> | null>(() => {
@@ -171,6 +163,7 @@ export class ResumenFinanciero implements OnInit {
             },
         },
         maintainAspectRatio: false,
+        locale: 'es-CL',
     };
 
     dataResultadoPeriodos = computed<ChartData<'line'> | null>(() => {
@@ -188,7 +181,15 @@ export class ResumenFinanciero implements OnInit {
 
         return {
             labels: periodos,
-            datasets: [{ data: resultados, label: 'Resultado', backgroundColor: '#02b2cb', borderColor: '#02b2cb', borderWidth: 1 }],
+            datasets: [
+                {
+                    data: resultados,
+                    label: 'Resultado',
+                    backgroundColor: '#02b2cb',
+                    borderColor: '#02b2cb',
+                    borderWidth: 1,
+                },
+            ],
         };
     });
 
@@ -209,6 +210,7 @@ export class ResumenFinanciero implements OnInit {
                 displayColors: false,
             },
         },
+        locale: 'es-CL',
     };
 
     dataCategoriasGastos = computed<ChartData<'pie'> | null>(() => {

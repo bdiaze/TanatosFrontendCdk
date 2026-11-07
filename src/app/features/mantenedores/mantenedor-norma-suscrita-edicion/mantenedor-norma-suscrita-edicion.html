@@ -373,7 +373,7 @@
                                                 [minDate]="minDate()"
                                                 buttonId="proximoVencimientoFecha"
                                                 class="text-sm w-full"
-                                                [date]="form.controls['fechaProximoVencimiento'].value!"
+                                                [date]="form.controls['fechaProximoVencimiento'].value ?? undefined"
                                                 (dateChange)="form.controls['fechaProximoVencimiento'].setValue($event)"
                                             >
                                                 <hlm-date-picker-trigger
