@@ -100,11 +100,7 @@
                             <div class="size-4"></div>
                         </div>
                         <div class="py-3 px-4">
-                            <h4
-                                hlmH4
-                                class="flex flex-row items-center justify-center"
-                                [ngClass]="{ 'text-destructive ': totalIngresosGastos()!.resultado < 0 }"
-                            >
+                            <h4 hlmH4 class="flex flex-row items-center justify-center">
                                 @if (totalIngresosGastos()!.resultado > 0) {
                                     <ng-icon hlm name="lucidePlus" size="sm" />
                                 } @else if (totalIngresosGastos()!.resultado < 0) {
