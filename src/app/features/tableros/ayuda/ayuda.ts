@@ -277,15 +277,15 @@ export class Ayuda implements OnInit, OnDestroy {
             ] as DriveStep[],
         },
         {
-            id: 'mis-finanzas',
-            nombre: 'Mis Finanzas',
-            link: ['/mis-finanzas'],
+            id: 'cuentas-y-movimientos',
+            nombre: 'Cuentas y Movimientos',
+            link: ['/cuentas-y-movimientos'],
             steps: [
                 {
-                    element: '#group-negocio-seleccionado-item-mis-finanzas',
+                    element: '#group-negocio-seleccionado-item-mis-finanzas-subitem-cuentas-y-movimientos',
                     popover: {
                         title: '¿Cómo llegar?',
-                        description: 'Primero, debes saber que para llegar a Mis Finanzas deberás hacer click aquí, ¡Vamos allá!',
+                        description: 'Primero, debes saber que para llegar a Cuentas y Movimientos deberás hacer click aquí, ¡Vamos allá!',
                         side: 'bottom',
                     },
                     onHighlightStarted: () => {

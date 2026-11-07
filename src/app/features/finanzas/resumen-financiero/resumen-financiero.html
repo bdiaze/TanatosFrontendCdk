@@ -1,0 +1,236 @@
+<section class="max-w-screen md:max-w-2xl mx-auto px-4 py-4">
+    <div>
+        <div class="flex flex-row items-start justify-between">
+            <nav hlmBreadcrumb class="mb-4 pl-2">
+                <ol hlmBreadcrumbList>
+                    <li hlmBreadcrumbItem>
+                        <a hlmBreadcrumbLink link="/inicio">Inicio</a>
+                    </li>
+                    <li hlmBreadcrumbSeparator></li>
+                    <li hlmBreadcrumbItem>
+                        <span hlmBreadcrumbPage>Resumen Financiero</span>
+                    </li>
+                </ol>
+            </nav>
+            <!--
+            <button hlmBtn variant="link" type="button" class="text-sm z-10 p-0! m-0! -mt-2!" (click)="ayudaClick()">¿Necesitas ayuda?</button>
+            -->
+        </div>
+        <h4 hlmH4 class="text-center">
+            {{ negocioStore.negocioSeleccionado()?.nombre }}
+        </h4>
+        <div class="flex justify-center-safe items-center gap-3 pt-1 pb-5 fade-in">
+            <ng-icon hlm name="lucideChartNoAxesCombined" />
+            <h3 hlmH3>Resumen Financiero</h3>
+        </div>
+    </div>
+    <div class="w-full flex flex-col gap-2">
+        <div class="flex flex-col gap-2">
+            @if (obteniendoTotalIngresosGastos()) {
+                <hlm-skeleton class="h-29.5 rounded-none" />
+            } @else {
+                <div class="flex flex-col border border-azul">
+                    <div class="px-5 py-2 bg-azul text-blanco">
+                        <p hlmP class="font-medium">Saldo total disponible</p>
+                    </div>
+                    <div class="px-5 py-2">
+                        <h4 hlmH4 class="text-3xl">${{ saldoActual() | number: '1.0-0' }}</h4>
+                        <p hlmP class="text-xs mt-1!">En todas tus cuentas financieras</p>
+                    </div>
+                </div>
+            }
+            <h4 hlmH4 class="mt-2 px-2 text-lg">Información al {{ hoy() | date: "dd 'de' MMMM 'de' yyyy " }}</h4>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                @if (obteniendoTotalIngresosGastos()) {
+                    <hlm-skeleton class="h-24.5 rounded-none" />
+                    <hlm-skeleton class="h-24.5 rounded-none" />
+                    <hlm-skeleton class="h-24.5 rounded-none" />
+                } @else if (totalIngresosGastos()) {
+                    <div class="flex flex-col border border-azul text-center">
+                        <div class="flex flex-row items-center justify-center gap-2 py-3 px-4 bg-azul text-blanco">
+                            <ng-icon hlm name="lucideTrendingUp" size="sm" />
+                            <p hlmP class="text-sm font-medium">Ingresos</p>
+                            <div class="size-4"></div>
+                        </div>
+                        <div class="py-3 px-4">
+                            <h4 hlmH4>${{ totalIngresosGastos()!.totalIngresos | number: '1.0-0' }}</h4>
+                        </div>
+                    </div>
+                    <div class="flex flex-col border border-naranjo text-center">
+                        <div class="flex flex-row items-center justify-center gap-2 py-3 px-4 bg-naranjo text-blanco">
+                            <ng-icon hlm name="lucideTrendingDown" size="sm" />
+                            <p hlmP class="text-sm font-medium">Gastos</p>
+                            <div class="size-4"></div>
+                        </div>
+                        <div class="py-3 px-4">
+                            <h4 hlmH4>${{ totalIngresosGastos()!.totalGastos | number: '1.0-0' }}</h4>
+                        </div>
+                    </div>
+                    <div class="flex flex-col border border-calipso text-center">
+                        <div class="py-3 px-4 bg-calipso text-blanco">
+                            <p hlmP class="text-sm font-medium">Resultado</p>
+                        </div>
+                        <div class="py-3 px-4">
+                            <h4
+                                hlmH4
+                                class="flex flex-row items-center justify-center"
+                                [ngClass]="{ 'text-destructive ': totalIngresosGastos()!.resultado < 0 }"
+                            >
+                                @if (totalIngresosGastos()!.resultado > 0) {
+                                    <ng-icon hlm name="lucidePlus" size="sm" />
+                                } @else if (totalIngresosGastos()!.resultado < 0) {
+                                    <ng-icon hlm name="lucideMinus" size="sm" />
+                                }
+                                ${{ resultadoMesActualPositivo() | number: '1.0-0' }}
+                                <div class="size-4"></div>
+                            </h4>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="flex flex-col gap-2 mt-2">
+            <hlm-separator />
+            <h4 hlmH4 class="px-2 text-lg">Tus cuentas</h4>
+            @if (obteniendoCuentasFinancieras()) {
+                <hlm-skeleton class="h-13 rounded" />
+                <hlm-skeleton class="h-13 rounded" />
+            } @else {
+                @for (cuenta of cuentasFinancieras(); track cuenta.id; let last = $last) {
+                    <div class="flex items-center justify-between px-3 py-1 border-gris" [class.border-b]="!last">
+                        <div class="flex flex-col">
+                            @if (cuenta.nombreTipoCuentaFinanciera) {
+                                <p hlmP class="text-xs underline underline-offset-2">{{ cuenta.nombreTipoCuentaFinanciera }}</p>
+                            }
+                            <p hlmP>{{ cuenta.nombre }}</p>
+                        </div>
+                        <h4 hlmH4>${{ cuenta.saldoActual | number: '1.0-0' }}</h4>
+                    </div>
+                } @empty {
+                    <div class="w-full mb-2 flex flex-col items-center justify-center gap-2">
+                        <div class="mt-8 flex items-center justify-center gap-2">
+                            <ng-icon hlm name="lucideSearchAlert" class="text-negro/80" />
+                            <p hlmP class="text-sm">Sin cuentas financieras</p>
+                        </div>
+                        <a hlmBtn variant="link" routerLink="/cuentas-y-movimientos">¡Click aquí para crear una cuenta!</a>
+                    </div>
+                }
+            }
+        </div>
+        <div class="flex flex-col gap-4 mt-2">
+            <hlm-separator />
+            <div class="flex flex-col md:flex-row items-center justify-between gap-2">
+                <h4 hlmH4>Evolución Financiera</h4>
+                <div id="filtro_fechas" class="flex flex-row items-center justify-center gap-2 w-full md:w-78">
+                    <hlm-month-year-picker
+                        class="text-sm w-full"
+                        [date]="formFechasPeriodos.fechaDesde().value()"
+                        (dateChange)="formFechasPeriodos.fechaDesde().value.set($event)"
+                    >
+                        <hlm-date-picker-trigger
+                            class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
+                        >
+                        </hlm-date-picker-trigger>
+                    </hlm-month-year-picker>
+                    <p hlmP class="text-sm">a</p>
+                    <hlm-month-year-picker
+                        class="text-sm w-full"
+                        [date]="formFechasPeriodos.fechaHasta().value()"
+                        (dateChange)="formFechasPeriodos.fechaHasta().value.set($event)"
+                    >
+                        <hlm-date-picker-trigger
+                            class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
+                        >
+                        </hlm-date-picker-trigger>
+                    </hlm-month-year-picker>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col gap-2">
+            <h4 hlmH4 class="px-3 text-lg font-normal">Ingresos y gastos</h4>
+            @if (obteniendoIngresosGastosPorPeriodo()) {
+                <hlm-skeleton class="h-60 md:h-70 rounded-none" />
+            } @else {
+                <div class="relative h-64 md:h-80">
+                    @if (ingresosGastosPorPeriodo() && ingresosGastosPorPeriodo()!.length > 0 && dataPeriodos()) {
+                        <canvas baseChart [data]="dataPeriodos()!" [options]="optionsBar" type="bar"></canvas>
+                    } @else {
+                        <div class="w-full h-full flex items-center justify-center gap-2">
+                            <ng-icon hlm name="lucideSearchAlert" class="text-negro/80" />
+                            <p hlmP class="text-sm">Sin ingresos ni gastos registrados</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="flex flex-col gap-2">
+            <h4 hlmH4 class="px-3 text-lg font-normal">Resultado mensual</h4>
+            @if (obteniendoIngresosGastosPorPeriodo()) {
+                <hlm-skeleton class="h-60 md:h-70 rounded-none" />
+            } @else {
+                <div class="relative h-64 md:h-80">
+                    @if (ingresosGastosPorPeriodo() && ingresosGastosPorPeriodo()!.length > 0 && dataResultadoPeriodos()) {
+                        <canvas baseChart [data]="dataResultadoPeriodos()!" [options]="optionsLine" type="line"></canvas>
+                    } @else {
+                        <div class="w-full h-full flex items-center justify-center gap-2">
+                            <ng-icon hlm name="lucideSearchAlert" class="text-negro/80" />
+                            <p hlmP class="text-sm">Sin ingresos ni gastos registrados</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="flex flex-col gap-4 mt-2">
+            <hlm-separator />
+            <div class="flex flex-col md:flex-row items-center justify-between gap-2">
+                <h4 hlmH4>Distribución Financiera</h4>
+                <div class="w-full md:w-36 px-2 md:px-0">
+                    <hlm-month-year-picker
+                        class="text-sm w-full"
+                        [date]="formFechaCategoria.fecha().value()"
+                        (dateChange)="formFechaCategoria.fecha().value.set($event)"
+                    >
+                        <hlm-date-picker-trigger
+                            class="[&_button]:w-full! [&_button]:rounded-md! [&_button]:text-negro/90! [&_button]:bg-transparent! [&_button]:border-input! [&_button]:border! [&_button]:h-9! [&_button]:font-normal! [&_ng-icon]:text-[16px] [&_ng-icon]:-mr-1 [&_ng-icon]:opacity-80"
+                        >
+                        </hlm-date-picker-trigger>
+                    </hlm-month-year-picker>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-col gap-2">
+            <h4 hlmH4 class="px-3 text-lg font-normal">Gastos</h4>
+            @if (obteniendoIngresosGastosPorCategoria()) {
+                <hlm-skeleton class="h-60 md:h-70 rounded-none" />
+            } @else {
+                <div class="relative h-60 md:h-70">
+                    @if (ingresosGastosPorCategoria()?.some((ig) => ig.tipoMovimiento === 2) && dataCategoriasGastos()) {
+                        <canvas baseChart [data]="dataCategoriasGastos()!" [options]="optionsPie" type="pie"></canvas>
+                    } @else {
+                        <div class="w-full h-full flex items-center justify-center gap-2">
+                            <ng-icon hlm name="lucideSearchAlert" class="text-negro/80" />
+                            <p hlmP class="text-sm">Sin gastos registrados</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+        <div class="flex flex-col gap-2 mb-6">
+            <h4 hlmH4 class="px-3 text-lg font-normal">Ingresos</h4>
+            @if (obteniendoIngresosGastosPorCategoria()) {
+                <hlm-skeleton class="h-60 md:h-70 rounded-none" />
+            } @else {
+                <div class="relative h-60 md:h-70">
+                    @if (ingresosGastosPorCategoria()?.some((ig) => ig.tipoMovimiento === 1) && dataCategoriasIngresos()) {
+                        <canvas baseChart [data]="dataCategoriasIngresos()!" [options]="optionsPie" type="pie"></canvas>
+                    } @else {
+                        <div class="w-full h-full flex items-center justify-center gap-2">
+                            <ng-icon hlm name="lucideSearchAlert" class="text-negro/80" />
+                            <p hlmP class="text-sm">Sin ingresos registrados</p>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</section>

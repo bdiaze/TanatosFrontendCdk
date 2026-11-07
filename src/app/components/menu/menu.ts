@@ -6,7 +6,21 @@ import { AuthStore } from '@/app/services/auth-store';
 import { NegocioStore } from '@/app/services/negocio-store';
 import { CdkMenuTrigger } from '@angular/cdk/menu';
 import { NgClass } from '@angular/common';
-import { Component, computed, effect, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal, untracked, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import {
+    Component,
+    computed,
+    effect,
+    EventEmitter,
+    inject,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    signal,
+    untracked,
+    ViewChild,
+    ChangeDetectionStrategy,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterModule } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
@@ -14,8 +28,10 @@ import {
     lucideBlocks,
     lucideCalendarCog,
     lucideCalendarRange,
+    lucideChartNoAxesCombined,
     lucideChevronRight,
     lucideChevronsUpDown,
+    lucideCircleDollarSign,
     lucideCircleQuestionMark,
     lucideClipboardPaste,
     lucideContactRound,
@@ -26,6 +42,7 @@ import {
     lucideLayers,
     lucideMail,
     lucideMessageCircleMore,
+    lucidePiggyBank,
     lucideRoute,
     lucideSend,
     lucideSettings,
@@ -95,6 +112,8 @@ import { filter, map } from 'rxjs';
             lucideWaypoints,
             lucideUserRoundPen,
             lucideWallet,
+            lucideChartNoAxesCombined,
+            lucidePiggyBank,
         }),
     ],
 })
@@ -170,7 +189,20 @@ export class Menu implements OnInit, OnDestroy {
                         tipo: 'item',
                         icon: 'lucideWallet',
                         titulo: 'Mis Finanzas',
-                        url: '/mis-finanzas',
+                        items: [
+                            {
+                                id: 'group-negocio-seleccionado-item-mis-finanzas-subitem-resumen-financiero',
+                                tipo: 'item',
+                                titulo: 'Resumen Financiero',
+                                url: '/resumen-financiero',
+                            },
+                            {
+                                id: 'group-negocio-seleccionado-item-mis-finanzas-subitem-cuentas-y-movimientos',
+                                tipo: 'item',
+                                titulo: 'Cuentas y Movimientos',
+                                url: '/cuentas-y-movimientos',
+                            },
+                        ],
                     },
                     {
                         id: 'group-negocio-seleccionado-item-estrategia',
