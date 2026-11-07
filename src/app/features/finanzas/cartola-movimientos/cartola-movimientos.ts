@@ -1,6 +1,6 @@
-import { Component, DestroyRef, inject, signal, viewChild, ChangeDetectionStrategy, effect, untracked } from '@angular/core';
+import { Component, inject, signal, viewChild, ChangeDetectionStrategy, effect, untracked } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideWallet } from '@ng-icons/lucide';
+import { lucidePiggyBank, lucideWallet } from '@ng-icons/lucide';
 import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmH3, HlmH4 } from '@spartan-ng/helm/typography';
 import { CuentasFinancieras } from '../cuentas-financieras/cuentas-financieras';
@@ -13,7 +13,6 @@ import { TourService } from '@/app/helpers/tour-service';
 import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { MovimientosFinancieros } from '../movimientos-financieros/movimientos-financieros';
-import { SalMovimientoFinanciero } from '@/app/entities/others/sal-movimiento-financiero';
 
 @Component({
     selector: 'app-cartola-movimientos',
@@ -21,10 +20,9 @@ import { SalMovimientoFinanciero } from '@/app/entities/others/sal-movimiento-fi
     templateUrl: './cartola-movimientos.html',
     styleUrl: './cartola-movimientos.scss',
     changeDetection: ChangeDetectionStrategy.Eager,
-    providers: [provideIcons({ lucideWallet })],
+    providers: [provideIcons({ lucideWallet, lucidePiggyBank })],
 })
 export class CartolaMovimientos {
-    private readonly destroyRef = inject(DestroyRef);
     private readonly tourService = inject(TourService);
     private readonly router = inject(Router);
 
@@ -63,14 +61,14 @@ export class CartolaMovimientos {
         if (this.ayuda() === '1') {
             steps.push({
                 popover: {
-                    title: '¡Listo! Llegamos a Mis Finanzas',
-                    description: 'Ahora que ya estamos en Mis Finanzas, te mostraremos sus principales funciones.',
+                    title: '¡Listo! Llegamos a Cuentas y Movimientos',
+                    description: 'Ahora que ya estamos en Cuentas y Movimientos, te mostraremos sus principales funciones.',
                 },
             });
         } else {
             steps.push({
                 popover: {
-                    title: 'Acá están tus finanzas',
+                    title: 'Acá están tus cuentas',
                     description:
                         'Aquí podrás administrar las cuentas financieras de tu negocio y sus respectivos movimientos, como ingresos por ventas o pago de proveedores.',
                 },
