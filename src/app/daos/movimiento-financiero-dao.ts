@@ -6,6 +6,9 @@ import { environment } from '@/environments/environment';
 import { EntMovimientoFinancieroCrear } from '../entities/others/ent-movimiento-financiero-crear';
 import { SalMovimientoFinanciero } from '../entities/others/sal-movimiento-financiero';
 import { EntMovimientoFinancieroActualizar } from '../entities/others/ent-movimiento-financiero-actualizar';
+import { TotalIngresosGastos } from '../entities/others/total-ingresos-gastos';
+import { IngresosGastosPorPeriodo } from '../entities/others/ingresos-gastos-por-periodo';
+import { IngresosGastosPorCategoria } from '../entities/others/ingresos-gastos-por-categoria';
 
 @Injectable({
     providedIn: 'root',
@@ -38,6 +41,26 @@ export class MovimientoFinancieroDao {
             responseType: 'blob',
             observe: 'response',
         });
+    }
+
+    obtenerTotalIngresosGastos(idNegocio: number, fechaDesde: Date, fechaHasta: Date): Observable<TotalIngresosGastos> {
+        let params = new HttpParams().set('fechaDesde', fechaDesde.toISOString()).set('fechaHasta', fechaHasta.toISOString());
+        return this.http.get<TotalIngresosGastos>(environment.tanatosService.apiUrl + `/MovimientoFinanciero/TotalIngresosGastos/${idNegocio}`, { params });
+    }
+
+    obtenerIngresosGastosPorPeriodo(idNegocio: number, fechaDesde: Date, fechaHasta: Date): Observable<IngresosGastosPorPeriodo[]> {
+        let params = new HttpParams().set('fechaDesde', fechaDesde.toISOString()).set('fechaHasta', fechaHasta.toISOString());
+        return this.http.get<IngresosGastosPorPeriodo[]>(environment.tanatosService.apiUrl + `/MovimientoFinanciero/IngresosGastosPorPeriodo/${idNegocio}`, {
+            params,
+        });
+    }
+
+    obtenerIngresosGastosPorCategoria(idNegocio: number, fechaDesde: Date, fechaHasta: Date): Observable<IngresosGastosPorCategoria[]> {
+        let params = new HttpParams().set('fechaDesde', fechaDesde.toISOString()).set('fechaHasta', fechaHasta.toISOString());
+        return this.http.get<IngresosGastosPorCategoria[]>(
+            environment.tanatosService.apiUrl + `/MovimientoFinanciero/IngresosGastosPorCategoria/${idNegocio}`,
+            { params },
+        );
     }
 
     crear(entrada: EntMovimientoFinancieroCrear): Observable<SalMovimientoFinanciero> {
