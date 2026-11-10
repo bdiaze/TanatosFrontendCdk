@@ -12,7 +12,7 @@ import { NgIcon, provideIcons } from '@ng-icons/core';
 import { HlmBreadcrumbImports } from '@spartan-ng/helm/breadcrumb';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { lucideChartNoAxesCombined, lucideEqual, lucideMinus, lucidePlus, lucideSearchAlert, lucideTrendingDown, lucideTrendingUp } from '@ng-icons/lucide';
-import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { SalCuentaFinanciera } from '@/app/entities/others/sal-cuenta-financiera';
 import { TotalIngresosGastos } from '@/app/entities/others/total-ingresos-gastos';
 import { IngresosGastosPorCategoria } from '@/app/entities/others/ingresos-gastos-por-categoria';
@@ -37,7 +37,6 @@ import { RouterLink } from '@angular/router';
         HlmSeparatorImports,
         DatePipe,
         DecimalPipe,
-        NgClass,
         BaseChartDirective,
         HlmDatePickerImports,
         HlmSkeletonImports,
