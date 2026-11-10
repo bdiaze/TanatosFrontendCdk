@@ -101,7 +101,8 @@ namespace Cdk
                         CacheControl.SetPublic(),
                         CacheControl.MaxAge(Duration.Days(30)),
                         CacheControl.Immutable()
-                ]
+                ],
+                MemoryLimit = 2048
             });
 
             BucketDeployment frontendMetadaDeployment = new(this, $"{appName}FrontendMetadataDeployment", new BucketDeploymentProps {
@@ -115,7 +116,8 @@ namespace Cdk
                     CacheControl.NoStore(),
                     CacheControl.MustRevalidate()
                 ],
-                DistributionPaths = [.. archivosNoCache.Select(a => $"/{a}")]
+                DistributionPaths = [.. archivosNoCache.Select(a => $"/{a}")],
+                MemoryLimit = 2048
             });
 
             // Se crea record en hosted zone...
