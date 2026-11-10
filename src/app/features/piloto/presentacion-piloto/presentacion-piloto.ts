@@ -1,5 +1,7 @@
+import { FadeIn } from '@/app/directives/fade-in';
 import { PaginaSinMenuEstaticoHelper } from '@/app/helpers/pagina-sin-menu-estatico-helper';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { environment } from '@/environments/environment';
+import { Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideHandshake } from '@ng-icons/lucide';
@@ -8,7 +10,7 @@ import { HlmIcon } from '@spartan-ng/helm/icon';
 import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 
 @Component({
-    imports: [HlmH3, HlmH4, HlmP, HlmIcon, NgIcon, HlmButtonImports, RouterLink],
+    imports: [HlmH3, HlmH4, HlmP, HlmIcon, NgIcon, HlmButtonImports, RouterLink, FadeIn],
     selector: 'app-presentacion-piloto',
     styleUrl: './presentacion-piloto.scss',
     templateUrl: './presentacion-piloto.html',
@@ -20,6 +22,16 @@ import { HlmH3, HlmH4, HlmP } from '@spartan-ng/helm/typography';
 })
 export class PresentacionPiloto implements OnInit, OnDestroy {
     paginaSinMenuEstaticoHelper = inject(PaginaSinMenuEstaticoHelper);
+
+    readonly formularioInscripcionUrl = environment.piloto.formInscripcion;
+
+    @ViewChild('bgVideo') video!: ElementRef<HTMLVideoElement>;
+
+    ngAfterViewInit(): void {
+        const vid = this.video.nativeElement;
+        vid.muted = true;
+        vid.play().catch(() => {});
+    }
 
     ngOnInit(): void {
         this.paginaSinMenuEstaticoHelper.quitarMenuEstatico();

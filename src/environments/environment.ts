@@ -18,4 +18,7 @@ export const environment = {
             id: '',
         },
     },
+    piloto: {
+        formInscripcion: '',
+    },
 };

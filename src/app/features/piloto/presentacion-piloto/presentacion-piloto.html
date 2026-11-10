@@ -1,9 +1,141 @@
-<section class="w-full flex flex-col gap-4 lg:gap-6 bg-azul fade-in py-8">
-    <div class="text-blanco flex flex-col justify-center items-center">
-        <p hlmP class="text-base md:text-lg lg:text-xl">Únete a la iniciativa</p>
-        <h3 hlmH3 class="text-2xl md:text-3xl lg:text-4xl">¡Construyendo Juntos!</h3>
+<section class="w-full flex flex-col gap-4 lg:gap-6 bg-azul fade-in py-6">
+    <div class="max-w-screen md:max-w-2xl mx-auto text-blanco flex flex-col justify-center items-center gap-2">
+        <div class="flex flex-row items-center justify-center gap-1 md:gap-2">
+            <p hlmP class="text-sm text-center text-balance">Microempresas de San Miguel</p>
+            <p hlmP>-</p>
+            <p hlmP class="text-sm text-center text-balance">Participación gratuita</p>
+        </div>
+        <h3 hlmH3 class="text-3xl text-center text-balance">¡Construyendo Juntos!</h3>
+        <h4 hlmH4 class="text-xl text-center text-balance font-normal mt-1">Una iniciativa para impulsar la digitalización de las microempresas.</h4>
     </div>
 </section>
-<section class="w-full flex flex-col fade-in py-6">
-    <div class="flex flex-col justify-center items-center"></div>
+<section class="max-w-screen md:max-w-4xl mx-auto text-azul relative flex flex-col md:flex-row items-stretch justify-start md:justify-center p-0 fade-in">
+    <div class="flex flex-col items-center justify-evenly w-full md:w-1/2 px-8 py-8 gap-3">
+        <h3 hlmH3 class="text-center">¡Construyendo Juntos!</h3>
+        <h4 hlmH4 class="text-center text-balance">Una iniciativa para impulsar la digitalización de las microempresas de San Miguel.</h4>
+        <p hlmP class="text-center text-balance">
+            Queremos ayudarte a organizar mejor tu negocio, simplificar tus tareas y aprovechar las oportunidades que ofrece la tecnología.
+        </p>
+        <p hlmP class="text-center text-balance">
+            Participa gratuitamente y descubre cómo las herramientas digitales pueden ayudarte en el día a día de tu emprendimiento.
+        </p>
+        <div class="w-full flex justify-center">
+            <a
+                hlmBtn
+                [href]="formularioInscripcionUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                size="lg"
+                class="px-16! mt-4! text-lg! py-5.5! bg-azul! text-blanco! hover:bg-azul/80!"
+                >¡Quiero participar!</a
+            >
+        </div>
+    </div>
+    <div class="relative w-full md:w-1/2 aspect-square overflow-hidden object-center md:my-8">
+        <video
+            appFadeIn
+            #bgVideo
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            poster="/videos/mostrando-app-cafeteria/poster.webp"
+            class="absolute inset-0 w-full h-full object-cover -z-10"
+            tabindex="-1"
+            aria-hidden="true"
+        >
+            <source src="/videos/mostrando-app-cafeteria/720p.webm" type="video/webm" />
+            <source src="/videos/mostrando-app-cafeteria/720p.mp4" type="video/mp4" />
+            <track kind="none" />
+        </video>
+    </div>
+</section>
+<section class="w-full flex flex-col items-center gap-4 lg:gap-6 bg-calipso fade-in py-8">
+    <div class="max-w-screen md:max-w-4xl mx-auto px-8 text-blanco flex flex-col md:flex-row justify-evenly items-center gap-8 md:gap-2">
+        <div class="flex flex-col items-center justify-center gap-4">
+            <h3 hlmH3 class="text-center text-balance">¿En qué consiste esta iniciativa?</h3>
+            <p hlmP class="text-center text-balance">
+                Queremos acercar la tecnología a las microempresas de San Miguel, entregándoles herramientas prácticas para mejorar su organización y gestión
+                diaria.
+            </p>
+            <p hlmP class="text-center text-balance">
+                A través de Todo en Orden, buscamos construir junto a los emprendedores nuevas formas de hacer crecer sus negocios.
+            </p>
+        </div>
+        <div class="flex flex-col items-center justify-center gap-4">
+            <h3 hlmH3 class="text-center text-balance">¿A quién está dirigida?</h3>
+            <p hlmP class="text-center text-balance">
+                A emprendedores y microempresas de San Miguel que quieran incorporar herramientas digitales y mejorar la gestión de sus negocios.
+            </p>
+            <p hlmP class="text-center text-balance">No necesitas conocimientos tecnológicos ni experiencia previa.</p>
+        </div>
+    </div>
+</section>
+<section class="w-full flex flex-col items-center gap-4 lg:gap-6 bg-azul fade-in py-8">
+    <div class="max-w-screen md:max-w-4xl mx-auto px-8 text-blanco flex flex-col justify-center items-center gap-4">
+        <h3 hlmH3 class="text-center text-balance">¿Qué obtengo por participar?</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <p hlmH4 class="text-center text-balance font-semibold">Acceso gratuito a Todo en Orden:</p>
+                <p hlmP class="text-center text-balance">Conoce y utiliza sus herramientas por los 3 meses que dura la iniciativa.</p>
+            </div>
+            <div>
+                <p hlmH4 class="text-center text-balance">Organización:</p>
+                <p hlmP class="text-center text-balance">Gestiona obligaciones, tareas y vencimientos.</p>
+            </div>
+            <div>
+                <p hlmH4 class="text-center text-balance">Recordatorios:</p>
+                <p hlmP class="text-center text-balance">Mantente al tanto de tus compromisos.</p>
+            </div>
+            <div>
+                <p hlmH4 class="text-center text-balance">Tu opinión importa:</p>
+                <p hlmP class="text-center text-balance">Ayúdanos a mejorar las herramientas a partir de tu experiencia.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="w-full flex flex-col items-center gap-4 lg:gap-6 fade-in py-8">
+    <div class="max-w-screen md:max-w-4xl mx-auto px-8 text-azul flex flex-col justify-center items-center gap-4">
+        <h3 hlmH3 class="text-center text-balance">¿Qué debo hacer para participar?</h3>
+        <p hlmP class="text-center text-balance">¡Es muy sencillo!</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <p hlmH4 class="text-center text-balance font-semibold">1. Inscríbete:</p>
+                <p hlmP class="text-center text-balance">Completa nuestro formulario.</p>
+            </div>
+            <div>
+                <p hlmH4 class="text-center text-balance">2. Asiste a la charla:</p>
+                <p hlmP class="text-center text-balance">Recibe orientación en nuestra charla de presentación.</p>
+            </div>
+            <div>
+                <p hlmH4 class="text-center text-balance">3. Participa:</p>
+                <p hlmP class="text-center text-balance">Utiliza las herramientas y comparte tu experiencia.</p>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="w-full flex flex-col items-center gap-4 bg-naranjo fade-in py-8">
+    <div class="max-w-screen md:max-w-4xl mx-auto px-8 text-blanco flex flex-col justify-center items-center gap-4">
+        <h4 hlmH4 class="text-center text-balance mt-4">¡Construyamos juntos mejores oportunidades para tu negocio!</h4>
+        <p hlmP class="text-center text-balance">
+            Súmate a esta iniciativa y descubre cómo la tecnología puede ayudarte a llevar tu negocio al siguiente nivel.
+        </p>
+        <a
+            hlmBtn
+            variant="outline"
+            [href]="formularioInscripcionUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            size="lg"
+            class="px-16! mt-2! text-lg! py-5.5! hover:text-blanco/80!"
+        >
+            ¡Quiero participar!
+        </a>
+        <div class="flex flex-col md:flex-row items-center justify-center gap-1 md:gap-2">
+            <p hlmP class="text-sm lg:text-base text-center text-balance">Microempresas de San Miguel</p>
+            <p hlmP class="hidden md:block">-</p>
+            <p hlmP class="text-sm lg:text-base text-center text-balance">Participación gratuita</p>
+        </div>
+    </div>
 </section>
